@@ -1,0 +1,8 @@
+# SPA fallback — toutes les routes inconnues servent index.html
+# (nécessaire pour /cms sur hébergement statique o2switch)
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
