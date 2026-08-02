@@ -96,3 +96,97 @@
   border-bottom-color: var(--color-apc-blue-dark);
   text-shadow: none;
 }
+
+/* Hamburger toggle — hidden on desktop, shown on mobile below */
+.apc-nav__toggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.apc-nav__toggle-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.apc-nav--light .apc-nav__toggle-bar {
+  background: var(--color-apc-black);
+}
+
+.apc-nav__toggle--open .apc-nav__toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.apc-nav__toggle--open .apc-nav__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.apc-nav__toggle--open .apc-nav__toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  .apc-nav__toggle {
+    display: flex;
+  }
+
+  .apc-nav__links {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(11, 11, 11, 0.97);
+    padding: 0 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .apc-nav--light .apc-nav__links {
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .apc-nav--open .apc-nav__links {
+    max-height: 400px;
+    padding: 8px 24px 20px;
+  }
+
+  .apc-nav__links .apc-nav__link,
+  .apc-nav__links .apc-nav__link--active {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .apc-nav--light .apc-nav__links .apc-nav__link,
+  .apc-nav--light .apc-nav__links .apc-nav__link--active {
+    border-bottom-color: rgba(11, 11, 11, 0.1);
+  }
+
+  .apc-nav__links .apc-nav__link--active {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+    border-left: 3px solid var(--color-apc-yellow);
+    padding-left: 12px;
+  }
+
+  .apc-nav--light .apc-nav__links .apc-nav__link--active {
+    border-left-color: var(--color-apc-blue-dark);
+  }
+}

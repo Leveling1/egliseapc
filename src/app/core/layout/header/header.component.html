@@ -2,26 +2,58 @@
   class="apc-nav"
   [class.apc-nav--home]="variant() === 'home'"
   [class.apc-nav--light]="variant() === 'light'"
+  [class.apc-nav--open]="menuOpen()"
   aria-label="Navigation principale"
 >
   <div class="apc-nav__inner">
-    <a routerLink="/" class="apc-nav__brand" aria-label="A.P.C — Accueil">
+    <a routerLink="/" class="apc-nav__brand" aria-label="A.P.C — Accueil" (click)="closeMenu()">
       <img src="/images/home/logo-apc.png" alt="" width="40" height="40" class="apc-nav__logo" />
       <span class="apc-nav__wordmark">A.P.C</span>
     </a>
 
-    <div class="apc-nav__links">
+    <button
+      type="button"
+      class="apc-nav__toggle"
+      [class.apc-nav__toggle--open]="menuOpen()"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="apc-nav-links"
+      [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
+    >
+      <span class="apc-nav__toggle-bar"></span>
+      <span class="apc-nav__toggle-bar"></span>
+      <span class="apc-nav__toggle-bar"></span>
+    </button>
+
+    <div class="apc-nav__links" id="apc-nav-links">
       <a
         routerLink="/"
         routerLinkActive="apc-nav__link--active"
         [routerLinkActiveOptions]="{ exact: true }"
         class="apc-nav__link"
+        (click)="closeMenu()"
         >Accueil</a
       >
-      <a routerLink="/nos-cultes" routerLinkActive="apc-nav__link--active" class="apc-nav__link">Nos Cultes</a>
-      <a routerLink="/rda" routerLinkActive="apc-nav__link--active" class="apc-nav__link">RDA</a>
-      <a routerLink="/a-propos" routerLinkActive="apc-nav__link--active" class="apc-nav__link">À propos</a>
-      <a routerLink="/blog" routerLinkActive="apc-nav__link--active" class="apc-nav__link">Blog</a>
+      <a
+        routerLink="/nos-cultes"
+        routerLinkActive="apc-nav__link--active"
+        class="apc-nav__link"
+        (click)="closeMenu()"
+        >Nos Cultes</a
+      >
+      <a routerLink="/rda" routerLinkActive="apc-nav__link--active" class="apc-nav__link" (click)="closeMenu()"
+        >RDA</a
+      >
+      <a
+        routerLink="/a-propos"
+        routerLinkActive="apc-nav__link--active"
+        class="apc-nav__link"
+        (click)="closeMenu()"
+        >À propos</a
+      >
+      <a routerLink="/blog" routerLinkActive="apc-nav__link--active" class="apc-nav__link" (click)="closeMenu()"
+        >Blog</a
+      >
     </div>
   </div>
 </nav>

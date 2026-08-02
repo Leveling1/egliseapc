@@ -51,6 +51,28 @@
   max-width: 560px;
 }
 
+.apc-programs__oracle {
+  font: italic 15px/1.7 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 24px auto 0;
+  max-width: 620px;
+  border-left: 3px solid var(--color-apc-yellow);
+  padding-left: 16px;
+  text-align: left;
+}
+
+.apc-programs__oracle strong {
+  font: 600 15px 'Poppins', sans-serif;
+  font-style: normal;
+  color: var(--color-apc-yellow);
+}
+
+.apc-programs__oracle-ref {
+  font-style: normal;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+
 .apc-programs__schedule {
   max-width: 900px;
   margin: 0 auto;

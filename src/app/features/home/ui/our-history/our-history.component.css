@@ -1,53 +1,89 @@
-.apc-history {
-  padding: 100px 24px;
-  background: #fff;
+.apc-about-leader {
+  height: 200vh;
+  position: relative;
+  background-color: #1c1c8c;
+  background-image: url('/images/home/prophète garry.png');
+  background-size: cover;
+  background-position: 30% center;
+  background-attachment: fixed;
 }
 
-.apc-history__inner {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
+.apc-about-leader__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-.apc-history__text {
-  width: 100%;
+.apc-about-leader__text {
+  position: absolute;
+  top: 50%;
+  right: 48px;
+  transform: translateY(-50%);
+  max-width: 460px;
+  will-change: filter, opacity;
 }
 
-.apc-history__overline {
+.apc-about-leader__overline {
   font: 600 13px 'Poppins', sans-serif;
-  color: var(--color-apc-blue-dark);
+  color: var(--color-apc-yellow);
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
-.apc-history__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
-  color: var(--color-apc-black);
-  margin: 12px 0 0;
+.apc-about-leader__title {
+  font: 700 32px/1.2 'Poppins', sans-serif;
+  color: #fff;
+  margin: 10px 0 16px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.apc-history__paragraph {
-  font: 400 16px/1.8 'Open Sans', sans-serif;
-  color: #444;
-  margin: 0 0 12px;
+.apc-about-leader__paragraph {
+  font: 400 15px/1.8 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 24px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
-.apc-history__paragraph:last-of-type {
-  margin: 0 0 28px;
+.apc-about-leader__quote {
+  font: italic 15px/1.7 'Open Sans', sans-serif;
+  color: #fff;
+  margin: 0 0 16px;
+  border-left: 3px solid var(--color-apc-yellow);
+  padding-left: 16px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
-.apc-history__cta {
+.apc-about-leader__cta {
   display: inline-block;
-  padding: 14px 32px;
-  border: 2px solid var(--color-apc-blue-dark);
-  color: var(--color-apc-blue-dark);
-  font: 500 15px 'Poppins', sans-serif;
+  padding: 12px 28px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  color: #fff;
+  font: 500 14px 'Poppins', sans-serif;
   border-radius: 4px;
   text-decoration: none;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   transition: all 0.2s;
 }
 
-.apc-history__cta:hover {
-  background: var(--color-apc-blue-dark);
-  color: #fff;
+.apc-about-leader__cta:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .apc-about-leader {
+    background-position: 25% center;
+  }
+
+  .apc-about-leader__text {
+    right: 20px;
+    left: 20px;
+    max-width: none;
+  }
+
+  .apc-about-leader__title {
+    font-size: 28px;
+  }
 }

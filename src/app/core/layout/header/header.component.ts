@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /**
@@ -19,4 +19,28 @@ export type HeaderVariant = 'home' | 'overlay' | 'light';
 })
 export class HeaderComponent {
   readonly variant = input<HeaderVariant>('overlay');
+
+  private readonly elementRef = inject(ElementRef);
+
+  protected readonly menuOpen = signal(false);
+
+  protected toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  protected closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  protected onEscape(): void {
+    this.closeMenu();
+  }
+
+  @HostListener('document:click', ['$event'])
+  protected onDocumentClick(event: MouseEvent): void {
+    if (this.menuOpen() && !this.elementRef.nativeElement.contains(event.target as Node)) {
+      this.closeMenu();
+    }
+  }
 }
