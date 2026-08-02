@@ -27,4 +27,8 @@ export const routes: Routes = [
         (m) => m.ResourcesPageComponent,
       ),
   },
+  {
+    path: 'blog',
+    loadComponent: () => import('./features/blog/pages/blog-page.component').then((m) => m.BlogPageComponent),
+  },
 ];
