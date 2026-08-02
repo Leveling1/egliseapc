@@ -14,6 +14,13 @@
           <div class="apc-foundations__icon" aria-hidden="true">{{ card.icon }}</div>
           <h3 class="apc-foundations__card-title">{{ card.title }}</h3>
           <p class="apc-foundations__card-text">{{ card.description }}</p>
+          @if (card.items) {
+            <ol class="apc-foundations__list">
+              @for (item of card.items; track item) {
+                <li class="apc-foundations__list-item">{{ item }}</li>
+              }
+            </ol>
+          }
         </article>
       }
     </div>

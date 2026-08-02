@@ -54,8 +54,6 @@ export class TimelineComponent {
   );
 
   private resizeObserver: ResizeObserver | null = null;
-  private intersectionObserver: IntersectionObserver | null = null;
-  private scrollListenerAttached = false;
   private recomputeScheduled = false;
 
   constructor() {
@@ -63,7 +61,6 @@ export class TimelineComponent {
 
     afterNextRender(() => {
       const trackEl = this.trackRef().nativeElement;
-      const containerEl = this.containerRef().nativeElement;
 
       this.trackHeight.set(trackEl.getBoundingClientRect().height);
       this.resizeObserver = new ResizeObserver((entries) => {
@@ -74,42 +71,22 @@ export class TimelineComponent {
       });
       this.resizeObserver.observe(trackEl);
 
+      // Scroll/resize listeners stay attached for the component's whole
+      // lifetime — recompute is rAF-throttled and just reads a bounding
+      // rect, so this is cheap even while the section is off-screen, and
+      // guarantees the line animation is always live once mounted.
       const onScroll = (): void => this.scheduleRecompute();
       const onResize = (): void => this.scheduleRecompute();
 
-      // Only listen to scroll while the timeline is anywhere near the
-      // viewport, to avoid running a scroll handler for the whole page
-      // lifetime when the section is far off-screen.
-      this.intersectionObserver = new IntersectionObserver(
-        ([entry]) => {
-          if (entry?.isIntersecting) {
-            if (!this.scrollListenerAttached) {
-              window.addEventListener('scroll', onScroll, { passive: true });
-              window.addEventListener('resize', onResize, { passive: true });
-              this.scrollListenerAttached = true;
-            }
-            this.scheduleRecompute();
-          } else if (this.scrollListenerAttached) {
-            window.removeEventListener('scroll', onScroll);
-            window.removeEventListener('resize', onResize);
-            this.scrollListenerAttached = false;
-          }
-        },
-        { rootMargin: '50% 0px 50% 0px' },
-      );
-      this.intersectionObserver.observe(containerEl);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
 
-      // Compute an initial value immediately in case the section is
-      // already (partially) within the intersection margin on load.
       this.recomputeProgress();
 
       destroyRef.onDestroy(() => {
         this.resizeObserver?.disconnect();
-        this.intersectionObserver?.disconnect();
-        if (this.scrollListenerAttached) {
-          window.removeEventListener('scroll', onScroll);
-          window.removeEventListener('resize', onResize);
-        }
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
       });
     });
   }

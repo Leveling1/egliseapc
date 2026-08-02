@@ -41,15 +41,21 @@ interface ParallaxRenderItem extends ParallaxBaseItem {
   readonly transform: string;
 }
 
+// The hero's centered text block (max-width 760px) sits vertically centered
+// too, so the top/bottom rows are pushed well clear of its ~25%-75% band,
+// and every row is pulled out horizontally so it can't reach the text even
+// on the narrowest viewport width this layer is shown at (see the
+// `.apc-parallax` media query in the stylesheet — it's hidden below 1280px,
+// where a 760px-wide text block would leave no safe room for these images).
 const POSITION_STYLES: Record<ParallaxPosition, ParallaxPositionStyle> = {
-  'top-left': { top: '8%', left: '4%' },
-  'top-right': { top: '8%', right: '4%' },
-  'mid-left': { top: '38%', left: '6%' },
-  'mid-right': { top: '38%', right: '6%' },
-  'bottom-left': { top: '68%', left: '4%' },
-  'bottom-right': { top: '68%', right: '4%' },
-  'far-left': { top: '52%', left: '2%' },
-  'far-right': { top: '52%', right: '2%' },
+  'top-left': { top: '14%', left: '10%' },
+  'top-right': { top: '14%', right: '10%' },
+  'mid-left': { top: '47%', left: '8%' },
+  'mid-right': { top: '47%', right: '8%' },
+  'bottom-left': { top: '80%', left: '10%' },
+  'bottom-right': { top: '80%', right: '10%' },
+  'far-left': { top: '60%', left: '16%' },
+  'far-right': { top: '60%', right: '16%' },
 };
 
 const POSITION_ORDER: readonly ParallaxPosition[] = [

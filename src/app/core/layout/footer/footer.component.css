@@ -69,13 +69,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
   transition: background 0.2s;
 }
 
 .apc-footer__social:hover {
   background: rgba(255, 255, 255, 0.15);
+}
+
+.apc-footer__social-icon {
+  width: 16px;
+  height: 16px;
+  /* Source SVGs are solid black; flip to white for the dark footer. */
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+
+.apc-footer__social:hover .apc-footer__social-icon {
+  opacity: 1;
 }
 
 .apc-footer__col-title {

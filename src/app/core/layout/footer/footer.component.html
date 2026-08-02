@@ -12,9 +12,33 @@
         </p>
         @if (variant() === 'full') {
           <div class="apc-footer__socials">
-            <a href="#" class="apc-footer__social" aria-label="Facebook">f</a>
-            <a href="#" class="apc-footer__social" aria-label="YouTube">▶</a>
-            <a href="#" class="apc-footer__social" aria-label="Instagram">ig</a>
+            <a
+              href="https://www.facebook.com/egliseapc"
+              class="apc-footer__social"
+              aria-label="Facebook"
+              target="_blank"
+              rel="noopener"
+            >
+              <img src="/icons/facebook.svg" alt="" class="apc-footer__social-icon" />
+            </a>
+            <a
+              href="https://www.youtube.com/@apc-kinshasa"
+              class="apc-footer__social"
+              aria-label="YouTube"
+              target="_blank"
+              rel="noopener"
+            >
+              <img src="/icons/youtube.svg" alt="" class="apc-footer__social-icon" />
+            </a>
+            <a
+              href="https://www.instagram.com/egliseapc?igsh=MXZ6eTd6YnNpdjl5bg=="
+              class="apc-footer__social"
+              aria-label="Instagram"
+              target="_blank"
+              rel="noopener"
+            >
+              <img src="/icons/instagram.svg" alt="" class="apc-footer__social-icon" />
+            </a>
           </div>
         }
       </div>
@@ -31,19 +55,7 @@
         </nav>
       </div>
 
-      @if (variant() === 'full') {
-        <!-- Col 3 -->
-        <div class="apc-footer__col">
-          <span class="apc-footer__col-title">Ressources</span>
-          <div class="apc-footer__links">
-            <a routerLink="/ressources" class="apc-footer__link">Application</a>
-            <a routerLink="/ressources" class="apc-footer__link">Livres</a>
-            <span class="apc-footer__text">Chaîne YouTube</span>
-          </div>
-        </div>
-      }
-
-      <!-- Col 4 -->
+      <!-- Col 3 -->
       <div class="apc-footer__col apc-footer__col--contact">
         <span class="apc-footer__col-title">Contact</span>
         <div class="apc-footer__links">

@@ -9,7 +9,6 @@ import { OurHistoryComponent } from '../ui/our-history/our-history.component';
 import { VisionaryComponent } from '../ui/visionary/visionary.component';
 import { ProgramsComponent } from '../ui/programs/programs.component';
 import { SermonsComponent } from '../ui/sermons/sermons.component';
-import { ResourcesComponent } from '../ui/resources/resources.component';
 import { WorldPresenceComponent } from '../ui/world-presence/world-presence.component';
 
 @Component({
@@ -24,7 +23,6 @@ import { WorldPresenceComponent } from '../ui/world-presence/world-presence.comp
     VisionaryComponent,
     ProgramsComponent,
     SermonsComponent,
-    ResourcesComponent,
     WorldPresenceComponent,
   ],
   templateUrl: './home-page.component.html',

@@ -33,7 +33,7 @@
 
 .apc-programs__overline {
   font: 600 13px 'Poppins', sans-serif;
-  color: var(--color-apc-blue-dark);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 2px;
 }

@@ -30,6 +30,7 @@
   padding: 80px 24px;
   width: 100%;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .apc-rda-hero__title {
@@ -37,11 +38,12 @@
   color: #fff;
   margin: 0 0 16px;
   max-width: 700px;
+  margin-inline: auto;
 }
 
 .apc-rda-hero__lead {
   font: 400 18px/1.6 'Open Sans', sans-serif;
   color: rgba(255, 255, 255, 0.7);
-  margin: 0;
+  margin: 0 auto;
   max-width: 560px;
 }

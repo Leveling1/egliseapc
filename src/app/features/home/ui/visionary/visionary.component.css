@@ -23,40 +23,12 @@
 }
 
 .apc-visionary__photo {
+  display: block;
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: #1c1c8c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: cover;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-}
-
-.apc-visionary__photo-label {
-  font: 500 14px 'Open Sans', sans-serif;
-  color: rgba(255, 255, 255, 0.4);
-  text-align: center;
-}
-
-.apc-visionary__seal {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 64px;
-  height: 64px;
-  background: var(--color-apc-yellow);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 4px solid var(--color-apc-gray-light);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-}
-
-.apc-visionary__seal-icon {
-  font: 700 20px 'Poppins', sans-serif;
-  color: #fff;
 }
 
 .apc-visionary__text {

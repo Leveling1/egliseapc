@@ -187,8 +187,8 @@
 .apc-sermons__more-link {
   display: inline-block;
   padding: 14px 36px;
-  background: var(--color-apc-yellow);
-  color: var(--color-apc-black);
+  background: var(--color-apc-blue-dark);
+  color: #fff;
   font: 600 15px 'Poppins', sans-serif;
   border-radius: 4px;
   text-decoration: none;

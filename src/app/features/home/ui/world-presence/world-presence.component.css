@@ -33,28 +33,40 @@
   width: 100%;
   height: 400px;
   background: #1c1c8c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
   overflow: hidden;
 }
 
-.apc-world__dot {
-  position: absolute;
+/* Desaturate the OSM tiles so the brand-yellow pins stay the focal point
+   instead of competing with the map's stock colors. */
+.apc-world__map .leaflet-tile-pane {
+  filter: grayscale(1) brightness(0.95) contrast(1.05);
+}
+
+.apc-world__map .leaflet-control-attribution {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+}
+
+.apc-world-marker__dot {
+  display: block;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  background: var(--color-apc-yellow);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
 }
 
-.apc-world__label {
+.apc-world-marker__label {
   position: absolute;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   white-space: nowrap;
-}
-
-.apc-world__placeholder {
-  font: 500 18px 'Open Sans', sans-serif;
-  color: rgba(255, 255, 255, 0.2);
-  z-index: 1;
+  font: 600 11px 'Poppins', sans-serif;
+  color: #fff;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 2px rgba(0, 0, 0, 0.8);
 }

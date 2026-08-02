@@ -155,5 +155,6 @@
   top: 0;
   width: 2px;
   border-radius: 100px;
-  background: linear-gradient(to top, var(--color-apc-blue-dark) 0%, var(--color-apc-blue) 10%, transparent 100%);
+  /* Exact source palette (Tailwind purple-500 / blue-500). */
+  background: linear-gradient(to top, #a855f7 0%, #3b82f6 10%, transparent 100%);
 }

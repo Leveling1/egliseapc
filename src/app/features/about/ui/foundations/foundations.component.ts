@@ -4,6 +4,7 @@ interface FoundationCard {
   readonly icon: string;
   readonly title: string;
   readonly description: string;
+  readonly items?: readonly string[];
 }
 
 @Component({
@@ -17,21 +18,24 @@ export class FoundationsComponent {
   protected readonly cards: readonly FoundationCard[] = [
     {
       icon: '🎯',
-      title: 'Ambassadeurs',
+      title: 'Objectif',
       description:
-        'Envoyés et représentants de Christ sur la terre, chargés de traduire sa volonté au monde et de défendre les intérêts de son royaume.',
+        'Notre objectif est de gagner les âmes au Seigneur Jésus-Christ, en prêchant la bonne nouvelle du royaume des cieux.',
     },
     {
-      icon: '👁',
-      title: 'Réconciliation',
+      icon: '🕊',
+      title: 'Mission',
       description:
-        "Dieu a pris l'initiative de nous réconcilier avec lui par Christ et a déposé en nous la parole de la réconciliation.",
+        'Notre mission est de réconcilier le monde avec Dieu. Pour cela, nous fonctionnons avec deux ailes :',
+      items: [
+        "Aile apostolique — planter des églises et faire des disciples en tout lieu, selon Matthieu 28:19.",
+        "Aile prophétique — met l'accent sur une grande vision révélée par Dieu à son serviteur le Prophète Garry KENGE MBULU, appelée le Rassemblement des Aigles, depuis 2002, selon Job 39 : « Là où il y a des cadavres, les aigles s'assemblent. »",
+      ],
     },
     {
-      icon: '💎',
-      title: 'Notre Mission',
-      description:
-        "Annoncer aux hommes ce ministère de réconciliation, pour qu'ils retrouvent la paix et la communion avec Dieu.",
+      icon: '📜',
+      title: 'Alliance',
+      description: "Notre alliance avec Dieu : Sainteté à l'Éternel.",
     },
   ];
 }
