@@ -1,0 +1,28 @@
+<app-header variant="light" />
+
+<main>
+  <app-blog-hero />
+  <app-featured-article />
+
+  <div class="apc-blog-filters">
+    <app-filter-bar [filters]="filters" searchPlaceholder="Rechercher…" />
+  </div>
+
+  <div class="apc-blog-grid-wrap">
+    <div class="apc-blog-grid">
+      @for (article of articles; track article.title) {
+        <app-article-card
+          [category]="article.category"
+          [gradient]="article.gradient"
+          [title]="article.title"
+          [excerpt]="article.excerpt"
+          [date]="article.date"
+        />
+      }
+    </div>
+
+    <app-pagination [currentPage]="currentPage()" [totalPages]="3" (pageChange)="onPageChange($event)" />
+  </div>
+</main>
+
+<app-footer variant="simple" />

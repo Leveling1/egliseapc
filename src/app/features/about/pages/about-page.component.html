@@ -1,0 +1,23 @@
+<app-header variant="overlay" />
+
+<main>
+  <app-about-hero />
+
+  @for (chapter of chapters; track chapter.chapterNumber) {
+    <app-story-chapter
+      [chapterNumber]="chapter.chapterNumber"
+      [title]="chapter.title"
+      [paragraphs]="chapter.paragraphs"
+      [imagePlaceholderLabel]="chapter.imagePlaceholderLabel"
+      [imageGradient]="chapter.imageGradient"
+      [reversed]="chapter.reversed"
+      [background]="chapter.background"
+    />
+  }
+
+  <app-about-today />
+  <app-foundations />
+  <app-founding-verse />
+</main>
+
+<app-footer variant="simple" />

@@ -6,4 +6,25 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/home/pages/home-page.component').then((m) => m.HomePageComponent),
   },
+  {
+    path: 'a-propos',
+    loadComponent: () =>
+      import('./features/about/pages/about-page.component').then((m) => m.AboutPageComponent),
+  },
+  {
+    path: 'nos-cultes',
+    loadComponent: () =>
+      import('./features/cultes/pages/cultes-page.component').then((m) => m.CultesPageComponent),
+  },
+  {
+    path: 'rda',
+    loadComponent: () => import('./features/rda/pages/rda-page.component').then((m) => m.RdaPageComponent),
+  },
+  {
+    path: 'ressources',
+    loadComponent: () =>
+      import('./features/resources-page/pages/resources-page.component').then(
+        (m) => m.ResourcesPageComponent,
+      ),
+  },
 ];

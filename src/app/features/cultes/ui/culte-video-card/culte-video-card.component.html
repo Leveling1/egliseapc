@@ -1,0 +1,12 @@
+<button type="button" class="apc-video-card" [attr.aria-label]="'Lire : ' + title()">
+  <span class="apc-video-card__thumb" [style.background]="gradient()">
+    <span class="apc-video-card__play" aria-hidden="true">
+      <span class="apc-video-card__play-icon"></span>
+    </span>
+    <span class="apc-video-card__duration">{{ duration() }}</span>
+  </span>
+  <span class="apc-video-card__body">
+    <span class="apc-video-card__title">{{ title() }}</span>
+    <span class="apc-video-card__date">{{ date() }}</span>
+  </span>
+</button>

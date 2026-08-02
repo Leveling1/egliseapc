@@ -1,0 +1,40 @@
+<app-header variant="light" />
+
+<main>
+  <app-resources-hero />
+  <app-app-showcase />
+
+  <section class="apc-books" aria-labelledby="apc-books-title">
+    <div class="apc-books__inner">
+      <div class="apc-books__header">
+        <span class="apc-books__overline">Publications</span>
+        <h2 id="apc-books-title" class="apc-books__title">Nos Livres</h2>
+        <p class="apc-books__intro">
+          Des ouvrages en préparation pour approfondir votre foi et votre connaissance de la Parole.
+        </p>
+      </div>
+
+      <div class="apc-books__grid">
+        @for (book of books; track book.title) {
+          <app-book-card
+            [coverGradient]="book.coverGradient"
+            [coverRotation]="book.coverRotation"
+            [badgeLabel]="book.badgeLabel"
+            [badgeVariant]="book.badgeVariant"
+            [title]="book.title"
+            [description]="book.description"
+          />
+        }
+      </div>
+    </div>
+  </section>
+
+  <app-newsletter-cta
+    overline="Restez informé"
+    title="Soyez prévenu des sorties"
+    titleFontSize="36px"
+    description="Inscrivez-vous pour recevoir les actualités sur nos publications et nouvelles ressources."
+  />
+</main>
+
+<app-footer variant="simple" />

@@ -1,0 +1,14 @@
+<a href="#" class="apc-article-card">
+  <div class="apc-article-card__media" [style.background]="gradient()">
+    <span class="apc-article-card__media-label">image article</span>
+    <span class="apc-article-card__tag">{{ category() }}</span>
+  </div>
+  <div class="apc-article-card__body">
+    <h3 class="apc-article-card__title">{{ title() }}</h3>
+    <p class="apc-article-card__excerpt">{{ excerpt() }}</p>
+    <div class="apc-article-card__footer">
+      <span class="apc-article-card__date">{{ date() }}</span>
+      <span class="apc-article-card__link">Lire →</span>
+    </div>
+  </div>
+</a>

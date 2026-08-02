@@ -1,0 +1,20 @@
+<section
+  class="apc-chapter"
+  [class.apc-chapter--gray]="background() === 'gray'"
+  [attr.aria-labelledby]="'apc-chapter-title-' + chapterNumber()"
+>
+  <div class="apc-chapter__inner" [class.apc-chapter__inner--reversed]="reversed()">
+    <div class="apc-chapter__media">
+      <div class="apc-chapter__photo" [style.background]="imageGradient()">
+        <span class="apc-chapter__photo-label">{{ imagePlaceholderLabel() }}</span>
+      </div>
+    </div>
+    <div class="apc-chapter__text">
+      <span class="apc-chapter__overline">Chapitre {{ chapterNumber() }}</span>
+      <h2 [id]="'apc-chapter-title-' + chapterNumber()" class="apc-chapter__title">{{ title() }}</h2>
+      @for (paragraph of paragraphs(); track paragraph) {
+        <p class="apc-chapter__paragraph">{{ paragraph }}</p>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+.apc-blog-hero {
+  padding: 60px 24px 80px;
+  background: #fff;
+}
+
+.apc-blog-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.apc-blog-hero__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-blog-hero__title {
+  font: 700 48px/1.15 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-blog-hero__lead {
+  font: 400 17px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 20px auto 0;
+  max-width: 600px;
+}

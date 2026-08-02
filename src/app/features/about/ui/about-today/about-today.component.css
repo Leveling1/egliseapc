@@ -1,0 +1,53 @@
+.apc-today {
+  padding: 80px 24px;
+  background: var(--color-apc-gray-light);
+}
+
+.apc-today__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-today__photo {
+  width: 100%;
+  height: 300px;
+  background: #1c1c8c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.apc-today__photo-label {
+  font: 500 16px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 20px;
+}
+
+.apc-today__text {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.apc-today__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-today__title {
+  font: 700 36px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-today__paragraph {
+  font: 400 16px/1.8 'Open Sans', sans-serif;
+  color: #444;
+  margin: 0;
+}

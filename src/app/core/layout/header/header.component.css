@@ -32,8 +32,9 @@
   object-fit: contain;
 }
 
+/* Default ("overlay"): white text over a dark/photo hero, Poppins */
 .apc-nav__wordmark {
-  font: 700 18px Helvetica, Arial, sans-serif;
+  font: 700 18px 'Poppins', sans-serif;
   color: #fff;
   letter-spacing: 1px;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -46,8 +47,8 @@
 }
 
 .apc-nav__link {
-  font: 400 14px Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.85);
+  font: 400 14px 'Poppins', sans-serif;
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   padding-bottom: 4px;
@@ -58,7 +59,40 @@
 }
 
 .apc-nav__link--active {
-  font: 500 14px Helvetica, Arial, sans-serif;
+  font: 500 14px 'Poppins', sans-serif;
   color: #fff;
   border-bottom: 2px solid var(--color-apc-yellow);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* "home": Accueil — Helvetica font, brighter white */
+.apc-nav--home .apc-nav__wordmark,
+.apc-nav--home .apc-nav__link,
+.apc-nav--home .apc-nav__link--active {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.apc-nav--home .apc-nav__link {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* "light": white-hero pages (Ressources, Blog) — dark text, no shadow, blue underline */
+.apc-nav--light .apc-nav__wordmark {
+  color: var(--color-apc-black);
+  text-shadow: none;
+}
+
+.apc-nav--light .apc-nav__link {
+  color: rgba(11, 11, 11, 0.65);
+  text-shadow: none;
+}
+
+.apc-nav--light .apc-nav__link:hover {
+  color: var(--color-apc-black);
+}
+
+.apc-nav--light .apc-nav__link--active {
+  color: var(--color-apc-black);
+  border-bottom-color: var(--color-apc-blue-dark);
+  text-shadow: none;
 }

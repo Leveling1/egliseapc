@@ -1,0 +1,75 @@
+.apc-foundations {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.apc-foundations__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-foundations__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.apc-foundations__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-foundations__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-foundations__intro {
+  font: 400 16px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 16px auto 0;
+  max-width: 640px;
+}
+
+.apc-foundations__grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.apc-foundations__card {
+  flex: 1;
+  min-width: 260px;
+  padding: 36px;
+  background: var(--color-apc-gray-light);
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid rgba(28, 28, 140, 0.06);
+}
+
+.apc-foundations__icon {
+  width: 56px;
+  height: 56px;
+  background: var(--color-apc-blue-dark);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: #fff;
+  font-size: 24px;
+}
+
+.apc-foundations__card-title {
+  font: 700 22px 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 0 0 12px;
+}
+
+.apc-foundations__card-text {
+  font: 400 15px/1.7 'Open Sans', sans-serif;
+  color: #555;
+  margin: 0;
+}

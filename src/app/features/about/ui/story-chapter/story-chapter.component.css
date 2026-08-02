@@ -1,0 +1,72 @@
+.apc-chapter {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.apc-chapter--gray {
+  background: var(--color-apc-gray-light);
+}
+
+.apc-chapter__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.apc-chapter__inner--reversed {
+  flex-direction: row-reverse;
+}
+
+.apc-chapter__media {
+  flex: 0 0 440px;
+  min-width: 280px;
+}
+
+.apc-chapter__photo {
+  width: 100%;
+  height: 320px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.apc-chapter__photo-label {
+  font: 500 15px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+  padding: 20px;
+  white-space: pre-line;
+}
+
+.apc-chapter__text {
+  flex: 1;
+  min-width: 320px;
+}
+
+.apc-chapter__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-chapter__title {
+  font: 700 36px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-chapter__paragraph {
+  font: 400 16px/1.8 'Open Sans', sans-serif;
+  color: #444;
+  margin: 12px 0 0;
+}
+
+.apc-chapter__paragraph:first-of-type {
+  margin-top: 0;
+}

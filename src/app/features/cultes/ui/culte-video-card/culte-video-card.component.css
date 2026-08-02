@@ -1,0 +1,77 @@
+.apc-video-card {
+  appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.apc-video-card:hover {
+  transform: translateY(-3px);
+}
+
+.apc-video-card__thumb {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.apc-video-card__play {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apc-video-card__play-icon {
+  width: 0;
+  height: 0;
+  border-left: 14px solid var(--color-apc-blue-dark);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  margin-left: 3px;
+}
+
+.apc-video-card__duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  font: 500 11px 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-video-card__body {
+  padding: 16px;
+  display: block;
+}
+
+.apc-video-card__title {
+  font: 600 15px/1.4 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  display: block;
+}
+
+.apc-video-card__date {
+  font: 400 13px 'Open Sans', sans-serif;
+  color: #888;
+}

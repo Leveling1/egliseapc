@@ -1,0 +1,21 @@
+<section class="apc-foundations" aria-labelledby="apc-foundations-title">
+  <div class="apc-foundations__inner">
+    <div class="apc-foundations__header">
+      <span class="apc-foundations__overline">Nos fondements</span>
+      <h2 id="apc-foundations-title" class="apc-foundations__title">
+        Nous Sommes les Ambassadeurs Pour Christ
+      </h2>
+      <p class="apc-foundations__intro">Le nom de notre église s'appuie sur 2 Corinthiens 5:20.</p>
+    </div>
+
+    <div class="apc-foundations__grid">
+      @for (card of cards; track card.title) {
+        <article class="apc-foundations__card">
+          <div class="apc-foundations__icon" aria-hidden="true">{{ card.icon }}</div>
+          <h3 class="apc-foundations__card-title">{{ card.title }}</h3>
+          <p class="apc-foundations__card-text">{{ card.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

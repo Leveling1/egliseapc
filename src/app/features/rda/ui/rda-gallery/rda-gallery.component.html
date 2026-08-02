@@ -1,0 +1,20 @@
+<section class="apc-rda-gallery" aria-labelledby="apc-rda-gallery-title">
+  <div class="apc-rda-gallery__inner">
+    <div class="apc-rda-gallery__header">
+      <span class="apc-rda-gallery__overline">Souvenirs</span>
+      <h2 id="apc-rda-gallery-title" class="apc-rda-gallery__title">Galerie Photos</h2>
+    </div>
+
+    <div class="apc-rda-gallery__grid">
+      @for (tile of tiles; track $index) {
+        <div
+          class="apc-rda-gallery__tile"
+          [class.apc-rda-gallery__tile--tall]="tile.spanTwoRows"
+          [style.background]="tile.gradient"
+        >
+          <span>{{ tile.label }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

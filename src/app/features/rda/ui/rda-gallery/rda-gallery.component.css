@@ -1,0 +1,47 @@
+.apc-rda-gallery {
+  padding: 80px 24px;
+  background: var(--color-apc-gray-light);
+}
+
+.apc-rda-gallery__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-rda-gallery__header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.apc-rda-gallery__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-rda-gallery__title {
+  font: 700 36px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-rda-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.apc-rda-gallery__tile {
+  height: 200px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 13px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.apc-rda-gallery__tile--tall {
+  grid-row: span 2;
+}

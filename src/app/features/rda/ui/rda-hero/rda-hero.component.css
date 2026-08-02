@@ -1,0 +1,52 @@
+.apc-rda-hero {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.apc-rda-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0b0b0b 0%, #1c1c8c 60%, #1c1c8c 100%);
+}
+
+.apc-rda-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.apc-rda-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(255, 230, 0, 0.15);
+  border: 1px solid rgba(255, 230, 0, 0.35);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font: 600 12px 'Poppins', sans-serif;
+  color: var(--color-apc-yellow);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.apc-rda-hero__title {
+  font: 700 56px/1.1 'Poppins', sans-serif;
+  color: #fff;
+  margin: 0 0 16px;
+  max-width: 700px;
+}
+
+.apc-rda-hero__lead {
+  font: 400 18px/1.6 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  max-width: 560px;
+}

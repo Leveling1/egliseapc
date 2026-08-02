@@ -1,0 +1,45 @@
+.apc-about-hero {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.apc-about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0b0b0b, #1c1c8c);
+}
+
+.apc-about-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.apc-about-hero__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  /* Deviation from source (#1C1C8C): near-invisible against this dark gradient.
+     Switched to the yellow used by every other dark-hero overline on the site. */
+  color: var(--color-apc-yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-about-hero__title {
+  font: 700 52px/1.1 'Poppins', sans-serif;
+  color: #fff;
+  margin: 12px 0 16px;
+}
+
+.apc-about-hero__lead {
+  font: 400 18px/1.6 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  max-width: 560px;
+}

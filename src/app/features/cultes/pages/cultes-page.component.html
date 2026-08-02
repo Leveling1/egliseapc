@@ -1,0 +1,32 @@
+<app-header variant="overlay" />
+
+<main>
+  <app-live-banner />
+  <app-cultes-hero />
+
+  <app-featured-culte
+    title="La puissance de la foi — Culte dominical"
+    meta="Dimanche 28 juillet 2026 · Prophète Garry KENGE · 1h 24min"
+  />
+
+  <div class="apc-cultes-filters">
+    <app-filter-bar [filters]="filters" searchPlaceholder="Rechercher un culte…" />
+  </div>
+
+  <div class="apc-cultes-grid-wrap">
+    <div class="apc-cultes-grid">
+      @for (video of videos; track video.title) {
+        <app-culte-video-card
+          [title]="video.title"
+          [date]="video.date"
+          [duration]="video.duration"
+          [gradient]="video.gradient"
+        />
+      }
+    </div>
+
+    <app-pagination [currentPage]="currentPage()" [totalPages]="3" (pageChange)="onPageChange($event)" />
+  </div>
+</main>
+
+<app-footer variant="simple" />

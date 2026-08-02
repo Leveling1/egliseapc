@@ -1,0 +1,33 @@
+<nav class="apc-pagination" aria-label="Pagination">
+  <button
+    type="button"
+    class="apc-pagination__btn"
+    [disabled]="currentPage() === 1"
+    (click)="goTo(currentPage() - 1)"
+    aria-label="Page précédente"
+  >
+    ‹
+  </button>
+
+  @for (page of pages(); track page) {
+    <button
+      type="button"
+      class="apc-pagination__btn"
+      [class.apc-pagination__btn--active]="page === currentPage()"
+      [attr.aria-current]="page === currentPage() ? 'page' : null"
+      (click)="goTo(page)"
+    >
+      {{ page }}
+    </button>
+  }
+
+  <button
+    type="button"
+    class="apc-pagination__btn"
+    [disabled]="currentPage() === totalPages()"
+    (click)="goTo(currentPage() + 1)"
+    aria-label="Page suivante"
+  >
+    ›
+  </button>
+</nav>

@@ -1,0 +1,33 @@
+<div class="apc-newsletter">
+  <div class="apc-newsletter__inner">
+    <span class="apc-newsletter__overline">{{ overline() }}</span>
+    <h2 class="apc-newsletter__title" [style.font-size]="titleFontSize()">{{ title() }}</h2>
+    <p class="apc-newsletter__description" [style.font-size]="descriptionFontSize()">{{ description() }}</p>
+
+    @if (submitted()) {
+      <p class="apc-newsletter__success" role="status">Merci, vous serez informé(e) !</p>
+    } @else {
+      <form class="apc-newsletter__form" (ngSubmit)="onSubmit()" novalidate>
+        <label class="apc-newsletter__label" for="apc-newsletter-email">Adresse e-mail</label>
+        <div class="apc-newsletter__field">
+          <input
+            id="apc-newsletter-email"
+            type="email"
+            class="apc-newsletter__input"
+            [formControl]="email"
+            [placeholder]="emailPlaceholder()"
+            autocomplete="email"
+            [attr.aria-invalid]="email.invalid && email.touched"
+            aria-describedby="apc-newsletter-error"
+          />
+          <button type="submit" class="apc-newsletter__submit">{{ buttonLabel() }}</button>
+        </div>
+        @if (email.invalid && email.touched) {
+          <p id="apc-newsletter-error" class="apc-newsletter__error">
+            Merci de renseigner une adresse e-mail valide.
+          </p>
+        }
+      </form>
+    }
+  </div>
+</div>

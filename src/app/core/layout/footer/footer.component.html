@@ -10,11 +10,13 @@
         <p class="apc-footer__description">
           Ambassadeurs Pour Christ — Une communauté de foi, d'espérance, d'amour et d'unité.
         </p>
-        <div class="apc-footer__socials">
-          <a href="#" class="apc-footer__social" aria-label="Facebook">f</a>
-          <a href="#" class="apc-footer__social" aria-label="YouTube">▶</a>
-          <a href="#" class="apc-footer__social" aria-label="Instagram">ig</a>
-        </div>
+        @if (variant() === 'full') {
+          <div class="apc-footer__socials">
+            <a href="#" class="apc-footer__social" aria-label="Facebook">f</a>
+            <a href="#" class="apc-footer__social" aria-label="YouTube">▶</a>
+            <a href="#" class="apc-footer__social" aria-label="Instagram">ig</a>
+          </div>
+        }
       </div>
 
       <!-- Col 2 -->
@@ -29,15 +31,17 @@
         </nav>
       </div>
 
-      <!-- Col 3 -->
-      <div class="apc-footer__col">
-        <span class="apc-footer__col-title">Ressources</span>
-        <div class="apc-footer__links">
-          <a routerLink="/ressources" class="apc-footer__link">Application</a>
-          <a routerLink="/ressources" class="apc-footer__link">Livres</a>
-          <span class="apc-footer__text">Chaîne YouTube</span>
+      @if (variant() === 'full') {
+        <!-- Col 3 -->
+        <div class="apc-footer__col">
+          <span class="apc-footer__col-title">Ressources</span>
+          <div class="apc-footer__links">
+            <a routerLink="/ressources" class="apc-footer__link">Application</a>
+            <a routerLink="/ressources" class="apc-footer__link">Livres</a>
+            <span class="apc-footer__text">Chaîne YouTube</span>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Col 4 -->
       <div class="apc-footer__col apc-footer__col--contact">

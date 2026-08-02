@@ -1,0 +1,26 @@
+<div class="apc-filters">
+  <div class="apc-filters__pills" role="group" aria-label="Filtrer par catégorie">
+    @for (filter of filters(); track filter; let i = $index) {
+      <button
+        type="button"
+        class="apc-filters__pill"
+        [class.apc-filters__pill--active]="selectedIndex() === i"
+        [attr.aria-pressed]="selectedIndex() === i"
+        (click)="select(i)"
+      >
+        {{ filter }}
+      </button>
+    }
+  </div>
+
+  <div class="apc-filters__search">
+    <span class="apc-filters__search-icon" aria-hidden="true">🔍</span>
+    <label class="apc-filters__search-label" for="apc-filter-search">Rechercher</label>
+    <input
+      id="apc-filter-search"
+      type="search"
+      class="apc-filters__search-input"
+      [placeholder]="searchPlaceholder()"
+    />
+  </div>
+</div>

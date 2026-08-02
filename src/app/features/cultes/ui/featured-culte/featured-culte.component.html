@@ -1,0 +1,14 @@
+<div class="apc-featured">
+  <button type="button" class="apc-featured__card" [attr.aria-label]="'Lire : ' + title()">
+    <span class="apc-featured__thumb">
+      <span class="apc-featured__play" aria-hidden="true">
+        <span class="apc-featured__play-icon"></span>
+      </span>
+    </span>
+    <span class="apc-featured__tag">À la une</span>
+    <span class="apc-featured__caption">
+      <span class="apc-featured__title">{{ title() }}</span>
+      <span class="apc-featured__meta">{{ meta() }}</span>
+    </span>
+  </button>
+</div>

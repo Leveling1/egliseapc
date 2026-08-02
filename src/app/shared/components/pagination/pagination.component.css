@@ -1,0 +1,37 @@
+.apc-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.apc-pagination__btn {
+  appearance: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-apc-gray-light);
+  border-radius: 8px;
+  font: 500 14px 'Poppins', sans-serif;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.apc-pagination__btn:hover:not(:disabled):not(.apc-pagination__btn--active) {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.apc-pagination__btn:disabled {
+  cursor: default;
+}
+
+.apc-pagination__btn--active {
+  background: var(--color-apc-blue-dark);
+  font-weight: 600;
+  color: #fff;
+  cursor: default;
+}

@@ -1,0 +1,41 @@
+.apc-books {
+  padding: 100px 24px;
+  background: var(--color-apc-gray-light);
+}
+
+.apc-books__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-books__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.apc-books__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-books__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-books__intro {
+  font: 400 16px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 16px auto 0;
+  max-width: 560px;
+}
+
+.apc-books__grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -1,0 +1,102 @@
+.apc-book {
+  flex: 0 0 320px;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(28, 28, 140, 0.04);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.apc-book:hover {
+  transform: translateY(-4px);
+}
+
+.apc-book__cover-wrap {
+  padding: 40px 40px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.apc-book__cover {
+  width: 160px;
+  height: 230px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.apc-book__cover-inner {
+  text-align: center;
+  padding: 16px;
+}
+
+.apc-book__cover-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 12px 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-book__cover-title {
+  font: 600 12px 'Poppins', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.3;
+  display: block;
+}
+
+.apc-book__cover-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 8px auto;
+}
+
+.apc-book__cover-author {
+  font: 400 9px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.apc-book__body {
+  padding: 0 32px 32px;
+  text-align: center;
+}
+
+.apc-book__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--color-apc-yellow);
+  border-radius: 6px;
+  font: 600 11px 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.apc-book__badge--light {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--color-apc-blue-dark);
+}
+
+.apc-book__title {
+  font: 700 20px/1.3 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 0 0 8px;
+}
+
+.apc-book__text {
+  font: 400 14px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 0;
+}
