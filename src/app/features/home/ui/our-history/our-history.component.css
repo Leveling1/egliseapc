@@ -1,0 +1,118 @@
+.apc-history {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.apc-history__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.apc-history__text {
+  flex: 1;
+  min-width: 320px;
+}
+
+.apc-history__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-history__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-history__paragraph {
+  font: 400 16px/1.8 'Open Sans', sans-serif;
+  color: #444;
+  margin: 0 0 12px;
+}
+
+.apc-history__paragraph:last-of-type {
+  margin: 0 0 28px;
+}
+
+.apc-history__cta {
+  display: inline-block;
+  padding: 14px 32px;
+  border: 2px solid var(--color-apc-blue-dark);
+  color: var(--color-apc-blue-dark);
+  font: 500 15px 'Poppins', sans-serif;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.apc-history__cta:hover {
+  background: var(--color-apc-blue-dark);
+  color: #fff;
+}
+
+.apc-history__media {
+  flex: 0 0 460px;
+  min-width: 280px;
+  position: relative;
+}
+
+.apc-history__photo {
+  width: 100%;
+  height: 340px;
+  background: #1c1c8c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.apc-history__photo-decor {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.apc-history__photo-label {
+  font: 500 16px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: 20px;
+}
+
+.apc-history__badge {
+  position: absolute;
+  bottom: -16px;
+  left: -16px;
+  width: 120px;
+  height: 120px;
+  background: var(--color-apc-gray-light);
+  border-radius: 4px;
+  border: 4px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.apc-history__badge-year {
+  font: 700 26px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+}
+
+.apc-history__badge-label {
+  font: 400 11px 'Open Sans', sans-serif;
+  color: #666;
+}

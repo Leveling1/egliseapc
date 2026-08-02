@@ -1,0 +1,180 @@
+.apc-resources {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.apc-resources__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-resources__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.apc-resources__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-resources__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-resources__grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.apc-resources__card {
+  flex: 1;
+  min-width: 320px;
+  background: var(--color-apc-gray-light);
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  border: 1px solid rgba(28, 28, 140, 0.06);
+}
+
+.apc-resources__mockup-wrap {
+  flex: 0 0 140px;
+}
+
+.apc-resources__mockup-wrap--books {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.apc-resources__mockup--app {
+  width: 140px;
+  height: 260px;
+  background: #1c1c8c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.apc-resources__mockup-label {
+  font: 500 13px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: 8px;
+}
+
+.apc-resources__book {
+  width: 90px;
+  height: 130px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.apc-resources__book--one {
+  background: linear-gradient(135deg, #1c1c8c, #ffe600);
+  transform: rotate(-3deg);
+}
+
+.apc-resources__book--two {
+  background: linear-gradient(135deg, #ffe600, #1c1c8c);
+  transform: rotate(2deg);
+  margin-top: 20px;
+}
+
+.apc-resources__book-label {
+  font: 500 10px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  padding: 6px;
+}
+
+.apc-resources__card-body {
+  flex: 1;
+}
+
+.apc-resources__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font: 600 11px 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.apc-resources__badge--dark {
+  background: var(--color-apc-blue-dark);
+  color: #fff;
+}
+
+.apc-resources__badge--yellow {
+  background: var(--color-apc-yellow);
+  color: var(--color-apc-black);
+}
+
+.apc-resources__card-title {
+  font: 700 24px/1.3 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 0 0 12px;
+}
+
+.apc-resources__card-text {
+  font: 400 15px/1.7 'Open Sans', sans-serif;
+  color: #555;
+  margin: 0 0 20px;
+}
+
+.apc-resources__stores {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.apc-resources__store {
+  padding: 10px 20px;
+  background: var(--color-apc-black);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.apc-resources__store-eyebrow {
+  font: 400 11px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.apc-resources__store-name {
+  font: 600 13px 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-resources__more {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 2px solid var(--color-apc-blue-dark);
+  color: var(--color-apc-blue-dark);
+  font: 500 14px 'Poppins', sans-serif;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.apc-resources__more:hover {
+  background: var(--color-apc-blue-dark);
+  color: #fff;
+}

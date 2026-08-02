@@ -1,0 +1,62 @@
+name: Deploy egliseapc
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-o2switch
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+      # Injectés dans src/environments/environment.ts par scripts/set-env.mjs
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate environment file from secrets
+        run: node scripts/set-env.mjs
+
+      - name: Run unit tests
+        run: npm test -- --watch=false
+
+      - name: Build production bundle
+        run: npm run build -- --configuration production
+
+      - name: Deploy to o2switch by FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          # Le build Angular SSR produit dist/egliseapc/{browser,server}.
+          # Seul le contenu de "browser" (index.html + assets statiques)
+          # doit atterrir à la racine du site FTP.
+          # Adapter selon l'hébergeur : "./" si le compte FTP pointe déjà
+          # sur la racine du site, sinon par ex. "public_html/".
+          server-dir: ./
+          local-dir: ./dist/egliseapc/browser/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**

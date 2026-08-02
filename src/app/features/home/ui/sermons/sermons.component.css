@@ -1,0 +1,201 @@
+.apc-sermons {
+  padding: 100px 24px;
+  background: var(--color-apc-gray-light);
+}
+
+.apc-sermons__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-sermons__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.apc-sermons__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-sermons__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-sermons__intro {
+  font: 400 16px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 16px auto 0;
+  max-width: 560px;
+}
+
+/* Reset for button-based cards */
+.apc-sermons__featured,
+.apc-sermons__card {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+}
+
+.apc-sermons__featured {
+  width: 100%;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.apc-sermons__featured-thumb {
+  width: 100%;
+  height: 420px;
+  background: linear-gradient(135deg, #0b0b0b 0%, #1c1c8c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.apc-sermons__play {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  z-index: 1;
+  transition: transform 0.2s;
+}
+
+.apc-sermons__featured:hover .apc-sermons__play {
+  transform: scale(1.1);
+}
+
+.apc-sermons__play--large {
+  width: 72px;
+  height: 72px;
+}
+
+.apc-sermons__play--small {
+  width: 48px;
+  height: 48px;
+}
+
+.apc-sermons__play-icon {
+  width: 0;
+  height: 0;
+}
+
+.apc-sermons__play-icon--large {
+  border-left: 24px solid var(--color-apc-blue-dark);
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  margin-left: 6px;
+}
+
+.apc-sermons__play-icon--small {
+  border-left: 16px solid var(--color-apc-blue-dark);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 4px;
+}
+
+.apc-sermons__featured-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 32px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  display: block;
+}
+
+.apc-sermons__featured-title {
+  font: 600 22px 'Poppins', sans-serif;
+  color: #fff;
+  display: block;
+}
+
+.apc-sermons__featured-meta {
+  font: 400 14px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.apc-sermons__grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.apc-sermons__card {
+  flex: 1;
+  min-width: 280px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.apc-sermons__card:hover {
+  transform: translateY(-2px);
+}
+
+.apc-sermons__card-thumb {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #0b0b0b, #1c1c8c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.apc-sermons__card-body {
+  padding: 20px;
+  display: block;
+}
+
+.apc-sermons__card-title {
+  font: 600 16px 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  display: block;
+}
+
+.apc-sermons__card-meta {
+  font: 400 13px 'Open Sans', sans-serif;
+  color: #888;
+}
+
+.apc-sermons__more {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.apc-sermons__more-link {
+  display: inline-block;
+  padding: 14px 36px;
+  background: var(--color-apc-yellow);
+  color: var(--color-apc-black);
+  font: 600 15px 'Poppins', sans-serif;
+  border-radius: 4px;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s;
+}
+
+.apc-sermons__more-link:hover {
+  transform: translateY(-2px);
+}

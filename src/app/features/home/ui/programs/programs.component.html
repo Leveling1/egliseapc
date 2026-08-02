@@ -1,0 +1,26 @@
+<section id="nos-programmes" class="apc-programs" aria-labelledby="apc-programs-title">
+  <div class="apc-programs__background" role="img" aria-label="Assemblée en prière"></div>
+  <div class="apc-programs__overlay"></div>
+
+  <div class="apc-programs__inner">
+    <div class="apc-programs__header">
+      <span class="apc-programs__overline">Rejoignez-nous</span>
+      <h2 id="apc-programs-title" class="apc-programs__title">Nos Programmes</h2>
+      <p class="apc-programs__intro">
+        Notre programme hebdomadaire — retrouvez-nous chaque semaine pour grandir ensemble dans la foi.
+      </p>
+    </div>
+
+    <div class="apc-programs__schedule">
+      @for (entry of schedule; track entry.day) {
+        <div class="apc-programs__row" [class.apc-programs__row--featured]="entry.featured" [style.background]="entry.background">
+          <div class="apc-programs__day" [class.apc-programs__day--compact]="entry.compactDayLabel">
+            {{ entry.day }}
+          </div>
+          <div class="apc-programs__name">{{ entry.title }}</div>
+          <div class="apc-programs__time">{{ entry.time }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

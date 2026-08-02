@@ -1,0 +1,23 @@
+<nav class="apc-nav" aria-label="Navigation principale">
+  <div class="apc-nav__inner">
+    <a routerLink="/" class="apc-nav__brand" aria-label="A.P.C — Accueil">
+      <img src="/images/home/logo-apc.png" alt="" width="40" height="40" class="apc-nav__logo" />
+      <span class="apc-nav__wordmark">A.P.C</span>
+    </a>
+
+    <div class="apc-nav__links">
+      <a
+        routerLink="/"
+        routerLinkActive="apc-nav__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="apc-nav__link"
+        >Accueil</a
+      >
+      <a routerLink="/nos-cultes" class="apc-nav__link">Nos Cultes</a>
+      <a routerLink="/rda" class="apc-nav__link">RDA</a>
+      <a routerLink="/a-propos" class="apc-nav__link">À propos</a>
+      <a routerLink="/ressources" class="apc-nav__link">Ressources</a>
+      <a routerLink="/blog" class="apc-nav__link">Blog</a>
+    </div>
+  </div>
+</nav>

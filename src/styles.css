@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Dancing+Script:wght@600;700&display=swap');
+
+@theme {
+  --color-apc-blue-dark: #1c1c8c;
+  --color-apc-yellow: #ffe600;
+  --color-apc-black: #0b0b0b;
+  --color-apc-gray-light: #f5f5f5;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+  --font-script: 'Dancing Script', cursive;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  font-family: var(--font-body);
+  color: var(--color-apc-black);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-apc-blue-dark);
+  text-decoration: none;
+}
+
+@keyframes apc-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

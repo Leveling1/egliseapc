@@ -1,0 +1,55 @@
+.apc-theme {
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.apc-theme__background {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/home/monte-ici.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.apc-theme__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0b0b0b 0%, #1c1c8c 55%, #1c1c8c 100%);
+  opacity: 0.55;
+}
+
+.apc-theme__content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.apc-theme__overline {
+  font: 600 34px 'Dancing Script', cursive;
+  color: var(--color-apc-yellow);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.apc-theme__title {
+  font: 700 64px/1.1 'Poppins', sans-serif;
+  color: #fff;
+  margin: 0 0 20px;
+}
+
+.apc-theme__quote {
+  font: italic 19px/1.7 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 auto;
+  max-width: 640px;
+}
+
+.apc-theme__reference {
+  font: 600 15px 'Poppins', sans-serif;
+  color: var(--color-apc-yellow);
+  margin-top: 20px;
+  display: inline-block;
+}

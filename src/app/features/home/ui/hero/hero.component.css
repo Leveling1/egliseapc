@@ -1,0 +1,75 @@
+.apc-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.apc-hero__background {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/home/hero-main.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.apc-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.apc-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 64px 56px;
+  max-width: 760px;
+  margin: 0 24px;
+  animation: apc-fade-up 0.8s ease-out;
+}
+
+.apc-hero__overline {
+  font: 600 34px 'Dancing Script', cursive;
+  color: var(--color-apc-yellow);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.apc-hero__title {
+  font: 700 48px/1.15 Helvetica, Arial, sans-serif;
+  color: #fff;
+  margin: 0 0 20px;
+  letter-spacing: 0.5px;
+}
+
+.apc-hero__tagline {
+  font: 600 15px Helvetica, Arial, sans-serif;
+  color: var(--color-apc-yellow);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 36px;
+}
+
+.apc-hero__actions {
+  display: flex;
+  gap: 36px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.apc-hero__link {
+  color: #fff;
+  font: 600 15px Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-apc-yellow);
+  padding-bottom: 5px;
+  transition: color 0.2s;
+}
+
+.apc-hero__link:hover {
+  color: var(--color-apc-yellow);
+}

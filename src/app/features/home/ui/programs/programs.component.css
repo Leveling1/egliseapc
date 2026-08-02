@@ -1,0 +1,109 @@
+.apc-programs {
+  padding: 100px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.apc-programs__background {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/home/programmes-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.apc-programs__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 11, 11, 0.72);
+}
+
+.apc-programs__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.apc-programs__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.apc-programs__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-programs__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: #fff;
+  margin: 12px 0 0;
+}
+
+.apc-programs__intro {
+  font: 400 16px/1.6 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 16px auto 0;
+  max-width: 560px;
+}
+
+.apc-programs__schedule {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.apc-programs__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 22px 28px;
+}
+
+.apc-programs__row--featured {
+  padding: 26px 28px;
+}
+
+.apc-programs__day {
+  flex: 0 0 120px;
+  font: 700 15px 'Poppins', sans-serif;
+  color: var(--color-apc-yellow);
+}
+
+.apc-programs__day--compact {
+  font-size: 14px;
+}
+
+.apc-programs__row--featured .apc-programs__day {
+  color: #fff;
+}
+
+.apc-programs__name {
+  flex: 1;
+  min-width: 200px;
+  font: 600 16px 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-programs__row--featured .apc-programs__name {
+  font-size: 17px;
+}
+
+.apc-programs__time {
+  flex: 0 0 auto;
+  font: 500 14px 'Open Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.apc-programs__row--featured .apc-programs__time {
+  color: rgba(255, 255, 255, 0.85);
+}

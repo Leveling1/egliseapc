@@ -1,0 +1,64 @@
+.apc-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: transparent;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 80px;
+}
+
+.apc-nav__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.apc-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.apc-nav__logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.apc-nav__wordmark {
+  font: 700 18px Helvetica, Arial, sans-serif;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.apc-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.apc-nav__link {
+  font: 400 14px Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  padding-bottom: 4px;
+}
+
+.apc-nav__link:hover {
+  color: #fff;
+}
+
+.apc-nav__link--active {
+  font: 500 14px Helvetica, Arial, sans-serif;
+  color: #fff;
+  border-bottom: 2px solid var(--color-apc-yellow);
+}

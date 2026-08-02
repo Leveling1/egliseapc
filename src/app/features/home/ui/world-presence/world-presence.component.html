@@ -1,0 +1,30 @@
+<section class="apc-world" aria-labelledby="apc-world-title">
+  <div class="apc-world__header">
+    <span class="apc-world__overline">Notre présence</span>
+    <h2 id="apc-world-title" class="apc-world__title">Nos Extensions dans le Monde</h2>
+    <p class="apc-world__intro">L'A.P.C est présente dans plusieurs pays à travers le monde.</p>
+  </div>
+
+  <div class="apc-world__map" role="img" aria-label="Carte des extensions de l'A.P.C dans le monde">
+    @for (city of cities; track city.name) {
+      <span
+        class="apc-world__dot"
+        [style.top]="city.top"
+        [style.left]="city.dotLeft"
+        [style.width.px]="city.dotSize"
+        [style.height.px]="city.dotSize"
+        [style.background]="city.dotColor"
+      ></span>
+      <span
+        class="apc-world__label"
+        [style.top]="city.top"
+        [style.left]="city.labelLeft"
+        [style.color]="city.labelColor"
+        [style.font-size.px]="city.labelFontSize"
+        [style.transform]="city.labelTransform"
+        >{{ city.name }}</span
+      >
+    }
+    <span class="apc-world__placeholder">carte mondiale interactive</span>
+  </div>
+</section>

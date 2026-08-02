@@ -1,0 +1,41 @@
+<section class="apc-sermons" aria-labelledby="apc-sermons-title">
+  <div class="apc-sermons__inner">
+    <div class="apc-sermons__header">
+      <span class="apc-sermons__overline">Enseignements</span>
+      <h2 id="apc-sermons-title" class="apc-sermons__title">Nos Cultes</h2>
+      <p class="apc-sermons__intro">Retrouvez les 3 derniers cultes de notre chaîne YouTube.</p>
+    </div>
+
+    <button type="button" class="apc-sermons__featured" [attr.aria-label]="'Lire : ' + featuredSermon.title">
+      <span class="apc-sermons__featured-thumb">
+        <span class="apc-sermons__play apc-sermons__play--large" aria-hidden="true">
+          <span class="apc-sermons__play-icon apc-sermons__play-icon--large"></span>
+        </span>
+      </span>
+      <span class="apc-sermons__featured-caption">
+        <span class="apc-sermons__featured-title">{{ featuredSermon.title }}</span>
+        <span class="apc-sermons__featured-meta">{{ featuredSermon.date }} · {{ featuredSermon.duration }}</span>
+      </span>
+    </button>
+
+    <div class="apc-sermons__grid">
+      @for (sermon of recentSermons; track sermon.title) {
+        <button type="button" class="apc-sermons__card" [attr.aria-label]="'Lire : ' + sermon.title">
+          <span class="apc-sermons__card-thumb">
+            <span class="apc-sermons__play apc-sermons__play--small" aria-hidden="true">
+              <span class="apc-sermons__play-icon apc-sermons__play-icon--small"></span>
+            </span>
+          </span>
+          <span class="apc-sermons__card-body">
+            <span class="apc-sermons__card-title">{{ sermon.title }}</span>
+            <span class="apc-sermons__card-meta">{{ sermon.date }} · {{ sermon.duration }}</span>
+          </span>
+        </button>
+      }
+    </div>
+
+    <div class="apc-sermons__more">
+      <a routerLink="/nos-cultes" class="apc-sermons__more-link">Voir tous les cultes →</a>
+    </div>
+  </div>
+</section>
