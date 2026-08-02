@@ -1,0 +1,16 @@
+<div class="apc-parallax" aria-hidden="true">
+  @for (item of items(); track item.src) {
+    <div class="apc-parallax__pos" [style.top]="item.top" [style.left]="item.left" [style.right]="item.right" [style.z-index]="item.zIndex" [style.transform]="item.transform">
+      <img
+        [src]="item.src"
+        alt=""
+        loading="lazy"
+        decoding="async"
+        [class]="imgClasses()"
+        [class.apc-parallax-img--visible]="visible()"
+        [style.transition-duration.s]="entranceDuration"
+        [style.transition-delay.s]="item.delaySeconds"
+      />
+    </div>
+  }
+</div>

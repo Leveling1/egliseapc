@@ -1,0 +1,159 @@
+.apc-timeline {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.apc-timeline__track {
+  position: relative;
+  padding-bottom: 80px;
+}
+
+.apc-timeline__row {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 24px;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+  .apc-timeline__row {
+    padding-top: 100px;
+    gap: 40px;
+  }
+}
+
+.apc-timeline__sticky {
+  position: sticky;
+  top: 120px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: flex-start;
+  max-width: 320px;
+}
+
+@media (min-width: 768px) {
+  .apc-timeline__sticky {
+    flex-direction: row;
+    width: 100%;
+    max-width: 384px;
+  }
+}
+
+.apc-timeline__dot-wrap {
+  position: absolute;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apc-timeline__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  border: 1px solid #d4d4d4;
+}
+
+.apc-timeline__year {
+  font: 700 24px 'Poppins', sans-serif;
+  color: #8a8a8a;
+  margin: 0 0 16px;
+}
+
+.apc-timeline__year--desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .apc-timeline__year--desktop {
+    display: block;
+    padding-left: 80px;
+    font-size: 48px;
+    margin: 0;
+  }
+
+  .apc-timeline__year--mobile {
+    display: none;
+  }
+}
+
+.apc-timeline__content {
+  position: relative;
+  width: 100%;
+  padding-left: 80px;
+  padding-right: 16px;
+}
+
+@media (min-width: 768px) {
+  .apc-timeline__content {
+    padding-left: 16px;
+  }
+}
+
+.apc-timeline__title {
+  font: 700 18px/1.3 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 0 0 6px;
+}
+
+.apc-timeline__meta {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  margin: 0 0 12px;
+}
+
+.apc-timeline__description {
+  font: 400 14px/1.7 'Open Sans', sans-serif;
+  color: #444;
+  margin: 0 0 16px;
+  max-width: 640px;
+}
+
+.apc-timeline__image {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: 220px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  margin: 0 0 16px;
+}
+
+.apc-timeline__link {
+  display: inline-block;
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-decoration: none;
+}
+
+.apc-timeline__link:hover {
+  text-decoration: underline;
+}
+
+.apc-timeline__line {
+  position: absolute;
+  left: 32px;
+  top: 0;
+  overflow: hidden;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent 0%, #e5e5e5 50%, transparent 99%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.apc-timeline__line-fill {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 2px;
+  border-radius: 100px;
+  background: linear-gradient(to top, var(--color-apc-blue-dark) 0%, var(--color-apc-blue) 10%, transparent 100%);
+}

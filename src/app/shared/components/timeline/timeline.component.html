@@ -1,0 +1,54 @@
+<div class="apc-timeline" #container>
+  <div class="apc-timeline__track" #track>
+    @for (entry of entries(); track entry.year + entry.title) {
+      <article class="apc-timeline__row">
+        <div class="apc-timeline__sticky">
+          <div class="apc-timeline__dot-wrap" aria-hidden="true">
+            <div class="apc-timeline__dot"></div>
+          </div>
+          <h3 class="apc-timeline__year apc-timeline__year--desktop">{{ entry.year }}</h3>
+        </div>
+
+        <div class="apc-timeline__content">
+          <h3 class="apc-timeline__year apc-timeline__year--mobile">{{ entry.year }}</h3>
+
+          <h4 class="apc-timeline__title">{{ entry.title }}</h4>
+
+          <p class="apc-timeline__meta">
+            {{ entry.location }}
+            @if (entry.startDate) {
+              <span aria-hidden="true"> · </span>
+              @if (entry.endDate) {
+                <span>{{ entry.startDate }} – {{ entry.endDate }}</span>
+              } @else {
+                <span>{{ entry.startDate }}</span>
+              }
+            }
+          </p>
+
+          @if (entry.description) {
+            <p class="apc-timeline__description">{{ entry.description }}</p>
+          }
+
+          @if (entry.image) {
+            <img
+              [src]="entry.image"
+              [alt]="entry.imageAlt || ''"
+              loading="lazy"
+              decoding="async"
+              class="apc-timeline__image"
+            />
+          }
+
+          @if (entry.link) {
+            <a [href]="entry.link" class="apc-timeline__link" target="_blank" rel="noopener">En savoir plus →</a>
+          }
+        </div>
+      </article>
+    }
+
+    <div class="apc-timeline__line" [style.height.px]="trackHeight()">
+      <div class="apc-timeline__line-fill" [style.height.px]="lineHeightPx()" [style.opacity]="lineOpacity()"></div>
+    </div>
+  </div>
+</div>

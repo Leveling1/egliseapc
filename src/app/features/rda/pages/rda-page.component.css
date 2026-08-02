@@ -1,0 +1,30 @@
+.apc-rda-history {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.apc-rda-history__header {
+  max-width: 1200px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.apc-rda-history__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-rda-history__title {
+  font: 700 40px/1.2 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+  margin: 12px 0 0;
+}
+
+.apc-rda-history__intro {
+  font: 400 16px/1.6 'Open Sans', sans-serif;
+  color: #666;
+  margin: 16px auto 0;
+  max-width: 560px;
+}

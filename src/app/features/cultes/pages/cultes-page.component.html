@@ -1,7 +1,7 @@
-<app-header variant="overlay" />
+<app-header [variant]="isLive() ? 'overlay' : 'light'" />
 
 <main>
-  <app-live-banner />
+  <app-live-banner [isLive]="isLive()" />
   <app-cultes-hero />
 
   <app-featured-culte

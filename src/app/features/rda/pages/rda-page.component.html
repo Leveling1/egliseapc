@@ -4,12 +4,20 @@
   <app-rda-hero />
   <app-rda-intro />
   <app-rda-latest-edition />
-  <app-rda-stats />
-  <app-rda-gallery />
+
+  <section class="apc-rda-history" aria-labelledby="apc-rda-history-title">
+    <div class="apc-rda-history__header">
+      <span class="apc-rda-history__overline">Historique</span>
+      <h2 id="apc-rda-history-title" class="apc-rda-history__title">18 Éditions du Rassemblement</h2>
+      <p class="apc-rda-history__intro">Retour sur le parcours du Rassemblement des Aigles, édition par édition.</p>
+    </div>
+
+    <app-timeline [entries]="timelineEntries" />
+  </section>
 
   <app-newsletter-cta
     overline="Prochain événement"
-    title="16ème édition — Date à venir"
+    title="Restez informés de nos prochains rassemblements"
     description="Soyez les premiers informés de la prochaine édition du Rassemblement des Aigles."
     descriptionFontSize="17px"
   />

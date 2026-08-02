@@ -41,6 +41,11 @@ export class CultesPageComponent implements OnInit {
   protected readonly filters = ['Tous', 'Dimanche', 'Mercredi', 'Vendredi', 'Prière'] as const;
   protected readonly currentPage = signal(1);
 
+  // Drives both the live banner and the header's nav theme: the banner's
+  // dark gradient needs light nav text ("overlay"), but once hidden the
+  // hero underneath is plain white and needs dark nav text ("light").
+  protected readonly isLive = signal(false);
+
   protected readonly videos: readonly CulteVideo[] = [
     {
       title: 'Marcher dans la grâce',

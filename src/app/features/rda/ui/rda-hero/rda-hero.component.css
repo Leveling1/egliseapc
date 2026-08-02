@@ -1,15 +1,25 @@
 .apc-rda-hero {
   position: relative;
-  min-height: 420px;
+  min-height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
+}
+
+.apc-rda-hero__background {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/rda/RDA_hero.PNG');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .apc-rda-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #0b0b0b 0%, #1c1c8c 60%, #1c1c8c 100%);
+  background: rgba(0, 0, 0, 0.55);
 }
 
 .apc-rda-hero__inner {
@@ -20,21 +30,6 @@
   padding: 80px 24px;
   width: 100%;
   box-sizing: border-box;
-}
-
-.apc-rda-hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 16px;
-  background: rgba(255, 230, 0, 0.15);
-  border: 1px solid rgba(255, 230, 0, 0.35);
-  border-radius: 4px;
-  margin-bottom: 20px;
-  font: 600 12px 'Poppins', sans-serif;
-  color: var(--color-apc-yellow);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
 }
 
 .apc-rda-hero__title {
