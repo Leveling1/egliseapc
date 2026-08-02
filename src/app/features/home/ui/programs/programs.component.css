@@ -76,7 +76,7 @@
 .apc-programs__day {
   flex: 0 0 120px;
   font: 700 15px 'Poppins', sans-serif;
-  color: var(--color-apc-yellow);
+  color: #fff;
 }
 
 .apc-programs__day--compact {

@@ -23,11 +23,8 @@
 }
 
 .apc-about-hero__overline {
-  font: 600 13px 'Poppins', sans-serif;
-  /* Deviation from source (#1C1C8C): near-invisible against this dark gradient.
-     Switched to the yellow used by every other dark-hero overline on the site. */
+  font: 600 24px 'Dancing Script', cursive;
   color: var(--color-apc-yellow);
-  text-transform: uppercase;
   letter-spacing: 2px;
 }
 
