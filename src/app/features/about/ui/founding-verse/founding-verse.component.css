@@ -1,6 +1,6 @@
 .apc-verse {
   padding: 80px 24px;
-  background: var(--color-apc-blue-dark);
+  background: linear-gradient(135deg, #0b0b0b, #1c1c8c);
   position: relative;
   overflow: hidden;
 }
