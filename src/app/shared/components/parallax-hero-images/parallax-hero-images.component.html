@@ -1,6 +1,15 @@
 <div class="apc-parallax" aria-hidden="true">
   @for (item of items(); track item.src) {
-    <div class="apc-parallax__pos" [style.top]="item.top" [style.left]="item.left" [style.right]="item.right" [style.z-index]="item.zIndex" [style.transform]="item.transform">
+    <div
+      class="apc-parallax__pos"
+      [attr.data-grow-anchor]="item.isGrowImage ? '' : null"
+      [style.top]="item.top"
+      [style.left]="item.left"
+      [style.right]="item.right"
+      [style.z-index]="item.zIndex"
+      [style.transform]="item.transform"
+      [style.opacity]="item.isGrowImage ? 0 : null"
+    >
       <img
         [src]="item.src"
         alt=""
@@ -14,3 +23,19 @@
     </div>
   }
 </div>
+
+@if (growStyle(); as style) {
+  <!-- Deliberately outside `.apc-parallax` (position: absolute; z-index: 0)
+       — that establishes its own stacking context, which would otherwise
+       trap this element's z-index: 1000 inside it and cap it at 0 from the
+       page's point of view, letting z-indexed hero content render above it. -->
+  <div class="apc-parallax__grow" [style]="style">
+    <img
+      [src]="growImage()"
+      alt=""
+      class="apc-parallax-grow-img"
+      [class.apc-parallax-grow-img--visible]="visible()"
+      [style.transition-duration.s]="entranceDuration"
+    />
+  </div>
+}

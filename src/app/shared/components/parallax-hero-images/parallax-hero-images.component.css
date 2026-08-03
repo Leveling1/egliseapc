@@ -35,3 +35,38 @@
   filter: blur(0);
   transform: scale(1);
 }
+
+/* Detached from `.apc-parallax` (which is bounded to the hero section) so
+   it can travel above literally everything else on the page while growing —
+   the header (z-index: 100) included — its own top/left/width/height are
+   scroll-interpolated inline styles. */
+.apc-parallax__grow {
+  position: fixed;
+  overflow: hidden;
+  z-index: 1000;
+  pointer-events: none;
+  /* Matches the sibling thumbnails' `shadow-sm ring-1 ring-black/10` at
+     rest; left as-is while growing since a 1px ring is negligible once
+     this fills most of the screen. */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.apc-parallax-grow-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: blur(20px);
+  transform: scale(0.9);
+  transition-property: opacity, filter, transform;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apc-parallax-grow-img--visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}

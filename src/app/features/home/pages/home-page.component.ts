@@ -4,7 +4,6 @@ import { Meta, Title } from '@angular/platform-browser';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { HeroComponent } from '../ui/hero/hero.component';
-import { OurHistoryComponent } from '../ui/our-history/our-history.component';
 import { ProgramsComponent } from '../ui/programs/programs.component';
 import { SermonsComponent } from '../ui/sermons/sermons.component';
 import { WorldPresenceComponent } from '../ui/world-presence/world-presence.component';
@@ -16,7 +15,6 @@ import { WorldPresenceComponent } from '../ui/world-presence/world-presence.comp
     HeaderComponent,
     FooterComponent,
     HeroComponent,
-    OurHistoryComponent,
     ProgramsComponent,
     SermonsComponent,
     WorldPresenceComponent,

@@ -1,16 +1,48 @@
-<section class="apc-hero" aria-label="Accueil">
-  <div class="apc-hero__background" role="img" aria-label="Assemblée réunie pour un culte à l'église A.P.C"></div>
-  <div class="apc-hero__overlay"></div>
+<div class="apc-hero-pin" id="notre-histoire">
+  <section class="apc-hero" aria-label="Accueil">
+    <div class="apc-hero__background" role="img" aria-label="Assemblée réunie pour un culte à l'église A.P.C"></div>
+    <div class="apc-hero__overlay"></div>
 
-  <app-parallax-hero-images [images]="parallaxImages" />
+    <app-parallax-hero-images [images]="parallaxImages" [growImage]="growImage" />
 
-  <div class="apc-hero__content">
-    <span class="apc-hero__overline">Bienvenue à l'Église</span>
-    <h1 class="apc-hero__title">LES AMBASSADEURS POUR CHRIST</h1>
-    <p class="apc-hero__tagline">Sainteté à l'Éternel</p>
-    <div class="apc-hero__actions">
-      <a href="#notre-histoire" class="apc-hero__link">Nous découvrir</a>
-      <a href="#nos-programmes" class="apc-hero__link">Nos programmes</a>
+    <div class="apc-hero__content">
+      <span class="apc-hero__overline">Bienvenue à l'Église</span>
+      <h1 class="apc-hero__title">LES AMBASSADEURS POUR CHRIST</h1>
+      <p class="apc-hero__tagline">Sainteté à l'Éternel</p>
+      <div class="apc-hero__actions">
+        <a href="#notre-histoire" class="apc-hero__link">Nous découvrir</a>
+        <a href="#nos-programmes" class="apc-hero__link">Nos programmes</a>
+      </div>
     </div>
-  </div>
-</section>
+
+    <div class="apc-hero-history__text" aria-labelledby="apc-hero-history-title">
+      <span class="apc-hero-history__overline">Qui sommes-nous</span>
+      <h2 id="apc-hero-history-title" class="apc-hero-history__title">Notre Histoire</h2>
+      <p class="apc-hero-history__paragraph">
+        L'Église Les Ambassadeurs Pour Christ (A.P.C.) est née d'une vision guidée par la foi et la direction divine.
+        Partie d'un simple groupe de prière, elle s'est développée au fil des années pour devenir une communauté engagée
+        dans la proclamation de l'Évangile et la réconciliation du monde avec Dieu. Aujourd'hui, A.P.C. poursuit cette
+        mission avec passion, en portant un message d'espérance accessible à toutes les cultures.
+      </p>
+      <a routerLink="/a-propos" class="apc-hero-history__cta">En savoir plus →</a>
+    </div>
+
+    <div class="apc-hero-history__text">
+      <span class="apc-hero-history__overline">Le Visionnaire</span>
+      <h2 class="apc-hero-history__title">Prophète Garry KENGE</h2>
+      <p class="apc-hero-history__quote">
+        « Un appel de prophète reçu du Seigneur, exercé au sein du corps du Christ tant au niveau national
+        qu'international »
+      </p>
+      <p class="apc-hero-history__paragraph">
+        Garry KENGE MBULU est détenteur d'une licence en sciences politiques et administratives et d'une
+        formation théologique en missiologie. Après avoir fait l'expérience de la nouvelle naissance en
+        acceptant le message du salut en Jésus-Christ, il a reçu un appel de prophète. Il est aujourd'hui
+        pasteur principal de l'Église les Ambassadeurs Pour Christ (A.P.C) en République Démocratique du
+        Congo, et l'initiateur du Rassemblement des Aigles, grande rencontre annuelle d'enseignements
+        prophétiques aujourd'hui à sa 15ème édition.
+      </p>
+      <a routerLink="/a-propos" class="apc-hero-history__cta">Lire plus →</a>
+    </div>
+  </section>
+</div>
