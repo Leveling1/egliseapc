@@ -43,10 +43,8 @@ interface ParallaxRenderItem extends ParallaxBaseItem {
 
 // The hero's centered text block (max-width 760px) sits vertically centered
 // too, so the top/bottom rows are pushed well clear of its ~25%-75% band,
-// and every row is pulled out horizontally so it can't reach the text even
-// on the narrowest viewport width this layer is shown at (see the
-// `.apc-parallax` media query in the stylesheet — it's hidden below 1280px,
-// where a 760px-wide text block would leave no safe room for these images).
+// and every row is pulled out horizontally so it can't reach the text. Used
+// at 1280px and above; below that, POSITION_STYLES_STACKED takes over.
 const POSITION_STYLES: Record<ParallaxPosition, ParallaxPositionStyle> = {
   'top-left': { top: '14%', left: '10%' },
   'top-right': { top: '14%', right: '10%' },
@@ -56,6 +54,20 @@ const POSITION_STYLES: Record<ParallaxPosition, ParallaxPositionStyle> = {
   'bottom-right': { top: '80%', right: '10%' },
   'far-left': { top: '60%', left: '16%' },
   'far-right': { top: '60%', right: '16%' },
+};
+
+// Below 1280px the desktop left/right spread has no safe gap left around the
+// centered hero text, so images are regrouped into two horizontal rows —
+// three above the text, three below — instead of being hidden entirely.
+const POSITION_STYLES_STACKED: Record<ParallaxPosition, ParallaxPositionStyle> = {
+  'top-left': { top: '14%', left: '12%' },
+  'top-right': { top: '14%', left: '50%' },
+  'mid-left': { top: '14%', left: '88%' },
+  'mid-right': { top: '82%', left: '12%' },
+  'bottom-left': { top: '82%', left: '50%' },
+  'bottom-right': { top: '82%', left: '88%' },
+  'far-left': { top: '14%', left: '50%' },
+  'far-right': { top: '82%', left: '50%' },
 };
 
 const POSITION_ORDER: readonly ParallaxPosition[] = [
@@ -102,6 +114,11 @@ export class ParallaxHeroImagesComponent {
   protected readonly entranceDuration = ENTRANCE_DURATION_SECONDS;
   protected readonly visible = signal(false);
 
+  // Mirrors the `.apc-parallax` breakpoint below — true means the stacked
+  // (3 above / 3 below) mobile layout is active instead of the desktop
+  // left/right spread.
+  private readonly stackedLayout = signal(false);
+
   // Sizing intentionally smaller than the original source (which felt too
   // large/imposing on this site). Images are centered on their anchor point
   // (see `items` below) so shrinking them never widens the gaps between
@@ -131,11 +148,12 @@ export class ParallaxHeroImagesComponent {
 
   private readonly baseItems = computed<readonly ParallaxBaseItem[]>(() => {
     const depthValues = DEPTH_VALUES_BY_VARIANT[this.variant()];
+    const styles = this.stackedLayout() ? POSITION_STYLES_STACKED : POSITION_STYLES;
 
     return this.images()
       .slice(0, 8)
       .map((src, index) => {
-        const style = POSITION_STYLES[POSITION_ORDER[index]];
+        const style = styles[POSITION_ORDER[index]];
 
         return {
           src,
@@ -195,8 +213,16 @@ export class ParallaxHeroImagesComponent {
 
       window.addEventListener('mousemove', onMouseMove, { passive: true });
 
+      const stackedQuery = window.matchMedia('(max-width: 1279px)');
+      this.stackedLayout.set(stackedQuery.matches);
+      const onStackedChange = (event: MediaQueryListEvent): void => {
+        this.stackedLayout.set(event.matches);
+      };
+      stackedQuery.addEventListener('change', onStackedChange);
+
       destroyRef.onDestroy(() => {
         window.removeEventListener('mousemove', onMouseMove);
+        stackedQuery.removeEventListener('change', onStackedChange);
         if (this.animationFrameId !== null) {
           cancelAnimationFrame(this.animationFrameId);
         }

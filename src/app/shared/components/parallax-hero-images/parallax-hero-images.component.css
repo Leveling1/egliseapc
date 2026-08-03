@@ -15,15 +15,6 @@
   z-index: 0;
 }
 
-/* Below this width, the centered 760px-wide hero text leaves no safe gap
-   for these images without either clipping the viewport edge or crowding
-   the text — so the decorative layer is hidden entirely instead. */
-@media (max-width: 1279px) {
-  .apc-parallax {
-    display: none;
-  }
-}
-
 .apc-parallax__pos {
   position: absolute;
   /* transform is spring-driven per animation frame in TS — no CSS
