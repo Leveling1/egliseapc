@@ -2,17 +2,22 @@
   height: 200vh;
   position: relative;
   background-color: #1c1c8c;
-  background-image: url('/images/home/prophète garry.png');
-  background-size: cover;
-  background-position: 30% center;
-  background-attachment: fixed;
 }
 
+/* The photo lives on the sticky child (sized to exactly 100vh) rather than
+   on this 200vh section via background-attachment: fixed — sticky already
+   pins it visually while the section scrolls behind, and unlike
+   background-attachment: fixed it renders reliably on mobile browsers and
+   sizes background-size: cover against a stable 100vh box instead of the
+   window, which was also the source of the "too zoomed" look on phones. */
 .apc-about-leader__sticky {
   position: sticky;
   top: 0;
   height: 100vh;
   box-sizing: border-box;
+  background-image: url('/images/home/prophete-garry-bg.webp');
+  background-size: cover;
+  background-position: 30% center;
 }
 
 .apc-about-leader__text {
@@ -73,7 +78,7 @@
 }
 
 @media (max-width: 768px) {
-  .apc-about-leader {
+  .apc-about-leader__sticky {
     background-position: 25% center;
   }
 

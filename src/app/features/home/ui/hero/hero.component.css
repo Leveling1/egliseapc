@@ -10,7 +10,7 @@
 .apc-hero__background {
   position: absolute;
   inset: 0;
-  background-image: url('/images/home/hero-main.png');
+  background-image: url('/images/home/hero-main.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -73,6 +73,16 @@
 
 .apc-hero__link:hover {
   color: var(--color-apc-yellow);
+}
+
+@media (max-width: 768px) {
+  /* background-attachment: fixed is unreliable on mobile browsers when the
+     element (or an ancestor, here .apc-hero's overflow: hidden) isn't the
+     page root — it frequently fails to paint at all. Fall back to a normal
+     scrolling background below desktop widths. */
+  .apc-hero__background {
+    background-attachment: scroll;
+  }
 }
 
 @media (max-width: 640px) {

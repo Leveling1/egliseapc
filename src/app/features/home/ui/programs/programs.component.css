@@ -7,10 +7,20 @@
 .apc-programs__background {
   position: absolute;
   inset: 0;
-  background-image: url('/images/home/programmes-bg.png');
+  background-image: url('/images/home/programmes-bg.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  /* background-attachment: fixed is unreliable on mobile browsers — it can
+     fail to paint or make background-size: cover zoom against the wrong
+     viewport. Fall back to a normal scrolling background below desktop
+     widths. */
+  .apc-programs__background {
+    background-attachment: scroll;
+  }
 }
 
 .apc-programs__overlay {

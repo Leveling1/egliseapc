@@ -10,7 +10,7 @@
 .apc-rda-hero__background {
   position: absolute;
   inset: 0;
-  background-image: url('/images/rda/RDA_hero.PNG');
+  background-image: url('/images/rda/RDA_hero.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

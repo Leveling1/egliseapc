@@ -46,50 +46,68 @@ export class WorldPresenceComponent {
   constructor() {
     const destroyRef = inject(DestroyRef);
 
-    afterNextRender(async () => {
-      // Leaflet touches `window`/`document` on import, so it's loaded lazily
-      // and only ever in the browser (afterNextRender never runs during SSR).
-      const L = await import('leaflet');
+    afterNextRender(() => {
+      void this.initMap(destroyRef);
+    });
+  }
 
-      const map = L.map(this.mapContainer().nativeElement, {
-        scrollWheelZoom: false,
+  private async initMap(destroyRef: DestroyRef): Promise<void> {
+    // Leaflet touches `window`/`document` on import, so it's loaded lazily
+    // and only ever in the browser (afterNextRender never runs during SSR).
+    let L: typeof import('leaflet');
+    try {
+      const imported = await import('leaflet');
+      // Leaflet is a CommonJS/UMD package. The production build's dynamic
+      // `import()` returns its whole exports object wrapped under `.default`
+      // (unlike the dev server, which unwraps it), so `L.map` etc. would be
+      // undefined without this fallback — the actual reported bug.
+      L = (imported as unknown as { default?: typeof import('leaflet') }).default ?? imported;
+    } catch (error) {
+      console.error('Impossible de charger Leaflet pour la carte des extensions.', error);
+      return;
+    }
+
+    const container = this.mapContainer().nativeElement;
+
+    const map = L.map(container, {
+      scrollWheelZoom: false,
+    });
+    this.map = map;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+
+    const markers = CITIES.map((city) => {
+      const icon = L.divIcon({
+        className: 'apc-world-marker',
+        html: `<span class="apc-world-marker__dot"></span><span class="apc-world-marker__label">${city.name}</span>`,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6],
       });
-      this.map = map;
+      return L.marker([city.lat, city.lng], { icon, keyboard: false, alt: city.name }).addTo(map);
+    });
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18,
-      }).addTo(map);
+    const bounds = L.latLngBounds(CITIES.map((city): [number, number] => [city.lat, city.lng]));
 
-      const markers = CITIES.map((city) => {
-        const icon = L.divIcon({
-          className: 'apc-world-marker',
-          html: `<span class="apc-world-marker__dot"></span><span class="apc-world-marker__label">${city.name}</span>`,
-          iconSize: [12, 12],
-          iconAnchor: [6, 6],
-        });
-        return L.marker([city.lat, city.lng], { icon, keyboard: false, alt: city.name }).addTo(map);
-      });
+    map.invalidateSize();
+    map.fitBounds(bounds, { padding: [40, 40] });
 
-      const bounds = L.latLngBounds(CITIES.map((city): [number, number] => [city.lat, city.lng]));
-
-      // The container's size isn't always settled the instant Leaflet is
-      // constructed (e.g. right after an async import + first paint), which
-      // can throw fitBounds' zoom calculation off — invalidateSize() forces
-      // Leaflet to re-measure before fitting.
+    // The container's size can keep changing after this point on mobile
+    // (address bar collapsing, web fonts loading, layout above it settling),
+    // so a ResizeObserver re-measures Leaflet whenever that happens instead
+    // of relying on a single invalidateSize() call plus a window resize
+    // listener, which misses those in-page layout shifts.
+    const resizeObserver = new ResizeObserver(() => {
       map.invalidateSize();
-      map.fitBounds(bounds, { padding: [40, 40] });
+    });
+    resizeObserver.observe(container);
 
-      const onResize = (): void => {
-        map.invalidateSize();
-      };
-      window.addEventListener('resize', onResize, { passive: true });
-
-      destroyRef.onDestroy(() => {
-        window.removeEventListener('resize', onResize);
-        markers.forEach((marker) => marker.remove());
-        map.remove();
-      });
+    destroyRef.onDestroy(() => {
+      resizeObserver.disconnect();
+      markers.forEach((marker) => marker.remove());
+      map.remove();
     });
   }
 }
