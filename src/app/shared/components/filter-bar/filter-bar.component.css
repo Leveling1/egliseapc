@@ -72,3 +72,10 @@
 .apc-filters__search-input::placeholder {
   color: #aaa;
 }
+
+@media (max-width: 640px) {
+  .apc-filters__search {
+    min-width: 0;
+    width: 100%;
+  }
+}

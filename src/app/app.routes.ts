@@ -31,4 +31,11 @@ export const routes: Routes = [
     path: 'blog',
     loadComponent: () => import('./features/blog/pages/blog-page.component').then((m) => m.BlogPageComponent),
   },
+  {
+    path: 'blog/:slug',
+    loadComponent: () =>
+      import('./features/blog/pages/article-detail-page.component').then(
+        (m) => m.ArticleDetailPageComponent,
+      ),
+  },
 ];

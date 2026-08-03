@@ -56,3 +56,15 @@
   font: 400 11px 'Open Sans', sans-serif;
   color: #888;
 }
+
+@media (max-width: 640px) {
+  .apc-live {
+    padding: 92px 20px 12px;
+    gap: 10px;
+  }
+
+  .apc-live__text {
+    font-size: 13px;
+    text-align: center;
+  }
+}

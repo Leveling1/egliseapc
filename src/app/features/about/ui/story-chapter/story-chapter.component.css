@@ -70,3 +70,36 @@
 .apc-chapter__paragraph:first-of-type {
   margin-top: 0;
 }
+
+@media (max-width: 768px) {
+  .apc-chapter {
+    padding: 64px 20px;
+  }
+
+  .apc-chapter__inner {
+    gap: 32px;
+  }
+
+  .apc-chapter__media {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .apc-chapter__text {
+    min-width: 0;
+  }
+
+  .apc-chapter__photo {
+    height: 220px;
+  }
+
+  .apc-chapter__title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 420px) {
+  .apc-chapter__title {
+    font-size: 24px;
+  }
+}

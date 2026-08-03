@@ -88,3 +88,36 @@
   font: 400 15px 'Open Sans', sans-serif;
   color: rgba(255, 255, 255, 0.7);
 }
+
+@media (max-width: 768px) {
+  .apc-featured {
+    padding: 0 20px 40px;
+  }
+
+  .apc-featured__thumb {
+    height: 300px;
+  }
+
+  .apc-featured__play {
+    width: 60px;
+    height: 60px;
+  }
+
+  .apc-featured__caption {
+    padding: 20px;
+  }
+
+  .apc-featured__title {
+    font-size: 20px;
+  }
+
+  .apc-featured__meta {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .apc-featured__thumb {
+    height: 220px;
+  }
+}

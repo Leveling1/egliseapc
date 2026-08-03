@@ -144,3 +144,38 @@
   background: var(--color-apc-blue-dark);
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .apc-rda-latest {
+    padding: 64px 20px;
+  }
+
+  .apc-rda-latest__header {
+    margin-bottom: 40px;
+  }
+
+  .apc-rda-latest__title {
+    font-size: 28px;
+  }
+
+  .apc-rda-latest__video {
+    height: 240px;
+  }
+
+  .apc-rda-latest__body {
+    padding: 24px;
+  }
+
+  .apc-rda-latest__card-title {
+    font-size: 20px;
+  }
+
+  .apc-rda-latest__actions {
+    width: 100%;
+  }
+
+  .apc-rda-latest__btn {
+    flex: 1;
+    text-align: center;
+  }
+}

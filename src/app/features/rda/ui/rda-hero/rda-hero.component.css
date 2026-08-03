@@ -47,3 +47,31 @@
   margin: 0 auto;
   max-width: 560px;
 }
+
+@media (max-width: 768px) {
+  /* background-attachment: fixed is unreliable on mobile browsers — see
+     hero.component.css for the same fix applied to the home page hero. */
+  .apc-rda-hero__background {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 640px) {
+  .apc-rda-hero__inner {
+    padding: 64px 24px;
+  }
+
+  .apc-rda-hero__title {
+    font-size: 36px;
+  }
+
+  .apc-rda-hero__lead {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .apc-rda-hero__title {
+    font-size: 30px;
+  }
+}

@@ -39,3 +39,21 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+@media (max-width: 640px) {
+  .apc-books {
+    padding: 64px 20px;
+  }
+
+  .apc-books__header {
+    margin-bottom: 40px;
+  }
+
+  .apc-books__title {
+    font-size: 28px;
+  }
+
+  .apc-books__grid {
+    gap: 24px;
+  }
+}

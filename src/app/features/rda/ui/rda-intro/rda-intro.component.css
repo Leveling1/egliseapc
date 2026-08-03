@@ -64,3 +64,26 @@
   padding: 24px;
   box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+  .apc-rda-intro {
+    padding: 64px 20px;
+  }
+
+  .apc-rda-intro__inner {
+    gap: 32px;
+  }
+
+  .apc-rda-intro__media {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .apc-rda-intro__text {
+    min-width: 0;
+  }
+
+  .apc-rda-intro__title {
+    font-size: 28px;
+  }
+}

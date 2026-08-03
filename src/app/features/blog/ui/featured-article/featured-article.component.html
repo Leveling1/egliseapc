@@ -1,25 +1,20 @@
 <div class="apc-featured-wrap">
-  <a href="#" class="apc-featured-article">
-    <div class="apc-featured-article__media">
+  <a [routerLink]="['/blog', article.slug]" class="apc-featured-article">
+    <div class="apc-featured-article__media" [style.background]="article.gradient">
       <span class="apc-featured-article__media-label">image article vedette</span>
       <span class="apc-featured-article__tag">À la une</span>
     </div>
     <div class="apc-featured-article__body">
       <div class="apc-featured-article__category">
-        <span>Résumé de culte</span>
+        <span>{{ article.category }}</span>
       </div>
-      <h2 class="apc-featured-article__title">
-        La puissance de la foi — Résumé du culte dominical
-      </h2>
-      <p class="apc-featured-article__excerpt">
-        Retour sur l'enseignement du dimanche 28 juillet 2026, par le Prophète Garry KENGE. Un message
-        puissant sur la foi qui déplace les montagnes.
-      </p>
+      <h2 class="apc-featured-article__title">{{ article.title }}</h2>
+      <p class="apc-featured-article__excerpt">{{ article.excerpt }}</p>
       <div class="apc-featured-article__author">
-        <span class="apc-featured-article__avatar" aria-hidden="true">GK</span>
+        <span class="apc-featured-article__avatar" aria-hidden="true">{{ article.authorInitials }}</span>
         <div>
-          <span class="apc-featured-article__author-name">Prophète Garry KENGE</span><br />
-          <span class="apc-featured-article__meta">28 juillet 2026 · 5 min de lecture</span>
+          <span class="apc-featured-article__author-name">{{ article.authorName }}</span><br />
+          <span class="apc-featured-article__meta">{{ article.date }} · {{ article.readingTime }}</span>
         </div>
       </div>
       <div class="apc-featured-article__cta-row">

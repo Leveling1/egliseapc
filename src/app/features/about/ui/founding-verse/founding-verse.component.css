@@ -44,3 +44,17 @@
   margin-top: 4px;
   display: inline-block;
 }
+
+@media (max-width: 640px) {
+  .apc-verse {
+    padding: 56px 20px;
+  }
+
+  .apc-verse__mark {
+    font-size: 48px;
+  }
+
+  .apc-verse__quote {
+    font-size: 18px;
+  }
+}

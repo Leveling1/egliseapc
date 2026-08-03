@@ -15,3 +15,23 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+
+@media (max-width: 900px) {
+  .apc-cultes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .apc-cultes-filters {
+    padding: 0 20px 28px;
+  }
+
+  .apc-cultes-grid-wrap {
+    padding: 0 20px 56px;
+  }
+
+  .apc-cultes-grid {
+    grid-template-columns: 1fr;
+  }
+}

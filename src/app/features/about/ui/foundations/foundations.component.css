@@ -87,3 +87,28 @@
   font: 400 14px/1.7 'Open Sans', sans-serif;
   color: #555;
 }
+
+@media (max-width: 768px) {
+  .apc-foundations {
+    padding: 64px 20px;
+  }
+
+  .apc-foundations__header {
+    margin-bottom: 40px;
+  }
+
+  .apc-foundations__title {
+    font-size: 30px;
+  }
+
+  .apc-foundations__card {
+    padding: 28px;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .apc-foundations__title {
+    font-size: 26px;
+  }
+}

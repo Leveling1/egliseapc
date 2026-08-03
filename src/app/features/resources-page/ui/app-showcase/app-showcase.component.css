@@ -202,3 +202,47 @@
   font: 600 15px 'Poppins', sans-serif;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .apc-app {
+    padding: 0 20px 64px;
+  }
+
+  .apc-app__card {
+    padding: 40px 28px;
+    gap: 40px;
+    justify-content: center;
+  }
+
+  .apc-app__phone-wrap {
+    flex: 0 0 auto;
+  }
+
+  .apc-app__phone {
+    width: 180px;
+    height: 360px;
+  }
+
+  .apc-app__info {
+    min-width: 0;
+    text-align: center;
+  }
+
+  .apc-app__title {
+    font-size: 28px;
+  }
+
+  .apc-app__feature {
+    justify-content: center;
+  }
+
+  .apc-app__stores {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .apc-app__card {
+    padding: 32px 20px;
+  }
+}

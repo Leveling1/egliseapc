@@ -1,4 +1,4 @@
-<a href="#" class="apc-article-card">
+<a [routerLink]="['/blog', slug()]" class="apc-article-card">
   <div class="apc-article-card__media" [style.background]="gradient()">
     <span class="apc-article-card__media-label">image article</span>
     <span class="apc-article-card__tag">{{ category() }}</span>

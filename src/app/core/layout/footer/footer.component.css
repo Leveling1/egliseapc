@@ -119,3 +119,21 @@
   font: 400 13px 'Open Sans', sans-serif;
   color: rgba(255, 255, 255, 0.3);
 }
+
+@media (max-width: 640px) {
+  .apc-footer {
+    padding: 48px 20px 0;
+  }
+
+  .apc-footer__columns {
+    gap: 32px;
+    padding-bottom: 32px;
+  }
+
+  .apc-footer__col,
+  .apc-footer__col--brand,
+  .apc-footer__col--contact {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}

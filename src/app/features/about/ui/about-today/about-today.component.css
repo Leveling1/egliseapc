@@ -51,3 +51,24 @@
   color: #444;
   margin: 0;
 }
+
+@media (max-width: 640px) {
+  .apc-today {
+    padding: 56px 20px;
+  }
+
+  .apc-today__photo {
+    height: 200px;
+    margin-bottom: 28px;
+  }
+
+  .apc-today__title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 400px) {
+  .apc-today__title {
+    font-size: 24px;
+  }
+}

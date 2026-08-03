@@ -28,3 +28,17 @@
   margin: 16px auto 0;
   max-width: 560px;
 }
+
+@media (max-width: 640px) {
+  .apc-rda-history {
+    padding: 64px 20px;
+  }
+
+  .apc-rda-history__header {
+    margin-bottom: 40px;
+  }
+
+  .apc-rda-history__title {
+    font-size: 28px;
+  }
+}

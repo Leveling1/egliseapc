@@ -124,3 +124,26 @@
 .apc-featured-article:hover .apc-featured-article__cta {
   transform: translateY(-2px);
 }
+
+@media (max-width: 860px) {
+  .apc-featured-wrap {
+    padding: 0 20px 40px;
+  }
+
+  .apc-featured-article {
+    flex-direction: column;
+  }
+
+  .apc-featured-article__media {
+    flex: 0 0 auto;
+    min-height: 220px;
+  }
+
+  .apc-featured-article__body {
+    padding: 32px 24px;
+  }
+
+  .apc-featured-article__title {
+    font-size: 22px;
+  }
+}

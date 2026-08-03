@@ -1,0 +1,119 @@
+<app-header variant="light" />
+
+<div class="apc-article-detail__progress" [style.width.%]="readProgress() * 100" aria-hidden="true"></div>
+
+@if (article(); as art) {
+  <main class="apc-article-detail">
+    <div class="apc-article-detail__top">
+      <a routerLink="/blog" class="apc-article-detail__back">← Retour au blog</a>
+    </div>
+
+    <header class="apc-article-detail__header">
+      <span class="apc-article-detail__category">{{ art.category }}</span>
+      <h1 class="apc-article-detail__title">{{ art.title }}</h1>
+      <p class="apc-article-detail__excerpt">{{ art.excerpt }}</p>
+
+      <div class="apc-article-detail__byline">
+        <span class="apc-article-detail__avatar" aria-hidden="true">{{ art.authorInitials }}</span>
+        <div class="apc-article-detail__byline-text">
+          <span class="apc-article-detail__author">{{ art.authorName }}</span>
+          <span class="apc-article-detail__meta">{{ art.date }} · {{ art.readingTime }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div
+      class="apc-article-detail__cover"
+      [style.background]="art.gradient"
+      role="img"
+      [attr.aria-label]="'Illustration : ' + art.title"
+    ></div>
+
+    <div class="apc-article-detail__layout">
+      <aside class="apc-article-detail__share" aria-label="Partager cet article">
+        <a
+          class="apc-article-detail__share-btn"
+          [href]="facebookShareUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Partager sur Facebook"
+        >
+          <img src="/icons/facebook.svg" alt="" class="apc-article-detail__share-icon" />
+        </a>
+        <button
+          type="button"
+          class="apc-article-detail__share-btn"
+          (click)="copyLink()"
+          aria-label="Copier le lien de l'article"
+        >
+          <svg
+            class="apc-article-detail__share-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5" />
+            <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L12.5 19.5" />
+          </svg>
+        </button>
+        @if (linkCopied()) {
+          <span class="apc-article-detail__copied" role="status">Lien copié !</span>
+        }
+      </aside>
+
+      <div class="apc-article-detail__body">
+        @for (paragraph of art.content; track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="apc-article-detail__author-card">
+      <span class="apc-article-detail__avatar apc-article-detail__avatar--lg" aria-hidden="true">
+        {{ art.authorInitials }}
+      </span>
+      <div>
+        <span class="apc-article-detail__author-card-name">Écrit par {{ art.authorName }}</span>
+        <p class="apc-article-detail__author-card-bio">
+          Membre de la communauté Ambassadeurs Pour Christ (A.P.C).
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <app-newsletter-cta
+    overline="Restez informés"
+    title="Ne manquez aucun article"
+    description="Recevez nos derniers articles, résumés de culte et témoignages directement par e-mail."
+  />
+
+  @if (relatedArticles().length > 0) {
+    <section class="apc-article-detail__related" aria-labelledby="apc-related-title">
+      <h2 id="apc-related-title" class="apc-article-detail__related-title">À lire aussi</h2>
+      <div class="apc-article-detail__related-grid">
+        @for (related of relatedArticles(); track related.slug) {
+          <app-article-card
+            [slug]="related.slug"
+            [category]="related.category"
+            [gradient]="related.gradient"
+            [title]="related.title"
+            [excerpt]="related.excerpt"
+            [date]="related.date"
+          />
+        }
+      </div>
+    </section>
+  }
+} @else {
+  <main class="apc-article-detail apc-article-detail--not-found">
+    <p class="apc-article-detail__not-found-title">Article introuvable</p>
+    <p class="apc-article-detail__not-found-text">Cet article n'existe pas ou plus.</p>
+    <a routerLink="/blog" class="apc-article-detail__back">← Retour au blog</a>
+  </main>
+}
+
+<app-footer variant="simple" />
