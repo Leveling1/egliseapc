@@ -169,6 +169,17 @@ export class ParallaxHeroImagesComponent {
     return this.baseItems().find((item) => item.src === growSrc)?.depth ?? 0;
   });
 
+  // Matches the entrance delay this image would have had in its normal
+  // staggered slot, so its fade-in lands in step with its siblings instead
+  // of always firing immediately.
+  protected readonly growItemDelay = computed(() => {
+    const growSrc = this.growImage();
+    if (!growSrc) {
+      return 0;
+    }
+    return this.baseItems().find((item) => item.src === growSrc)?.delaySeconds ?? 0;
+  });
+
   protected readonly growStyle = computed<Record<string, string> | null>(() => {
     const anchor = this.growAnchorRect();
     if (!anchor || !this.growCloneActive()) {
@@ -337,9 +348,7 @@ export class ParallaxHeroImagesComponent {
       };
       stackedQuery.addEventListener('change', onStackedChange);
 
-      let scrollTicking = false;
       const updateGrowProgress = (): void => {
-        scrollTicking = false;
         // `.apc-hero-pin` is the outer wrapper (see hero.component.css for
         // its total height and phase breakdown); `.apc-hero` itself is
         // pinned (`position: sticky`) inside it for as long as that budget
@@ -365,41 +374,60 @@ export class ParallaxHeroImagesComponent {
         // at that exact point is invisible.
         this.growCloneActive.set(scrolledIntoPin < pinEl.offsetHeight);
       };
-      const onScroll = (): void => {
-        if (!scrollTicking) {
-          scrollTicking = true;
-          requestAnimationFrame(updateGrowProgress);
-        }
-      };
       const onResize = (): void => {
         this.viewportSize.set({ width: window.innerWidth, height: window.innerHeight });
         measureGrowAnchor();
       };
 
+      // Re-measured every frame (not just on 'scroll') so scrolling back up
+      // into the hero is exactly as reliable as scrolling down — 'scroll'
+      // events can be coalesced or skipped by the browser (e.g. during fast
+      // trackpad/momentum scrolling), which would otherwise leave the clone
+      // stuck at a stale size instead of shrinking back to its anchor.
+      let trackingFrameId: number | null = null;
+      const trackProgress = (): void => {
+        updateGrowProgress();
+        trackingFrameId = requestAnimationFrame(trackProgress);
+      };
+
       if (this.growImage()) {
         this.viewportSize.set({ width: window.innerWidth, height: window.innerHeight });
-        // Deferred a frame: `stackedLayout` was just set above, but that
-        // signal write hasn't reached the DOM yet, so the anchor element is
-        // still laid out at its previous (possibly desktop) position.
-        requestAnimationFrame(measureGrowAnchor);
-        updateGrowProgress();
-        window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onResize, { passive: true });
+
+        // `stackedLayout` was just set above, but that signal write hasn't
+        // reached the DOM yet, so the anchor is still laid out at its
+        // previous (possibly desktop) position — wait a frame before
+        // measuring it and starting the tracking loop.
+        requestAnimationFrame(() => {
+          measureGrowAnchor();
+          updateGrowProgress();
+          // `visible` flips a further frame after that: the clone (created
+          // just above, still in its hidden entrance state) needs to have
+          // actually painted once before this class change, otherwise the
+          // element's very first paint already shows the end state and the
+          // CSS transition never runs.
+          requestAnimationFrame(() => {
+            trackProgress();
+            this.visible.set(true);
+          });
+        });
+      } else {
+        // No grow-image tracking needed; still paint the hidden state first,
+        // then flip on the next frame so the entrance transition runs.
+        requestAnimationFrame(() => this.visible.set(true));
       }
 
       destroyRef.onDestroy(() => {
         window.removeEventListener('mousemove', onMouseMove);
         stackedQuery.removeEventListener('change', onStackedChange);
-        window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
+        if (trackingFrameId !== null) {
+          cancelAnimationFrame(trackingFrameId);
+        }
         if (this.animationFrameId !== null) {
           cancelAnimationFrame(this.animationFrameId);
         }
       });
-
-      // Paint the initial (blurred / scaled-down) state first, then flip
-      // `visible` on the next frame so the CSS transition actually runs.
-      requestAnimationFrame(() => this.visible.set(true));
     });
   }
 

@@ -63,6 +63,7 @@
   transform: scale(0.9);
   transition-property: opacity, filter, transform;
   transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: opacity, filter, transform;
 }
 
 .apc-parallax-grow-img--visible {
