@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Back-office : aucune raison d'apparaître dans les résultats de recherche.
+# Ce n'est pas une mesure de sécurité — un robot malveillant ignore ce
+# fichier, et la protection réelle vient de l'authentification Google plus
+# des politiques RLS. C'est simplement pour éviter que le portail
+# d'administration ne soit référencé publiquement.
+Disallow: /cpannel

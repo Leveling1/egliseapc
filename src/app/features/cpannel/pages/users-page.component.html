@@ -1,0 +1,246 @@
+<div class="cp-users">
+  <header class="cp-users__head">
+    <div>
+      <h2 class="cp-users__title">Utilisateurs du pannel</h2>
+      <p class="cp-users__hint">
+        Se connecter avec Google ne suffit pas : seuls les comptes présents dans cette
+        liste peuvent accéder au cpannel.
+      </p>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="cp-alert--error" role="alert">{{ error() }}</p>
+  }
+  @if (notice()) {
+    <p class="cp-alert--info" role="status">{{ notice() }}</p>
+  }
+
+  @if (canEdit()) {
+    <section class="cp-card cp-invite" aria-labelledby="cp-invite-title">
+      <h3 id="cp-invite-title" class="cp-invite__title">Autoriser une adresse</h3>
+      <p class="cp-invite__text">
+        L'accès devient actif à la première connexion Google de cette adresse.
+      </p>
+
+      <div class="cp-invite__row">
+        <input
+          type="email"
+          class="cp-input"
+          placeholder="nom@exemple.com"
+          aria-label="Adresse email à autoriser"
+          [ngModel]="newEmail()"
+          (ngModelChange)="newEmail.set($event)"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <button
+          type="button"
+          class="cp-btn cp-btn--primary"
+          [disabled]="inviting()"
+          (click)="invite()"
+        >
+          {{ inviting() ? 'Ajout…' : 'Autoriser' }}
+        </button>
+      </div>
+    </section>
+  }
+
+  @if (loading()) {
+    <p class="cp-muted">Chargement…</p>
+  } @else {
+    <div class="cp-card cp-tablewrap">
+      <table class="cp-table">
+        <thead>
+          <tr>
+            <th scope="col">Administrateur</th>
+            <th scope="col">Rôle</th>
+            <th scope="col">État</th>
+            <th scope="col"><span class="cp-sr">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.id) {
+            <tr [class.cp-table__row--inactive]="!row.is_active">
+              <td>
+                <span class="cp-users__name">{{ row.full_name || '—' }}</span>
+                <span class="cp-users__email">{{ row.email }}</span>
+              </td>
+
+              <td>
+                @if (row.is_super_admin) {
+                  <span class="cp-badge cp-badge--accent">Super-administrateur</span>
+                } @else {
+                  <span class="cp-badge cp-badge--neutral">Administrateur</span>
+                }
+              </td>
+
+              <td>
+                @if (row.is_active && row.user_id) {
+                  <span class="cp-badge cp-badge--online">Actif</span>
+                } @else if (row.is_active) {
+                  <span class="cp-badge cp-badge--neutral">{{ statusLabel(row) }}</span>
+                } @else {
+                  <span class="cp-badge cp-badge--neutral">Désactivé</span>
+                }
+              </td>
+
+              <td class="cp-table__actions">
+                @if (canEdit()) {
+                  <button type="button" class="cp-btn cp-btn--ghost" (click)="openRights(row)">
+                    Droits
+                  </button>
+
+                  @if (row.is_active) {
+                    <button
+                      type="button"
+                      class="cp-btn cp-btn--danger"
+                      (click)="askDeactivate(row)"
+                    >
+                      Désactiver
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      class="cp-btn cp-btn--ghost"
+                      (click)="setActive(row, true)"
+                    >
+                      Réactiver
+                    </button>
+                  }
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (pendingDeactivate(); as row) {
+  <div class="cp-modal" role="dialog" aria-modal="true" aria-labelledby="cp-deact-title">
+    <div class="cp-modal__panel cp-modal__panel--narrow">
+      <h3 id="cp-deact-title" class="cp-modal__title">Désactiver cet accès ?</h3>
+      <p class="cp-modal__text">
+        {{ row.email }} ne pourra plus entrer dans le cpannel. Le compte reste dans la
+        liste et vous pourrez le réactiver à tout moment — rien n'est supprimé.
+      </p>
+
+      @if (row.id === currentAdminId()) {
+        <p class="cp-modal__warning">
+          Attention : c'est votre propre compte. Vous perdrez immédiatement l'accès.
+        </p>
+      }
+
+      <div class="cp-modal__footer">
+        <button type="button" class="cp-btn cp-btn--ghost" (click)="cancelDeactivate()">
+          Annuler
+        </button>
+        <button type="button" class="cp-btn cp-btn--danger" (click)="setActive(row, false)">
+          Désactiver
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (editing(); as row) {
+  <div class="cp-modal" role="dialog" aria-modal="true" aria-labelledby="cp-rights-title">
+    <div class="cp-modal__panel">
+      <header class="cp-modal__head">
+        <div>
+          <h3 id="cp-rights-title" class="cp-modal__title">Droits de {{ row.email }}</h3>
+          <p class="cp-modal__sub">Cochez ce que cette personne peut faire, module par module.</p>
+        </div>
+        <button type="button" class="cp-modal__close" aria-label="Fermer" (click)="closeRights()">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+        </button>
+      </header>
+
+      <div class="cp-modal__body">
+        @if (isSuperAdmin()) {
+          <label class="cp-super">
+            <input
+              type="checkbox"
+              [checked]="row.is_super_admin"
+              (change)="toggleSuperAdmin(row)"
+            />
+            <span>
+              <span class="cp-super__label">Super-administrateur</span>
+              <span class="cp-super__help">
+                Accès total à tous les modules, y compris la gestion des utilisateurs.
+                @if (row.is_super_admin && activeSuperAdmins() === 1) {
+                  C'est actuellement le seul super-administrateur actif : ce rôle ne peut
+                  pas lui être retiré.
+                }
+              </span>
+            </span>
+          </label>
+        }
+
+        @if (row.is_super_admin) {
+          <p class="cp-modal__notice">
+            Un super-administrateur dispose de tous les droits sur tous les modules. Les
+            cases ci-dessous sont donc sans effet tant que ce rôle est actif.
+          </p>
+        }
+
+        <div class="cp-rights">
+          <div class="cp-rights__header">
+            <span>Module</span>
+            <span>Voir</span>
+            <span>Modifier</span>
+            <span>Publier</span>
+          </div>
+
+          @for (entry of allModules; track entry.module) {
+            <div class="cp-rights__row">
+              <span class="cp-rights__module">{{ entry.label }}</span>
+
+              <label class="cp-rights__cell">
+                <input
+                  type="checkbox"
+                  [disabled]="row.is_super_admin"
+                  [checked]="hasRight(row, entry.module, 'can_view')"
+                  (change)="toggleRight(row, entry.module, 'can_view')"
+                  [attr.aria-label]="'Voir ' + entry.label"
+                />
+              </label>
+
+              <label class="cp-rights__cell">
+                <input
+                  type="checkbox"
+                  [disabled]="row.is_super_admin"
+                  [checked]="hasRight(row, entry.module, 'can_edit')"
+                  (change)="toggleRight(row, entry.module, 'can_edit')"
+                  [attr.aria-label]="'Modifier ' + entry.label"
+                />
+              </label>
+
+              <label class="cp-rights__cell">
+                <input
+                  type="checkbox"
+                  [disabled]="row.is_super_admin"
+                  [checked]="hasRight(row, entry.module, 'can_publish')"
+                  (change)="toggleRight(row, entry.module, 'can_publish')"
+                  [attr.aria-label]="'Publier ' + entry.label"
+                />
+              </label>
+            </div>
+          }
+        </div>
+
+        <p class="cp-modal__notice">
+          « Publier » est distinct de « Modifier » : quelqu'un peut corriger un texte sans
+          pouvoir le rendre visible sur le site public.
+        </p>
+      </div>
+
+      <footer class="cp-modal__footer">
+        <button type="button" class="cp-btn cp-btn--primary" (click)="closeRights()">
+          Terminé
+        </button>
+      </footer>
+    </div>
+  </div>
+}

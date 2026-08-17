@@ -26,6 +26,384 @@ a {
   text-decoration: none;
 }
 
+/* ------------------------------------------------------------
+   Charte du cpannel (back-office)
+   ------------------------------------------------------------
+   Transposition du modèle de tableau de bord fourni : canevas neutre,
+   cartes blanches à grand rayon, séparation par le blanc et une ombre très
+   douce plutôt que par des bordures, typographie à faible contraste.
+
+   Le modèle d'origine tirait son calme d'un accent vert désaturé. Le bleu
+   #1c1c8c de la charte A.P.C est bien plus profond et saturé : l'appliquer
+   avec la même générosité alourdirait l'interface. Il sert donc d'ancre
+   (carte mise en avant, boutons principaux, icône active) et se décline en
+   teintes très claires pour les fonds et remplissages.
+
+   Aucun jaune. Le rouge ne signifie qu'une seule chose dans tout le
+   cpannel : une action destructrice. Il n'est donc jamais utilisé pour une
+   statistique en baisse — celles-ci passent en gris neutre.
+   ------------------------------------------------------------ */
+.cpannel {
+  --cp-accent: #1c1c8c;
+  --cp-accent-hover: #2a2ab0;
+  --cp-accent-soft: #ececf7;
+  --cp-accent-softer: #f5f5fb;
+  --cp-accent-border: #c9c9e6;
+
+  --cp-canvas: #eeeef2;
+  --cp-surface: #fff;
+  --cp-surface-muted: #f7f7fa;
+
+  --cp-ink: #0b0b0b;
+  --cp-ink-soft: #5c5c68;
+  --cp-ink-muted: #9a9aa8;
+
+  --cp-line: #e6e6ec;
+
+  --cp-positive: #1a7f4b;
+  --cp-positive-soft: #e6f4ec;
+  --cp-neutral-stat: #6b6b78;
+  --cp-neutral-stat-soft: #eeeef1;
+
+  /* Réservé aux suppressions et aux avertissements destructeurs. */
+  --cp-danger: #b4231f;
+  --cp-danger-hover: #911b18;
+  --cp-danger-soft: #fbeceb;
+
+  --cp-radius-card: 18px;
+  --cp-radius-control: 10px;
+  --cp-shadow: 0 1px 2px rgb(11 11 11 / 4%), 0 8px 24px rgb(11 11 11 / 4%);
+
+  font-family: var(--font-body);
+  color: var(--cp-ink);
+  background: var(--cp-canvas);
+}
+
+/* Primitives partagées par toutes les pages du cpannel.
+   Déclarées globalement plutôt que dupliquées dans chaque composant : les
+   styles Angular étant encapsulés par composant, chaque page aurait sinon sa
+   propre copie de ces règles, avec le risque qu'elles divergent à la moindre
+   retouche. Elles sont préfixées `.cpannel` pour ne jamais fuir sur le site
+   grand public. */
+.cpannel .cp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.cpannel .cp-card {
+  background: var(--cp-surface);
+  border-radius: var(--cp-radius-card);
+  box-shadow: var(--cp-shadow);
+}
+
+/* ---------- Boutons ---------- */
+.cpannel .cp-btn {
+  padding: 9px 16px;
+  border: none;
+  border-radius: var(--cp-radius-control);
+  font: 500 13px var(--font-heading);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.cpannel .cp-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cpannel .cp-btn--primary {
+  background: var(--cp-accent);
+  color: #fff;
+}
+
+.cpannel .cp-btn--primary:hover:not(:disabled) {
+  background: var(--cp-accent-hover);
+}
+
+.cpannel .cp-btn--ghost {
+  background: var(--cp-surface-muted);
+  color: var(--cp-ink);
+}
+
+.cpannel .cp-btn--ghost:hover:not(:disabled) {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+
+/* Le rouge n'apparaît que sur les actions destructrices. */
+.cpannel .cp-btn--danger {
+  background: var(--cp-danger-soft);
+  color: var(--cp-danger);
+}
+
+.cpannel .cp-btn--danger:hover:not(:disabled) {
+  background: var(--cp-danger);
+  color: #fff;
+}
+
+/* ---------- Pastilles d'état ---------- */
+.cpannel .cp-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font: 500 12px var(--font-heading);
+  white-space: nowrap;
+}
+
+.cpannel .cp-badge--online {
+  background: var(--cp-positive-soft);
+  color: var(--cp-positive);
+}
+
+/* « Masqué » n'est pas une erreur : gris neutre, jamais rouge. */
+.cpannel .cp-badge--neutral,
+.cpannel .cp-badge--offline {
+  background: var(--cp-neutral-stat-soft);
+  color: var(--cp-neutral-stat);
+}
+
+.cpannel .cp-badge--accent {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+
+/* ---------- Champs ---------- */
+.cpannel .cp-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: 1px solid var(--cp-line);
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-surface);
+  font: 400 14px var(--font-body);
+  color: var(--cp-ink);
+}
+
+.cpannel .cp-input:focus {
+  outline: none;
+  border-color: var(--cp-accent-border);
+  box-shadow: 0 0 0 3px var(--cp-accent-softer);
+}
+
+.cpannel .cp-input--area {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.cpannel .cp-input--tall {
+  min-height: 220px;
+}
+
+/* ---------- Tableaux ---------- */
+.cpannel .cp-tablewrap {
+  padding: 8px;
+  overflow-x: auto;
+}
+
+.cpannel .cp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.cpannel .cp-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font: 500 12px var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--cp-ink-muted);
+  white-space: nowrap;
+}
+
+.cpannel .cp-table td {
+  padding: 14px;
+  border-top: 1px solid var(--cp-line);
+  vertical-align: middle;
+}
+
+.cpannel .cp-table tbody tr:hover {
+  background: var(--cp-surface-muted);
+}
+
+/* Une ligne hors ligne reste lisible, simplement en retrait. */
+.cpannel .cp-table__row--hidden td:not(:last-child),
+.cpannel .cp-table__row--inactive td:not(:last-child) {
+  color: var(--cp-ink-muted);
+}
+
+.cpannel .cp-table__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ---------- Modales ---------- */
+.cpannel .cp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(11 11 11 / 40%);
+  overflow-y: auto;
+}
+
+.cpannel .cp-modal__panel {
+  width: 100%;
+  max-width: 640px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  background: var(--cp-surface);
+  border-radius: var(--cp-radius-card);
+  box-shadow: 0 20px 60px rgb(11 11 11 / 22%);
+}
+
+.cpannel .cp-modal__panel--narrow {
+  max-width: 440px;
+  padding: 28px;
+}
+
+.cpannel .cp-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 24px 14px;
+}
+
+.cpannel .cp-modal__title {
+  margin: 0;
+  font: 600 17px var(--font-heading);
+  word-break: break-word;
+}
+
+.cpannel .cp-modal__sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cpannel .cp-modal__close {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cp-surface-muted);
+  color: var(--cp-ink-soft);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.cpannel .cp-modal__close svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.cpannel .cp-modal__body {
+  padding: 4px 24px 8px;
+  overflow-y: auto;
+}
+
+.cpannel .cp-modal__text {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--cp-ink-soft);
+}
+
+.cpannel .cp-modal__notice {
+  margin: 18px 0 4px;
+  padding: 12px 14px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent-softer);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--cp-ink-soft);
+}
+
+.cpannel .cp-modal__warning,
+.cpannel .cp-modal__error {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-danger-soft);
+  color: var(--cp-danger);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cpannel .cp-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px 24px 22px;
+}
+
+.cpannel .cp-modal__panel--narrow .cp-modal__footer {
+  padding: 24px 0 0;
+}
+
+/* ---------- Messages de page ---------- */
+.cpannel .cp-alert--error {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-danger-soft);
+  color: var(--cp-danger);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cpannel .cp-alert--info {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cpannel .cp-muted {
+  font-size: 14px;
+  color: var(--cp-ink-muted);
+}
+
+@media (max-width: 640px) {
+  .cpannel .cp-modal {
+    padding: 12px;
+  }
+
+  .cpannel .cp-modal__panel {
+    max-height: calc(100vh - 24px);
+  }
+
+  .cpannel .cp-modal__head,
+  .cpannel .cp-modal__body,
+  .cpannel .cp-modal__footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .cpannel .cp-table__actions {
+    justify-content: flex-start;
+  }
+}
+
 @keyframes apc-fade-up {
   from {
     opacity: 0;

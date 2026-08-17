@@ -1,0 +1,119 @@
+@if (loading()) {
+  <p class="cp-dash__loading">Chargement…</p>
+} @else {
+  <div class="cp-dash">
+    <section class="cp-dash__stats" aria-label="Vue d'ensemble du contenu">
+      @for (stat of stats(); track stat.config.module; let index = $index) {
+        <a
+          [routerLink]="['/cpannel', stat.config.path]"
+          class="cp-stat"
+          [class.cp-stat--accent]="index === stats().length - 1"
+        >
+          <span class="cp-stat__label">{{ stat.config.label }}</span>
+          <span class="cp-stat__value">{{ stat.total }}</span>
+          <span class="cp-stat__meta">{{ stat.visible }} en ligne</span>
+        </a>
+      }
+    </section>
+
+    <div class="cp-dash__grid">
+      <section class="cp-card cp-visibility" aria-labelledby="cp-visibility-title">
+        <h2 id="cp-visibility-title" class="cp-card__title">Contenus en ligne</h2>
+        <p class="cp-card__hint">Part du contenu visible sur le site public</p>
+
+        <div class="cp-gauge" role="img" [attr.aria-label]="visibleRatio() + ' % du contenu est en ligne'">
+          <svg viewBox="0 0 120 70" aria-hidden="true">
+            <path d="M10 62a50 50 0 0 1 100 0" class="cp-gauge__track" />
+            <path
+              d="M10 62a50 50 0 0 1 100 0"
+              class="cp-gauge__value"
+              [style.stroke-dasharray]="157"
+              [style.stroke-dashoffset]="157 - (157 * visibleRatio()) / 100"
+            />
+          </svg>
+          <span class="cp-gauge__number">{{ visibleRatio() }}%</span>
+        </div>
+
+        <p class="cp-visibility__note">
+          @if (hiddenCount() === 0) {
+            Aucun contenu retiré.
+          } @else if (hiddenCount() === 1) {
+            1 contenu retiré, conservé en base et restaurable.
+          } @else {
+            {{ hiddenCount() }} contenus retirés, conservés en base et restaurables.
+          }
+        </p>
+      </section>
+
+      <section class="cp-card cp-activity" aria-labelledby="cp-activity-title">
+        <h2 id="cp-activity-title" class="cp-card__title">Activité récente</h2>
+
+        @if (activity().length === 0) {
+          <p class="cp-activity__empty">
+            Aucune action enregistrée pour le moment. Chaque création, modification et
+            changement de visibilité apparaîtra ici.
+          </p>
+        } @else {
+          <ul class="cp-activity__list">
+            @for (item of activity(); track item.id) {
+              <li class="cp-activity__item">
+                <div class="cp-activity__body">
+                  <p class="cp-activity__action">
+                    {{ moduleLabels[item.module] }} — {{ item.action }}
+                  </p>
+                  <p class="cp-activity__meta">
+                    {{ item.author ?? 'Auteur inconnu' }} · {{ item.when }}
+                  </p>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      @if (profile(); as admin) {
+        <section class="cp-card cp-profile" aria-labelledby="cp-profile-title">
+          <div class="cp-profile__avatar">
+            @if (admin.avatar_url) {
+              <img [src]="admin.avatar_url" alt="" width="78" height="78" />
+            } @else {
+              <span>{{ (admin.full_name || admin.email).charAt(0).toUpperCase() }}</span>
+            }
+          </div>
+
+          <h2 id="cp-profile-title" class="cp-profile__name">
+            {{ admin.full_name || admin.email }}
+          </h2>
+          <p class="cp-profile__email">{{ admin.email }}</p>
+
+          <p class="cp-profile__role">
+            {{ isSuperAdmin() ? 'Super-administrateur' : 'Administrateur' }}
+          </p>
+        </section>
+
+        <section class="cp-card cp-security" aria-labelledby="cp-security-title">
+          <svg class="cp-security__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z" />
+            <path d="M8.5 12.2l2.4 2.4 4.6-4.6" />
+          </svg>
+
+          <h2 id="cp-security-title" class="cp-security__title">Votre accès est protégé</h2>
+          <p class="cp-security__text">
+            La connexion passe exclusivement par Google, et votre compte doit figurer
+            parmi les administrateurs autorisés. Activez la double authentification sur
+            votre compte Google pour renforcer cette protection.
+          </p>
+
+          <a
+            href="https://myaccount.google.com/signinoptions/two-step-verification"
+            target="_blank"
+            rel="noopener"
+            class="cp-security__link"
+          >
+            Vérifier ma sécurité Google
+          </a>
+        </section>
+      }
+    </div>
+  </div>
+}

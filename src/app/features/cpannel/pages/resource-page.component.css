@@ -1,0 +1,152 @@
+/* Seuls les styles propres à cette page. Boutons, pastilles, champs,
+   tableaux et modales viennent des primitives `.cpannel` déclarées dans
+   styles.css — les dupliquer ici les ferait diverger. */
+
+.cp-res__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.cp-res__title {
+  margin: 0;
+  font: 600 20px var(--font-heading);
+}
+
+.cp-res__count {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-res__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cp-res__search {
+  height: 40px;
+  min-width: 220px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow);
+  font: 400 14px var(--font-body);
+  color: var(--cp-ink);
+}
+
+.cp-res__search::placeholder {
+  color: var(--cp-ink-muted);
+}
+
+.cp-res__empty {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.cp-res__empty-title {
+  margin: 0;
+  font: 600 16px var(--font-heading);
+}
+
+.cp-res__empty-text {
+  margin: 8px 0 20px;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Champs du formulaire ---------- */
+.cp-field {
+  margin-top: 18px;
+}
+
+.cp-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font: 500 13px var(--font-heading);
+}
+
+.cp-field__required {
+  color: var(--cp-accent);
+}
+
+.cp-field__help {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Sélection des jours ----------
+   Cocher/décocher plutôt qu'une règle d'exclusion : « du lundi au dimanche
+   sauf le samedi » se saisit en laissant samedi décoché. */
+.cp-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cp-day {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border: 1px solid var(--cp-line);
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cp-day:has(input:checked) {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+}
+
+.cp-day input {
+  accent-color: var(--cp-accent);
+}
+
+/* ---------- Image ---------- */
+.cp-image {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cp-image__preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-surface-muted);
+}
+
+.cp-image__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cp-image__input {
+  font-size: 13px;
+}
+
+.cp-image__status {
+  font-size: 13px;
+  color: var(--cp-accent);
+}
+
+@media (max-width: 640px) {
+  .cp-res__search {
+    min-width: 0;
+    flex: 1;
+  }
+}

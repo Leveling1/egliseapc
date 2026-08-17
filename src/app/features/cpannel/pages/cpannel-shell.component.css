@@ -1,0 +1,257 @@
+.cp-shell {
+  min-height: 100vh;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* ---------- Rail latéral ----------
+   Comme dans le modèle : une pilule blanche flottante, détachée du bord,
+   qui ne contient que des icônes. L'élément actif est un disque plein. */
+.cp-rail {
+  flex: none;
+  width: 68px;
+  background: var(--cp-surface);
+  border-radius: 34px;
+  box-shadow: var(--cp-shadow);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+}
+
+.cp-rail__logo img {
+  object-fit: contain;
+  display: block;
+}
+
+.cp-rail__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.cp-rail__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.cp-rail__item {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  color: var(--cp-ink-muted);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.cp-rail__item svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Les icônes « oracle » et « map » sont des formes pleines : le contour seul
+   les rendrait illisibles à cette taille. */
+.cp-rail__item svg path[d^='M10 2l'],
+.cp-rail__item svg path[d^='M10 2a5'] {
+  fill: currentColor;
+  stroke: none;
+}
+
+.cp-rail__item:hover {
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+}
+
+.cp-rail__item--active {
+  background: var(--cp-accent);
+  color: #fff;
+}
+
+.cp-rail__item--active:hover {
+  background: var(--cp-accent);
+  color: #fff;
+}
+
+/* Libellés réservés au tiroir mobile : sur grand écran le rail est
+   strictement iconographique, comme dans le modèle. */
+.cp-rail__label {
+  display: none;
+}
+
+.cp-rail__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  display: grid;
+  place-items: center;
+  font: 600 13px var(--font-heading);
+}
+
+.cp-rail__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Zone principale ---------- */
+.cp-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 4px 26px;
+}
+
+.cp-topbar__burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow);
+  color: var(--cp-ink);
+  cursor: pointer;
+  place-items: center;
+}
+
+.cp-topbar__burger svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.cp-topbar__title {
+  margin: 0;
+  font: 600 27px var(--font-heading);
+  letter-spacing: -0.6px;
+}
+
+.cp-topbar__subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-content {
+  padding-bottom: 24px;
+}
+
+.cp-shell__scrim {
+  display: none;
+}
+
+/* ---------- Responsive ----------
+   Sous 900px le rail devient un tiroir : il sort par la gauche avec ses
+   libellés, ce qui le rend utilisable au doigt. */
+@media (max-width: 900px) {
+  .cp-shell {
+    padding: 14px;
+    gap: 0;
+  }
+
+  .cp-rail {
+    position: fixed;
+    top: 14px;
+    bottom: 14px;
+    left: 14px;
+    height: auto;
+    width: 236px;
+    border-radius: var(--cp-radius-card);
+    align-items: stretch;
+    padding: 20px 14px;
+    transform: translateX(calc(-100% - 20px));
+    transition: transform 0.24s ease;
+    z-index: 40;
+  }
+
+  .cp-shell--rail-open .cp-rail {
+    transform: translateX(0);
+  }
+
+  .cp-rail__logo {
+    padding: 0 8px 4px;
+  }
+
+  .cp-rail__nav {
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  .cp-rail__footer {
+    align-items: stretch;
+  }
+
+  .cp-rail__item {
+    width: 100%;
+    height: 44px;
+    border-radius: var(--cp-radius-control);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0 12px;
+    font: 500 14px var(--font-heading);
+    text-align: left;
+  }
+
+  .cp-rail__label {
+    display: inline;
+  }
+
+  .cp-topbar__burger {
+    display: grid;
+  }
+
+  .cp-topbar__title {
+    font-size: 21px;
+  }
+
+  .cp-topbar__subtitle {
+    font-size: 13px;
+  }
+
+  .cp-shell--rail-open .cp-shell__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: none;
+    background: rgb(11 11 11 / 35%);
+    z-index: 30;
+  }
+}
+
+@media (max-width: 480px) {
+  .cp-topbar__subtitle {
+    display: none;
+  }
+}

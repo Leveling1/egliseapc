@@ -38,4 +38,10 @@ export const routes: Routes = [
         (m) => m.ArticleDetailPageComponent,
       ),
   },
+  {
+    // Back-office. Chargé à la demande : son code ne pèse pas sur le site
+    // grand public, qui ne le télécharge jamais.
+    path: 'cpannel',
+    loadChildren: () => import('./features/cpannel/cpannel.routes').then((m) => m.cpannelRoutes),
+  },
 ];

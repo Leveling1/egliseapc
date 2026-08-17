@@ -1,0 +1,120 @@
+<div class="cpannel cp-shell" [class.cp-shell--rail-open]="railOpen()">
+  <aside class="cp-rail" aria-label="Navigation du cpannel">
+    <a routerLink="/cpannel" class="cp-rail__logo" (click)="closeRail()">
+      <img src="/images/home/logo-apc.png" alt="cpannel A.P.C" width="30" height="30" />
+    </a>
+
+    <nav class="cp-rail__nav">
+      <a
+        routerLink="/cpannel"
+        routerLinkActive="cp-rail__item--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="cp-rail__item"
+        title="Tableau de bord"
+        (click)="closeRail()"
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M3 3h6v6H3zM11 3h6v6h-6zM3 11h6v6H3zM11 11h6v6h-6z" />
+        </svg>
+        <span class="cp-rail__label">Tableau de bord</span>
+      </a>
+
+      @for (config of modules(); track config.module) {
+        <a
+          [routerLink]="['/cpannel', config.path]"
+          routerLinkActive="cp-rail__item--active"
+          class="cp-rail__item"
+          [title]="config.label"
+          (click)="closeRail()"
+        >
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            @switch (config.icon) {
+              @case ('calendar') {
+                <path d="M4 3h12v14H4zM7 1v3M13 1v3M4 8h12" />
+              }
+              @case ('article') {
+                <path d="M4 2h12v16H4zM7 6h6M7 9h6M7 12h4" />
+              }
+              @case ('oracle') {
+                <path d="M10 2l2.2 4.8L17 8l-3.5 3.4.8 5L10 14l-4.3 2.4.8-5L3 8l4.8-1.2z" />
+              }
+              @case ('clock') {
+                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 6v4l3 2" />
+              }
+              @case ('map') {
+                <path d="M10 2a5 5 0 015 5c0 4-5 11-5 11S5 11 5 7a5 5 0 015-5zM10 5.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
+              }
+            }
+          </svg>
+          <span class="cp-rail__label">{{ config.label }}</span>
+        </a>
+      }
+
+      @if (canManageUsers()) {
+        <a
+          routerLink="/cpannel/utilisateurs"
+          routerLinkActive="cp-rail__item--active"
+          class="cp-rail__item"
+          title="Utilisateurs"
+          (click)="closeRail()"
+        >
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M7 9a3 3 0 100-6 3 3 0 000 6zM2 17c0-3 2.2-5 5-5s5 2 5 5M14 8a2.5 2.5 0 100-5M14 12c2.2 0 4 1.6 4 4" />
+          </svg>
+          <span class="cp-rail__label">Utilisateurs</span>
+        </a>
+      }
+    </nav>
+
+    <div class="cp-rail__footer">
+      <button type="button" class="cp-rail__item cp-rail__item--button" title="Se déconnecter" (click)="signOut()">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M8 3H4v14h4M13 6l3 4-3 4M16 10H8" />
+        </svg>
+        <span class="cp-rail__label">Se déconnecter</span>
+      </button>
+
+      @if (profile(); as admin) {
+        <div class="cp-rail__avatar" [title]="admin.email">
+          @if (admin.avatar_url) {
+            <img [src]="admin.avatar_url" alt="" width="34" height="34" />
+          } @else {
+            <span>{{ (admin.full_name || admin.email).charAt(0).toUpperCase() }}</span>
+          }
+        </div>
+      }
+    </div>
+  </aside>
+
+  <div class="cp-main">
+    <header class="cp-topbar">
+      <button
+        type="button"
+        class="cp-topbar__burger"
+        [attr.aria-expanded]="railOpen()"
+        aria-label="Afficher la navigation"
+        (click)="toggleRail()"
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" /></svg>
+      </button>
+
+      <div class="cp-topbar__greeting">
+        <h1 class="cp-topbar__title">Bonjour, {{ firstName() }} !</h1>
+        <p class="cp-topbar__subtitle">Gérez le contenu du site Ambassadeurs Pour Christ</p>
+      </div>
+    </header>
+
+    <main class="cp-content">
+      <router-outlet />
+    </main>
+  </div>
+
+  @if (railOpen()) {
+    <button
+      type="button"
+      class="cp-shell__scrim"
+      aria-label="Fermer la navigation"
+      (click)="closeRail()"
+    ></button>
+  }
+</div>

@@ -1,0 +1,273 @@
+.cp-dash__loading {
+  font-size: 14px;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Cartes statistiques ----------
+   Comme dans le modèle : une rangée de cartes compactes dont une seule est
+   remplie en couleur d'accent. Une seule, sinon l'accent perd sa fonction
+   de repère et l'interface devient lourde. */
+.cp-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cp-stat {
+  background: var(--cp-surface);
+  border-radius: var(--cp-radius-card);
+  box-shadow: var(--cp-shadow);
+  padding: 20px 22px;
+  color: inherit;
+  transition: transform 0.18s;
+}
+
+.cp-stat:hover {
+  transform: translateY(-2px);
+}
+
+.cp-stat__label {
+  display: block;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-stat__value {
+  display: block;
+  margin-top: 6px;
+  font: 600 30px var(--font-heading);
+  letter-spacing: -1px;
+}
+
+.cp-stat__meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-stat--accent {
+  background: var(--cp-accent);
+}
+
+.cp-stat--accent .cp-stat__label,
+.cp-stat--accent .cp-stat__meta {
+  color: rgb(255 255 255 / 70%);
+}
+
+.cp-stat--accent .cp-stat__value {
+  color: #fff;
+}
+
+/* ---------- Grille principale ---------- */
+.cp-dash__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.9fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.cp-card {
+  background: var(--cp-surface);
+  border-radius: var(--cp-radius-card);
+  box-shadow: var(--cp-shadow);
+  padding: 24px;
+}
+
+.cp-card__title {
+  margin: 0;
+  font: 600 17px var(--font-heading);
+}
+
+.cp-card__hint {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Jauge ---------- */
+.cp-gauge {
+  position: relative;
+  margin: 18px auto 0;
+  max-width: 220px;
+}
+
+.cp-gauge svg {
+  width: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.cp-gauge__track,
+.cp-gauge__value {
+  fill: none;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+
+.cp-gauge__track {
+  stroke: var(--cp-accent-soft);
+}
+
+.cp-gauge__value {
+  stroke: var(--cp-accent);
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.cp-gauge__number {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  transform: translateX(-50%);
+  font: 600 24px var(--font-heading);
+}
+
+.cp-visibility__note {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cp-ink-soft);
+  text-align: center;
+}
+
+/* ---------- Activité ---------- */
+.cp-activity__empty {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cp-ink-muted);
+}
+
+.cp-activity__list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-activity__item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0 10px 12px;
+  border-left: 2px solid var(--cp-accent-border);
+  /* Pas d'arrondi : une bordure sur un seul côté et des coins arrondis ne
+     vont pas ensemble visuellement. */
+  border-radius: 0;
+}
+
+.cp-activity__action {
+  margin: 0;
+  font: 500 14px var(--font-heading);
+}
+
+.cp-activity__meta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Profil ---------- */
+.cp-profile {
+  text-align: center;
+}
+
+.cp-profile__avatar {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  display: grid;
+  place-items: center;
+  font: 600 28px var(--font-heading);
+}
+
+.cp-profile__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cp-profile__name {
+  margin: 16px 0 0;
+  font: 600 17px var(--font-heading);
+}
+
+.cp-profile__email {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+  word-break: break-all;
+}
+
+.cp-profile__role {
+  display: inline-block;
+  margin: 14px 0 0;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  font: 500 12px var(--font-heading);
+}
+
+/* ---------- Sécurité ---------- */
+.cp-security {
+  text-align: center;
+}
+
+.cp-security__icon {
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: var(--cp-accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cp-security__title {
+  margin: 12px 0 0;
+  font: 600 16px var(--font-heading);
+}
+
+.cp-security__text {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--cp-ink-soft);
+}
+
+.cp-security__link {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 18px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent);
+  color: #fff;
+  font: 500 13px var(--font-heading);
+}
+
+.cp-security__link:hover {
+  background: var(--cp-accent-hover);
+}
+
+@media (max-width: 1100px) {
+  .cp-dash__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .cp-dash__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-card {
+    padding: 20px;
+  }
+}

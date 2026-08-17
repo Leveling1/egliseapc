@@ -1,0 +1,148 @@
+/* Seuls les styles propres à cette page — le reste vient des primitives
+   `.cpannel` de styles.css. */
+
+.cp-users__head {
+  margin-bottom: 18px;
+}
+
+.cp-users__title {
+  margin: 0;
+  font: 600 20px var(--font-heading);
+}
+
+.cp-users__hint {
+  margin: 6px 0 0;
+  max-width: 640px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Autoriser une adresse ---------- */
+.cp-invite {
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+
+.cp-invite__title {
+  margin: 0;
+  font: 600 15px var(--font-heading);
+}
+
+.cp-invite__text {
+  margin: 4px 0 14px;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-invite__row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cp-invite__row .cp-input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.cp-users__name {
+  display: block;
+  font: 500 14px var(--font-heading);
+}
+
+.cp-users__email {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--cp-ink-muted);
+  word-break: break-all;
+}
+
+/* ---------- Super-administrateur ---------- */
+.cp-super {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--cp-accent-border);
+  border-radius: var(--cp-radius-control);
+  cursor: pointer;
+}
+
+.cp-super input {
+  margin-top: 2px;
+  accent-color: var(--cp-accent);
+}
+
+.cp-super__label {
+  display: block;
+  font: 500 14px var(--font-heading);
+}
+
+.cp-super__help {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--cp-ink-muted);
+}
+
+/* ---------- Grille des droits ---------- */
+.cp-rights {
+  margin-top: 18px;
+}
+
+.cp-rights__header,
+.cp-rights__row {
+  display: grid;
+  grid-template-columns: 1fr 62px 62px 62px;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-rights__header {
+  padding: 0 0 10px;
+  font: 500 11.5px var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-rights__header span:not(:first-child) {
+  text-align: center;
+}
+
+.cp-rights__row {
+  padding: 11px 0;
+  border-top: 1px solid var(--cp-line);
+}
+
+.cp-rights__module {
+  font: 500 13.5px var(--font-heading);
+}
+
+.cp-rights__cell {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.cp-rights__cell input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--cp-accent);
+  cursor: pointer;
+}
+
+.cp-rights__cell input:disabled {
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .cp-rights__header,
+  .cp-rights__row {
+    grid-template-columns: 1fr 48px 48px 48px;
+  }
+}

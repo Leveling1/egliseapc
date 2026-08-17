@@ -1,0 +1,333 @@
+@if (config(); as cfg) {
+  <div class="cp-res">
+    <header class="cp-res__head">
+      <div>
+        <h2 class="cp-res__title">{{ cfg.label }}</h2>
+        <p class="cp-res__count">{{ rows().length }} enregistrement(s)</p>
+      </div>
+
+      <div class="cp-res__actions">
+        <input
+          type="search"
+          class="cp-res__search"
+          placeholder="Rechercher…"
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+          [ngModelOptions]="{ standalone: true }"
+          [attr.aria-label]="'Rechercher dans ' + cfg.label"
+        />
+
+        @if (canEdit()) {
+          <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
+            Nouvelle {{ cfg.singular }}
+          </button>
+        }
+      </div>
+    </header>
+
+    @if (error()) {
+      <p class="cp-alert--error" role="alert">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="cp-muted">Chargement…</p>
+    } @else if (filteredRows().length === 0) {
+      <div class="cp-card cp-res__empty">
+        @if (search()) {
+          <p class="cp-res__empty-title">Aucun résultat pour « {{ search() }} »</p>
+        } @else {
+          <p class="cp-res__empty-title">Créez la première {{ cfg.singular }}</p>
+          <p class="cp-res__empty-text">
+            Rien n'a encore été enregistré dans ce module.
+          </p>
+          @if (canEdit()) {
+            <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
+              Nouvelle {{ cfg.singular }}
+            </button>
+          }
+        }
+      </div>
+    } @else {
+      <div class="cp-card cp-tablewrap">
+        <table class="cp-table">
+          <thead>
+            <tr>
+              @for (column of cfg.columns; track column.key) {
+                <th scope="col">{{ column.label }}</th>
+              }
+              <th scope="col">État</th>
+              <th scope="col"><span class="cp-sr">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of filteredRows(); track row.id) {
+              <tr [class.cp-table__row--hidden]="!row.is_visible">
+                @for (column of cfg.columns; track column.key) {
+                  <td>{{ displayCell(row, column.key) }}</td>
+                }
+
+                <td>
+                  @if (row.is_visible) {
+                    <span class="cp-badge cp-badge--online">En ligne</span>
+                  } @else {
+                    <span class="cp-badge cp-badge--offline">Masqué</span>
+                  }
+                </td>
+
+                <td class="cp-table__actions">
+                  @if (canEdit()) {
+                    <button type="button" class="cp-btn cp-btn--ghost" (click)="openEdit(row)">
+                      Modifier
+                    </button>
+                  }
+
+                  @if (canPublish()) {
+                    @if (row.is_visible) {
+                      <button
+                        type="button"
+                        class="cp-btn cp-btn--danger"
+                        (click)="askHide(row)"
+                      >
+                        Retirer
+                      </button>
+                    } @else {
+                      <button
+                        type="button"
+                        class="cp-btn cp-btn--ghost"
+                        (click)="confirmVisibility(row, true)"
+                      >
+                        Remettre en ligne
+                      </button>
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <!-- Confirmation de retrait.
+       Le mot « supprimer » est délibérément évité : rien n'est effacé, et
+       laisser croire le contraire inquiéterait inutilement l'administrateur. -->
+  @if (pendingHide(); as row) {
+    <div class="cp-modal" role="dialog" aria-modal="true" aria-labelledby="cp-hide-title">
+      <div class="cp-modal__panel cp-modal__panel--narrow">
+        <h3 id="cp-hide-title" class="cp-modal__title">Retirer du site public ?</h3>
+        <p class="cp-modal__text">
+          Cet enregistrement disparaîtra du site, mais il est conservé en base et vous
+          pourrez le remettre en ligne à tout moment. Rien n'est supprimé.
+        </p>
+
+        <div class="cp-modal__footer">
+          <button type="button" class="cp-btn cp-btn--ghost" (click)="cancelHide()">
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="cp-btn cp-btn--danger"
+            (click)="confirmVisibility(row, false)"
+          >
+            Retirer
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Formulaire de création / modification -->
+  @if (draft()) {
+    <div class="cp-modal" role="dialog" aria-modal="true" aria-labelledby="cp-form-title">
+      <div class="cp-modal__panel">
+        <header class="cp-modal__head">
+          <h3 id="cp-form-title" class="cp-modal__title">
+            {{ editingId() ? 'Modifier' : 'Nouvelle' }} {{ cfg.singular }}
+          </h3>
+          <button
+            type="button"
+            class="cp-modal__close"
+            aria-label="Fermer"
+            (click)="closeEditor()"
+          >
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+          </button>
+        </header>
+
+        <div class="cp-modal__body">
+          @for (field of cfg.fields; track field.key) {
+            <div class="cp-field">
+              <label class="cp-field__label" [attr.for]="'cp-' + field.key">
+                {{ field.label }}
+                @if (field.required) {
+                  <span class="cp-field__required" aria-hidden="true">*</span>
+                }
+              </label>
+
+              @switch (field.type) {
+                @case ('textarea') {
+                  <textarea
+                    [id]="'cp-' + field.key"
+                    class="cp-input cp-input--area"
+                    rows="4"
+                    [placeholder]="field.placeholder ?? ''"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></textarea>
+                }
+
+                @case ('paragraphs') {
+                  <textarea
+                    [id]="'cp-' + field.key"
+                    class="cp-input cp-input--area cp-input--tall"
+                    rows="12"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></textarea>
+                }
+
+                @case ('select') {
+                  <select
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                    <option value="">—</option>
+                    @for (option of field.options ?? []; track option.value) {
+                      <option [value]="option.value">{{ option.label }}</option>
+                    }
+                  </select>
+                }
+
+                @case ('weekdays') {
+                  <div class="cp-days" [attr.aria-labelledby]="'cp-' + field.key">
+                    @for (day of weekdays; track day.value) {
+                      <label class="cp-day">
+                        <input
+                          type="checkbox"
+                          [checked]="isDayChecked(field.key, day.value)"
+                          (change)="toggleDay(field.key, day.value)"
+                        />
+                        <span>{{ day.label }}</span>
+                      </label>
+                    }
+                  </div>
+                }
+
+                @case ('image') {
+                  <div class="cp-image">
+                    @if (imageUrl(field.key); as url) {
+                      <img [src]="url" alt="" class="cp-image__preview" />
+                    }
+
+                    <div class="cp-image__controls">
+                      <input
+                        type="file"
+                        [id]="'cp-' + field.key"
+                        class="cp-image__input"
+                        accept="image/jpeg,image/png,image/webp,image/avif"
+                        (change)="onImageSelected(field, $event)"
+                      />
+                      @if (uploading() === field.key) {
+                        <span class="cp-image__status">Envoi en cours…</span>
+                      } @else if (fieldValue(field.key)) {
+                        <button
+                          type="button"
+                          class="cp-btn cp-btn--ghost"
+                          (click)="setFieldValue(field.key, '')"
+                        >
+                          Retirer l'image
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @case ('date') {
+                  <input
+                    type="date"
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                }
+
+                @case ('time') {
+                  <input
+                    type="time"
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                }
+
+                @case ('number') {
+                  <input
+                    type="number"
+                    step="any"
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [placeholder]="field.placeholder ?? ''"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                }
+
+                @default {
+                  <input
+                    type="text"
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [placeholder]="field.placeholder ?? ''"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                }
+              }
+
+              @if (field.help) {
+                <p class="cp-field__help">{{ field.help }}</p>
+              }
+            </div>
+          }
+
+          <p class="cp-modal__notice">
+            Un contenu créé ici n'est pas publié automatiquement. Il reste masqué
+            jusqu'à ce que vous le mettiez en ligne depuis la liste.
+          </p>
+        </div>
+
+        @if (error()) {
+          <p class="cp-modal__error" role="alert">{{ error() }}</p>
+        }
+
+        <footer class="cp-modal__footer">
+          <button type="button" class="cp-btn cp-btn--ghost" (click)="closeEditor()">
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="cp-btn cp-btn--primary"
+            [disabled]="saving() || uploading() !== null"
+            (click)="save()"
+          >
+            {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}
+          </button>
+        </footer>
+      </div>
+    </div>
+  }
+} @else {
+  <p class="cp-muted">Module introuvable.</p>
+}
