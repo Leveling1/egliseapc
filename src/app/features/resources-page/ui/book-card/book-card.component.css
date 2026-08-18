@@ -22,6 +22,11 @@
 }
 
 .apc-book__cover {
+  /* Dégradé de la charte, appliqué à tout livre sans couverture. Il était
+     auparavant saisi livre par livre dans le cpannel : une valeur qu'aucun
+     administrateur n'a de raison de choisir, et qui n'apportait rien. Une
+     couverture envoyée le recouvre via un background en ligne. */
+  background: linear-gradient(145deg, #1c1c8c, #0b0b0b);
   width: 160px;
   height: 230px;
   border-radius: 4px;

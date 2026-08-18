@@ -12,7 +12,6 @@ export class BookCardComponent {
   readonly description = input<string>('');
   /** Couverture envoyée depuis le cpannel ; prioritaire sur le dégradé. */
   readonly coverUrl = input<string | null>(null);
-  readonly coverGradient = input<string>('linear-gradient(145deg,#1C1C8C,#1C1C8C)');
   readonly coverRotation = input<string>('0deg');
   readonly badgeLabel = input<string>('');
   readonly badgeVariant = input<'yellow' | 'light'>('yellow');

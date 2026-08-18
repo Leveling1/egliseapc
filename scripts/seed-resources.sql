@@ -24,31 +24,28 @@ insert into public.book_statuses (name, position, is_visible) values
   ('Disponible',   3, true)
 on conflict (name) do nothing;
 
-insert into public.books (title, description, status_id, cover_gradient, position, is_visible)
-select v.title, v.description, s.id, v.gradient, v.position, true
+insert into public.books (title, description, status_id, position, is_visible)
+select v.title, v.description, s.id, v.position, true
   from (values
     (
       'La Marche du Disciple',
       'Un guide pratique pour vivre sa foi au quotidien et grandir en tant qu''ambassadeur du Christ.',
       'En rédaction',
-      'linear-gradient(145deg,#1C1C8C,#FFE600)',
       1::smallint
     ),
     (
       'L''Appel de l''Ambassadeur',
       'Comprendre et embrasser l''appel à être ambassadeur du Christ dans le monde d''aujourd''hui.',
       'En rédaction',
-      'linear-gradient(145deg,#FFE600,#1C1C8C)',
       2::smallint
     ),
     (
       'Prières et Méditations',
       'Un recueil de prières et méditations pour accompagner votre vie spirituelle au quotidien.',
       'Bientôt',
-      'linear-gradient(145deg,#1C1C8C,#1C1C8C)',
       3::smallint
     )
-  ) as v(title, description, status_name, gradient, position)
+  ) as v(title, description, status_name, position)
   left join public.book_statuses s on s.name = v.status_name
  where not exists (select 1 from public.books b where b.title = v.title);
 

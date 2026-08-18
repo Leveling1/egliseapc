@@ -2,7 +2,7 @@
   <div class="apc-book__cover-wrap">
     <div
       class="apc-book__cover"
-      [style.background]="coverUrl() ? 'center / cover no-repeat url(' + coverUrl() + ')' : coverGradient()"
+      [style.background]="coverUrl() ? 'center / cover no-repeat url(' + coverUrl() + ')' : null"
       [style.transform]="'rotate(' + coverRotation() + ')'"
     >
       @if (!coverUrl()) {

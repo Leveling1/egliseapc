@@ -246,8 +246,6 @@ export interface BookPublic {
   /** Nom du statut, résolu par la vue. */
   status: string | null;
   cover_path: string | null;
-  /** Dégradé de repli quand aucune couverture n'a été envoyée. */
-  cover_gradient: string | null;
   link_url: string | null;
   position: number;
 }
