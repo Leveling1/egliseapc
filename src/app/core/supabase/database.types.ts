@@ -20,7 +20,8 @@ export type PannelModule =
   | 'extensions'
   | 'users'
   | 'settings'
-  | 'resources';
+  | 'resources'
+  | 'newsletter';
 
 export type ProgrammeKind = 'recurrent' | 'special';
 

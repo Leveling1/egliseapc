@@ -12,9 +12,13 @@ import type { BookPublic, MobileAppPublic } from '../../../core/supabase/databas
 import { ResourcesHeroComponent } from '../ui/resources-hero/resources-hero.component';
 import { AppShowcaseComponent } from '../ui/app-showcase/app-showcase.component';
 import { BookCardComponent } from '../ui/book-card/book-card.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 /** Légère rotation alternée des couvertures, comme dans la maquette. */
 const COVER_ROTATIONS = ['-2deg', '1deg', '-1deg'];
+
+/** Deux rangées de trois sur grand écran : au-delà, la page devient longue. */
+const BOOKS_PER_PAGE = 6;
 
 @Component({
   selector: 'app-resources-page',
@@ -26,6 +30,7 @@ const COVER_ROTATIONS = ['-2deg', '1deg', '-1deg'];
     ResourcesHeroComponent,
     AppShowcaseComponent,
     BookCardComponent,
+    PaginationComponent,
   ],
   templateUrl: './resources-page.component.html',
   styleUrl: './resources-page.component.css',
@@ -40,6 +45,19 @@ export class ResourcesPageComponent implements OnInit {
   protected readonly books = signal<readonly BookPublic[]>([]);
   protected readonly apps = signal<readonly MobileAppPublic[]>([]);
   protected readonly loaded = signal(false);
+  protected readonly currentPage = signal(1);
+
+  protected readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.books().length / BOOKS_PER_PAGE)),
+  );
+
+  /** La pagination ne s'affiche que s'il y a réellement plusieurs pages. */
+  protected readonly showPagination = computed(() => this.totalPages() > 1);
+
+  protected readonly pagedBooks = computed(() => {
+    const start = (this.currentPage() - 1) * BOOKS_PER_PAGE;
+    return this.books().slice(start, start + BOOKS_PER_PAGE);
+  });
 
   /**
    * Cette page n'existe que si elle a quelque chose à montrer : c'est le
@@ -64,18 +82,28 @@ export class ResourcesPageComponent implements OnInit {
     });
   }
 
+  protected onPageChange(page: number): void {
+    this.currentPage.set(page);
+  }
+
   protected coverUrl(book: BookPublic): string | null {
     if (!book.cover_path) return null;
     return this.storage.from(MEDIA_BUCKET).getPublicUrl(book.cover_path).data.publicUrl;
   }
 
-  protected rotation(index: number): string {
-    return COVER_ROTATIONS[index % COVER_ROTATIONS.length];
+  /**
+   * L'alternance suit la position du livre dans la liste complète : sinon
+   * elle repartirait à zéro à chaque page et le rythme visuel se casserait.
+   */
+  protected rotation(indexInPage: number): string {
+    const absolute = (this.currentPage() - 1) * BOOKS_PER_PAGE + indexInPage;
+    return COVER_ROTATIONS[absolute % COVER_ROTATIONS.length];
   }
 
   /** Le premier statut est mis en valeur, les suivants restent discrets. */
-  protected badgeVariant(index: number): 'yellow' | 'light' {
-    return index % 2 === 0 ? 'yellow' : 'light';
+  protected badgeVariant(indexInPage: number): 'yellow' | 'light' {
+    const absolute = (this.currentPage() - 1) * BOOKS_PER_PAGE + indexInPage;
+    return absolute % 2 === 0 ? 'yellow' : 'light';
   }
 
   private async load(): Promise<void> {

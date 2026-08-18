@@ -4,10 +4,8 @@
   <main>
     <app-resources-hero />
 
-    @for (app of apps(); track app.id) {
-      <app-app-showcase [app]="app" />
-    }
-
+    <!-- Les livres passent devant : ce sont les publications de l'église,
+         là où l'application reste un outil d'accompagnement. -->
     @if (books().length) {
       <section class="apc-books" aria-labelledby="apc-books-title">
         <div class="apc-books__inner">
@@ -20,7 +18,7 @@
           </div>
 
           <div class="apc-books__grid">
-            @for (book of books(); track book.id; let index = $index) {
+            @for (book of pagedBooks(); track book.id; let index = $index) {
               <app-book-card
                 [title]="book.title"
                 [description]="book.description ?? ''"
@@ -32,11 +30,24 @@
               />
             }
           </div>
+
+          @if (showPagination()) {
+            <app-pagination
+              [currentPage]="currentPage()"
+              [totalPages]="totalPages()"
+              (pageChange)="onPageChange($event)"
+            />
+          }
         </div>
       </section>
     }
 
+    @for (app of apps(); track app.id) {
+      <app-app-showcase [app]="app" />
+    }
+
     <app-newsletter-cta
+      source="ressources"
       overline="Restez informé"
       title="Soyez prévenu des sorties"
       titleFontSize="36px"

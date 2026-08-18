@@ -117,3 +117,17 @@
     border-radius: 4px;
   }
 }
+/* Mention de consentement : une adresse e-mail est une donnée personnelle,
+   dire à quoi elle sert est la moindre des choses — et cela rassure autant
+   que cela informe. */
+.apc-newsletter__consent {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  opacity: 0.62;
+}
+
+.apc-newsletter__submit:disabled {
+  opacity: 0.65;
+  cursor: default;
+}

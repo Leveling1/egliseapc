@@ -77,6 +77,15 @@ export interface ModuleConfig {
    * modale est alors court-circuité au profit d'une page dédiée.
    */
   readonly usesEditor?: boolean;
+  /**
+   * Module consultable mais non éditable : ses lignes viennent du site, pas
+   * d'une saisie. On peut toujours les retirer, jamais les créer à la main.
+   */
+  readonly readOnly?: boolean;
+  /** Propose un export CSV de la liste complète. */
+  readonly exportable?: boolean;
+  /** Libellé du retrait, quand « Retirer » ne veut rien dire pour ce module. */
+  readonly hideLabel?: string;
 }
 
 export const WEEKDAYS: readonly { readonly value: number; readonly label: string }[] = [
@@ -381,6 +390,27 @@ const MOBILE_APPS: ModuleConfig = {
   ],
 };
 
+const NEWSLETTER: ModuleConfig = {
+  module: 'newsletter',
+  path: 'abonnes',
+  label: 'Abonnés',
+  singular: 'abonné',
+  gender: 'm',
+  table: 'newsletter_subscribers',
+  icon: 'mail',
+  orderBy: { column: 'created_at', ascending: false },
+  // Les inscriptions viennent du formulaire du site : rien à saisir ici.
+  readOnly: true,
+  exportable: true,
+  hideLabel: 'Désabonner',
+  columns: [
+    { key: 'email', label: 'Adresse e-mail' },
+    { key: 'source', label: 'Origine' },
+    { key: 'created_at', label: 'Inscrit le' },
+  ],
+  fields: [],
+};
+
 export const CPANNEL_MODULES: readonly ModuleConfig[] = [
   RDA,
   ARTICLES,
@@ -389,6 +419,7 @@ export const CPANNEL_MODULES: readonly ModuleConfig[] = [
   EXTENSIONS,
   BOOKS,
   MOBILE_APPS,
+  NEWSLETTER,
 ];
 
 export function findModuleByPath(path: string): ModuleConfig | undefined {

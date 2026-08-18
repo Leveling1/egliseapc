@@ -17,7 +17,13 @@
           [attr.aria-label]="'Rechercher dans ' + cfg.label"
         />
 
-        @if (canEdit()) {
+        @if (cfg.exportable && rows().length) {
+          <button type="button" class="cp-btn cp-btn--ghost" (click)="exportCsv()">
+            Exporter en CSV
+          </button>
+        }
+
+        @if (canEdit() && !cfg.readOnly) {
           <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
             {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
           </button>
@@ -36,11 +42,18 @@
         @if (search()) {
           <p class="cp-res__empty-title">Aucun résultat pour « {{ search() }} »</p>
         } @else {
+          @if (cfg.readOnly) {
+            <p class="cp-res__empty-title">Aucun {{ cfg.singular }} pour l'instant</p>
+            <p class="cp-res__empty-text">
+              Cette liste se remplit depuis le site : elle n'a rien à saisir ici.
+            </p>
+          } @else {
           <p class="cp-res__empty-title">Créez {{ cfg.gender === 'f' ? 'la première' : 'le premier' }} {{ cfg.singular }}</p>
           <p class="cp-res__empty-text">
             Rien n'a encore été enregistré dans ce module.
           </p>
-          @if (canEdit()) {
+          }
+          @if (canEdit() && !cfg.readOnly) {
             <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
               {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
             </button>
@@ -68,14 +81,18 @@
 
                 <td>
                   @if (row.is_visible) {
-                    <span class="cp-badge cp-badge--online">En ligne</span>
+                    <span class="cp-badge cp-badge--online">
+                      {{ cfg.hideLabel ? 'Abonné' : 'En ligne' }}
+                    </span>
                   } @else {
-                    <span class="cp-badge cp-badge--offline">Masqué</span>
+                    <span class="cp-badge cp-badge--offline">
+                      {{ cfg.hideLabel ? 'Désabonné' : 'Masqué' }}
+                    </span>
                   }
                 </td>
 
                 <td class="cp-table__actions">
-                  @if (canEdit()) {
+                  @if (canEdit() && !cfg.readOnly) {
                     <button type="button" class="cp-btn cp-btn--ghost" (click)="openEdit(row)">
                       Modifier
                     </button>
@@ -88,7 +105,7 @@
                         class="cp-btn cp-btn--danger"
                         (click)="askHide(row)"
                       >
-                        Retirer
+                        {{ cfg.hideLabel ?? 'Retirer' }}
                       </button>
                     } @else {
                       <button
@@ -96,7 +113,7 @@
                         class="cp-btn cp-btn--ghost"
                         (click)="confirmVisibility(row, true)"
                       >
-                        Remettre en ligne
+                        {{ cfg.hideLabel ? 'Réabonner' : 'Remettre en ligne' }}
                       </button>
                     }
                   }

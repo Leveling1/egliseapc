@@ -131,6 +131,41 @@ export class CpannelResourcePageComponent {
     });
   }
 
+  /**
+   * Export CSV de la liste complète.
+   *
+   * C'est la raison d'être d'une liste d'abonnés : pouvoir l'utiliser dans
+   * un outil d'envoi. Sans export, les adresses resteraient prisonnières du
+   * cpannel. Le fichier est fabriqué dans le navigateur, les données ne
+   * transitent donc par aucun tiers.
+   */
+  protected exportCsv(): void {
+    const config = this.configSignal();
+    if (!config) return;
+
+    const columns = config.columns.map((column) => column.key);
+    const header = config.columns.map((column) => column.label);
+
+    const escape = (value: unknown): string => {
+      const text = value === null || value === undefined ? '' : String(value);
+      // Guillemets doublés et champ encadré : une valeur contenant une
+      // virgule ou un retour à la ligne ne doit pas casser la colonne.
+      return `"${text.replace(/"/g, '""')}"`;
+    };
+
+    const rows = this.rows().map((row) => columns.map((key) => escape(row[key])).join(','));
+    // Le BOM fait qu'Excel ouvre le fichier en UTF-8 : sans lui, les accents
+    // arrivent illisibles.
+    const csv = '﻿' + [header.map(escape).join(','), ...rows].join('\r\n');
+
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${config.path}-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   protected async load(): Promise<void> {
     const config = this.configSignal();
     if (!config) return;
