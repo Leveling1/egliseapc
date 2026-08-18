@@ -51,6 +51,15 @@
         (click)="closeMenu()"
         >À propos</a
       >
+      @if (showResources()) {
+        <a
+          routerLink="/ressources"
+          routerLinkActive="apc-nav__link--active"
+          class="apc-nav__link"
+          (click)="closeMenu()"
+          >Ressources</a
+        >
+      }
       <a routerLink="/blog" routerLinkActive="apc-nav__link--active" class="apc-nav__link" (click)="closeMenu()"
         >Blog</a
       >

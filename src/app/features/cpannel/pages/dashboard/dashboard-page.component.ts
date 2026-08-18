@@ -65,6 +65,8 @@ export class CpannelDashboardPageComponent {
     programmes: 'Programmes',
     extensions: 'Extensions',
     users: 'Utilisateurs',
+    resources: 'Ressources',
+    settings: 'Paramètres',
   };
 
   constructor() {

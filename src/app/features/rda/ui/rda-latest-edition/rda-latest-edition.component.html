@@ -1,32 +1,79 @@
-<section class="apc-rda-latest" aria-labelledby="apc-rda-latest-title">
-  <div class="apc-rda-latest__inner">
-    <div class="apc-rda-latest__header">
-      <span class="apc-rda-latest__overline">Dernier événement</span>
-      <h2 id="apc-rda-latest-title" class="apc-rda-latest__title">
-        15ème édition — Les Ouvriers de la Dernière Heure
-      </h2>
-    </div>
+@if (edition(); as latest) {
+  <section class="apc-rda-latest" aria-labelledby="apc-rda-latest-title">
+    <div class="apc-rda-latest__inner">
+      <div class="apc-rda-latest__header">
+        <span class="apc-rda-latest__overline">Dernier événement</span>
+        <h2 id="apc-rda-latest-title" class="apc-rda-latest__title">{{ heading() }}</h2>
+      </div>
 
-    <div class="apc-rda-latest__card">
-      <button type="button" class="apc-rda-latest__video" aria-label="Voir le replay du Rassemblement des Aigles">
-        <span class="apc-rda-latest__play" aria-hidden="true">
-          <span class="apc-rda-latest__play-icon"></span>
-        </span>
-        <span class="apc-rda-latest__tag">Replay disponible</span>
-      </button>
-      <div class="apc-rda-latest__body">
-        <div class="apc-rda-latest__copy">
-          <h3 class="apc-rda-latest__card-title">Revivez le Rassemblement des Aigles</h3>
-          <p class="apc-rda-latest__card-text">
-            7 jours d'enseignements avec le Prophète Garry KENGE, le Prophète Placide MASESE, l'Apôtre
-            Sylvain OTAKA et l'Évangéliste Stéphane NKUNA.
-          </p>
-        </div>
-        <div class="apc-rda-latest__actions">
-          <a href="#" class="apc-rda-latest__btn apc-rda-latest__btn--primary">Voir le replay</a>
-          <a href="#" class="apc-rda-latest__btn apc-rda-latest__btn--outline">Galerie photos</a>
+      <div class="apc-rda-latest__card">
+        <!-- Le visuel n'est cliquable que s'il mène réellement quelque part :
+             un bouton de lecture sans replay disponible tromperait le visiteur. -->
+        @if (replayUrl(); as replay) {
+          <a
+            [href]="replay"
+            target="_blank"
+            rel="noopener"
+            class="apc-rda-latest__video"
+            [style.background-image]="cover() ? 'url(' + cover() + ')' : null"
+            aria-label="Voir le replay du Rassemblement des Aigles"
+          >
+            <span class="apc-rda-latest__play" aria-hidden="true">
+              <span class="apc-rda-latest__play-icon"></span>
+            </span>
+            <span class="apc-rda-latest__tag">Replay disponible</span>
+          </a>
+        } @else {
+          <div
+            class="apc-rda-latest__video apc-rda-latest__video--static"
+            [style.background-image]="cover() ? 'url(' + cover() + ')' : null"
+          ></div>
+        }
+
+        <div class="apc-rda-latest__body">
+          <div class="apc-rda-latest__copy">
+            <h3 class="apc-rda-latest__card-title">Revivez le Rassemblement des Aigles</h3>
+
+            @if (latest.description) {
+              <p class="apc-rda-latest__card-text">{{ latest.description }}</p>
+            } @else if (latest.speakers) {
+              <p class="apc-rda-latest__card-text">Avec {{ latest.speakers }}</p>
+            }
+
+            @if (latest.location || latest.year) {
+              <p class="apc-rda-latest__card-meta">
+                {{ latest.location }}@if (latest.location && latest.year) { · }{{ latest.year }}
+              </p>
+            }
+          </div>
+
+          @if (replayUrl() || extraLinks().length) {
+            <div class="apc-rda-latest__actions">
+              @if (replayUrl(); as replay) {
+                <a
+                  [href]="replay"
+                  target="_blank"
+                  rel="noopener"
+                  class="apc-rda-latest__btn apc-rda-latest__btn--primary"
+                >
+                  Voir le replay
+                </a>
+              }
+
+              @for (link of extraLinks(); track link.id) {
+                <a
+                  [href]="link.url"
+                  target="_blank"
+                  rel="noopener"
+                  class="apc-rda-latest__btn apc-rda-latest__btn--outline"
+                >
+                  {{ link.label || link.link_type_name }}
+                </a>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+}

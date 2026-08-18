@@ -1,0 +1,230 @@
+<div class="cpannel ae-page">
+  <header class="ae-bar">
+    <button type="button" class="ae-bar__back" (click)="close()">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" /></svg>
+      <span>Articles</span>
+    </button>
+
+    <div class="ae-bar__status">
+      @if (isVisible()) {
+        <span class="cp-badge cp-badge--online">En ligne</span>
+      } @else {
+        <span class="cp-badge cp-badge--neutral">Brouillon</span>
+      }
+
+      @if (savedAt()) {
+        <span class="ae-bar__saved">Enregistré à {{ savedAt() }}</span>
+      }
+    </div>
+
+    <div class="ae-bar__actions">
+      <button type="button" class="cp-btn cp-btn--ghost" (click)="togglePanel()">
+        Paramètres
+      </button>
+
+      <button
+        type="button"
+        class="cp-btn cp-btn--ghost"
+        [disabled]="saving()"
+        (click)="save()"
+      >
+        {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}
+      </button>
+
+      @if (canPublish()) {
+        @if (isVisible()) {
+          <button type="button" class="cp-btn cp-btn--danger" [disabled]="saving()" (click)="save(false)">
+            Retirer du site
+          </button>
+        } @else {
+          <button type="button" class="cp-btn cp-btn--primary" [disabled]="saving()" (click)="save(true)">
+            Publier
+          </button>
+        }
+      }
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="cp-alert--error ae-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="cp-muted ae-loading">Chargement…</p>
+  } @else {
+    <div class="ae-canvas">
+      <textarea
+        class="ae-title"
+        rows="1"
+        placeholder="Titre"
+        aria-label="Titre de l'article"
+        [ngModel]="title()"
+        (ngModelChange)="onTitle($event)"
+        [ngModelOptions]="{ standalone: true }"
+      ></textarea>
+
+      <div class="ae-meta">
+        <select
+          class="ae-meta__select"
+          aria-label="Catégorie de l'article"
+          [ngModel]="categoryId()"
+          (ngModelChange)="categoryId.set($event)"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <option value="">Choisir une catégorie</option>
+          @for (category of categories(); track category.id) {
+            <option [value]="category.id">{{ category.name }}</option>
+          }
+        </select>
+
+        <span class="ae-meta__sep" aria-hidden="true">·</span>
+
+        <span class="ae-meta__by">par</span>
+        <input
+          type="text"
+          class="ae-meta__author"
+          placeholder="Auteur"
+          aria-label="Auteur de l'article"
+          [ngModel]="authorName()"
+          (ngModelChange)="authorName.set($event)"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </div>
+
+      <app-article-editor
+        [initialHtml]="initialHtml()"
+        [imageUpload]="imageUploader"
+        (htmlChange)="onContentHtml($event)"
+        (textChange)="onContentText($event)"
+      />
+    </div>
+  }
+</div>
+
+@if (panelOpen()) {
+  <div class="cpannel ae-panel" role="dialog" aria-modal="true" aria-labelledby="ae-panel-title">
+    <div class="ae-panel__sheet">
+      <header class="cp-modal__head">
+        <h2 id="ae-panel-title" class="cp-modal__title">Paramètres de l'article</h2>
+        <button type="button" class="cp-modal__close" aria-label="Fermer" (click)="togglePanel()">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+        </button>
+      </header>
+
+      <div class="cp-modal__body">
+        <div class="cp-field">
+          <label class="cp-field__label" for="ae-slug">Adresse (slug)</label>
+          <input
+            id="ae-slug"
+            type="text"
+            class="cp-input"
+            [ngModel]="slug()"
+            (ngModelChange)="onSlug($event)"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <p class="cp-field__help">
+            Générée depuis le titre. Modifiez-la seulement si nécessaire : la changer
+            après publication casse les liens déjà partagés.
+          </p>
+        </div>
+
+        <div class="cp-field">
+          <div class="ae-field-head">
+            <label class="cp-field__label" for="ae-excerpt">Chapô</label>
+            <button type="button" class="ae-regen" (click)="regenerateExcerpt()">
+              Regénérer depuis le contenu
+            </button>
+          </div>
+          <textarea
+            id="ae-excerpt"
+            class="cp-input cp-input--area"
+            rows="3"
+            [ngModel]="excerpt()"
+            (ngModelChange)="onExcerpt($event)"
+            [ngModelOptions]="{ standalone: true }"
+          ></textarea>
+          <p class="cp-field__help">
+            Rédigé automatiquement à partir de votre premier paragraphe, et modifiable.
+          </p>
+        </div>
+
+        <div class="cp-field">
+          <label class="cp-field__label">Image de couverture</label>
+          <app-cp-image-field
+            [value]="coverPath()"
+            recommended="1200 × 630 px (format paysage)"
+            (valueChange)="coverPath.set($event)"
+          />
+
+          @if (coverIsFromVideo()) {
+            <div class="ae-fallback">
+              <img [src]="effectiveCover()" alt="" class="ae-fallback__thumb" />
+              <p class="ae-fallback__text">
+                Aucune image envoyée : la miniature de la vidéo YouTube jointe sera
+                utilisée. Envoyez une image pour la remplacer.
+              </p>
+            </div>
+          }
+        </div>
+
+        <div class="cp-field">
+          <label class="cp-field__label">Liens</label>
+          <app-cp-link-list
+            [links]="links()"
+            [linkTypes]="linkTypes()"
+            (linksChange)="onLinks($event)"
+          />
+          <p class="cp-field__help">
+            Vidéo du culte, publication Facebook, etc. Un lien YouTube sert aussi de
+            couverture si aucune image n'est envoyée.
+          </p>
+        </div>
+
+        <div class="cp-field">
+          <label class="cp-field__label" for="ae-initials">Initiales</label>
+          <input
+            id="ae-initials"
+            type="text"
+            class="cp-input"
+            placeholder="GK"
+            [ngModel]="authorInitials()"
+            (ngModelChange)="authorInitials.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+
+        <div class="cp-field">
+          <label class="cp-field__label">Mise en avant</label>
+          <label class="cp-switch">
+            <input type="checkbox" [checked]="isFeatured()" (change)="toggleFeatured()" />
+            <span>Afficher cet article à la une</span>
+          </label>
+          <p class="cp-field__help">
+            Sans article explicitement mis à la une, le blog affiche le dernier publié.
+          </p>
+        </div>
+
+        <div class="cp-field">
+          <label class="cp-field__label" for="ae-published">Date de publication</label>
+          <input
+            id="ae-published"
+            type="date"
+            class="cp-input"
+            [ngModel]="publishedAt()"
+            (ngModelChange)="publishedAt.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <p class="cp-field__help">
+            Renseignée automatiquement lors de la mise en ligne, et modifiable ensuite.
+          </p>
+        </div>
+      </div>
+
+      <footer class="cp-modal__footer">
+        <button type="button" class="cp-btn cp-btn--primary" (click)="togglePanel()">
+          Terminé
+        </button>
+      </footer>
+    </div>
+  </div>
+}

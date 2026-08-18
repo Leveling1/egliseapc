@@ -12,7 +12,8 @@ import { RouterLink } from '@angular/router';
 export class ArticleCardComponent {
   readonly slug = input.required<string>();
   readonly category = input.required<string>();
-  readonly gradient = input.required<string>();
+  /** Valeur CSS complète : image de couverture ou dégradé de repli. */
+  readonly background = input.required<string>();
   readonly title = input.required<string>();
   readonly excerpt = input.required<string>();
   readonly date = input.required<string>();

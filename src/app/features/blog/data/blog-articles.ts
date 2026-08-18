@@ -1,3 +1,9 @@
+// PLUS UTILISE PAR L'APPLICATION.
+//
+// Le site lit désormais les articles depuis Supabase (vue articles_public).
+// Ce fichier reste la source d'amorçage : scripts/generate-seed-sql.mjs le
+// transpile pour produire le SQL d'insertion initial. Le modifier n'a plus
+// aucun effet sur le site — passez par le cpannel.
 export interface BlogArticle {
   readonly slug: string;
   readonly category: string;

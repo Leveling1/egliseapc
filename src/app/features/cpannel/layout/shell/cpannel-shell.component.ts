@@ -28,6 +28,7 @@ export class CpannelShellComponent {
   );
 
   protected readonly canManageUsers = computed(() => this.auth.can('users', 'view'));
+  protected readonly canManageSettings = computed(() => this.auth.can('settings', 'view'));
 
   protected toggleRail(): void {
     this.railOpen.update((open) => !open);

@@ -1,0 +1,149 @@
+:host {
+  display: block;
+}
+
+/* Le conteneur est le repère de positionnement du bouton « + », qui est
+   placé en absolu à la hauteur de la ligne courante. */
+.ae-root {
+  position: relative;
+}
+
+/* ---------- Zone de saisie ----------
+   Colonne de lecture confortable et typographie généreuse : on écrit dans
+   quelque chose qui ressemble déjà à l'article publié, pas dans un
+   formulaire. */
+:host ::ng-deep .ql-container {
+  border: none;
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.8;
+  color: var(--cp-ink);
+}
+
+:host ::ng-deep .ql-editor {
+  padding: 0;
+  min-height: 320px;
+}
+
+:host ::ng-deep .ql-editor.ql-blank::before {
+  left: 0;
+  right: 0;
+  font-style: normal;
+  color: var(--cp-ink-muted);
+}
+
+:host ::ng-deep .ql-editor p {
+  margin: 0 0 24px;
+}
+
+:host ::ng-deep .ql-editor h2 {
+  margin: 40px 0 12px;
+  font: 600 27px var(--font-heading);
+  letter-spacing: -0.5px;
+}
+
+:host ::ng-deep .ql-editor h3 {
+  margin: 32px 0 10px;
+  font: 600 21px var(--font-heading);
+}
+
+:host ::ng-deep .ql-editor blockquote {
+  margin: 28px 0;
+  padding-left: 20px;
+  border-left: 3px solid var(--cp-accent);
+  border-radius: 0;
+  color: var(--cp-ink-soft);
+  font-style: italic;
+}
+
+:host ::ng-deep .ql-editor img {
+  display: block;
+  max-width: 100%;
+  margin: 28px auto;
+  border-radius: var(--cp-radius-control);
+}
+
+:host ::ng-deep .ql-editor a {
+  color: var(--cp-accent);
+  text-decoration: underline;
+}
+
+/* ---------- Barre flottante de sélection ---------- */
+:host ::ng-deep .ql-bubble .ql-tooltip {
+  background: var(--cp-ink);
+  border-radius: var(--cp-radius-control);
+}
+
+:host ::ng-deep .ql-bubble .ql-stroke {
+  stroke: #fff;
+}
+
+:host ::ng-deep .ql-bubble .ql-fill {
+  fill: #fff;
+}
+
+:host ::ng-deep .ql-bubble .ql-active .ql-stroke {
+  stroke: var(--color-apc-yellow, #ffe600);
+}
+
+/* ---------- Bouton « + » d'insertion ---------- */
+.ae-inserter {
+  position: absolute;
+  left: -52px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ae-inserter__btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--cp-line);
+  border-radius: 50%;
+  background: var(--cp-surface);
+  color: var(--cp-ink-soft);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.18s, border-color 0.18s;
+}
+
+.ae-inserter__btn:hover {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+  transform: rotate(90deg);
+}
+
+.ae-inserter__menu {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow);
+}
+
+.ae-inserter__menu button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.ae-inserter__menu button:hover {
+  background: var(--cp-accent-soft);
+}
+
+/* Sous cette largeur il n'y a plus de marge à gauche pour loger le bouton :
+   on le ramène dans la colonne de texte plutôt que de le laisser sortir de
+   l'écran. */
+@media (max-width: 860px) {
+  .ae-inserter {
+    left: 0;
+  }
+}

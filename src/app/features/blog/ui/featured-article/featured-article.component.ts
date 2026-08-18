@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { FEATURED_ARTICLE } from '../../data/blog-articles';
+import type { ArticleView } from '../../data/article-view';
 
 @Component({
   selector: 'app-featured-article',
@@ -12,5 +12,6 @@ import { FEATURED_ARTICLE } from '../../data/blog-articles';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeaturedArticleComponent {
-  protected readonly article = FEATURED_ARTICLE;
+  /** L'article le plus récent, choisi par la page qui affiche ce composant. */
+  readonly article = input.required<ArticleView>();
 }

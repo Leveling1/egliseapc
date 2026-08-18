@@ -1,0 +1,49 @@
+<div class="cp-links">
+  @if (links().length === 0) {
+    <p class="cp-links__empty">Aucun lien pour l'instant.</p>
+  }
+
+  @for (link of links(); track $index) {
+    <div class="cp-links__row">
+      <select
+        class="cp-input cp-links__type"
+        [value]="link.link_type_id"
+        (change)="onType($index, $event)"
+        aria-label="Type de lien"
+      >
+        @for (type of linkTypes(); track type.id) {
+          <option [value]="type.id">{{ type.name }}</option>
+        }
+      </select>
+
+      <input
+        type="url"
+        class="cp-input cp-links__url"
+        placeholder="https://…"
+        [value]="link.url"
+        (input)="onUrl($index, $event)"
+        aria-label="Adresse du lien"
+      />
+
+      <input
+        type="text"
+        class="cp-input cp-links__label"
+        placeholder="Libellé (facultatif)"
+        [value]="link.label"
+        (input)="onLabel($index, $event)"
+        aria-label="Libellé du lien"
+      />
+
+      <button
+        type="button"
+        class="cp-links__remove"
+        aria-label="Retirer ce lien"
+        (click)="remove($index)"
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+      </button>
+    </div>
+  }
+
+  <button type="button" class="cp-links__add" (click)="add()">+ Ajouter un lien</button>
+</div>

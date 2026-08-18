@@ -31,14 +31,14 @@ export class CpannelDataService {
   async list(config: ModuleConfig): Promise<ContentRow[]> {
     const { data, error } = await this.supabase
       .from(config.table)
-      .select('*')
+      .select(config.listSelect ?? '*')
       .order(config.orderBy.column, {
         ascending: config.orderBy.ascending,
         nullsFirst: false,
       });
 
     if (error) throw new Error(error.message);
-    return (data ?? []) as ContentRow[];
+    return (data ?? []) as unknown as ContentRow[];
   }
 
   async create(config: ModuleConfig, values: Record<string, unknown>): Promise<ContentRow> {

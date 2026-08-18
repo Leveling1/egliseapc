@@ -2,19 +2,27 @@
 
 <main>
   <app-blog-hero />
-  <app-featured-article />
+  @if (featured(); as article) {
+    <app-featured-article [article]="article" />
+  }
 
-  <div class="apc-blog-filters">
-    <app-filter-bar [filters]="filters" searchPlaceholder="Rechercher…" />
-  </div>
+  @if (showFilters()) {
+    <div class="apc-blog-filters">
+      <app-filter-bar
+        [filters]="categories()"
+        searchPlaceholder="Rechercher…"
+        (filterChange)="onCategoryChange($event)"
+      />
+    </div>
+  }
 
   <div class="apc-blog-grid-wrap">
     <div class="apc-blog-grid">
-      @for (article of articles; track article.slug) {
+      @for (article of articles(); track article.slug) {
         <app-article-card
           [slug]="article.slug"
           [category]="article.category"
-          [gradient]="article.gradient"
+          [background]="article.background"
           [title]="article.title"
           [excerpt]="article.excerpt"
           [date]="article.date"

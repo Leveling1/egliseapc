@@ -1,0 +1,199 @@
+<div class="cp-set">
+  <header class="cp-set__head">
+    <h2 class="cp-set__title">Paramètres</h2>
+    <p class="cp-set__hint">
+      Les listes prédéfinies proposées dans les formulaires du cpannel. Un élément
+      masqué n'est plus proposé à la saisie, mais reste attaché aux contenus qui
+      l'utilisent déjà — rien n'est supprimé.
+    </p>
+  </header>
+
+  @if (error()) {
+    <p class="cp-alert--error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="cp-muted">Chargement…</p>
+  } @else {
+    <div class="cp-set__grid">
+      <section class="cp-card cp-set__block" aria-labelledby="cp-cat-title">
+        <h3 id="cp-cat-title" class="cp-set__block-title">Catégories d'articles</h3>
+        <p class="cp-set__block-hint">Proposées lors de la rédaction d'un article.</p>
+
+        @if (canEdit()) {
+          <div class="cp-set__add">
+            <input
+              type="text"
+              class="cp-input"
+              placeholder="Nouvelle catégorie"
+              aria-label="Nom de la nouvelle catégorie"
+              [ngModel]="newCategory()"
+              (ngModelChange)="newCategory.set($event)"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <button type="button" class="cp-btn cp-btn--primary" (click)="addCategory()">
+              Ajouter
+            </button>
+          </div>
+        }
+
+        <ul class="cp-set__list">
+          @for (row of categories(); track row.id) {
+            <li class="cp-set__row" [class.cp-set__row--hidden]="!row.is_visible">
+              <input
+                type="text"
+                class="cp-input cp-set__name"
+                [value]="row.name"
+                [disabled]="!canEdit()"
+                (change)="onRename('categories', row, $event)"
+                [attr.aria-label]="'Nom de la catégorie ' + row.name"
+              />
+
+              @if (canPublish()) {
+                @if (row.is_visible) {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--danger"
+                    (click)="setVisible('categories', row, false)"
+                  >
+                    Masquer
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--ghost"
+                    (click)="setVisible('categories', row, true)"
+                  >
+                    Réafficher
+                  </button>
+                }
+              }
+            </li>
+          } @empty {
+            <li class="cp-set__empty">Aucune catégorie.</li>
+          }
+        </ul>
+      </section>
+
+      <section class="cp-card cp-set__block" aria-labelledby="cp-link-title">
+        <h3 id="cp-link-title" class="cp-set__block-title">Types de liens</h3>
+        <p class="cp-set__block-hint">
+          Proposés pour les liens des articles et des extensions. Un lien de type
+          YouTube sert aussi de couverture automatique.
+        </p>
+
+        @if (canEdit()) {
+          <div class="cp-set__add">
+            <input
+              type="text"
+              class="cp-input"
+              placeholder="Nouveau type (ex. Telegram)"
+              aria-label="Nom du nouveau type de lien"
+              [ngModel]="newLinkTypeName()"
+              (ngModelChange)="newLinkTypeName.set($event)"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <button type="button" class="cp-btn cp-btn--primary" (click)="addLinkType()">
+              Ajouter
+            </button>
+          </div>
+        }
+
+        <ul class="cp-set__list">
+          @for (row of linkTypes(); track row.id) {
+            <li class="cp-set__row" [class.cp-set__row--hidden]="!row.is_visible">
+              <input
+                type="text"
+                class="cp-input cp-set__name"
+                [value]="row.name"
+                [disabled]="!canEdit()"
+                (change)="onRename('linkTypes', row, $event)"
+                [attr.aria-label]="'Nom du type ' + row.name"
+              />
+              <code class="cp-set__code">{{ row.code }}</code>
+
+              @if (canPublish()) {
+                @if (row.is_visible) {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--danger"
+                    (click)="setVisible('linkTypes', row, false)"
+                  >
+                    Masquer
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--ghost"
+                    (click)="setVisible('linkTypes', row, true)"
+                  >
+                    Réafficher
+                  </button>
+                }
+              }
+            </li>
+          } @empty {
+            <li class="cp-set__empty">Aucun type de lien.</li>
+          }
+        </ul>
+      </section>
+      <section class="cp-card cp-set__block" aria-labelledby="cp-status-title">
+        <h3 id="cp-status-title" class="cp-set__block-title">Statuts de livre</h3>
+        <p class="cp-set__block-hint">Proposés lors de la création d'un livre dans la page Ressources.</p>
+
+        @if (canEdit()) {
+          <div class="cp-set__add">
+            <input
+              type="text"
+              class="cp-input"
+              placeholder="Nouveau statut (ex. Épuisé)"
+              aria-label="Nom du nouveau statut"
+              [ngModel]="newBookStatus()"
+              (ngModelChange)="newBookStatus.set($event)"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <button type="button" class="cp-btn cp-btn--primary" (click)="addBookStatus()">
+              Ajouter
+            </button>
+          </div>
+        }
+
+        <ul class="cp-set__list">
+          @for (row of bookStatuses(); track row.id) {
+            <li class="cp-set__row" [class.cp-set__row--hidden]="!row.is_visible">
+              <input
+                type="text"
+                class="cp-input cp-set__name"
+                [value]="row.name"
+                [disabled]="!canEdit()"
+                (change)="onRename('bookStatuses', row, $event)"
+                [attr.aria-label]="'Nom du statut ' + row.name"
+              />
+              @if (canPublish()) {
+                @if (row.is_visible) {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--danger"
+                    (click)="setVisible('bookStatuses', row, false)"
+                  >
+                    Masquer
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--ghost"
+                    (click)="setVisible('bookStatuses', row, true)"
+                  >
+                    Réafficher
+                  </button>
+                }
+              }
+            </li>
+          } @empty {
+            <li class="cp-set__empty">Aucun statut.</li>
+          }
+        </ul>
+      </section>
+    </div>
+  }
+</div>

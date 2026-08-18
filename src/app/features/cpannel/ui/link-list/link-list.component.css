@@ -1,0 +1,78 @@
+:host {
+  display: block;
+}
+
+.cp-links__empty {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-links__row {
+  display: grid;
+  grid-template-columns: 140px 1fr 150px 34px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cp-links__remove {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cp-surface-muted);
+  color: var(--cp-ink-soft);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+/* Retirer un lien avant enregistrement ne détruit rien de publié : le rouge
+   n'apparaît qu'au survol, pour rester cohérent sans alarmer. */
+.cp-links__remove:hover {
+  background: var(--cp-danger-soft);
+  color: var(--cp-danger);
+}
+
+.cp-links__remove svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+.cp-links__add {
+  margin-top: 4px;
+  padding: 8px 14px;
+  border: 1px dashed var(--cp-accent-border);
+  border-radius: var(--cp-radius-control);
+  background: transparent;
+  color: var(--cp-accent);
+  font: 500 12.5px var(--font-heading);
+  cursor: pointer;
+}
+
+.cp-links__add:hover {
+  background: var(--cp-accent-softer);
+}
+
+@media (max-width: 700px) {
+  .cp-links__row {
+    grid-template-columns: 1fr 34px;
+    grid-template-areas:
+      'type remove'
+      'url url'
+      'label label';
+    gap: 6px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cp-line);
+  }
+
+  .cp-links__type { grid-area: type; }
+  .cp-links__url { grid-area: url; }
+  .cp-links__label { grid-area: label; }
+  .cp-links__remove { grid-area: remove; }
+}

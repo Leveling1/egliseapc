@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.cp-imglist__item {
+  margin-bottom: 12px;
+}
+
+.cp-imglist__add {
+  padding: 8px 14px;
+  border: 1px dashed var(--cp-accent-border);
+  border-radius: var(--cp-radius-control);
+  background: transparent;
+  color: var(--cp-accent);
+  font: 500 12.5px var(--font-heading);
+  cursor: pointer;
+}
+
+.cp-imglist__add:hover {
+  background: var(--cp-accent-softer);
+}

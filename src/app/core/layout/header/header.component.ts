@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { PublicContentService } from '../../content/public-content.service';
+
 /**
  * Reflects three distinct nav stylings found across the source mockups:
  * - 'home'    : Accueil — Helvetica, white text @ .85 opacity, yellow underline
@@ -18,11 +20,22 @@ export type HeaderVariant = 'home' | 'overlay' | 'light';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  private readonly content = inject(PublicContentService);
+
+  /** Le lien « Ressources » n'apparaît que si la page a du contenu. */
+  protected readonly showResources = this.content.resourcesAvailable;
+
   readonly variant = input<HeaderVariant>('overlay');
 
   private readonly elementRef = inject(ElementRef);
 
   protected readonly menuOpen = signal(false);
+
+  constructor() {
+    // Une seule interrogation pour tout le site : le service met le résultat
+    // en cache et le pied de page réutilise le même signal.
+    void this.content.ensureResourcesProbe();
+  }
 
   protected toggleMenu(): void {
     this.menuOpen.update((open) => !open);

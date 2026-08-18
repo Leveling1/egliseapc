@@ -1,0 +1,58 @@
+@if (previewUrl(); as url) {
+  <div class="cp-img">
+    <img [src]="url" alt="" class="cp-img__preview" />
+
+    <div class="cp-img__actions">
+      <label class="cp-img__replace">
+        <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" (change)="onPick($event)" />
+        <span>Remplacer</span>
+      </label>
+      <button type="button" class="cp-img__remove" (click)="clear()">Retirer</button>
+    </div>
+  </div>
+} @else {
+  <label
+    class="cp-drop"
+    [class.cp-drop--over]="dragging()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input
+      type="file"
+      class="cp-drop__input"
+      accept="image/jpeg,image/png,image/webp,image/avif"
+      (change)="onPick($event)"
+    />
+
+    <svg class="cp-drop__icon" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="6" y="9" width="36" height="30" rx="4" />
+      <circle cx="17" cy="20" r="3.5" />
+      <path d="M9 34l10-10 8 8 6-5 6 6" />
+    </svg>
+
+    @if (uploading()) {
+      <p class="cp-drop__title">Envoi en cours…</p>
+    } @else {
+      <p class="cp-drop__title">
+        Déposez votre image ici, ou <span class="cp-drop__browse">parcourez</span>
+      </p>
+    }
+
+    <p class="cp-drop__meta">
+      Formats acceptés : JPG, PNG, WebP, AVIF — 10 Mo maximum
+    </p>
+
+    @if (recommended()) {
+      <p class="cp-drop__reco">Dimensions conseillées : {{ recommended() }}</p>
+    }
+  </label>
+}
+
+@if (hint()) {
+  <p class="cp-img__hint">{{ hint() }}</p>
+}
+
+@if (error()) {
+  <p class="cp-img__error" role="alert">{{ error() }}</p>
+}

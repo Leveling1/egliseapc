@@ -61,28 +61,6 @@
   color: var(--cp-ink-muted);
 }
 
-/* ---------- Champs du formulaire ---------- */
-.cp-field {
-  margin-top: 18px;
-}
-
-.cp-field__label {
-  display: block;
-  margin-bottom: 6px;
-  font: 500 13px var(--font-heading);
-}
-
-.cp-field__required {
-  color: var(--cp-accent);
-}
-
-.cp-field__help {
-  margin: 6px 0 0;
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--cp-ink-muted);
-}
-
 /* ---------- Sélection des jours ----------
    Cocher/décocher plutôt qu'une règle d'exclusion : « du lundi au dimanche
    sauf le samedi » se saisit en laissant samedi décoché. */
@@ -149,4 +127,41 @@
     min-width: 0;
     flex: 1;
   }
+}
+
+/* Retour de la recherche de coordonnées : information, jamais un blocage —
+   la latitude et la longitude restent saisissables à la main. */
+.cp-geo {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cp-ink-soft);
+}
+
+.cp-geo--busy {
+  color: var(--cp-accent);
+}
+
+/* Interrupteur d'un champ booléen. Le libellé est répété à l'intérieur du
+   contrôle pour agrandir la zone cliquable — les cases à cocher seules sont
+   pénibles à viser, en particulier au doigt. */
+.cp-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--cp-line);
+  border-radius: var(--cp-radius-control);
+  font: 400 13.5px var(--font-body);
+  cursor: pointer;
+}
+
+.cp-switch:has(input:checked) {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+}
+
+.cp-switch input {
+  accent-color: var(--cp-accent);
 }

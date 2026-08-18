@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
-interface ProgramScheduleEntry {
-  readonly day: string;
-  readonly title: string;
-  readonly time: string;
-  readonly background: string;
-  readonly featured?: boolean;
-  readonly compactDayLabel?: boolean;
-}
+import { PublicContentService } from '../../../../core/content/public-content.service';
+import {
+  sortProgrammes,
+  toProgrammeRow,
+  type ProgrammeRow,
+} from '../../../../core/content/programme-format';
+import type { OraclePublic } from '../../../../core/supabase/database.types';
 
 @Component({
   selector: 'app-programs',
@@ -17,38 +16,44 @@ interface ProgramScheduleEntry {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgramsComponent {
-  protected readonly schedule: readonly ProgramScheduleEntry[] = [
-    {
-      day: 'Lundi',
-      title: "Culte d'enseignement",
-      time: '17h00 – 19h00',
-      background: 'rgba(255,255,255,.08)',
-    },
-    {
-      day: 'Mercredi',
-      title: 'Réunion des femmes',
-      time: '16h30 – 18h30',
-      background: 'rgba(255,255,255,.02)',
-    },
-    {
-      day: 'Jeudi',
-      title: "Culte d'intercession",
-      time: '16h30 – 19h00',
-      background: 'rgba(255,255,255,.08)',
-    },
-    {
-      day: 'Dimanche',
-      title: "Culte de louange et d'action de grâce",
-      time: '08h00 – 10h30',
-      background: 'linear-gradient(135deg,#1C1C8C,#1C1C8C)',
-      featured: true,
-    },
-    {
-      day: 'Lun. – Ven.',
-      title: 'Prière matinale',
-      time: '05h50 – 06h50',
-      background: 'rgba(255,255,255,.02)',
-      compactDayLabel: true,
-    },
-  ];
+  private readonly content = inject(PublicContentService);
+
+  protected readonly schedule = signal<readonly ProgrammeRow[]>([]);
+
+  /**
+   * Oracle de l'année en cours uniquement.
+   *
+   * Si l'année n'a pas encore le sien, le bloc disparaît : afficher celui
+   * d'une année passée sous l'intitulé « Oracle 2026 » serait faux.
+   */
+  protected readonly oracle = signal<OraclePublic | null>(null);
+
+  constructor() {
+    void this.load();
+  }
+
+  /**
+   * Fond de chaque ligne : le programme mis en avant prend la couleur de la
+   * charte, les autres alternent deux voiles très légers. C'est une décision
+   * d'affichage, elle n'a pas à être stockée en base.
+   */
+  protected background(row: ProgrammeRow, index: number): string {
+    if (row.featured) return 'linear-gradient(135deg,#1C1C8C,#1C1C8C)';
+    return index % 2 === 0 ? 'rgba(255,255,255,.08)' : 'rgba(255,255,255,.02)';
+  }
+
+  protected readonly oracleTitle = computed(() => {
+    const oracle = this.oracle();
+    return oracle ? `Oracle ${oracle.year} — ${oracle.title}` : '';
+  });
+
+  private async load(): Promise<void> {
+    const [programmes, oracle] = await Promise.all([
+      this.content.programmes(),
+      this.content.currentOracle(),
+    ]);
+
+    this.schedule.set(sortProgrammes(programmes.map(toProgrammeRow)));
+    this.oracle.set(oracle);
+  }
 }

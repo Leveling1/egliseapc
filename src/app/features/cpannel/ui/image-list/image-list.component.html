@@ -1,0 +1,13 @@
+<div class="cp-imglist">
+  @for (path of paths(); track $index) {
+    <div class="cp-imglist__item">
+      <app-cp-image-field
+        [value]="path"
+        [recommended]="recommended()"
+        (valueChange)="update($index, $event)"
+      />
+    </div>
+  }
+
+  <button type="button" class="cp-imglist__add" (click)="add()">+ Ajouter une image</button>
+</div>

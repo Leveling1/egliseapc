@@ -1,20 +1,19 @@
 <div class="apc-featured-wrap">
-  <a [routerLink]="['/blog', article.slug]" class="apc-featured-article">
-    <div class="apc-featured-article__media" [style.background]="article.gradient">
-      <span class="apc-featured-article__media-label">image article vedette</span>
+  <a [routerLink]="['/blog', article().slug]" class="apc-featured-article">
+    <div class="apc-featured-article__media" [style.background]="article().background">
       <span class="apc-featured-article__tag">À la une</span>
     </div>
     <div class="apc-featured-article__body">
       <div class="apc-featured-article__category">
-        <span>{{ article.category }}</span>
+        <span>{{ article().category }}</span>
       </div>
-      <h2 class="apc-featured-article__title">{{ article.title }}</h2>
-      <p class="apc-featured-article__excerpt">{{ article.excerpt }}</p>
+      <h2 class="apc-featured-article__title">{{ article().title }}</h2>
+      <p class="apc-featured-article__excerpt">{{ article().excerpt }}</p>
       <div class="apc-featured-article__author">
-        <span class="apc-featured-article__avatar" aria-hidden="true">{{ article.authorInitials }}</span>
+        <span class="apc-featured-article__avatar" aria-hidden="true">{{ article().authorInitials }}</span>
         <div>
-          <span class="apc-featured-article__author-name">{{ article.authorName }}</span><br />
-          <span class="apc-featured-article__meta">{{ article.date }} · {{ article.readingTime }}</span>
+          <span class="apc-featured-article__author-name">{{ article().authorName }}</span><br />
+          <span class="apc-featured-article__meta">{{ article().date }}</span>
         </div>
       </div>
       <div class="apc-featured-article__cta-row">

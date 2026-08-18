@@ -101,3 +101,14 @@
   color: #666;
   margin: 0;
 }
+
+.apc-book__link {
+  display: inline-block;
+  margin-top: 12px;
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+}
+
+.apc-book__link:hover {
+  text-decoration: underline;
+}

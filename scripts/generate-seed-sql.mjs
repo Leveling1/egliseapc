@@ -50,18 +50,32 @@ const qArray = (values) =>
   `ARRAY[${values.map((v) => `'${String(v).replace(/'/g, "''")}'`).join(',\n    ')}]::text[]`;
 
 /**
- * Les dates du fichier source sont en français (« 28 juillet 2026 »).
- * Postgres attend une date ISO.
+ * Les dates du fichier source sont en français, tantôt en toutes lettres
+ * (« 28 juillet 2026 »), tantôt abrégées (« 24 juil. 2026 »). Postgres attend
+ * une date ISO. Ne reconnaître que la forme longue laissait six articles sur
+ * sept sans date.
  */
 const MONTHS = {
-  janvier: '01', février: '02', mars: '03', avril: '04', mai: '05', juin: '06',
-  juillet: '07', août: '08', septembre: '09', octobre: '10', novembre: '11', décembre: '12',
+  janvier: '01', fevrier: '02', mars: '03', avril: '04', mai: '05', juin: '06',
+  juillet: '07', aout: '08', septembre: '09', octobre: '10', novembre: '11', decembre: '12',
 };
+
+/** Retire accents et point d'abréviation, puis reconnaît le préfixe du mois. */
+function monthNumber(raw) {
+  const normalized = raw
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/.$/, '')
+    .toLowerCase();
+
+  const match = Object.keys(MONTHS).find((name) => name.startsWith(normalized));
+  return match ? MONTHS[match] : null;
+}
 
 function toIsoDate(french) {
   const match = /^(\d{1,2})\s+([^\s]+)\s+(\d{4})$/.exec(String(french).trim());
   if (!match) return null;
-  const month = MONTHS[match[2].toLowerCase()];
+  const month = monthNumber(match[2]);
   if (!month) return null;
   return `${match[3]}-${month}-${match[1].padStart(2, '0')}`;
 }

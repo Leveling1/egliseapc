@@ -190,6 +190,20 @@
                 }
 
                 @case ('select') {
+                  @if (field.optionsFrom) {
+                    <select
+                      [id]="'cp-' + field.key"
+                      class="cp-input"
+                      [ngModel]="fieldValue(field.key)"
+                      (ngModelChange)="setFieldValue(field.key, $event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    >
+                      <option value="">—</option>
+                      @for (option of optionsFor(field); track option.id) {
+                        <option [value]="option.id">{{ option.name }}</option>
+                      }
+                    </select>
+                  } @else {
                   <select
                     [id]="'cp-' + field.key"
                     class="cp-input"
@@ -202,6 +216,37 @@
                       <option [value]="option.value">{{ option.label }}</option>
                     }
                   </select>
+                  }
+                }
+
+                @case ('boolean') {
+                  <label class="cp-switch">
+                    <input
+                      type="checkbox"
+                      [checked]="isChecked(field.key)"
+                      (change)="toggleBoolean(field.key)"
+                    />
+                    <span>{{ field.label }}</span>
+                  </label>
+                }
+
+                @case ('lines') {
+                  <textarea
+                    [id]="'cp-' + field.key"
+                    class="cp-input cp-input--area"
+                    rows="5"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></textarea>
+                }
+
+                @case ('images') {
+                  <app-cp-image-list
+                    [paths]="imagePaths(field.key)"
+                    [recommended]="field.recommended ?? ''"
+                    (pathsChange)="setImagePaths(field.key, $event)"
+                  />
                 }
 
                 @case ('weekdays') {
@@ -220,32 +265,19 @@
                 }
 
                 @case ('image') {
-                  <div class="cp-image">
-                    @if (imageUrl(field.key); as url) {
-                      <img [src]="url" alt="" class="cp-image__preview" />
-                    }
+                  <app-cp-image-field
+                    [value]="fieldValue(field.key)"
+                    [recommended]="field.recommended ?? ''"
+                    (valueChange)="setFieldValue(field.key, $event)"
+                  />
+                }
 
-                    <div class="cp-image__controls">
-                      <input
-                        type="file"
-                        [id]="'cp-' + field.key"
-                        class="cp-image__input"
-                        accept="image/jpeg,image/png,image/webp,image/avif"
-                        (change)="onImageSelected(field, $event)"
-                      />
-                      @if (uploading() === field.key) {
-                        <span class="cp-image__status">Envoi en cours…</span>
-                      } @else if (fieldValue(field.key)) {
-                        <button
-                          type="button"
-                          class="cp-btn cp-btn--ghost"
-                          (click)="setFieldValue(field.key, '')"
-                        >
-                          Retirer l'image
-                        </button>
-                      }
-                    </div>
-                  </div>
+                @case ('links') {
+                  <app-cp-link-list
+                    [links]="links()"
+                    [linkTypes]="linkTypes()"
+                    (linksChange)="onLinks($event)"
+                  />
                 }
 
                 @case ('date') {
@@ -291,8 +323,17 @@
                     [placeholder]="field.placeholder ?? ''"
                     [ngModel]="fieldValue(field.key)"
                     (ngModelChange)="setFieldValue(field.key, $event)"
+                    (blur)="geocodeAddress(field)"
                     [ngModelOptions]="{ standalone: true }"
                   />
+
+                  @if (field.geocodeTo) {
+                    @if (geocoding_()) {
+                      <p class="cp-geo cp-geo--busy">Recherche des coordonnées…</p>
+                    } @else if (geocodeStatus()) {
+                      <p class="cp-geo">{{ geocodeStatus() }}</p>
+                    }
+                  }
                 }
               }
 
@@ -319,7 +360,7 @@
           <button
             type="button"
             class="cp-btn cp-btn--primary"
-            [disabled]="saving() || uploading() !== null"
+            [disabled]="saving()"
             (click)="save()"
           >
             {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}

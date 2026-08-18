@@ -2,22 +2,29 @@
   <div class="apc-book__cover-wrap">
     <div
       class="apc-book__cover"
-      [style.background]="coverGradient()"
+      [style.background]="coverUrl() ? 'center / cover no-repeat url(' + coverUrl() + ')' : coverGradient()"
       [style.transform]="'rotate(' + coverRotation() + ')'"
     >
+      @if (!coverUrl()) {
       <div class="apc-book__cover-inner">
         <div class="apc-book__cover-icon" aria-hidden="true"><span>✝</span></div>
-        <span class="apc-book__cover-title">Titre du<br />livre</span>
+        <span class="apc-book__cover-title">{{ title() }}</span>
         <div class="apc-book__cover-divider" aria-hidden="true"></div>
         <span class="apc-book__cover-author">Prophète Garry KENGE</span>
       </div>
+      }
     </div>
   </div>
   <div class="apc-book__body">
-    <span class="apc-book__badge" [class.apc-book__badge--light]="badgeVariant() === 'light'">
-      {{ badgeLabel() }}
-    </span>
+    @if (badgeLabel()) {
+      <span class="apc-book__badge" [class.apc-book__badge--light]="badgeVariant() === 'light'">
+        {{ badgeLabel() }}
+      </span>
+    }
     <h3 class="apc-book__title">{{ title() }}</h3>
     <p class="apc-book__text">{{ description() }}</p>
+    @if (linkUrl(); as link) {
+      <a [href]="link" target="_blank" rel="noopener" class="apc-book__link">En savoir plus →</a>
+    }
   </div>
 </article>

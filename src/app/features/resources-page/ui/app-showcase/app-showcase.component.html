@@ -1,51 +1,84 @@
 <section class="apc-app">
   <div class="apc-app__card">
-    <!-- Phone mockup -->
     <div class="apc-app__phone-wrap">
-      <div class="apc-app__phone">
-        <div class="apc-app__phone-icon" aria-hidden="true">
-          <span>✝</span>
+      @if (screenshots().length) {
+        <!-- Vraies captures dès qu'il y en a ; la maquette dessinée n'était
+             qu'un pis-aller en attendant. -->
+        <div class="apc-app__shots">
+          @for (shot of screenshots(); track shot) {
+            <img [src]="shot" [alt]="'Aperçu de ' + app().name" class="apc-app__shot" />
+          }
         </div>
-        <span class="apc-app__phone-name">App A.P.C</span>
-        <div class="apc-app__phone-divider" aria-hidden="true"></div>
-        <div class="apc-app__phone-lines" aria-hidden="true">
-          <div class="apc-app__phone-line apc-app__phone-line--1"></div>
-          <div class="apc-app__phone-line apc-app__phone-line--2"></div>
-          <div class="apc-app__phone-line apc-app__phone-line--3"></div>
-          <div class="apc-app__phone-block"></div>
-          <div class="apc-app__phone-block"></div>
-          <div class="apc-app__phone-block"></div>
+      } @else {
+        <div class="apc-app__phone">
+          <div class="apc-app__phone-icon" aria-hidden="true">
+            <span>✝</span>
+          </div>
+          <span class="apc-app__phone-name">{{ app().name }}</span>
+          <div class="apc-app__phone-divider" aria-hidden="true"></div>
+          <div class="apc-app__phone-lines" aria-hidden="true">
+            <div class="apc-app__phone-line apc-app__phone-line--1"></div>
+            <div class="apc-app__phone-line apc-app__phone-line--2"></div>
+            <div class="apc-app__phone-line apc-app__phone-line--3"></div>
+            <div class="apc-app__phone-block"></div>
+            <div class="apc-app__phone-block"></div>
+            <div class="apc-app__phone-block"></div>
+          </div>
+          <span class="apc-app__phone-caption">aperçu à venir</span>
         </div>
-        <span class="apc-app__phone-caption">mockup application A.P.C</span>
-      </div>
+      }
     </div>
 
-    <!-- Info -->
     <div class="apc-app__info">
-      <span class="apc-app__badge">Disponible maintenant</span>
-      <h2 class="apc-app__title">Application A.P.C</h2>
-      <p class="apc-app__text">
-        Restez connecté avec votre communauté où que vous soyez. Accédez aux cultes en direct, aux
-        programmes de la semaine et aux actualités de l'église depuis votre téléphone.
-      </p>
-      <ul class="apc-app__features">
-        @for (feature of features; track feature.label) {
-          <li class="apc-app__feature">
-            <span class="apc-app__feature-icon" aria-hidden="true">{{ feature.icon }}</span>
-            <span class="apc-app__feature-label">{{ feature.label }}</span>
-          </li>
-        }
-      </ul>
-      <div class="apc-app__stores">
-        <a href="#" class="apc-app__store">
-          <span class="apc-app__store-eyebrow">Télécharger sur</span>
-          <span class="apc-app__store-name">App Store</span>
+      @if (app().status_label) {
+        <span class="apc-app__badge">{{ app().status_label }}</span>
+      }
+
+      <h2 class="apc-app__title">{{ app().name }}</h2>
+
+      @if (app().tagline) {
+        <p class="apc-app__tagline">{{ app().tagline }}</p>
+      }
+
+      @if (app().description) {
+        <p class="apc-app__text">{{ app().description }}</p>
+      }
+
+      @if (app().features.length) {
+        <ul class="apc-app__features">
+          @for (feature of app().features; track feature) {
+            <li class="apc-app__feature">
+              <span class="apc-app__feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" /></svg>
+              </span>
+              <span class="apc-app__feature-label">{{ feature }}</span>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (hasStoreLinks()) {
+        <div class="apc-app__stores">
+          @if (app().ios_url; as ios) {
+            <a [href]="ios" target="_blank" rel="noopener" class="apc-app__store">
+              <span class="apc-app__store-eyebrow">Télécharger sur</span>
+              <span class="apc-app__store-name">App Store</span>
+            </a>
+          }
+          @if (app().android_url; as android) {
+            <a [href]="android" target="_blank" rel="noopener" class="apc-app__store">
+              <span class="apc-app__store-eyebrow">Disponible sur</span>
+              <span class="apc-app__store-name">Google Play</span>
+            </a>
+          }
+        </div>
+      }
+
+      @if (app().website_url; as website) {
+        <a [href]="website" target="_blank" rel="noopener" class="apc-app__website">
+          Visiter le site de l'application →
         </a>
-        <a href="#" class="apc-app__store">
-          <span class="apc-app__store-eyebrow">Disponible sur</span>
-          <span class="apc-app__store-name">Google Play</span>
-        </a>
-      </div>
+      }
     </div>
   </div>
 </section>

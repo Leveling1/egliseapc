@@ -14,6 +14,9 @@
       <a routerLink="/nos-cultes" class="apc-footer__link">Nos Cultes</a>
       <a routerLink="/rda" class="apc-footer__link">RDA</a>
       <a routerLink="/a-propos" class="apc-footer__link">À propos</a>
+      @if (showResources()) {
+        <a routerLink="/ressources" class="apc-footer__link">Ressources</a>
+      }
       <a routerLink="/blog" class="apc-footer__link">Blog</a>
     </nav>
 

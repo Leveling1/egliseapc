@@ -17,14 +17,14 @@
         <span class="apc-article-detail__avatar" aria-hidden="true">{{ art.authorInitials }}</span>
         <div class="apc-article-detail__byline-text">
           <span class="apc-article-detail__author">{{ art.authorName }}</span>
-          <span class="apc-article-detail__meta">{{ art.date }} · {{ art.readingTime }}</span>
+          <span class="apc-article-detail__meta">{{ art.date }}</span>
         </div>
       </div>
     </header>
 
     <div
       class="apc-article-detail__cover"
-      [style.background]="art.gradient"
+      [style.background]="art.background"
       role="img"
       [attr.aria-label]="'Illustration : ' + art.title"
     ></div>
@@ -66,8 +66,15 @@
       </aside>
 
       <div class="apc-article-detail__body">
-        @for (paragraph of art.content; track $index) {
-          <p>{{ paragraph }}</p>
+        @if (art.contentHtml) {
+          <!-- Contenu produit par l'éditeur du cpannel. Il provient d'un
+               champ que seuls des administrateurs authentifiés peuvent
+               écrire, jamais d'une saisie publique. -->
+          <div class="apc-article-detail__rich" [innerHTML]="art.contentHtml"></div>
+        } @else {
+          @for (paragraph of art.content; track $index) {
+            <p>{{ paragraph }}</p>
+          }
         }
       </div>
     </div>
@@ -99,7 +106,7 @@
           <app-article-card
             [slug]="related.slug"
             [category]="related.category"
-            [gradient]="related.gradient"
+            [background]="related.background"
             [title]="related.title"
             [excerpt]="related.excerpt"
             [date]="related.date"
@@ -108,7 +115,7 @@
       </div>
     </section>
   }
-} @else {
+} @else if (loaded()) {
   <main class="apc-article-detail apc-article-detail--not-found">
     <p class="apc-article-detail__not-found-title">Article introuvable</p>
     <p class="apc-article-detail__not-found-text">Cet article n'existe pas ou plus.</p>

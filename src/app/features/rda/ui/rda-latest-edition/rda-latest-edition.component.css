@@ -179,3 +179,23 @@
     text-align: center;
   }
 }
+
+/* Le visuel accueille désormais une vraie image : affiche de l'édition, ou
+   miniature de la vidéo à défaut. */
+.apc-rda-latest__video {
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+}
+
+/* Sans replay, plus de curseur cliquable ni d'effet de survol : le bloc
+   n'est qu'une illustration. */
+.apc-rda-latest__video--static {
+  cursor: default;
+}
+
+.apc-rda-latest__card-meta {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: rgb(255 255 255 / 55%);
+}

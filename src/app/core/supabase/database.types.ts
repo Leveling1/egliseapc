@@ -18,7 +18,9 @@ export type PannelModule =
   | 'oracles'
   | 'programmes'
   | 'extensions'
-  | 'users';
+  | 'users'
+  | 'settings'
+  | 'resources';
 
 export type ProgrammeKind = 'recurrent' | 'special';
 
@@ -55,6 +57,8 @@ export interface AdminPermission {
 export interface RdaEditionPublic {
   id: string;
   edition_number: number;
+  /** Année du rassemblement. Les dates précises ne sont pas toujours connues. */
+  year: number | null;
   title: string;
   theme: string | null;
   location: string | null;
@@ -64,24 +68,37 @@ export interface RdaEditionPublic {
   speakers: string | null;
   poster_path: string | null;
   video_url: string | null;
+  /** Désigne le « dernier événement » mis en avant sur la page RDA. */
+  is_featured: boolean;
 }
 export type RdaEdition = RdaEditionPublic & ContentMeta;
 
 export interface ArticlePublic {
   id: string;
   slug: string;
-  category: string;
+  /** Nom de la catégorie, résolu depuis article_categories par la vue. */
+  category: string | null;
   title: string;
   excerpt: string | null;
+  /** Texte brut, un paragraphe par entrée. Dérivé du HTML, sert de repli. */
   content: string[];
+  /** Contenu riche produit par l'éditeur — source de vérité de l'article. */
+  content_html: string | null;
   author_name: string | null;
   author_initials: string | null;
-  reading_time: string | null;
   cover_path: string | null;
   gradient: string | null;
   published_at: string | null;
+  /** Mis à la une manuellement ; sinon le plus récent fait office. */
+  is_featured: boolean;
 }
-export type Article = ArticlePublic & ContentMeta;
+
+/**
+ * L'article tel qu'il existe en base : la table porte category_id, c'est la
+ * vue publique qui le résout en nom de catégorie.
+ */
+export type Article = Omit<ArticlePublic, 'category'> &
+  ContentMeta & { category_id: string | null };
 
 export interface OraclePublic {
   id: string;
@@ -106,6 +123,8 @@ export interface ProgrammePublic {
   location: string | null;
   description: string | null;
   image_path: string | null;
+  /** Mis en avant dans la grille des programmes. */
+  is_featured: boolean;
 }
 export type Programme = ProgrammePublic & ContentMeta;
 
@@ -151,3 +170,99 @@ export const PUBLIC_VIEWS = {
 } as const;
 
 export const MEDIA_BUCKET = 'cpannel-media';
+
+/**
+ * Listes prédéfinies, gérées depuis la page Paramètres du cpannel.
+ */
+export interface ArticleCategory {
+  id: string;
+  name: string;
+  position: number;
+  is_visible: boolean;
+  created_at: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface LinkType {
+  id: string;
+  /** Identifiant stable (`youtube`, `facebook`…) : pilote l'icône et la
+   *  reconnaissance d'une vidéo pour la couverture automatique. */
+  code: string;
+  name: string;
+  position: number;
+  is_visible: boolean;
+  created_at: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+/**
+ * Lien rattaché à un article ou à une extension.
+ * Exactement l'un des deux propriétaires est renseigné, garanti en base.
+ */
+export interface ContentLink {
+  id: string;
+  article_id: string | null;
+  extension_id: string | null;
+  rda_edition_id: string | null;
+  link_type_id: string;
+  url: string;
+  label: string | null;
+  position: number;
+  created_at: string;
+}
+
+/** Lien tel que le voit le site public, avec le code de son type. */
+export interface ContentLinkPublic {
+  id: string;
+  article_id: string | null;
+  extension_id: string | null;
+  rda_edition_id: string | null;
+  link_type: string;
+  link_type_name: string;
+  url: string;
+  label: string | null;
+  position: number;
+}
+
+export const SETTINGS_TABLES = {
+  categories: 'article_categories',
+  linkTypes: 'link_types',
+} as const;
+
+/** Statut d'un livre : liste prédéfinie gérée dans Paramètres. */
+export interface BookStatus {
+  id: string;
+  name: string;
+  position: number;
+  is_visible: boolean;
+}
+
+export interface BookPublic {
+  id: string;
+  title: string;
+  description: string | null;
+  /** Nom du statut, résolu par la vue. */
+  status: string | null;
+  cover_path: string | null;
+  /** Dégradé de repli quand aucune couverture n'a été envoyée. */
+  cover_gradient: string | null;
+  link_url: string | null;
+  position: number;
+}
+
+export interface MobileAppPublic {
+  id: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  status_label: string | null;
+  /** Nulles tant que l'application n'est pas publiée : aucun bouton alors. */
+  ios_url: string | null;
+  android_url: string | null;
+  website_url: string | null;
+  features: string[];
+  screenshot_paths: string[];
+  position: number;
+}

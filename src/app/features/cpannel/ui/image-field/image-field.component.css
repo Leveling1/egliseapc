@@ -1,0 +1,141 @@
+:host {
+  display: block;
+}
+
+/* ---------- Zone de dépôt ----------
+   Reprend la maquette fournie : grande zone en pointillés, icône centrée,
+   invitation à déposer ou parcourir, et mentions discrètes en dessous. */
+.cp-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 30px 20px;
+  border: 1.5px dashed var(--cp-accent-border);
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent-softer);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.cp-drop:hover,
+.cp-drop--over {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+}
+
+.cp-drop__input {
+  display: none;
+}
+
+.cp-drop__icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  fill: none;
+  stroke: var(--cp-accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
+
+.cp-drop__title {
+  margin: 0;
+  font: 500 14px var(--font-heading);
+  color: var(--cp-ink);
+}
+
+.cp-drop__browse {
+  color: var(--cp-accent);
+  text-decoration: underline;
+}
+
+.cp-drop__meta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-drop__reco {
+  margin: 6px 0 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cp-surface);
+  font-size: 11.5px;
+  color: var(--cp-ink-soft);
+}
+
+/* ---------- Prévisualisation ---------- */
+.cp-img {
+  border: 1px solid var(--cp-line);
+  border-radius: var(--cp-radius-control);
+  overflow: hidden;
+  background: var(--cp-surface-muted);
+}
+
+.cp-img__preview {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+}
+
+.cp-img__actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--cp-surface);
+  border-top: 1px solid var(--cp-line);
+}
+
+.cp-img__replace input {
+  display: none;
+}
+
+.cp-img__replace span,
+.cp-img__remove {
+  display: inline-block;
+  padding: 7px 14px;
+  border: none;
+  border-radius: var(--cp-radius-control);
+  font: 500 12.5px var(--font-heading);
+  cursor: pointer;
+}
+
+.cp-img__replace span {
+  background: var(--cp-surface-muted);
+  color: var(--cp-ink);
+}
+
+.cp-img__replace:hover span {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+
+/* Retirer l'image est une action destructrice : c'est le seul cas où le
+   rouge est employé dans ce composant. */
+.cp-img__remove {
+  background: var(--cp-danger-soft);
+  color: var(--cp-danger);
+}
+
+.cp-img__remove:hover {
+  background: var(--cp-danger);
+  color: #fff;
+}
+
+.cp-img__hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--cp-ink-muted);
+}
+
+.cp-img__error {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--cp-danger);
+}

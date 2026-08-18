@@ -1,0 +1,86 @@
+.cp-set__head {
+  margin-bottom: 18px;
+}
+
+.cp-set__title {
+  margin: 0;
+  font: 600 20px var(--font-heading);
+}
+
+.cp-set__hint {
+  margin: 6px 0 0;
+  max-width: 700px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cp-ink-muted);
+}
+
+.cp-set__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.cp-set__block {
+  padding: 22px 24px;
+}
+
+.cp-set__block-title {
+  margin: 0;
+  font: 600 16px var(--font-heading);
+}
+
+.cp-set__block-hint {
+  margin: 4px 0 16px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--cp-ink-muted);
+}
+
+.cp-set__add {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cp-set__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cp-set__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--cp-line);
+}
+
+/* Un élément masqué reste lisible : il n'est pas supprimé, seulement retiré
+   des listes de saisie. */
+.cp-set__row--hidden .cp-set__name {
+  color: var(--cp-ink-muted);
+  background: var(--cp-surface-muted);
+}
+
+.cp-set__name {
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-set__code {
+  font: 400 11.5px var(--font-body);
+  color: var(--cp-ink-muted);
+  background: var(--cp-surface-muted);
+  padding: 3px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.cp-set__empty {
+  padding: 12px 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}

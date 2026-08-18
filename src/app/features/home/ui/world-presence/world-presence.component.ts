@@ -10,21 +10,14 @@ import {
 } from '@angular/core';
 import type { Map as LeafletMap } from 'leaflet';
 
-interface WorldPresenceCity {
+import { PublicContentService } from '../../../../core/content/public-content.service';
+
+interface MapCity {
   readonly name: string;
   readonly lat: number;
   readonly lng: number;
 }
 
-// Real-world coordinates of each extension's host city.
-const CITIES: readonly WorldPresenceCity[] = [
-  { name: 'Paris', lat: 48.8566, lng: 2.3522 },
-  { name: 'Kinshasa', lat: -4.4419, lng: 15.2663 },
-  { name: 'Nairobi', lat: -1.2921, lng: 36.8219 },
-  { name: 'Bruxelles', lat: 50.8503, lng: 4.3517 },
-  { name: 'Luanda', lat: -8.839, lng: 13.2894 },
-  { name: 'Lisbonne', lat: 38.7223, lng: -9.1393 },
-];
 
 @Component({
   selector: 'app-world-presence',
@@ -40,6 +33,7 @@ const CITIES: readonly WorldPresenceCity[] = [
   encapsulation: ViewEncapsulation.None,
 })
 export class WorldPresenceComponent {
+  private readonly content = inject(PublicContentService);
   private readonly mapContainer = viewChild.required<ElementRef<HTMLElement>>('mapContainer');
   private map: LeafletMap | null = null;
 
@@ -67,6 +61,22 @@ export class WorldPresenceComponent {
       return;
     }
 
+    // Les extensions sont lues avant d'initialiser la carte : sans point à
+    // afficher, le cadrage automatique n'aurait rien à calculer.
+    const cities: MapCity[] = (await this.content.extensions())
+      .filter((extension) => extension.latitude !== null && extension.longitude !== null)
+      .map((extension) => ({
+        name: extension.city ?? extension.name,
+        lat: extension.latitude as number,
+        lng: extension.longitude as number,
+      }));
+
+    if (cities.length === 0) {
+      // Aucune extension géolocalisée : on laisse le bloc vide plutôt que
+      // d'afficher une carte du monde sans repère.
+      return;
+    }
+
     const container = this.mapContainer().nativeElement;
 
     const map = L.map(container, {
@@ -79,7 +89,7 @@ export class WorldPresenceComponent {
       maxZoom: 18,
     }).addTo(map);
 
-    const markers = CITIES.map((city) => {
+    const markers = cities.map((city) => {
       const icon = L.divIcon({
         className: 'apc-world-marker',
         html: `<span class="apc-world-marker__dot"></span><span class="apc-world-marker__label">${city.name}</span>`,
@@ -89,7 +99,7 @@ export class WorldPresenceComponent {
       return L.marker([city.lat, city.lng], { icon, keyboard: false, alt: city.name }).addTo(map);
     });
 
-    const bounds = L.latLngBounds(CITIES.map((city): [number, number] => [city.lat, city.lng]));
+    const bounds = L.latLngBounds(cities.map((city): [number, number] => [city.lat, city.lng]));
 
     map.invalidateSize();
     map.fitBounds(bounds, { padding: [40, 40] });

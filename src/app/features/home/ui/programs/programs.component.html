@@ -9,21 +9,31 @@
       <p class="apc-programs__intro">
         Notre programme hebdomadaire retrouvons-nous chaque semaine pour grandir ensemble dans la foi.
       </p>
-      <p class="apc-programs__oracle">
-        <strong>Oracle 2026 — Monte Ici</strong><br />
-        « Après cela, je regardai, et voici, une porte était ouverte dans le ciel… Monte ici, et je te ferai
-        voir ce qui doit arriver dans la suite. »
-        <span class="apc-programs__oracle-ref">— Apocalypse 4:1</span>
-      </p>
+      @if (oracle(); as current) {
+        <p class="apc-programs__oracle">
+          <strong>{{ oracleTitle() }}</strong>
+          @if (current.verse_text) {
+            <br />
+            « {{ current.verse_text }} »
+          }
+          @if (current.verse_reference) {
+            <span class="apc-programs__oracle-ref">— {{ current.verse_reference }}</span>
+          }
+        </p>
+      }
     </div>
 
     <div class="apc-programs__schedule">
-      @for (entry of schedule; track entry.day) {
-        <div class="apc-programs__row" [class.apc-programs__row--featured]="entry.featured" [style.background]="entry.background">
-          <div class="apc-programs__day" [class.apc-programs__day--compact]="entry.compactDayLabel">
-            {{ entry.day }}
+      @for (entry of schedule(); track entry.id; let index = $index) {
+        <div
+          class="apc-programs__row"
+          [class.apc-programs__row--featured]="entry.featured"
+          [style.background]="background(entry, index)"
+        >
+          <div class="apc-programs__day" [class.apc-programs__day--compact]="entry.compactDays">
+            {{ entry.days }}
           </div>
-          <div class="apc-programs__name">{{ entry.title }}</div>
+          <div class="apc-programs__name">{{ entry.name }}</div>
           <div class="apc-programs__time">{{ entry.time }}</div>
         </div>
       }

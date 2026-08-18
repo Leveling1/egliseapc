@@ -16,7 +16,10 @@ import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { NewsletterCtaComponent } from '../../../shared/components/newsletter-cta/newsletter-cta.component';
 import { ArticleCardComponent } from '../ui/article-card/article-card.component';
-import { allArticles, findArticleBySlug } from '../data/blog-articles';
+import { PublicContentService } from '../../../core/content/public-content.service';
+import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { MEDIA_BUCKET } from '../../../core/supabase/database.types';
+import { toArticleView, type ArticleView } from '../data/article-view';
 
 @Component({
   selector: 'app-article-detail-page',
@@ -33,14 +36,13 @@ export class ArticleDetailPageComponent {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
 
-  protected readonly article = computed(() => findArticleBySlug(this.slug()));
+  private readonly content = inject(PublicContentService);
+  private readonly storage = inject(SupabaseService).client.storage;
 
-  protected readonly relatedArticles = computed(() => {
-    const current = this.article();
-    return allArticles()
-      .filter((candidate) => candidate.slug !== current?.slug)
-      .slice(0, 3);
-  });
+  protected readonly article = signal<ArticleView | null>(null);
+  protected readonly relatedArticles = signal<readonly ArticleView[]>([]);
+  /** Distingue « chargement en cours » de « article inexistant ». */
+  protected readonly loaded = signal(false);
 
   protected readonly readProgress = signal(0);
   protected readonly shareUrl = signal('');
@@ -57,6 +59,11 @@ export class ArticleDetailPageComponent {
     // correct when navigating from one article straight into another via
     // the "related articles" links below — the component instance is
     // reused by the router, so ngOnInit alone wouldn't re-fire here.
+    effect(() => {
+      const slug = this.slug();
+      if (slug) void this.load(slug);
+    });
+
     effect(() => {
       const article = this.article();
       if (!article) {
@@ -105,5 +112,35 @@ export class ArticleDetailPageComponent {
     await navigator.clipboard.writeText(this.shareUrl());
     this.linkCopied.set(true);
     setTimeout(() => this.linkCopied.set(false), 2000);
+  }
+  private async load(slug: string): Promise<void> {
+    this.loaded.set(false);
+
+    const article = await this.content.articleBySlug(slug);
+
+    if (!article) {
+      this.article.set(null);
+      this.relatedArticles.set([]);
+      this.loaded.set(true);
+      return;
+    }
+
+    const links = await this.content.linksForArticle(article.id);
+    this.article.set(toArticleView(article, links, (path) => this.publicUrl(path)));
+
+    const others = await this.content.articles();
+    this.relatedArticles.set(
+      others
+        .filter((candidate) => candidate.slug !== slug)
+        .slice(0, 3)
+        .map((candidate) => toArticleView(candidate, [], (path) => this.publicUrl(path))),
+    );
+
+    this.loaded.set(true);
+  }
+
+  private publicUrl(path: string | null): string | null {
+    if (!path) return null;
+    return this.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
   }
 }

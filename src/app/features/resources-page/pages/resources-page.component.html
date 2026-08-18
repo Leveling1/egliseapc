@@ -1,40 +1,49 @@
-<app-header variant="light" />
+@if (hasContent()) {
+  <app-header variant="light" />
 
-<main>
-  <app-resources-hero />
-  <app-app-showcase />
+  <main>
+    <app-resources-hero />
 
-  <section class="apc-books" aria-labelledby="apc-books-title">
-    <div class="apc-books__inner">
-      <div class="apc-books__header">
-        <span class="apc-books__overline">Publications</span>
-        <h2 id="apc-books-title" class="apc-books__title">Nos Livres</h2>
-        <p class="apc-books__intro">
-          Des ouvrages en préparation pour approfondir votre foi et votre connaissance de la Parole.
-        </p>
-      </div>
+    @for (app of apps(); track app.id) {
+      <app-app-showcase [app]="app" />
+    }
 
-      <div class="apc-books__grid">
-        @for (book of books; track book.title) {
-          <app-book-card
-            [coverGradient]="book.coverGradient"
-            [coverRotation]="book.coverRotation"
-            [badgeLabel]="book.badgeLabel"
-            [badgeVariant]="book.badgeVariant"
-            [title]="book.title"
-            [description]="book.description"
-          />
-        }
-      </div>
-    </div>
-  </section>
+    @if (books().length) {
+      <section class="apc-books" aria-labelledby="apc-books-title">
+        <div class="apc-books__inner">
+          <div class="apc-books__header">
+            <span class="apc-books__overline">Publications</span>
+            <h2 id="apc-books-title" class="apc-books__title">Nos Livres</h2>
+            <p class="apc-books__intro">
+              Des ouvrages pour approfondir votre foi et votre connaissance de la Parole.
+            </p>
+          </div>
 
-  <app-newsletter-cta
-    overline="Restez informé"
-    title="Soyez prévenu des sorties"
-    titleFontSize="36px"
-    description="Inscrivez-vous pour recevoir les actualités sur nos publications et nouvelles ressources."
-  />
-</main>
+          <div class="apc-books__grid">
+            @for (book of books(); track book.id; let index = $index) {
+              <app-book-card
+                [title]="book.title"
+                [description]="book.description ?? ''"
+                [coverUrl]="coverUrl(book)"
+                [coverGradient]="book.cover_gradient ?? 'linear-gradient(145deg,#1C1C8C,#1C1C8C)'"
+                [coverRotation]="rotation(index)"
+                [badgeLabel]="book.status ?? ''"
+                [badgeVariant]="badgeVariant(index)"
+                [linkUrl]="book.link_url"
+              />
+            }
+          </div>
+        </div>
+      </section>
+    }
 
-<app-footer />
+    <app-newsletter-cta
+      overline="Restez informé"
+      title="Soyez prévenu des sorties"
+      titleFontSize="36px"
+      description="Inscrivez-vous pour recevoir les actualités sur nos publications et nouvelles ressources."
+    />
+  </main>
+
+  <app-footer />
+}

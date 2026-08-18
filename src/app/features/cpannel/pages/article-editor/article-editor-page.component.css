@@ -1,0 +1,271 @@
+/* La rédaction occupe tout l'écran, sans le rail de navigation : on écrit
+   dans quelque chose qui ressemble à l'article, pas dans un formulaire
+   entouré de chrome. */
+.ae-page {
+  min-height: 100vh;
+  background: var(--cp-surface);
+}
+
+.ae-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: rgb(255 255 255 / 92%);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cp-line);
+}
+
+.ae-bar__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px 7px 8px;
+  border: none;
+  border-radius: var(--cp-radius-control);
+  background: transparent;
+  color: var(--cp-ink-soft);
+  font: 500 13px var(--font-heading);
+  cursor: pointer;
+}
+
+.ae-bar__back:hover {
+  background: var(--cp-surface-muted);
+  color: var(--cp-ink);
+}
+
+.ae-bar__back svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ae-bar__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.ae-bar__saved {
+  font-size: 12.5px;
+  color: var(--cp-ink-muted);
+}
+
+.ae-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ae-error,
+.ae-loading {
+  margin: 16px auto 0;
+  max-width: 740px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* ---------- Zone de rédaction ---------- */
+.ae-canvas {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 48px 24px 120px;
+}
+
+.ae-title {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  resize: none;
+  overflow: hidden;
+  font: 600 42px/1.2 var(--font-heading);
+  letter-spacing: -1px;
+  color: var(--cp-ink);
+  /* Le titre grandit avec le texte : une hauteur fixe couperait les titres
+     longs, fréquents pour des résumés de culte. */
+  field-sizing: content;
+  min-height: 52px;
+}
+
+.ae-title::placeholder {
+  color: var(--cp-ink-muted);
+}
+
+.ae-title:focus {
+  outline: none;
+}
+
+/* ---------- Panneau de paramètres ---------- */
+.ae-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+  background: rgb(11 11 11 / 35%);
+}
+
+.ae-panel__sheet {
+  width: min(460px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--cp-surface);
+  box-shadow: -12px 0 40px rgb(11 11 11 / 14%);
+}
+
+.ae-field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ae-regen {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--cp-accent);
+  font: 500 12px var(--font-heading);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.ae-fallback {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent-softer);
+}
+
+.ae-fallback__thumb {
+  width: 96px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex: none;
+}
+
+.ae-fallback__text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--cp-ink-soft);
+}
+
+@media (max-width: 760px) {
+  .ae-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .ae-bar__status {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .ae-canvas {
+    padding: 32px 18px 100px;
+  }
+
+  .ae-title {
+    font-size: 31px;
+  }
+}
+
+/* ---------- Bandeau catégorie / auteur ----------
+   Placé sous le titre plutôt que dans le panneau de paramètres : ce sont des
+   informations qu'on renseigne en écrivant, pas des réglages. Sans bordure ni
+   fond, pour rester dans la continuité de la page de rédaction — la
+   soulignure au survol suffit à signaler qu'ils sont modifiables. */
+.ae-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  font: 400 14.5px var(--font-body);
+  color: var(--cp-ink-soft);
+}
+
+.ae-meta__select,
+.ae-meta__author {
+  padding: 4px 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font: 500 14.5px var(--font-heading);
+  color: var(--cp-accent);
+  cursor: pointer;
+}
+
+.ae-meta__author {
+  min-width: 160px;
+  cursor: text;
+  color: var(--cp-ink);
+}
+
+.ae-meta__select:hover,
+.ae-meta__author:hover {
+  background: var(--cp-accent-softer);
+}
+
+.ae-meta__select:focus,
+.ae-meta__author:focus {
+  outline: none;
+  background: var(--cp-accent-softer);
+  box-shadow: 0 0 0 2px var(--cp-accent-border);
+}
+
+.ae-meta__author::placeholder {
+  color: var(--cp-ink-muted);
+  font-weight: 400;
+}
+
+.ae-meta__sep {
+  color: var(--cp-ink-muted);
+}
+
+.ae-meta__by {
+  font-size: 14px;
+  color: var(--cp-ink-muted);
+}
+
+/* Interrupteur repris du formulaire générique, pour que les deux écrans de
+   saisie se ressemblent. */
+.cp-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--cp-line);
+  border-radius: var(--cp-radius-control);
+  font: 400 13.5px var(--font-body);
+  cursor: pointer;
+}
+
+.cp-switch:has(input:checked) {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-softer);
+  color: var(--cp-accent);
+}
+
+.cp-switch input {
+  accent-color: var(--cp-accent);
+}

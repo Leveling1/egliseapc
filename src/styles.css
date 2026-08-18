@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Dancing+Script:wght@600;700&display=swap');
 @import 'tailwindcss';
+/* Thème « bubble » de Quill, utilisé par l'éditeur d'article du cpannel.
+   Import global assumé : Quill génère sa barre flottante dynamiquement, donc
+   après l'encapsulation des styles de composant, qui ne l'atteindraient pas. */
+@import 'quill/dist/quill.bubble.css';
 
 @theme {
   --color-apc-blue-dark: #1c1c8c;
@@ -172,6 +176,48 @@ a {
 }
 
 /* ---------- Champs ---------- */
+.cpannel .cp-field {
+  margin-top: 18px;
+}
+
+.cpannel .cp-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font: 500 13px var(--font-heading);
+  color: var(--cp-ink);
+}
+
+.cpannel .cp-field__required {
+  color: var(--cp-accent);
+}
+
+/* Le texte d'aide doit se distinguer du libellé au premier coup d'œil :
+   police du corps de texte plutôt que de titrage, taille plus petite, teinte
+   atténuée, et une pastille « i » qui signale une explication et non un
+   intitulé de champ. */
+.cpannel .cp-field__help {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 7px 0 0;
+  font: 400 11.5px/1.55 var(--font-body);
+  color: var(--cp-ink-muted);
+}
+
+.cpannel .cp-field__help::before {
+  content: 'i';
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  font: 600 9px/13px var(--font-heading);
+  text-align: center;
+  font-style: normal;
+}
+
 .cpannel .cp-input {
   width: 100%;
   box-sizing: border-box;

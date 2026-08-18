@@ -6,8 +6,10 @@ import { CPANNEL_MODULES } from './data/cpannel-modules';
 /**
  * Routes du back-office.
  *
- * La page de connexion est en dehors du shell : elle ne doit pas afficher le
- * rail de navigation d'un espace auquel l'utilisateur n'a pas encore accès.
+ * La page de connexion et l'éditeur d'article sont en dehors du shell :
+ * la première parce qu'elle ne doit pas afficher la navigation d'un espace
+ * encore inaccessible, le second parce que la rédaction occupe tout l'écran,
+ * comme sur Medium.
  */
 export const cpannelRoutes: Routes = [
   {
@@ -15,6 +17,22 @@ export const cpannelRoutes: Routes = [
     canActivate: [cpannelLoginGuard],
     loadComponent: () =>
       import('./pages/login/login-page.component').then((m) => m.CpannelLoginPageComponent),
+  },
+  {
+    path: 'articles/nouveau',
+    canActivate: [cpannelGuard, cpannelModuleGuard('articles')],
+    loadComponent: () =>
+      import('./pages/article-editor/article-editor-page.component').then(
+        (m) => m.CpannelArticleEditorPageComponent,
+      ),
+  },
+  {
+    path: 'articles/:id',
+    canActivate: [cpannelGuard, cpannelModuleGuard('articles')],
+    loadComponent: () =>
+      import('./pages/article-editor/article-editor-page.component').then(
+        (m) => m.CpannelArticleEditorPageComponent,
+      ),
   },
   {
     path: '',
@@ -34,6 +52,14 @@ export const cpannelRoutes: Routes = [
         canActivate: [cpannelModuleGuard('users')],
         loadComponent: () =>
           import('./pages/users/users-page.component').then((m) => m.CpannelUsersPageComponent),
+      },
+      {
+        path: 'parametres',
+        canActivate: [cpannelModuleGuard('settings')],
+        loadComponent: () =>
+          import('./pages/settings/settings-page.component').then(
+            (m) => m.CpannelSettingsPageComponent,
+          ),
       },
       // Une route par module de contenu, toutes servies par le même
       // composant. Les déclarer explicitement (plutôt qu'un `:modulePath`
