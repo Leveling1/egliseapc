@@ -7,3 +7,7 @@ Allow: /
 # des politiques RLS. C'est simplement pour éviter que le portail
 # d'administration ne soit référencé publiquement.
 Disallow: /cpannel
+
+# Déclaré ici pour que les moteurs le trouvent sans attendre une soumission
+# manuelle dans Search Console.
+Sitemap: https://egliseapc.levelingcoder.com/sitemap.xml

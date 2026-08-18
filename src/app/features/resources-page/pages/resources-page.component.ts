@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { SeoService } from '../../../core/seo/seo.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { NewsletterCtaComponent } from '../../../shared/components/newsletter-cta/newsletter-cta.component';
@@ -32,8 +32,7 @@ const COVER_ROTATIONS = ['-2deg', '1deg', '-1deg'];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResourcesPageComponent implements OnInit {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly content = inject(PublicContentService);
   private readonly storage = inject(SupabaseService).client.storage;
   private readonly router = inject(Router);
@@ -57,11 +56,11 @@ export class ResourcesPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Nos Ressources | Ambassadeurs Pour Christ (A.P.C)');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Application mobile, livres et outils pour grandir dans la foi au quotidien avec Ambassadeurs Pour Christ (A.P.C).',
+    this.seo.apply({
+      title: "Ressources et publications | Ambassadeurs Pour Christ (A.P.C)",
+      description:
+        "Livres, application mobile et outils des Ambassadeurs Pour Christ (A.P.C) pour grandir dans la foi au quotidien.",
+      path: '/ressources',
     });
   }
 

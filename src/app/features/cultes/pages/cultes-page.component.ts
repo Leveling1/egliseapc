@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 
+import { SeoService } from '../../../core/seo/seo.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { FilterBarComponent } from '../../../shared/components/filter-bar/filter-bar.component';
@@ -35,8 +35,7 @@ interface CulteVideo {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CultesPageComponent implements OnInit {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
 
   protected readonly filters = ['Tous', 'Dimanche', 'Mercredi', 'Vendredi', 'Prière'] as const;
   protected readonly currentPage = signal(1);
@@ -86,11 +85,11 @@ export class CultesPageComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.title.setTitle('Nos Cultes | Ambassadeurs Pour Christ (A.P.C)');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        "Retrouvez tous les enseignements et cultes de l'église Ambassadeurs Pour Christ (A.P.C), en replay.",
+    this.seo.apply({
+      title: "Nos cultes et enseignements | Ambassadeurs Pour Christ (A.P.C)",
+      description:
+        "Cultes en direct, replays et enseignements de l'Église Les Ambassadeurs Pour Christ (A.P.C), suivis depuis Kinshasa et toutes ses extensions.",
+      path: '/nos-cultes',
     });
   }
 

@@ -6,8 +6,8 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 
+import { SeoService } from '../../../core/seo/seo.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { FilterBarComponent } from '../../../shared/components/filter-bar/filter-bar.component';
@@ -39,8 +39,7 @@ const ALL_CATEGORIES = 'Tous';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPageComponent implements OnInit {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly content = inject(PublicContentService);
   private readonly storage = inject(SupabaseService).client.storage;
 
@@ -92,11 +91,11 @@ export class BlogPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Blog | Ambassadeurs Pour Christ (A.P.C)');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Résumés de cultes, articles de foi, témoignages et actualités de la communauté Ambassadeurs Pour Christ (A.P.C).',
+    this.seo.apply({
+      title: "Blog | Ambassadeurs Pour Christ (A.P.C)",
+      description:
+        "Résumés de cultes, articles de foi, témoignages et actualités de la communauté Ambassadeurs Pour Christ (A.P.C).",
+      path: '/blog',
     });
   }
 

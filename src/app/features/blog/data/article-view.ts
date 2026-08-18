@@ -14,7 +14,10 @@ export interface ArticleView {
   readonly category: string;
   readonly title: string;
   readonly excerpt: string;
+  /** Date lisible par un humain, « 28 juillet 2026 ». */
   readonly date: string;
+  /** Même date au format ISO, exigé par les données structurées et Open Graph. */
+  readonly isoDate: string | null;
   readonly authorName: string;
   readonly authorInitials: string;
   readonly content: readonly string[];
@@ -61,6 +64,7 @@ export function toArticleView(
     title: article.title,
     excerpt: article.excerpt ?? '',
     date: formatArticleDate(article.published_at),
+    isoDate: article.published_at,
     authorName: article.author_name ?? '',
     authorInitials: article.author_initials ?? '',
     content: article.content ?? [],

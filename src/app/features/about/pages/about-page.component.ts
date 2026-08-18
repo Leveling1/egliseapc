@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 
+import { SeoService } from '../../../core/seo/seo.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { AboutHeroComponent } from '../ui/about-hero/about-hero.component';
@@ -35,8 +35,7 @@ interface StoryChapterData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutPageComponent implements OnInit {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
 
   protected readonly chapters: readonly StoryChapterData[] = [
     {
@@ -78,11 +77,11 @@ export class AboutPageComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.title.setTitle('Notre Histoire | Ambassadeurs Pour Christ (A.P.C)');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        "De la fondation à aujourd'hui : l'histoire, la vision et les fondements de l'Église les Ambassadeurs Pour Christ (A.P.C).",
+    this.seo.apply({
+      title: "Notre histoire | Église Ambassadeurs Pour Christ (A.P.C)",
+      description:
+        "L'histoire, la vision et les fondements de l'Église Les Ambassadeurs Pour Christ (A.P.C), sous la conduite du Prophète Garry KENGE.",
+      path: '/a-propos',
     });
   }
 }

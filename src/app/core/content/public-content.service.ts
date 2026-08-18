@@ -130,7 +130,19 @@ export class PublicContentService {
     });
   }
 
+  private programmesCache: Promise<ProgrammePublic[]> | null = null;
+
+  /**
+   * Mémoïsé : la grille affichée et les horaires déclarés à Google lisent la
+   * même liste. Deux requêtes identiques par page seraient du gaspillage, et
+   * surtout deux sources qui pourraient diverger.
+   */
   async programmes(): Promise<ProgrammePublic[]> {
+    this.programmesCache ??= this.loadProgrammes();
+    return this.programmesCache;
+  }
+
+  private async loadProgrammes(): Promise<ProgrammePublic[]> {
     return this.awaited(async () => {
       const { data } = await this.supabase
         .from('programmes_public')

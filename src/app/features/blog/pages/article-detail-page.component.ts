@@ -20,6 +20,8 @@ import { PublicContentService } from '../../../core/content/public-content.servi
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 import { MEDIA_BUCKET } from '../../../core/supabase/database.types';
 import { toArticleView, type ArticleView } from '../data/article-view';
+import { SeoService } from '../../../core/seo/seo.service';
+import { articleSchema, breadcrumbSchema } from '../../../core/seo/structured-data';
 
 @Component({
   selector: 'app-article-detail-page',
@@ -36,6 +38,7 @@ export class ArticleDetailPageComponent {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
 
+  private readonly seo = inject(SeoService);
   private readonly content = inject(PublicContentService);
   private readonly storage = inject(SupabaseService).client.storage;
 
@@ -66,12 +69,15 @@ export class ArticleDetailPageComponent {
 
     effect(() => {
       const article = this.article();
+
       if (!article) {
         this.title.setTitle('Article introuvable | Ambassadeurs Pour Christ (A.P.C)');
+        this.seo.removeJsonLd('article');
+        this.seo.removeJsonLd('breadcrumb');
         return;
       }
-      this.title.setTitle(`${article.title} | Ambassadeurs Pour Christ (A.P.C)`);
-      this.meta.updateTag({ name: 'description', content: article.excerpt });
+
+      this.describe(article);
     });
 
     afterNextRender(() => {
@@ -143,4 +149,56 @@ export class ArticleDetailPageComponent {
     if (!path) return null;
     return this.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
   }
+  /**
+   * Balises de partage et données structurées propres à l'article.
+   *
+   * L'image de partage reprend la couverture réelle : un article relayé sur
+   * WhatsApp affiche ainsi son propre visuel, et non celui du site entier.
+   */
+  private describe(article: ArticleView): void {
+    const path = `/blog/${article.slug}`;
+    const image = extractImageUrl(article.background);
+
+    this.seo.apply({
+      title: `${article.title} | Ambassadeurs Pour Christ (A.P.C)`,
+      description: article.excerpt || article.title,
+      path,
+      image,
+      type: 'article',
+      publishedTime: article.isoDate,
+      author: article.authorName || null,
+    });
+
+    this.seo.setJsonLd(
+      'article',
+      articleSchema({
+        title: article.title,
+        description: article.excerpt || article.title,
+        path,
+        image,
+        datePublished: article.isoDate,
+        author: article.authorName || null,
+        section: article.category || null,
+      }),
+    );
+
+    this.seo.setJsonLd(
+      'breadcrumb',
+      breadcrumbSchema([
+        { name: 'Accueil', path: '/' },
+        { name: 'Blog', path: '/blog' },
+        { name: article.title, path },
+      ]),
+    );
+  }
+}
+
+/**
+ * Récupère l'URL d'une valeur CSS `background`.
+ * Les couvertures peuvent être une image ou un simple dégradé : seul le
+ * premier cas donne une image de partage exploitable.
+ */
+function extractImageUrl(background: string): string | null {
+  const match = /url("?([^")]+)"?)/.exec(background);
+  return match ? match[1] : null;
 }

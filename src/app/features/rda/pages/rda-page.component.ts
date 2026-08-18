@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 
+import { SeoService } from '../../../core/seo/seo.service';
 import { PublicContentService } from '../../../core/content/public-content.service';
 
 import { HeaderComponent } from '../../../core/layout/header/header.component';
@@ -29,8 +29,7 @@ import { RdaLatestEditionComponent } from '../ui/rda-latest-edition/rda-latest-e
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RdaPageComponent implements OnInit {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly content = inject(PublicContentService);
 
   protected readonly timelineEntries = signal<readonly TimelineEntry[]>([]);
@@ -60,11 +59,11 @@ export class RdaPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Rassemblement des Aigles (RDA) | Ambassadeurs Pour Christ (A.P.C)');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        "Le Rassemblement des Aigles : l'événement annuel qui rassemble la communauté A.P.C du monde entier pour un temps fort de communion, d'enseignement et de prière.",
+    this.seo.apply({
+      title: "Rassemblement des Aigles (RDA) | Ambassadeurs Pour Christ (A.P.C)",
+      description:
+        "Le Rassemblement des Aigles (RDA), événement annuel qui réunit les Ambassadeurs Pour Christ du monde entier : thèmes, éditions passées et dernier rassemblement.",
+      path: '/rda',
     });
   }
 }
