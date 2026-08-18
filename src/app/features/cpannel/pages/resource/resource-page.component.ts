@@ -10,14 +10,14 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
-import { CpannelAuthService } from '../services/cpannel-auth.service';
-import { CpannelDataService, type ContentRow } from '../services/cpannel-data.service';
+import { CpannelAuthService } from '../../services/cpannel-auth.service';
+import { CpannelDataService, type ContentRow } from '../../services/cpannel-data.service';
 import {
   WEEKDAYS,
   findModuleByPath,
   type FieldConfig,
   type ModuleConfig,
-} from '../data/cpannel-modules';
+} from '../../data/cpannel-modules';
 
 type Draft = Record<string, unknown>;
 

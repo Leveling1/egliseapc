@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { CpannelAuthService } from '../services/cpannel-auth.service';
+import { CpannelAuthService } from '../../services/cpannel-auth.service';
 
 @Component({
   selector: 'app-cpannel-login-page',

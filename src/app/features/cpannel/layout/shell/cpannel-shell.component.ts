@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-import { CpannelAuthService } from '../services/cpannel-auth.service';
-import { CPANNEL_MODULES } from '../data/cpannel-modules';
+import { CpannelAuthService } from '../../services/cpannel-auth.service';
+import { CPANNEL_MODULES } from '../../data/cpannel-modules';
 
 @Component({
   selector: 'app-cpannel-shell',
@@ -15,7 +15,6 @@ import { CPANNEL_MODULES } from '../data/cpannel-modules';
 export class CpannelShellComponent {
   private readonly auth = inject(CpannelAuthService);
 
-  protected readonly firstName = this.auth.displayName;
   protected readonly profile = this.auth.adminProfile;
   protected readonly railOpen = signal(false);
 

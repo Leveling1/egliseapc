@@ -14,18 +14,18 @@ export const cpannelRoutes: Routes = [
     path: 'connexion',
     canActivate: [cpannelLoginGuard],
     loadComponent: () =>
-      import('./pages/login-page.component').then((m) => m.CpannelLoginPageComponent),
+      import('./pages/login/login-page.component').then((m) => m.CpannelLoginPageComponent),
   },
   {
     path: '',
     canActivate: [cpannelGuard],
     loadComponent: () =>
-      import('./pages/cpannel-shell.component').then((m) => m.CpannelShellComponent),
+      import('./layout/shell/cpannel-shell.component').then((m) => m.CpannelShellComponent),
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/dashboard-page.component').then(
+          import('./pages/dashboard/dashboard-page.component').then(
             (m) => m.CpannelDashboardPageComponent,
           ),
       },
@@ -33,7 +33,7 @@ export const cpannelRoutes: Routes = [
         path: 'utilisateurs',
         canActivate: [cpannelModuleGuard('users')],
         loadComponent: () =>
-          import('./pages/users-page.component').then((m) => m.CpannelUsersPageComponent),
+          import('./pages/users/users-page.component').then((m) => m.CpannelUsersPageComponent),
       },
       // Une route par module de contenu, toutes servies par le même
       // composant. Les déclarer explicitement (plutôt qu'un `:modulePath`
@@ -44,7 +44,7 @@ export const cpannelRoutes: Routes = [
         canActivate: [cpannelModuleGuard(config.module)],
         data: { modulePath: config.path },
         loadComponent: () =>
-          import('./pages/resource-page.component').then(
+          import('./pages/resource/resource-page.component').then(
             (m) => m.CpannelResourcePageComponent,
           ),
       })),

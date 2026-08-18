@@ -271,3 +271,31 @@
     padding: 20px;
   }
 }
+
+/* Le salut n'apparaît qu'ici : sur les pages de gestion, il occupait de la
+   place sans rien apporter et repoussait le contenu vers le bas. */
+.cp-dash__greeting {
+  margin-bottom: 22px;
+}
+
+.cp-dash__hello {
+  margin: 0;
+  font: 600 27px var(--font-heading);
+  letter-spacing: -0.6px;
+}
+
+.cp-dash__sub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--cp-ink-muted);
+}
+
+@media (max-width: 900px) {
+  .cp-dash__hello {
+    font-size: 21px;
+  }
+
+  .cp-dash__sub {
+    font-size: 13px;
+  }
+}

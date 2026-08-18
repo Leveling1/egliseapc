@@ -39,6 +39,8 @@ export interface ModuleConfig {
   readonly label: string;
   /** Libellé au singulier, pour les boutons et titres de formulaire. */
   readonly singular: string;
+  /** Genre du libellé singulier : « un nouveau programme », « une nouvelle édition ». */
+  readonly gender: 'm' | 'f';
   readonly table: string;
   readonly icon: string;
   /** Colonne de tri par défaut, la plus récente en tête. */
@@ -63,6 +65,7 @@ const RDA: ModuleConfig = {
   path: 'rda',
   label: 'Éditions RDA',
   singular: 'édition',
+  gender: 'f',
   table: 'rda_editions',
   icon: 'calendar',
   orderBy: { column: 'edition_number', ascending: false },
@@ -91,6 +94,7 @@ const ARTICLES: ModuleConfig = {
   path: 'articles',
   label: 'Articles',
   singular: 'article',
+  gender: 'm',
   table: 'articles',
   icon: 'article',
   orderBy: { column: 'published_at', ascending: false },
@@ -131,6 +135,7 @@ const ORACLES: ModuleConfig = {
   path: 'oracles',
   label: 'Oracles',
   singular: 'oracle',
+  gender: 'm',
   table: 'oracles',
   icon: 'oracle',
   orderBy: { column: 'year', ascending: false },
@@ -153,6 +158,7 @@ const PROGRAMMES: ModuleConfig = {
   path: 'programmes',
   label: 'Programmes',
   singular: 'programme',
+  gender: 'm',
   table: 'programmes',
   icon: 'clock',
   orderBy: { column: 'created_at', ascending: false },
@@ -197,6 +203,7 @@ const EXTENSIONS: ModuleConfig = {
   path: 'extensions',
   label: 'Extensions',
   singular: 'extension',
+  gender: 'f',
   table: 'extensions',
   icon: 'map',
   orderBy: { column: 'created_at', ascending: false },

@@ -121,11 +121,14 @@
   min-width: 0;
 }
 
+/* La barre supérieure ne sert plus qu à ouvrir le tiroir de navigation :
+   le salut a rejoint le tableau de bord, seule page où il a du sens. Sur
+   grand écran le rail est toujours visible, la barre disparaît donc. */
 .cp-topbar {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 14px;
-  padding: 6px 4px 26px;
+  padding: 6px 4px 20px;
 }
 
 .cp-topbar__burger {
@@ -148,18 +151,6 @@
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
-}
-
-.cp-topbar__title {
-  margin: 0;
-  font: 600 27px var(--font-heading);
-  letter-spacing: -0.6px;
-}
-
-.cp-topbar__subtitle {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: var(--cp-ink-muted);
 }
 
 .cp-content {
@@ -228,16 +219,12 @@
     display: inline;
   }
 
+  .cp-topbar {
+    display: flex;
+  }
+
   .cp-topbar__burger {
     display: grid;
-  }
-
-  .cp-topbar__title {
-    font-size: 21px;
-  }
-
-  .cp-topbar__subtitle {
-    font-size: 13px;
   }
 
   .cp-shell--rail-open .cp-shell__scrim {
@@ -247,11 +234,5 @@
     border: none;
     background: rgb(11 11 11 / 35%);
     z-index: 30;
-  }
-}
-
-@media (max-width: 480px) {
-  .cp-topbar__subtitle {
-    display: none;
   }
 }

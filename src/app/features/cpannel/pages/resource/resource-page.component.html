@@ -19,7 +19,7 @@
 
         @if (canEdit()) {
           <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
-            Nouvelle {{ cfg.singular }}
+            {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
           </button>
         }
       </div>
@@ -36,13 +36,13 @@
         @if (search()) {
           <p class="cp-res__empty-title">Aucun résultat pour « {{ search() }} »</p>
         } @else {
-          <p class="cp-res__empty-title">Créez la première {{ cfg.singular }}</p>
+          <p class="cp-res__empty-title">Créez {{ cfg.gender === 'f' ? 'la première' : 'le premier' }} {{ cfg.singular }}</p>
           <p class="cp-res__empty-text">
             Rien n'a encore été enregistré dans ce module.
           </p>
           @if (canEdit()) {
             <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
-              Nouvelle {{ cfg.singular }}
+              {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
             </button>
           }
         }
@@ -143,7 +143,7 @@
       <div class="cp-modal__panel">
         <header class="cp-modal__head">
           <h3 id="cp-form-title" class="cp-modal__title">
-            {{ editingId() ? 'Modifier' : 'Nouvelle' }} {{ cfg.singular }}
+            {{ editingId() ? 'Modifier' : (cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau') }} {{ cfg.singular }}
           </h3>
           <button
             type="button"

@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
-import { CpannelAuthService } from '../services/cpannel-auth.service';
-import { CpannelDataService } from '../services/cpannel-data.service';
-import { CPANNEL_MODULES, type ModuleConfig } from '../data/cpannel-modules';
-import type { PannelModule } from '../../../core/supabase/database.types';
+import { CpannelAuthService } from '../../services/cpannel-auth.service';
+import { CpannelDataService } from '../../services/cpannel-data.service';
+import { CPANNEL_MODULES, type ModuleConfig } from '../../data/cpannel-modules';
+import type { PannelModule } from '../../../../core/supabase/database.types';
 
 interface ModuleStat {
   readonly config: ModuleConfig;
@@ -34,6 +34,7 @@ export class CpannelDashboardPageComponent {
   private readonly data = inject(CpannelDataService);
 
   protected readonly profile = this.auth.adminProfile;
+  protected readonly firstName = this.auth.displayName;
   protected readonly isSuperAdmin = this.auth.isSuperAdmin;
 
   protected readonly loading = signal(true);

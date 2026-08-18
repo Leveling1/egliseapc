@@ -3,6 +3,14 @@
 
 -- Articles de blog : contenu réel, publié directement (is_visible = true)
 -- puisque ces articles sont déjà en ligne sur le site aujourd'hui.
+-- Le trigger de contrôle de publication exige un administrateur connecté
+-- disposant du droit de publier. Un amorçage tourne sans session : on le
+-- neutralise le temps de la transaction, puis on le réactive aussitôt.
+-- Le faire ici, dans un fichier généré et rejouable, évite la tentation
+-- bien pire d assouplir le trigger lui-même.
+begin;
+alter table public.articles disable trigger trg_articles_publish_right;
+
 insert into public.articles
   (slug, category, title, excerpt, content, author_name, author_initials,
    reading_time, gradient, published_at, is_visible)
@@ -76,6 +84,9 @@ values
    'Pasteur David KALALA', 'DK', '7 min de lecture',
    'linear-gradient(135deg,rgba(255,255,255,.55),#1C1C8C)', NULL, true)
 on conflict (slug) do nothing;
+
+alter table public.articles enable trigger trg_articles_publish_right;
+commit;
 
 -- Éditions RDA : 18 éditions passées.
 -- Aucune donnée réelle (titres, lieux, dates) n'a été fournie : les lignes

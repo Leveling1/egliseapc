@@ -46,3 +46,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# État local du CLI Supabase (identifiants de projet, versions détectées).
+# Le lien au projet est propre à chaque machine, il n'a pas à être versionné.
+supabase/.temp

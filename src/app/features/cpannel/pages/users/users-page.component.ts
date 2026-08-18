@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
-import { SupabaseService } from '../../../core/supabase/supabase.service';
-import { CpannelAuthService } from '../services/cpannel-auth.service';
+import { SupabaseService } from '../../../../core/supabase/supabase.service';
+import { CpannelAuthService } from '../../services/cpannel-auth.service';
 import type {
   AdminPermission,
   AdminUser,
   PannelModule,
-} from '../../../core/supabase/database.types';
-import { CPANNEL_MODULES } from '../data/cpannel-modules';
+} from '../../../../core/supabase/database.types';
+import { CPANNEL_MODULES } from '../../data/cpannel-modules';
 
 type Right = 'can_view' | 'can_edit' | 'can_publish';
 

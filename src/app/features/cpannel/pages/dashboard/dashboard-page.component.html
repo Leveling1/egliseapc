@@ -2,6 +2,11 @@
   <p class="cp-dash__loading">Chargement…</p>
 } @else {
   <div class="cp-dash">
+    <header class="cp-dash__greeting">
+      <h1 class="cp-dash__hello">Bonjour, {{ firstName() }} !</h1>
+      <p class="cp-dash__sub">Gérez le contenu du site Ambassadeurs Pour Christ</p>
+    </header>
+
     <section class="cp-dash__stats" aria-label="Vue d'ensemble du contenu">
       @for (stat of stats(); track stat.config.module; let index = $index) {
         <a
