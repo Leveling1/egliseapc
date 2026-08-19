@@ -4,35 +4,56 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  computed,
   inject,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { ParallaxHeroImagesComponent } from '../../../../shared/components/parallax-hero-images/parallax-hero-images.component';
+import {
+  CylinderCarouselComponent,
+  type CarouselImage,
+} from '../../../../shared/components/cylinder-carousel/cylinder-carousel.component';
+import { heroFrame } from './hero-animation';
+import { introTiming, splitIntoWords } from './hero-intro';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [ParallaxHeroImagesComponent, RouterLink],
+  imports: [CylinderCarouselComponent, RouterLink],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroComponent {
-  protected readonly parallaxImages: readonly string[] = [
-    '/images/home/hero_1.jpg',
-    '/images/home/hero_2.jpg',
-    '/images/home/prophete-garry-bg.webp',
-    '/images/home/hero_4.jpg',
-    '/images/home/hero_5.jpg',
-    '/images/home/hero_6.jpg',
+  protected readonly carouselImages: readonly CarouselImage[] = [
+    { src: '/images/home/hero_1.jpg', alt: '' },
+    { src: '/images/home/hero_2.jpg', alt: '' },
+    { src: '/images/home/hero_3.jpg', alt: '' },
+    { src: '/images/home/hero_4.jpg', alt: '' },
+    { src: '/images/home/hero_5.jpg', alt: '' },
+    { src: '/images/home/hero_6.jpg', alt: '' },
+    { src: '/images/home/hero_7.jpg', alt: '' },
+    { src: '/images/home/hero_8.jpg', alt: '' },
+    { src: '/images/home/hero_9.jpg', alt: '' },
+    { src: '/images/home/hero_10.jpg', alt: '' },
+    { src: '/images/home/hero_11.jpg', alt: '' },
+    { src: '/images/home/hero_12.jpg', alt: '' },
   ];
 
-  // Grows into a fullscreen fixed overlay as the page scrolls, then holds
-  // there while this same pinned viewport crossfades from "Qui sommes-nous"
-  // to "Le Visionnaire" on top of it — one continuous pin, no hand-off to a
-  // second pinned section, so there's no dead scroll between the two.
-  protected readonly growImage = '/images/home/prophete-garry-bg.webp';
+  /**
+   * Texte d'accueil joué lettre par lettre au chargement.
+   *
+   * Il double volontairement le titre : c'est une entrée en matière, pas une
+   * information. Il est donc masqué aux lecteurs d'écran, qui liront le titre
+   * juste après.
+   */
+  protected readonly introText = 'Bienvenue chez les Ambassadeurs Pour Christ';
+
+  protected readonly introWords = computed(() => splitIntoWords(this.introText));
+
+  protected readonly timing = computed(() =>
+    introTiming([...this.introText].length),
+  );
 
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
@@ -40,61 +61,51 @@ export class HeroComponent {
     const destroyRef = inject(DestroyRef);
 
     afterNextRender(() => {
-      const texts = this.elementRef.nativeElement.querySelectorAll<HTMLElement>('.apc-hero-history__text');
-      if (texts.length < 2) {
-        return;
-      }
+      const root = this.elementRef.nativeElement;
+      const pin = root.querySelector<HTMLElement>('.apc-hero-pin');
+      const stage = root.querySelector<HTMLElement>('.apc-hero__stage');
+      const content = root.querySelector<HTMLElement>('.apc-hero__content');
+      const portrait = root.querySelector<HTMLElement>('.apc-hero__portrait');
+      const texts = root.querySelectorAll<HTMLElement>('.apc-hero-history__text');
 
-      let ticking = false;
+      if (!pin || !stage || !content || !portrait || texts.length < 2) return;
+
+      let running = true;
+
       const update = (): void => {
-        ticking = false;
-        const pinEl = this.elementRef.nativeElement.querySelector<HTMLElement>('.apc-hero-pin');
-        if (!pinEl) {
-          return;
-        }
+        // Tout le calcul vit dans `heroFrame`, testé séparément. Ici on ne
+        // fait que mesurer le défilement et appliquer le résultat.
+        const frame = heroFrame(
+          -pin.getBoundingClientRect().top,
+          window.innerHeight,
+          pin.offsetHeight,
+        );
 
-        const rect = pinEl.getBoundingClientRect();
-        const scrolledIntoPin = -rect.top;
-        // Matches the grow image's own motion budget (parallax-hero-images):
-        // the text layer only starts once that first viewport-height of
-        // scroll — the move-then-grow animation — has fully played out.
-        const growthBudget = window.innerHeight;
-        const textBudget = window.innerHeight;
+        content.style.opacity = String(frame.contentOpacity);
+        content.style.transform = `translateY(${frame.contentShift}px)`;
 
-        // Also hide both once scrolled fully past the pin — otherwise the
-        // clamped progress below would stay pinned at 1 forever, leaving
-        // "Le Visionnaire" visible (it's `position: fixed`) all the way
-        // down the page, past every later section and into the footer.
-        if (scrolledIntoPin < growthBudget || scrolledIntoPin >= pinEl.offsetHeight) {
-          texts[0].style.opacity = '0';
-          texts[1].style.opacity = '0';
-          return;
-        }
+        stage.style.transform = `scale(${frame.stageScale})`;
+        stage.style.opacity = String(frame.stageOpacity);
 
-        const rawProgress = (scrolledIntoPin - growthBudget) / textBudget;
-        const progress = Math.max(0, Math.min(1, rawProgress));
+        portrait.style.opacity = String(frame.portraitOpacity);
+        portrait.style.transform = `scale(${frame.portraitScale})`;
 
-        let t = progress <= 0.3 ? 0 : progress >= 0.7 ? 1 : (progress - 0.3) / 0.4;
-        t = t * t * (3 - 2 * t);
+        texts[0].style.opacity = String(frame.historyOpacity[0]);
+        texts[0].style.filter = `blur(${frame.historyBlur[0]}px)`;
+        texts[1].style.opacity = String(frame.historyOpacity[1]);
+        texts[1].style.filter = `blur(${frame.historyBlur[1]}px)`;
 
-        texts[0].style.opacity = String(1 - t);
-        texts[0].style.filter = `blur(${t * 12}px)`;
-        texts[1].style.opacity = String(t);
-        texts[1].style.filter = `blur(${(1 - t) * 12}px)`;
+        if (running) requestAnimationFrame(update);
       };
 
-      const onScroll = (): void => {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(update);
-        }
-      };
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      update();
+      // Boucle continue plutôt qu'écoute de l'événement `scroll` : pendant un
+      // défilement rapide ou inertiel, des événements sont regroupés ou
+      // manqués, et l'animation se fige dans un état intermédiaire —
+      // typiquement en remontant vers le haut de la page.
+      requestAnimationFrame(update);
 
       destroyRef.onDestroy(() => {
-        window.removeEventListener('scroll', onScroll);
+        running = false;
       });
     });
   }

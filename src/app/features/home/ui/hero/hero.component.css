@@ -1,9 +1,12 @@
-/* One continuous pin covering the whole hero "story": 100vh for the hero
-   itself staying pinned, 100vh for the grow-image move-then-grow motion
-   (see parallax-hero-images), and 100vh for the Qui-sommes-nous ⇄
-   Le-Visionnaire crossfade on top of the now-fullscreen image — all driven
-   by scroll progress through this one element, so there's no dead scroll
-   between the image finishing its growth and the text appearing. */
+/* Un seul pin continu pour toute la séquence d'ouverture.
+     Sa hauteur n'est pas arbitraire : `.apc-hero` est en position sticky, il
+     ne reste donc collé que sur `hauteur du pin − 100vh`. L'animation dure
+     200vh — 100 pour la traversée du carrousel vers le portrait, 100 pour le
+     fondu « Qui sommes-nous » ⇄ « Le Visionnaire » — il faut donc 300vh pour
+     que toute la séquence se joue pendant que le hero est immobile.
+
+     Réduire cette hauteur décolle le hero en plein fondu et laisse la section
+     suivante remonter par-dessus. */
 .apc-hero-pin {
   position: relative;
   height: 300vh;
@@ -17,32 +20,125 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* Sert de fond de secours le temps que la photo se charge, et de base aux
+     voiles posés par-dessus. */
+  background: var(--color-apc-black);
 }
 
+/* Scène du carrousel. Elle grandit au défilement pour donner la sensation
+   d'avancer vers le cylindre puis de le traverser. */
+/* Photo de fond et son voile.
+   Le voile est nettement plus dense que celui du carrousel : la photo doit
+   rester une texture, pas une seconde image à déchiffrer. Deux niveaux
+   d'images concurrentes fatiguent le regard et brouillent le message. */
 .apc-hero__background {
   position: absolute;
   inset: 0;
   background-image: url('/images/home/hero-main.webp');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
 }
 
-.apc-hero__overlay {
+.apc-hero__background::after {
+  content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgb(11 11 11 / 82%);
+}
+
+.apc-hero__stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  will-change: transform, opacity;
+  /* Halo bleu nuit de la charte, qui creuse le fond derrière le cylindre. */
+  background: radial-gradient(ellipse at center, rgb(28 28 140 / 22%), transparent 64%);
+}
+
+/* Voile du carrousel : plus léger que celui du fond, pour que les images qui
+   tournent restent le sujet tout en laissant le titre lisible.
+   Son opacité est fixée ici et nulle part ailleurs — aucun code d'animation ne
+   peut la faire varier, elle est donc constante d'un bout à l'autre. */
+.apc-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(11 11 11 / 62%);
+  pointer-events: none;
+}
+
+/* Portrait plein écran révélé par la traversée.
+   En position fixe et non absolue : il doit rester immobile pendant que le
+   pin défile derrière lui, exactement comme les deux textes qui viennent
+   s'afficher par-dessus. */
+.apc-hero__portrait {
+  position: fixed;
+  inset: 0;
+  background-image: url('/images/home/prophete-garry-bg.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Voile sombre sur le portrait : sans lui, les textes blancs qui s'affichent
+   par-dessus deviennent illisibles sur les zones claires de la photo. */
+.apc-hero__portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(0 0 0 / 25%), rgb(0 0 0 / 62%));
+}
+
+/* Rideau du premier acte.
+   Presque opaque tant que l'accueil se déroule, il se lève pendant le passage
+   au titre : le carrousel et la photo se découvrent alors progressivement.
+   Piloté uniquement par une animation CSS au chargement — le code de
+   défilement n'y touche pas, et ne peut donc pas le faire clignoter. */
+.apc-hero__curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-apc-black);
+  pointer-events: none;
+  animation: apc-curtain-lift var(--apc-curtain-duration, 1000ms) ease-out
+    var(--apc-curtain-delay, 2400ms) both;
+}
+
+@keyframes apc-curtain-lift {
+  from {
+    /* Opacité pleine, et non 0,94 : à cette valeur le carrousel restait
+       perceptible derrière le rideau, ce qui parasitait la lecture des
+       lettres. Le fond doit être totalement masqué au premier acte. */
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Sans mouvement, le rideau n'a plus d'objet : il masquerait le fond sans
+   jamais se lever de façon perceptible. */
+@media (prefers-reduced-motion: reduce) {
+  .apc-hero__curtain {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 .apc-hero__content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   box-sizing: border-box;
   text-align: center;
   padding: 64px 56px;
   max-width: 760px;
   width: calc(100% - 48px);
-  animation: apc-fade-up 0.8s ease-out;
+  will-change: transform, opacity;
+  /* Pas d'animation d'entrée ici : le défilement pilote déjà `transform` et
+     `opacity`, et une animation CSS sur les mêmes propriétés les écraserait. */
 }
 
 .apc-hero__overline {
@@ -87,16 +183,6 @@
   color: var(--color-apc-yellow);
 }
 
-@media (max-width: 768px) {
-  /* background-attachment: fixed is unreliable on mobile browsers when the
-     element (or an ancestor, here .apc-hero's overflow: hidden) isn't the
-     page root — it frequently fails to paint at all. Fall back to a normal
-     scrolling background below desktop widths. */
-  .apc-hero__background {
-    background-attachment: scroll;
-  }
-}
-
 @media (max-width: 640px) {
   .apc-hero__content {
     padding: 40px 24px;
@@ -132,11 +218,11 @@
   }
 }
 
-/* Qui-sommes-nous / Le-Visionnaire text, crossfaded on top of the grow
-   image (parallax-hero-images, z-index: 1000) once it reaches fullscreen —
-   fixed rather than absolute since it must stay put above that same fixed
-   image regardless of where `.apc-hero-pin` currently sits mid-scroll.
-   Starts at opacity 0 (see hero.component.ts) until the grow motion ends. */
+/* Textes « Qui sommes-nous » et « Le Visionnaire », croisés par-dessus le
+   portrait une fois la traversée du cylindre terminée.
+   En position fixe plutôt qu'absolue : ils doivent rester immobiles au-dessus
+   du portrait, lui aussi fixe, quelle que soit la position du pin dans le
+   défilement. Ils partent d'une opacité nulle, pilotée par hero.component.ts. */
 .apc-hero-history__text {
   position: fixed;
   top: 50%;
@@ -207,5 +293,129 @@
 
   .apc-hero-history__title {
     font-size: 28px;
+  }
+}
+
+/* ============================================================
+   Animation d'accueil, en deux actes
+   ============================================================
+   Acte 1 : « Bienvenue chez les Ambassadeurs Pour Christ » se déroule lettre
+   par lettre, chacune montant à sa place avec un léger retard sur la
+   précédente. Acte 2 : le titre, le récit et le verset prennent le relais.
+
+   Tout repose sur des animations CSS, et non sur des transitions déclenchées
+   depuis le script. C'est délibéré : le HTML du site est prérendu, et si le
+   JavaScript tardait ou échouait, une approche par classe laisserait le titre
+   invisible — or c'est lui que lisent les moteurs de recherche. Ici le texte
+   est présent et s'anime tout seul.
+
+   Les durées et retards viennent du composant, en variables CSS. */
+
+.apc-hero__intro {
+  /* Superposé au contenu définitif plutôt que placé au-dessus : les deux
+     actes occupent le même espace, rien ne bouge au moment du relais. */
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0 0.28em;
+  margin: 0;
+  padding: 0 24px;
+  box-sizing: border-box;
+
+  font: 400 clamp(26px, 4.6vw, 58px)/1.25 'Poppins', sans-serif;
+  color: #fff;
+  text-align: center;
+
+  /* Durée reprise du composant, comme le rideau : les deux doivent se lever
+     ensemble, et une valeur écrite en dur ici les désynchroniserait. */
+  animation: apc-intro-out var(--apc-intro-outro-duration, 1000ms) ease-out
+    var(--apc-intro-outro, 2400ms) both;
+}
+
+/* Chaque mot reste solidaire : ses lettres étant des blocs en ligne, sans ce
+   regroupement le navigateur couperait les mots en fin de ligne. */
+.apc-hero__intro-word {
+  white-space: nowrap;
+}
+
+.apc-hero__intro-letter {
+  display: inline-block;
+  /* Le déplacement est exprimé en em : il suit la taille du texte, qui varie
+     avec l'écran. */
+  animation: apc-intro-letter var(--apc-intro-duration, 1200ms)
+    cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes apc-intro-letter {
+  from {
+    opacity: 0;
+    transform: translateY(1.15em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes apc-intro-out {
+  to {
+    opacity: 0;
+    /* Rendu inerte une fois effacé, sinon il continuerait d'intercepter les
+       clics par-dessus les liens de l'acte 2. */
+    visibility: hidden;
+  }
+}
+
+.apc-hero__final {
+  animation: apc-final-in 1800ms ease-out var(--apc-final-delay, 2400ms) both;
+}
+
+@keyframes apc-final-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Récit et verset ---------- */
+.apc-hero__story {
+  max-width: 560px;
+  margin: 0 auto 20px;
+  font: 400 15px/1.75 'Open Sans', sans-serif;
+  color: rgb(255 255 255 / 88%);
+}
+
+
+/* Une entrée aussi longue devient pénible pour qui est sensible au mouvement,
+   et elle retarde l'accès au contenu. On affiche alors tout d'emblée. */
+@media (prefers-reduced-motion: reduce) {
+  .apc-hero__intro {
+    display: none;
+  }
+
+  .apc-hero__final {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .apc-hero__story {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+}
+
+/* Sur les écrans peu hauts, le récit ferait déborder le hero au-delà de
+   l'écran : le verset et le titre suffisent à porter le message. */
+@media (max-height: 700px) {
+  .apc-hero__story {
+    display: none;
   }
 }

@@ -1,19 +1,81 @@
 <div class="apc-hero-pin" id="notre-histoire">
   <section class="apc-hero" aria-label="Accueil">
-    <div class="apc-hero__background" role="img" aria-label="Assemblée réunie pour un culte à l'église A.P.C"></div>
-    <div class="apc-hero__overlay"></div>
+    <!-- Photo de fond fortement assombrie, dans le même esprit que les
+         sections « Nos Programmes » et « Thème de l'année » : le hero parle
+         ainsi le même langage visuel que le reste du site. -->
+    <div class="apc-hero__background" role="presentation"></div>
 
-    <app-parallax-hero-images [images]="parallaxImages" [growImage]="growImage" />
+    <div class="apc-hero__stage">
+      <app-cylinder-carousel [images]="carouselImages" />
+    </div>
+
+    <!-- Voile sombre entre le carrousel et le texte, comme sur les autres
+         sections du site : sans lui, le titre blanc se perd sur les zones
+         claires des photos qui défilent. -->
+    <div class="apc-hero__scrim"></div>
+
+    <!-- Rideau du premier acte : pendant que l'accueil se déroule, il couvre
+         tout le fond pour que rien ne dispute l'attention aux lettres. Il se
+         lève ensuite, au rythme exact du passage vers le titre.
+         Distinct du voile permanent : celui-ci ne joue qu'au chargement, il ne
+         bouge jamais au défilement. -->
+    <div
+      class="apc-hero__curtain"
+      [style.--apc-curtain-delay]="timing().finalDelay + 'ms'"
+      [style.--apc-curtain-duration]="timing().outroDuration + 'ms'"
+    ></div>
 
     <div class="apc-hero__content">
-      <span class="apc-hero__overline">Bienvenue à l'Église</span>
-      <h1 class="apc-hero__title">LES AMBASSADEURS POUR CHRIST</h1>
-      <p class="apc-hero__tagline">Sainteté à l'Éternel</p>
-      <div class="apc-hero__actions">
-        <a href="#notre-histoire" class="apc-hero__link">Nous découvrir</a>
-        <a href="#nos-programmes" class="apc-hero__link">Nos programmes</a>
+      <!-- Acte 1 : l'accueil se déroule lettre par lettre.
+           Masqué aux lecteurs d'écran : il répète le titre qui suit, et une
+           annonce caractère par caractère serait inaudible. -->
+      <p
+        class="apc-hero__intro"
+        aria-hidden="true"
+        [style.--apc-intro-stagger]="timing().stagger + 'ms'"
+        [style.--apc-intro-duration]="timing().letterDuration + 'ms'"
+        [style.--apc-intro-outro]="timing().outroStart + 'ms'"
+        [style.--apc-intro-outro-duration]="timing().outroDuration + 'ms'"
+      >
+        @for (word of introWords(); track $index) {
+          <span class="apc-hero__intro-word">
+            @for (letter of word.letters; track letter.index) {
+              <span
+                class="apc-hero__intro-letter"
+                [style.animation-delay]="letter.index * timing().stagger + 'ms'"
+                >{{ letter.char }}</span
+              >
+            }
+          </span>
+        }
+      </p>
+
+      <!-- Acte 2 : le contenu permanent, qui prend le relais. -->
+      <div class="apc-hero__final" [style.--apc-final-delay]="timing().finalDelay + 'ms'">
+        <h1 class="apc-hero__title">LES AMBASSADEURS POUR CHRIST</h1>
+        <p class="apc-hero__tagline">Sainteté à l'Éternel</p>
+
+        <p class="apc-hero__story">
+          Née d'un simple groupe de prière, notre communauté s'est bâtie sur une
+          conviction : porter l'Évangile et la réconciliation au monde, d'une
+          culture à l'autre.
+        </p>
+
+        <div class="apc-hero__actions">
+          <a href="#notre-histoire" class="apc-hero__link">Nous découvrir</a>
+          <a href="#nos-programmes" class="apc-hero__link">Nos programmes</a>
+        </div>
       </div>
     </div>
+
+    <!-- Apparaît pendant la traversée du cylindre et sert de fond aux deux
+         textes qui se succèdent ensuite. En position fixe, comme eux, pour
+         rester immobile quelle que soit la position du pin dans le défilement. -->
+    <div
+      class="apc-hero__portrait"
+      role="img"
+      aria-label="Prophète Garry KENGE, pasteur principal de l'Église A.P.C"
+    ></div>
 
     <div class="apc-hero-history__text" aria-labelledby="apc-hero-history-title">
       <span class="apc-hero-history__overline">Qui sommes-nous</span>

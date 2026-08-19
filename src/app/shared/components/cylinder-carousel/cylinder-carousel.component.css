@@ -1,0 +1,74 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* La perspective est posée sur le conteneur, pas sur l'anneau : l'appliquer à
+   un élément qui tourne déformerait la rotation. Sa valeur est calculée à
+   partir du rayon (voir cylinder-geometry) et fixée par liaison. */
+.apc-cyl {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+
+  /* Les cartes s'effacent aux extrémités au lieu d'être tranchées net par le
+     bord de l'écran : le cylindre semble sortir de l'obscurité. Le fondu suit
+     l'axe de rotation. */
+  mask-image: linear-gradient(90deg, transparent, #000 16% 84%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16% 84%, transparent);
+}
+
+.apc-cyl--vertical {
+  mask-image: linear-gradient(180deg, transparent, #000 14% 86%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 14% 86%, transparent);
+}
+
+.apc-cyl__ring {
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  animation: apc-cyl-spin-y linear infinite;
+}
+
+.apc-cyl__ring--vertical {
+  animation-name: apc-cyl-spin-x;
+}
+
+/* Toutes les cartes occupent la même cellule de grille : c'est leur
+   transformation 3D, et elle seule, qui les répartit sur le cylindre. */
+.apc-cyl__card {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  /* Sans cela, on verrait le dos des cartes de l'autre côté du cylindre, en
+     miroir — ce qui trahit l'illusion. */
+  backface-visibility: hidden;
+  box-shadow: 0 18px 50px rgb(0 0 0 / 45%);
+}
+
+@keyframes apc-cyl-spin-y {
+  to {
+    transform: rotateY(1turn);
+  }
+}
+
+@keyframes apc-cyl-spin-x {
+  to {
+    transform: rotateX(1turn);
+  }
+}
+
+/* Une rotation permanente peut gêner, voire donner la nausée, aux personnes
+   sensibles au mouvement. On ne la supprime pas — le cylindre perdrait tout
+   son sens — mais on la ralentit au point qu'elle ne soit plus perçue comme
+   une animation. */
+@media (prefers-reduced-motion: reduce) {
+  .apc-cyl__ring {
+    animation-duration: 240s !important;
+  }
+}

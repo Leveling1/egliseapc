@@ -1,0 +1,25 @@
+<div
+  class="apc-cyl"
+  [class.apc-cyl--vertical]="axis() === 'vertical'"
+  [style.perspective.px]="geometry().perspective"
+  aria-hidden="true"
+>
+  <div
+    class="apc-cyl__ring"
+    [class.apc-cyl__ring--vertical]="axis() === 'vertical'"
+    [style.animation-duration.s]="animationDuration()"
+    [style.width.px]="geometry().cardWidth"
+    [style.height.px]="geometry().cardHeight"
+  >
+    @for (image of cards(); track $index) {
+      <img
+        class="apc-cyl__card"
+        [src]="image.src"
+        [alt]="image.alt ?? ''"
+        [style.transform]="transformFor($index)"
+        loading="eager"
+        decoding="async"
+      />
+    }
+  </div>
+</div>
