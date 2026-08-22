@@ -12,18 +12,28 @@
  *
  * Trois réglages font tout l'effet :
  *
- * L'INTERLETTRAGE est resserré, presque jointif. C'était l'écart le plus net
- * avec le modèle, qui espaçait au contraire de 10 px : un mot de trois
- * lettres écartées se lit comme un sigle administratif, tandis que des
- * lettres serrées forment une masse, et c'est la masse qui fait le filigrane.
+ * LA POLICE est une grotesque, et non plus la géométrique du site. C'est ce
+ * qui distingue le plus le modèle : ses lettres ont les terminaisons coupées
+ * net et les panses légèrement resserrées d'une Helvetica, là où une Poppins
+ * construit des rondeurs quasi circulaires. À cette taille, la différence ne
+ * passe pas inaperçue.
  *
- * LA TAILLE est en `vw` afin que le mot occupe toujours la même part de la
- * largeur. Le plafond de 390 px n'est pas cosmétique : le mot s'élève de
- * 1,15 fois sa taille au-dessus du bas du pied de page, qui mesure environ
- * 470 px sur grand écran. Au-delà, les capitales sortiraient par le haut et
- * `overflow: hidden` les trancherait — or le modèle n'est pas rogné
- * verticalement. Trois lettres ne peuvent donc pas à la fois barrer toute la
- * largeur et tenir en hauteur ; le modèle en comptait neuf.
+ * L'INTERLETTRAGE est presque normal. Il avait été resserré à −0,04 em pour
+ * former une masse compacte ; le modèle ne fait rien de tel, ses lettres
+ * respirent. On garde un rien de resserrement, comme il est d'usage sur les
+ * très grands corps, sans plus.
+ *
+ * LA POSITION est décalée du coin. Le modèle laisse un retrait à gauche et un
+ * dégagement sous la ligne de base ; le filigrane était jusqu'ici plaqué dans
+ * l'angle, ce qui le faisait lire comme un débordement plutôt que comme un
+ * parti pris.
+ *
+ * LA TAILLE reste plafonnée. Le mot s'élève de 1,15 fois sa taille au-dessus
+ * du bas du pied de page, qui mesure environ 470 px sur grand écran :
+ * au-delà, les capitales sortiraient par le haut et `overflow: hidden` les
+ * trancherait. Trois lettres ne peuvent donc pas à la fois barrer toute la
+ * largeur et tenir en hauteur — le modèle en comptait neuf, ce qui lui permet
+ * d'être large sans être haut.
  *
  * LE CONTRASTE est celui du modèle : environ six pour cent de blanc sur le
  * noir du site, soit rgb(26 26 26) sur rgb(11 11 11). Assez pour que les
@@ -31,11 +41,11 @@
  */
 .apc-footer__watermark {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0.1em;
+  left: 5%;
   line-height: 0.8;
-  font: 700 clamp(120px, 46vw, 390px) 'Poppins', sans-serif;
-  letter-spacing: -0.04em;
+  font: 700 clamp(120px, 42vw, 360px) Helvetica, Arial, sans-serif;
+  letter-spacing: -0.015em;
   color: #fff;
   opacity: 0.06;
   white-space: nowrap;

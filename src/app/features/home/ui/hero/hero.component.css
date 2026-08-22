@@ -287,10 +287,22 @@
 @media (max-width: 700px) {
   .apc-hero__lockup {
     font-size: clamp(19px, 6.2vw, 32px);
+    /* Les deux lignes du titre se centrent l'une sur l'autre, comme le reste
+       du hero. L'alignement à gauche de l'affiche suppose une ligne unique :
+       dès que le titre se replie, il laisse la seconde ligne, plus courte,
+       flotter contre le bord — ce qui se lit comme un défaut. */
+    text-align: center;
   }
 
   .apc-hero__title {
     white-space: normal;
+  }
+
+  /* L'écriture suit le centrage plutôt que de rester accrochée au bord
+     gauche, où elle se retrouverait décalée par rapport au titre recentré. */
+  .apc-hero__script {
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
