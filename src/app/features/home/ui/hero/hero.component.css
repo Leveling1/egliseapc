@@ -133,26 +133,114 @@
   z-index: 2;
   box-sizing: border-box;
   text-align: center;
-  padding: 64px 56px;
-  max-width: 760px;
+  /* Marges latérales resserrées par rapport aux 56 px d'avant : le titre tient
+     désormais sur une seule ligne, comme sur l'affiche, et chaque pixel gagné
+     ici lui permet de rester grand plus longtemps quand l'écran se réduit. */
+  padding: 64px 24px;
+  max-width: 1040px;
   width: calc(100% - 48px);
   will-change: transform, opacity;
   /* Pas d'animation d'entrée ici : le défilement pilote déjà `transform` et
      `opacity`, et une animation CSS sur les mêmes propriétés les écraserait. */
 }
 
-.apc-hero__overline {
-  font: 600 34px 'Dancing Script', cursive;
-  color: var(--color-apc-yellow);
-  display: block;
-  margin-bottom: 8px;
+/* ---------- Bloc « Bienvenue chez » + titre ---------- */
+
+/*
+ * Les deux textes de l'affiche forment un seul bloc, l'écriture chevauchant
+ * le haut des capitales.
+ *
+ * La taille est portée par le bloc et non par le titre : l'écriture est
+ * dimensionnée et positionnée en `em`, elle suit donc le titre exactement,
+ * quelle que soit la largeur de l'écran. Un réglage en pixels ou en vw les
+ * ferait dériver l'un par rapport à l'autre.
+ */
+.apc-hero__lockup {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+
+  /*
+   * Le titre tient sur une ligne à toutes les largeurs, comme sur l'affiche.
+   *
+   * « LES AMBASSADEURS POUR CHRIST » mesure environ 18,2 em en Helvetica gras.
+   * On divise donc la largeur disponible par un peu plus, 18,6, pour garder
+   * une marge : les polices de repli n'ont pas exactement les mêmes chasses,
+   * et un titre en `nowrap` qui déborde serait bien pire qu'un titre un rien
+   * plus petit. 96 px correspondent aux marges et retraits du conteneur.
+   */
+  font-size: clamp(13px, calc((100vw - 96px) / 18.6), 48px);
+
+  /* Réserve la place que l'écriture occupe au-dessus du titre : elle est en
+     position absolue et ne pousse rien, sans quoi le bloc se centrerait
+     verticalement comme si elle n'existait pas. */
+  padding-top: 1.6em;
 }
 
 .apc-hero__title {
-  font: 700 48px/1.15 Helvetica, Arial, sans-serif;
+  position: relative;
+  /* Au-dessus de l'écriture : sur l'affiche, la boucle du « B » plonge
+     derrière les capitales et non par-dessus. */
+  z-index: 1;
+  font: 700 1em/1.15 Helvetica, Arial, sans-serif;
   color: #fff;
-  margin: 0 0 20px;
-  letter-spacing: 0.5px;
+  margin: 0;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.apc-hero__script {
+  position: absolute;
+  /* Débordant légèrement à gauche du titre, comme sur l'affiche, où la boucle
+     du « B » déborde du bloc de capitales. */
+  left: -1.05em;
+  /* Ancré par le haut, sur la place que lui réserve le retrait du bloc.
+     Le pied du « B » descend alors jusqu'au bas des capitales, qu'il traverse.
+     Ancrer par le bas donnerait le même résultat sur une ligne, mais placerait
+     l'écriture au-dessus de la *dernière* ligne dès que le titre se replie sur
+     deux — c'est-à-dire au milieu du titre. */
+  top: 0;
+  width: 7.65em;
+  height: auto;
+  /* Les tracés sont dessinés en jaune, sans contour : ce sont des contours de
+     lettres pleins, et non des traits de plume. */
+  fill: var(--color-apc-yellow);
+  z-index: 0;
+
+  /* S'efface au terme de l'écriture, en même temps que se lève le rideau. */
+  animation: apc-script-out var(--apc-script-out-duration, 1000ms) ease-out
+    var(--apc-script-out, 2418ms) both;
+}
+
+@keyframes apc-script-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/*
+ * Le dévoilement d'une lettre.
+ *
+ * `inset()` appliqué à un élément SVG se réfère à sa fill-box, c'est-à-dire à
+ * la boîte englobante du tracé lui-même. Chaque lettre est donc balayée dans
+ * ses propres limites — et comme sa fenêtre de temps est déduite de cette même
+ * boîte, les treize balayages se recomposent en une seule ligne d'encre qui
+ * traverse le mot sans rupture.
+ *
+ * La progression est linéaire, et ce n'est pas négociable : une courbe
+ * d'accélération sur chaque lettre ferait ralentir puis repartir l'encre
+ * treize fois, alors qu'une main avance d'un trait.
+ */
+.apc-hero__script-letter {
+  clip-path: inset(0 100% 0 0);
+  animation: apc-write var(--apc-write-duration, 200ms) linear
+    var(--apc-write-delay, 0ms) forwards;
+}
+
+@keyframes apc-write {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .apc-hero__tagline {
@@ -183,18 +271,32 @@
   color: var(--color-apc-yellow);
 }
 
-@media (max-width: 640px) {
-  .apc-hero__content {
-    padding: 40px 24px;
-  }
-
-  .apc-hero__overline {
-    font-size: 26px;
+/* Seul le retrait vertical change avec l'écran. L'horizontal reste à 24 px à
+   toutes les largeurs : c'est lui que la formule de taille du titre soustrait
+   à la largeur de l'écran, et le faire varier ferait déborder le titre, qui
+   tient sur une seule ligne. */
+/*
+ * Sur écran étroit, le titre se replie sur deux lignes.
+ *
+ * La ligne unique de l'affiche ne tient plus son rang ici : à 375 px de large,
+ * elle imposait un titre de 15 px — la taille d'un paragraphe pour le titre
+ * principal de la page. Mieux vaut renoncer à la ligne unique qu'au titre.
+ * L'écriture, elle, garde sa place au-dessus de la première ligne et suit la
+ * taille du bloc, puisqu'elle est réglée en `em`.
+ */
+@media (max-width: 700px) {
+  .apc-hero__lockup {
+    font-size: clamp(19px, 6.2vw, 32px);
   }
 
   .apc-hero__title {
-    font-size: 32px;
-    letter-spacing: 0.3px;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 640px) {
+  .apc-hero__content {
+    padding: 40px 24px;
   }
 
   .apc-hero__tagline {
@@ -210,11 +312,7 @@
 
 @media (max-width: 400px) {
   .apc-hero__content {
-    padding: 32px 18px;
-  }
-
-  .apc-hero__title {
-    font-size: 26px;
+    padding: 32px 24px;
   }
 }
 
@@ -299,9 +397,11 @@
 /* ============================================================
    Animation d'accueil, en deux actes
    ============================================================
-   Acte 1 : « Bienvenue chez les Ambassadeurs Pour Christ » se déroule lettre
-   par lettre, chacune montant à sa place avec un léger retard sur la
-   précédente. Acte 2 : le titre, le récit et le verset prennent le relais.
+   Acte 1 : « Bienvenue chez » s'écrit à la main, un balayage traversant le
+   lettrage à vitesse constante. Le titre paraît en cours de route, pendant la
+   levée du stylo entre les deux mots, et l'affiche se trouve alors complète.
+   Acte 2 : l'écriture s'efface, le rideau se lève, et le reste du contenu
+   prend le relais sous le titre — qui, lui, ne bouge plus.
 
    Tout repose sur des animations CSS, et non sur des transitions déclenchées
    depuis le script. C'est délibéré : le HTML du site est prérendu, et si le
@@ -311,65 +411,48 @@
 
    Les durées et retards viennent du composant, en variables CSS. */
 
-.apc-hero__intro {
-  /* Superposé au contenu définitif plutôt que placé au-dessus : les deux
-     actes occupent le même espace, rien ne bouge au moment du relais. */
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0 0.28em;
-  margin: 0;
-  padding: 0 24px;
-  box-sizing: border-box;
-
-  font: 400 clamp(26px, 4.6vw, 58px)/1.25 'Poppins', sans-serif;
-  color: #fff;
-  text-align: center;
-
-  /* Durée reprise du composant, comme le rideau : les deux doivent se lever
-     ensemble, et une valeur écrite en dur ici les désynchroniserait. */
-  animation: apc-intro-out var(--apc-intro-outro-duration, 1000ms) ease-out
-    var(--apc-intro-outro, 2400ms) both;
+/*
+ * Le titre se précise pendant que la main écrit encore.
+ *
+ * Il ne surgit pas : il émerge d'un flou, comme une image qui vient au point.
+ * L'entrée précédente était sèche, et la courbe en était la cause — une
+ * exponentielle sortante (0.16, 1, 0.3, 1) parcourt les quatre cinquièmes du
+ * chemin dans le premier cinquième du temps. Le titre était donc déjà arrivé
+ * quand l'animation commençait à peine.
+ *
+ * La courbe retenue ici démarre doucement et s'achève en glissant, sans
+ * à-coup ni à l'entrée ni à la sortie.
+ *
+ * Le flou et le déplacement sont exprimés en `em` : ils suivent la taille du
+ * titre, qui varie avec l'écran. Un flou en pixels serait imperceptible sur
+ * un titre de 48 px et noierait celui de 20 px.
+ */
+.apc-hero__title {
+  animation: apc-title-in var(--apc-title-duration, 1000ms) cubic-bezier(0.4, 0, 0.2, 1)
+    var(--apc-title-delay, 1600ms) both;
 }
 
-/* Chaque mot reste solidaire : ses lettres étant des blocs en ligne, sans ce
-   regroupement le navigateur couperait les mots en fin de ligne. */
-.apc-hero__intro-word {
-  white-space: nowrap;
-}
-
-.apc-hero__intro-letter {
-  display: inline-block;
-  /* Le déplacement est exprimé en em : il suit la taille du texte, qui varie
-     avec l'écran. */
-  animation: apc-intro-letter var(--apc-intro-duration, 1200ms)
-    cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes apc-intro-letter {
+@keyframes apc-title-in {
   from {
     opacity: 0;
-    transform: translateY(1.15em);
+    filter: blur(0.2em);
+    transform: translateY(0.22em);
+  }
+  /* L'opacité est acquise avant la netteté : les lettres finissent de se
+     préciser une fois déjà pleinement présentes. C'est ce décalage qui donne
+     l'impression d'une mise au point, et non d'un simple fondu. */
+  60% {
+    opacity: 1;
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: translateY(0);
   }
 }
 
-@keyframes apc-intro-out {
-  to {
-    opacity: 0;
-    /* Rendu inerte une fois effacé, sinon il continuerait d'intercepter les
-       clics par-dessus les liens de l'acte 2. */
-    visibility: hidden;
-  }
-}
-
 .apc-hero__final {
+  margin-top: 20px;
   animation: apc-final-in 1800ms ease-out var(--apc-final-delay, 2400ms) both;
 }
 
@@ -394,12 +477,21 @@
 
 
 /* Une entrée aussi longue devient pénible pour qui est sensible au mouvement,
-   et elle retarde l'accès au contenu. On affiche alors tout d'emblée. */
+   et elle retarde l'accès au contenu. On affiche alors tout d'emblée.
+
+   L'écriture disparaît entièrement plutôt que de s'afficher figée : elle n'est
+   qu'un acte d'ouverture, destiné à s'effacer. La laisser en place la
+   superposerait au titre pour de bon. */
 @media (prefers-reduced-motion: reduce) {
-  .apc-hero__intro {
+  .apc-hero__script {
     display: none;
   }
 
+  .apc-hero__lockup {
+    padding-top: 0;
+  }
+
+  .apc-hero__title,
   .apc-hero__final {
     animation: none;
   }

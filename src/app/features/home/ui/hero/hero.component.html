@@ -26,33 +26,50 @@
     ></div>
 
     <div class="apc-hero__content">
-      <!-- Acte 1 : l'accueil se déroule lettre par lettre.
-           Masqué aux lecteurs d'écran : il répète le titre qui suit, et une
-           annonce caractère par caractère serait inaudible. -->
-      <p
-        class="apc-hero__intro"
-        aria-hidden="true"
-        [style.--apc-intro-stagger]="timing().stagger + 'ms'"
-        [style.--apc-intro-duration]="timing().letterDuration + 'ms'"
-        [style.--apc-intro-outro]="timing().outroStart + 'ms'"
-        [style.--apc-intro-outro-duration]="timing().outroDuration + 'ms'"
-      >
-        @for (word of introWords(); track $index) {
-          <span class="apc-hero__intro-word">
-            @for (letter of word.letters; track letter.index) {
-              <span
-                class="apc-hero__intro-letter"
-                [style.animation-delay]="letter.index * timing().stagger + 'ms'"
-                >{{ letter.char }}</span
-              >
+      <!-- Le lettrage et le titre forment un seul bloc, superposés comme sur
+           l'affiche : « Bienvenue chez » s'écrit en travers du haut des
+           capitales, sa boucle initiale plongeant derrière elles. -->
+      <div class="apc-hero__lockup">
+        <!-- Acte 1 : la main écrit.
+             Un balayage traverse le lettrage de gauche à droite ; chaque
+             lettre porte la fenêtre de temps pendant laquelle il franchit sa
+             largeur, calculée dans hero-intro.ts.
+             Masqué aux lecteurs d'écran : c'est une image de texte, et le
+             titre juste en dessous porte déjà le nom de l'Église. -->
+        <svg
+          class="apc-hero__script"
+          [attr.viewBox]="scriptViewBox"
+          aria-hidden="true"
+          focusable="false"
+          [style.--apc-script-out]="timing().outroStart + 'ms'"
+          [style.--apc-script-out-duration]="timing().outroDuration + 'ms'"
+        >
+          <g [attr.transform]="scriptTransform">
+            @for (stroke of scriptStrokes(); track $index) {
+              <path
+                class="apc-hero__script-letter"
+                [attr.d]="stroke.d"
+                [style.--apc-write-delay]="stroke.delay + 'ms'"
+                [style.--apc-write-duration]="stroke.duration + 'ms'"
+              />
             }
-          </span>
-        }
-      </p>
+          </g>
+        </svg>
 
-      <!-- Acte 2 : le contenu permanent, qui prend le relais. -->
+        <!-- Le titre paraît pendant la levée du stylo entre les deux mots, et
+             ne rejoue pas à l'acte 2 : une fois posé, il ne bouge plus. -->
+        <h1
+          class="apc-hero__title"
+          [style.--apc-title-delay]="timing().titleDelay + 'ms'"
+          [style.--apc-title-duration]="timing().titleDuration + 'ms'"
+        >
+          LES AMBASSADEURS POUR CHRIST
+        </h1>
+      </div>
+
+      <!-- Acte 2 : le reste du contenu permanent, qui prend le relais pendant
+           que l'écriture s'efface. -->
       <div class="apc-hero__final" [style.--apc-final-delay]="timing().finalDelay + 'ms'">
-        <h1 class="apc-hero__title">LES AMBASSADEURS POUR CHRIST</h1>
         <p class="apc-hero__tagline">Sainteté à l'Éternel</p>
 
         <p class="apc-hero__story">

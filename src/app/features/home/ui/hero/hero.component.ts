@@ -14,7 +14,8 @@ import {
   type CarouselImage,
 } from '../../../../shared/components/cylinder-carousel/cylinder-carousel.component';
 import { heroFrame } from './hero-animation';
-import { introTiming, splitIntoWords } from './hero-intro';
+import { handwriting, introTiming } from './hero-intro';
+import { WELCOME_STROKES, WELCOME_TRANSFORM, WELCOME_VIEWBOX } from './welcome-strokes';
 
 @Component({
   selector: 'app-hero',
@@ -41,19 +42,19 @@ export class HeroComponent {
   ];
 
   /**
-   * Texte d'accueil joué lettre par lettre au chargement.
+   * Lettrage « Bienvenue chez », écrit à la main au chargement.
    *
-   * Il double volontairement le titre : c'est une entrée en matière, pas une
-   * information. Il est donc masqué aux lecteurs d'écran, qui liront le titre
-   * juste après.
+   * Il complète le titre au lieu de le doubler : les deux forment une seule
+   * phrase, disposée comme sur l'affiche de référence. Le lettrage reste
+   * masqué aux lecteurs d'écran — c'est une image de texte, et le titre qui
+   * suit porte déjà le nom de l'Église.
    */
-  protected readonly introText = 'Bienvenue chez les Ambassadeurs Pour Christ';
+  protected readonly scriptViewBox = WELCOME_VIEWBOX;
+  protected readonly scriptTransform = WELCOME_TRANSFORM;
 
-  protected readonly introWords = computed(() => splitIntoWords(this.introText));
+  protected readonly scriptStrokes = computed(() => handwriting(WELCOME_STROKES));
 
-  protected readonly timing = computed(() =>
-    introTiming([...this.introText].length),
-  );
+  protected readonly timing = computed(() => introTiming(WELCOME_STROKES));
 
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 

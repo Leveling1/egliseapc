@@ -1,38 +1,63 @@
 /**
- * Découpe et minutage du texte d'accueil joué au chargement.
+ * Minutage de l'accueil joué au chargement.
  *
  * Isolé du composant et sans dépendance au DOM, comme le reste des calculs
  * d'animation du hero : c'est ici que se décide le rythme, il doit donc être
  * vérifiable directement.
+ *
+ * Le principe de l'écriture : un balayage traverse le lettrage de gauche à
+ * droite à vitesse constante, comme une main qui avance. Chaque lettre est
+ * dévoilée pendant que le balayage franchit sa largeur — sa position dicte
+ * donc quand elle paraît, et sa largeur combien de temps elle met.
+ *
+ * Ce découpage n'est pas qu'une commodité : les lettres cursives se
+ * chevauchent, la hampe du « h » déborde sur le « c » qui le précède. Comme
+ * chaque fenêtre de temps est déduite de la position, ces chevauchements se
+ * traduisent en fenêtres qui se recouvrent, et l'ensemble se recompose en une
+ * seule ligne d'encre qui progresse sans rupture.
  */
 
-export interface IntroLetter {
-  /** Caractère à afficher. */
-  readonly char: string;
-  /** Rang dans la phrase entière, qui détermine le retard de la lettre. */
-  readonly index: number;
-}
+import type { WelcomeStroke } from './welcome-strokes';
 
-export interface IntroWord {
-  readonly letters: readonly IntroLetter[];
+export interface IntroStroke {
+  /** Contour de la lettre. */
+  readonly d: string;
+  /** Lettre représentée, à titre documentaire. */
+  readonly letter: string;
+  /** Instant où le balayage atteint son bord gauche, en ms. */
+  readonly delay: number;
+  /** Temps qu'il met à la franchir, en ms. */
+  readonly duration: number;
 }
 
 export interface IntroTiming {
-  /** Retard ajouté à chaque lettre par rapport à la précédente, en ms. */
-  readonly stagger: number;
-  /** Durée d'apparition d'une lettre, en ms. */
-  readonly letterDuration: number;
-  /** Instant où le texte d'accueil commence à s'effacer, en ms. */
+  /** Durée totale de l'écriture, en ms. */
+  readonly writeSpan: number;
+  /** Instant où le titre définitif paraît, en ms. */
+  readonly titleDelay: number;
+  /** Durée de son apparition, en ms. */
+  readonly titleDuration: number;
+  /** Instant où l'écriture commence à s'effacer, en ms. */
   readonly outroStart: number;
-  /** Instant où le titre définitif commence à apparaître, en ms. */
-  readonly finalDelay: number;
   /** Durée du passage d'un acte à l'autre, en ms. Sert aussi au rideau. */
   readonly outroDuration: number;
+  /** Instant où le reste de l'acte 2 entre, en ms. */
+  readonly finalDelay: number;
   /** Fin de toute la séquence, en ms. */
   readonly total: number;
 }
 
-const LETTER_DURATION = 1200;
+/**
+ * Durée de l'écriture.
+ *
+ * Reprise au millimètre de la cascade lettre par lettre qu'elle remplace :
+ * quarante-deux intervalles de 29 ms, plus les 1 200 ms que mettait la
+ * dernière lettre à s'installer. La consigne était de conserver exactement le
+ * même minutage, et tout ce qui suit — effacement, rideau, acte 2 — s'y
+ * accroche sans changer d'un millième.
+ */
+const WRITE_SPAN = 2418;
+
 /**
  * Durée du passage d'un acte à l'autre.
  *
@@ -44,70 +69,98 @@ const LETTER_DURATION = 1200;
 const OUTRO_DURATION = 1000;
 
 /**
- * Retard maximal entre deux lettres.
+ * Durée d'apparition du titre définitif, en ms.
  *
- * C'est la valeur relevée sur le site de référence, qui l'appliquait à une
- * phrase de 19 caractères.
+ * Allongée depuis les 800 ms d'origine, qui rendaient l'entrée brusque. Le
+ * titre déborde ainsi un peu sur la fin de l'écriture — c'est voulu : il se
+ * précise pendant que la main achève le dernier mot, au lieu de surgir.
  */
-const MAX_STAGGER = 120;
+const TITLE_DURATION = 1000;
 
 /**
- * Durée visée pour la vague, du départ de la première lettre à celui de la
- * dernière.
+ * Repli si le lettrage ne présente aucune levée franche du stylo.
  *
- * La référence gardait un retard fixe, ce qui ne tient pas ici : notre phrase
- * fait plus du double de la sienne, et 120 ms par lettre la ferait durer plus
- * de six secondes. On fixe donc la durée de la vague et on en déduit le
- * retard, ce qui garde le même effet quelle que soit la longueur du texte.
- *
- * Resserrée depuis que le passage entre les deux actes a été allongé : sans
- * cela, le titre — le contenu utile — se ferait attendre au-delà de trois
- * secondes.
+ * Ne sert qu'à garantir une valeur sensée : le lettrage réel comporte un
+ * espace entre « Bienvenue » et « chez », et c'est lui qui décide.
  */
-const WAVE_SPAN = 1200;
+const DEFAULT_LIFT = 0.66;
 
 /**
- * Découpe la phrase en mots, chaque mot portant ses lettres.
+ * Fraction du parcours à laquelle le stylo se lève le plus longuement.
  *
- * Le découpage par mots n'est pas cosmétique : chaque lettre devient un bloc
- * en ligne pour pouvoir être déplacée, et sans regroupement le navigateur
- * couperait les mots n'importe où en fin de ligne — ce qui saute aux yeux sur
- * un écran étroit.
+ * C'est l'espace entre les deux mots : le seul endroit où le balayage ne
+ * rencontre aucune lettre. On s'en sert pour y placer l'arrivée du titre, qui
+ * profite ainsi de la respiration de l'écriture au lieu de la couper.
  */
-export function splitIntoWords(text: string): IntroWord[] {
-  const words: IntroWord[] = [];
-  let index = 0;
+export function penLift(strokes: readonly WelcomeStroke[]): number {
+  if (strokes.length < 2) return DEFAULT_LIFT;
 
-  for (const word of text.split(' ')) {
-    if (word.length === 0) continue;
+  const first = strokes[0].start;
+  const last = strokes[strokes.length - 1].end;
+  const total = last - first;
+  if (total <= 0) return DEFAULT_LIFT;
 
-    words.push({
-      letters: [...word].map((char) => ({ char, index: index++ })),
-    });
+  // Le bord droit atteint jusqu'ici, et non celui de la lettre précédente :
+  // en cursive une lettre peut se terminer avant la fin de celle d'avant.
+  let reached = strokes[0].end;
+  let bestGap = 0;
+  let bestAt = DEFAULT_LIFT;
 
-    // L'espace compte dans le rythme, comme sur le site de référence.
-    index++;
+  for (let i = 1; i < strokes.length; i++) {
+    const gap = strokes[i].start - reached;
+    if (gap > bestGap) {
+      bestGap = gap;
+      bestAt = (reached - first) / total;
+    }
+    reached = Math.max(reached, strokes[i].end);
   }
 
-  return words;
+  return bestGap > 0 ? bestAt : DEFAULT_LIFT;
 }
 
-export function introTiming(letterCount: number): IntroTiming {
-  const steps = Math.max(1, letterCount - 1);
-  const stagger = Math.min(MAX_STAGGER, Math.round(WAVE_SPAN / steps));
+/**
+ * Répartit la durée d'écriture sur les lettres, au prorata de leur position.
+ *
+ * La progression est linéaire d'un bout à l'autre — le stylo ne ralentit ni
+ * n'accélère. Ce n'est pas un détail : chaque lettre porte sa propre
+ * animation, et une courbe d'accélération appliquée à chacune ferait avancer
+ * l'encre par à-coups au lieu d'une ligne continue.
+ */
+export function handwriting(
+  strokes: readonly WelcomeStroke[],
+  writeSpan: number = WRITE_SPAN,
+): IntroStroke[] {
+  if (strokes.length === 0) return [];
 
-  // La dernière lettre part à `steps × stagger` et met `letterDuration` à
-  // s'installer : c'est là que la vague se termine.
-  const waveEnd = steps * stagger + LETTER_DURATION;
+  const first = strokes[0].start;
+  const last = strokes[strokes.length - 1].end;
+  const total = last - first;
 
+  return strokes.map((stroke) => {
+    const at = total > 0 ? (stroke.start - first) / total : 0;
+    const width = total > 0 ? (stroke.end - stroke.start) / total : 1 / strokes.length;
+
+    return {
+      d: stroke.d,
+      letter: stroke.letter,
+      delay: Math.round(at * writeSpan),
+      duration: Math.round(width * writeSpan),
+    };
+  });
+}
+
+export function introTiming(strokes: readonly WelcomeStroke[]): IntroTiming {
   return {
-    stagger,
-    letterDuration: LETTER_DURATION,
-    outroStart: waveEnd,
+    writeSpan: WRITE_SPAN,
+    // Le titre entre pendant la levée du stylo entre les deux mots : la
+    // composition de l'affiche se complète dans la respiration de l'écriture.
+    titleDelay: Math.round(penLift(strokes) * WRITE_SPAN),
+    titleDuration: TITLE_DURATION,
+    outroStart: WRITE_SPAN,
     outroDuration: OUTRO_DURATION,
-    // Le titre définitif entre pendant que l'accueil s'efface : un fondu
+    // Le reste de l'acte 2 entre pendant que l'écriture s'efface : un fondu
     // enchaîné, plutôt qu'un écran vide entre les deux actes.
-    finalDelay: waveEnd + OUTRO_DURATION * 0.3,
-    total: waveEnd + OUTRO_DURATION,
+    finalDelay: WRITE_SPAN + OUTRO_DURATION * 0.3,
+    total: WRITE_SPAN + OUTRO_DURATION,
   };
 }

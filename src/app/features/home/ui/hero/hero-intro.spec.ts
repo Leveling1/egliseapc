@@ -1,85 +1,138 @@
 import { describe, expect, it } from 'vitest';
 
-import { introTiming, splitIntoWords } from './hero-intro';
+import { handwriting, introTiming, penLift } from './hero-intro';
+import { WELCOME_STROKES, type WelcomeStroke } from './welcome-strokes';
 
-const PHRASE = 'Bienvenue chez les Ambassadeurs Pour Christ';
+/** Minutage de la cascade lettre par lettre que l'écriture remplace. */
+const ANCIEN_MINUTAGE = { fin: 2418, relais: 2718, total: 3418 };
 
-describe('splitIntoWords', () => {
-  it('regroupe les lettres par mot', () => {
-    const mots = splitIntoWords('Bienvenue chez vous');
+const strokes = handwriting(WELCOME_STROKES);
 
-    expect(mots).toHaveLength(3);
-    expect(mots[0].letters.map((l) => l.char).join('')).toBe('Bienvenue');
-    expect(mots[2].letters.map((l) => l.char).join('')).toBe('vous');
+describe('handwriting', () => {
+  it('rend une entrée par lettre du lettrage', () => {
+    expect(strokes).toHaveLength(WELCOME_STROKES.length);
+    expect(strokes.map((s) => s.letter).join('')).toBe('Bienvenuechez');
   });
 
-  it('compte les espaces dans le rythme', () => {
-    // Sans cela, la vague se resserrerait à chaque espace et le déroulé
-    // perdrait sa régularité.
-    const mots = splitIntoWords('ab cd');
+  it("commence dès le chargement et s'achève au terme prévu", () => {
+    const dernier = strokes[strokes.length - 1];
 
-    expect(mots[0].letters.map((l) => l.index)).toEqual([0, 1]);
-    expect(mots[1].letters.map((l) => l.index)).toEqual([3, 4]);
+    expect(strokes[0].delay).toBe(0);
+    expect(dernier.delay + dernier.duration).toBe(ANCIEN_MINUTAGE.fin);
   });
 
-  it('conserve tout le texte, accents compris', () => {
-    const rendu = splitIntoWords(PHRASE)
-      .map((mot) => mot.letters.map((l) => l.char).join(''))
-      .join(' ');
+  it('fait avancer le stylo à vitesse constante', () => {
+    // Chaque lettre doit occuper un temps proportionnel à sa largeur. Sans
+    // cela, un « B » et un « i » mettraient le même temps et l'encre
+    // avancerait par à-coups.
+    const vitesses = WELCOME_STROKES.map(
+      (source, i) => (source.end - source.start) / strokes[i].duration,
+    );
 
-    expect(rendu).toBe(PHRASE);
+    const min = Math.min(...vitesses);
+    const max = Math.max(...vitesses);
+
+    // L'écart résiduel ne vient que de l'arrondi des durées à la milliseconde.
+    expect(max / min).toBeLessThan(1.01);
+  });
+
+  it('pose les lettres dans l\'ordre de l\'écriture', () => {
+    for (let i = 1; i < strokes.length; i++) {
+      expect(strokes[i].delay).toBeGreaterThanOrEqual(strokes[i - 1].delay);
+    }
+  });
+
+  it('laisse se recouvrir les lettres qui se chevauchent', () => {
+    // La hampe du « h » déborde sur le « c » qui le précède. Le « h » doit
+    // donc commencer à paraître avant que le « c » soit achevé : c'est ce
+    // recouvrement qui recompose une ligne d'encre continue plutôt qu'une
+    // succession de lettres isolées.
+    const c = strokes.findIndex((s, i) => s.letter === 'c' && i > 8);
+    const h = c + 1;
+
+    expect(strokes[h].letter).toBe('h');
+    expect(strokes[h].delay).toBeLessThan(strokes[c].delay + strokes[c].duration);
+  });
+
+  it("ne s'interrompt que là où le lettrage lui-même s'interrompt", () => {
+    // La propriété qui compte : le temps doit épouser la géométrie. L'encre ne
+    // peut s'arrêter que si le lettrage présente un blanc au même endroit —
+    // sinon le stylo semblerait hésiter au milieu d'un mot.
+    //
+    // Le lettrage en compte deux, et non un seul comme je l'avais d'abord
+    // supposé : l'espace entre « Bienvenue » et « chez », mais aussi la levée
+    // après le « B », capitale détachée du « ienvenue » qui la suit.
+    for (let i = 1; i < strokes.length; i++) {
+      const trouEnTemps = strokes[i].delay - (strokes[i - 1].delay + strokes[i - 1].duration);
+      const trouEnEspace = WELCOME_STROKES[i].start - WELCOME_STROKES[i - 1].end;
+
+      expect(Math.sign(Math.round(trouEnTemps))).toBe(Math.sign(Math.round(trouEnEspace)));
+    }
+  });
+
+  it('lève le stylo plus longuement entre les mots que dans un mot', () => {
+    const trou = (i: number) => strokes[i].delay - (strokes[i - 1].delay + strokes[i - 1].duration);
+    const entreMots = strokes.findIndex((s, i) => i > 8 && s.letter === 'c');
+
+    expect(trou(entreMots)).toBeGreaterThan(trou(1));
+  });
+
+  it('supporte un lettrage vide', () => {
+    expect(handwriting([])).toEqual([]);
+  });
+});
+
+describe('penLift', () => {
+  it("repère l'espace entre les deux mots", () => {
+    // « Bienvenue » s'achève vers 66 % du parcours, « chez » reprend vers
+    // 70 % : c'est la seule levée franche du stylo.
+    expect(penLift(WELCOME_STROKES)).toBeGreaterThan(0.6);
+    expect(penLift(WELCOME_STROKES)).toBeLessThan(0.72);
+  });
+
+  it('se rabat sur une valeur sensée quand il n\'y a rien à mesurer', () => {
+    const collees: WelcomeStroke[] = [
+      { letter: 'a', start: 0, end: 10, d: '' },
+      { letter: 'b', start: 10, end: 20, d: '' },
+    ];
+
+    expect(penLift([])).toBeGreaterThan(0);
+    expect(penLift(collees)).toBeGreaterThan(0);
   });
 });
 
 describe('introTiming', () => {
-  it("resserre le retard à mesure que la phrase s'allonge", () => {
-    // La référence appliquait 120 ms à 19 caractères. Notre phrase en fait
-    // plus du double : garder ce retard ferait durer la vague plus de six
-    // secondes. C'est donc la durée de la vague qui est fixée, et le retard
-    // qui s'en déduit.
-    expect(introTiming(19).stagger).toBeGreaterThan(introTiming(PHRASE.length).stagger);
-    expect(introTiming(PHRASE.length).stagger).toBeLessThan(60);
+  const t = introTiming(WELCOME_STROKES);
+
+  it('conserve exactement le minutage de la cascade remplacée', () => {
+    // La consigne était de changer la nature de l'animation, pas sa durée.
+    expect(t.outroStart).toBe(ANCIEN_MINUTAGE.fin);
+    expect(t.finalDelay).toBe(ANCIEN_MINUTAGE.relais);
+    expect(t.total).toBe(ANCIEN_MINUTAGE.total);
   });
 
-  it('plafonne le retard sur un texte très court', () => {
-    // Sans plafond, cinq lettres se dérouleraient au ralenti, chacune
-    // attendant plus de trois cents millisecondes.
-    expect(introTiming(6).stagger).toBe(120);
+  it("fait entrer le titre pendant que la main écrit encore", () => {
+    // Le titre profite de la levée du stylo entre les deux mots. Le faire
+    // attendre la fin de l'écriture laisserait un temps mort, et la
+    // composition de l'affiche ne se formerait jamais sous les yeux.
+    expect(t.titleDelay).toBeGreaterThan(0);
+    expect(t.titleDelay).toBeLessThan(t.writeSpan);
   });
 
-  it('garde une vague de durée comparable quelle que soit la longueur', () => {
-    const vague = (n: number) => introTiming(n).stagger * (n - 1);
-
-    expect(vague(30)).toBeGreaterThan(950);
-    expect(vague(30)).toBeLessThanOrEqual(1300);
-    expect(vague(60)).toBeGreaterThan(950);
-    expect(vague(60)).toBeLessThanOrEqual(1300);
-  });
-
-  it('laisse au passage entre les deux actes le temps de se voir', () => {
-    // Le défaut signalé : à 500 ms, l'accueil s'effaçait d'un coup.
-    expect(introTiming(PHRASE.length).outroDuration).toBeGreaterThanOrEqual(900);
+  it('laisse au titre le temps de se poser sans à-coup', () => {
+    // Une entrée trop courte paraît sèche — c'était le défaut de la première
+    // version, à 800 ms. Le titre a le droit de déborder sur la fin de
+    // l'écriture : il achève de se préciser pendant le dernier mot. En
+    // revanche il doit être posé avant que le relais ne commence, sinon trois
+    // mouvements se superposeraient à l'écran.
+    expect(t.titleDuration).toBeGreaterThanOrEqual(1000);
+    expect(t.titleDelay + t.titleDuration).toBeLessThan(t.finalDelay);
   });
 
   it('enchaîne les deux actes sans écran vide', () => {
-    const t = introTiming(PHRASE.length);
-
-    // Le titre définitif entre avant que l'accueil ait fini de s'effacer :
+    // Le reste de l'acte 2 entre avant que l'écriture ait fini de s'effacer :
     // les deux se croisent au lieu de laisser un trou.
     expect(t.finalDelay).toBeGreaterThan(t.outroStart);
     expect(t.finalDelay).toBeLessThan(t.total);
-  });
-
-  it('ne fait pas attendre le visiteur trop longtemps', () => {
-    // Le titre est le contenu utile : au-delà de trois secondes, l'entrée
-    // cesse d'être une mise en scène pour devenir un obstacle.
-    expect(introTiming(PHRASE.length).finalDelay).toBeLessThan(3000);
-  });
-
-  it('reste cohérent sur un texte d\'une seule lettre', () => {
-    const t = introTiming(1);
-
-    expect(Number.isFinite(t.stagger)).toBe(true);
-    expect(t.outroStart).toBeGreaterThan(0);
   });
 });

@@ -5,18 +5,39 @@
   text-align: center;
 }
 
-/* Large, near-invisible "APC" behind everything — purely decorative. Sits
-   directly on `.apc-footer` (not `.apc-footer__inner`, which carries the
-   padding) so it can be flush against the true bottom-left corner. */
+/*
+ * Grand « APC » en filigrane derrière le contenu, purement décoratif. Posé
+ * directement sur `.apc-footer` — et non sur `.apc-footer__inner`, qui porte
+ * les retraits — pour venir au ras du coin inférieur gauche.
+ *
+ * Trois réglages font tout l'effet :
+ *
+ * L'INTERLETTRAGE est resserré, presque jointif. C'était l'écart le plus net
+ * avec le modèle, qui espaçait au contraire de 10 px : un mot de trois
+ * lettres écartées se lit comme un sigle administratif, tandis que des
+ * lettres serrées forment une masse, et c'est la masse qui fait le filigrane.
+ *
+ * LA TAILLE est en `vw` afin que le mot occupe toujours la même part de la
+ * largeur. Le plafond de 390 px n'est pas cosmétique : le mot s'élève de
+ * 1,15 fois sa taille au-dessus du bas du pied de page, qui mesure environ
+ * 470 px sur grand écran. Au-delà, les capitales sortiraient par le haut et
+ * `overflow: hidden` les trancherait — or le modèle n'est pas rogné
+ * verticalement. Trois lettres ne peuvent donc pas à la fois barrer toute la
+ * largeur et tenir en hauteur ; le modèle en comptait neuf.
+ *
+ * LE CONTRASTE est celui du modèle : environ six pour cent de blanc sur le
+ * noir du site, soit rgb(26 26 26) sur rgb(11 11 11). Assez pour que les
+ * lettres se devinent, trop peu pour disputer la lecture au contenu.
+ */
 .apc-footer__watermark {
   position: absolute;
   bottom: 0;
   left: 0;
   line-height: 0.8;
-  font: 700 clamp(90px, 20vw, 240px) 'Poppins', sans-serif;
-  letter-spacing: 10px;
+  font: 700 clamp(120px, 46vw, 390px) 'Poppins', sans-serif;
+  letter-spacing: -0.04em;
   color: #fff;
-  opacity: 0.03;
+  opacity: 0.06;
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
