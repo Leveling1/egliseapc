@@ -1,0 +1,21 @@
+/*
+ * En-tête de la galerie, projeté dans le composant de parallaxe.
+ *
+ * Les tailles reprennent celles de la référence — 24 px sur téléphone,
+ * 72 px au-delà — mais en `clamp`, pour que le passage de l'une à l'autre soit
+ * progressif plutôt que brutal au franchissement d'un seuil.
+ */
+
+.apc-gallery__title {
+  margin: 0;
+  font: 700 clamp(28px, 6vw, 72px) / 1.05 'Poppins', sans-serif;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.apc-gallery__intro {
+  max-width: 672px;
+  margin: 32px 0 0;
+  font: 400 clamp(15px, 1.6vw, 20px) / 1.7 'Open Sans', sans-serif;
+  color: rgb(255 255 255 / 82%);
+}

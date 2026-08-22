@@ -1,0 +1,31 @@
+<div class="apc-parallax">
+  <!-- L'en-tête est projeté : la galerie fournit le mouvement, la page fournit
+       les mots. -->
+  <div class="apc-parallax__header">
+    <ng-content />
+  </div>
+
+  <div class="apc-parallax__grid">
+    @for (row of rows(); track $index) {
+      <div class="apc-parallax__row" [class.apc-parallax__row--reversed]="row.reversed">
+        @for (photo of row.photos; track $index) {
+          <figure class="apc-parallax__card">
+            <img
+              class="apc-parallax__image"
+              [src]="photo.src"
+              [alt]="photo.alt"
+              [attr.loading]="row.eager ? null : 'lazy'"
+              [attr.fetchpriority]="row.eager ? 'high' : null"
+              decoding="async"
+              width="600"
+              height="480"
+            />
+            @if (photo.caption) {
+              <figcaption class="apc-parallax__caption">{{ photo.caption }}</figcaption>
+            }
+          </figure>
+        }
+      </div>
+    }
+  </div>
+</div>

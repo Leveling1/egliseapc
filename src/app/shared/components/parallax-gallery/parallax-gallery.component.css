@@ -1,0 +1,157 @@
+/*
+ * Galerie en parallaxe.
+ *
+ * L'état posé ici est l'état FINAL : grille à plat, pleinement visible. Ce
+ * n'est pas ce que montre la référence au repos — elle part inclinée et
+ * presque effacée — mais c'est délibéré. Le site est prérendu et servi en
+ * statique : ce CSS est ce que voit un visiteur dont le JavaScript n'a pas
+ * abouti, et une galerie de photos figée à vingt pour cent d'opacité, penchée
+ * de vingt degrés, n'est plus une galerie. Le composant applique l'état
+ * d'entrée dès sa première image.
+ */
+
+.apc-parallax {
+  /* Taille des cartes. La référence les fixait à 480 × 384 px ; on garde ce
+     rapport de 1,25 mais on laisse la largeur suivre l'écran, faute de quoi
+     une carte occuperait plus que la largeur d'un téléphone. */
+  --apc-card-width: clamp(230px, 33vw, 480px);
+  --apc-card-height: calc(var(--apc-card-width) / 1.25);
+  --apc-card-gap: clamp(24px, 5vw, 80px);
+
+  position: relative;
+  height: 300vh;
+  padding: 160px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-apc-black);
+
+  /*
+   * La profondeur qui donne son relief au basculement.
+   *
+   * La référence posait aussi `transform-style: preserve-3d` ici. On ne le
+   * reprend pas : `overflow: hidden` sur le même élément le rend inopérant —
+   * la spécification impose alors un aplatissement. Il n'avait de toute façon
+   * rien à faire, le basculement portant sur un unique enfant direct, à qui
+   * cette perspective suffit.
+   */
+  perspective: 1000px;
+}
+
+.apc-parallax__header {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 16px;
+}
+
+/* La grille entière bascule ; ses styles de mouvement sont écrits par le
+   composant, image par image. */
+.apc-parallax__grid {
+  will-change: transform, opacity;
+}
+
+.apc-parallax__row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--apc-card-gap);
+  margin-bottom: var(--apc-card-gap);
+}
+
+/*
+ * Rangées composées à l'envers.
+ *
+ * Ce n'est pas un effet de style : une rangée mesure cinq cartes et déborde
+ * largement de l'écran. Composée à l'endroit, elle déborde par la droite ;
+ * à l'envers, par la gauche. C'est cette alternance qui fait que les trois
+ * rangées ne se superposent pas et donnent l'impression d'une nappe.
+ */
+.apc-parallax__row--reversed {
+  flex-direction: row-reverse;
+}
+
+.apc-parallax__card {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--apc-card-width);
+  height: var(--apc-card-height);
+  margin: 0;
+  overflow: hidden;
+  background: rgb(255 255 255 / 4%);
+
+  /*
+   * Deux déplacements indépendants sur la même carte.
+   *
+   * Le glissement du parallaxe passe par la propriété `translate`, réécrite à
+   * chaque image ; le soulèvement au survol passe par `transform`, qui est
+   * seul à porter une transition. Les mélanger dans une même déclaration
+   * ferait passer le parallaxe par cette transition de 300 ms, et le
+   * glissement traînerait derrière le défilement.
+   *
+   * La valeur est héritée de la rangée : toutes ses cartes glissent ensemble.
+   */
+  translate: var(--apc-parallax-x, 0px) 0;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apc-parallax__card:hover,
+.apc-parallax__card:focus-within {
+  transform: translateY(-20px);
+}
+
+.apc-parallax__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Cadrage par le haut, comme la référence : sur une photo de groupe, c'est
+     là que se trouvent les visages. */
+  object-fit: cover;
+  object-position: left top;
+}
+
+/*
+ * Voile et légende, révélés ensemble au survol.
+ *
+ * Le voile est porté par la légende elle-même, en dégradé : un calque séparé
+ * couvrant toute la carte à 80 % d'opacité, comme dans la référence, éteint la
+ * photo au moment précis où l'on cherche à la regarder.
+ */
+.apc-parallax__caption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 48px 20px 16px;
+  font: 500 15px 'Poppins', sans-serif;
+  color: #fff;
+  background: linear-gradient(transparent, rgb(0 0 0 / 78%));
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.apc-parallax__card:hover .apc-parallax__caption,
+.apc-parallax__card:focus-within .apc-parallax__caption {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .apc-parallax {
+    padding: 80px 0;
+  }
+
+  .apc-parallax__header {
+    padding: 40px 16px;
+  }
+}
+
+/* Le soulèvement au survol et la transition de la légende n'ont pas lieu
+   d'être ; le basculement, lui, est déjà écarté par le composant. */
+@media (prefers-reduced-motion: reduce) {
+  .apc-parallax__card,
+  .apc-parallax__caption {
+    transition: none;
+  }
+}

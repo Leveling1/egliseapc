@@ -21,6 +21,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/rda/pages/rda-page.component').then((m) => m.RdaPageComponent),
   },
   {
+    path: 'galerie',
+    loadComponent: () =>
+      import('./features/gallery/pages/gallery-page.component').then((m) => m.GalleryPageComponent),
+  },
+  {
     path: 'ressources',
     loadComponent: () =>
       import('./features/resources-page/pages/resources-page.component').then(

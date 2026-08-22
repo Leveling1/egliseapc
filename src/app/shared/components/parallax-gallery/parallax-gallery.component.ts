@@ -20,10 +20,16 @@ import {
 
 export interface GalleryPhoto {
   readonly src: string;
-  /** Description pour les lecteurs d'écran. */
+  /**
+   * Description pour les lecteurs d'écran.
+   *
+   * Vide pour une photo décorative : une description générique répétée à
+   * l'identique sur toute une galerie est plus gênante que pas de description
+   * du tout, car elle s'annonce sans rien apprendre.
+   */
   readonly alt: string;
-  /** Légende révélée au survol. */
-  readonly caption: string;
+  /** Légende révélée au survol. Omise, aucun cartouche n'est posé. */
+  readonly caption?: string;
 }
 
 interface GalleryRow {
