@@ -6,7 +6,6 @@
   max-width: 1200px;
   margin: 0 auto;
   background: #fff;
-  border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 4px;
   padding: 64px;
   display: flex;
@@ -118,15 +117,10 @@
 
 .apc-app__badge {
   display: inline-block;
-  padding: 6px 14px;
-  background: rgb(0 0 0 / 9%);
-  border-radius: 4px;
   font: 600 11px 'Poppins', sans-serif;
-  color: var(--color-apc-yellow);
+  color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 16px;
-  border: 1px solid rgb(0 0 0 / 8%);
 }
 
 .apc-app__title {
@@ -164,7 +158,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-apc-yellow);
+  color: var(--color-apc-blue-dark);
   font-size: 13px;
 }
 
@@ -209,10 +203,22 @@
     padding: 0 20px 64px;
   }
 
+  /*
+   * Empilement explicite, et non passage à la ligne.
+   *
+   * La carte comptait sur `flex-wrap` pour se replier, mais le bloc de texte
+   * porte `min-width: 0` : rien ne l'empêchait donc de se comprimer, et il
+   * restait collé contre l'aperçu du téléphone au lieu de passer dessous. Sur
+   * un écran de 375 px, l'aperçu et l'espacement en consommaient 220, laissant
+   * le texte s'entasser dans les 155 restants.
+   *
+   * `flex-direction: column` ne laisse pas ce choix au navigateur.
+   */
   .apc-app__card {
+    flex-direction: column;
+    align-items: stretch;
     padding: 40px 28px;
-    gap: 40px;
-    justify-content: center;
+    gap: 32px;
   }
 
   .apc-app__phone-wrap {
