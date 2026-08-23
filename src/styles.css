@@ -460,3 +460,42 @@ a {
     transform: translateY(0);
   }
 }
+
+/* ============================================================
+   Transition entre les pages
+   ============================================================
+   Réglage de l'enchaînement produit par `withViewTransitions()`. La durée par
+   défaut du navigateur est très courte et donne une impression de saut ; on
+   l'allonge un peu et on adoucit la courbe.
+
+   Le fondu est croisé : l'ancienne page s'efface pendant que la nouvelle
+   arrive, sans passage par un écran vide. */
+::view-transition-old(root) {
+  animation: apc-page-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: apc-page-in 320ms cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+@keyframes apc-page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes apc-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Le mouvement d'une page à l'autre est précisément ce dont se passent ceux
+   qui l'ont demandé : on garde le changement, on retire le déplacement. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

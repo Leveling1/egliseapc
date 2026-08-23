@@ -1,5 +1,21 @@
 @if (config(); as cfg) {
   <div class="cp-res">
+    @if (tabs(); as onglets) {
+      <nav class="cp-res__tabs" aria-label="Sections">
+        @for (onglet of onglets; track onglet.path) {
+          <button
+            type="button"
+            class="cp-res__tab"
+            [class.cp-res__tab--active]="$index === activeTab()"
+            [attr.aria-current]="$index === activeTab() ? 'page' : null"
+            (click)="selectTab($index)"
+          >
+            {{ onglet.label }}
+          </button>
+        }
+      </nav>
+    }
+
     <header class="cp-res__head">
       <div>
         <h2 class="cp-res__title">{{ cfg.label }}</h2>

@@ -52,6 +52,18 @@ export interface FieldConfig {
 }
 
 export interface ModuleConfig {
+  /**
+   * Sous-pages réunies sous une même entrée de menu.
+   *
+   * Les livres et les applications relèvent du même droit et du même métier —
+   * les ressources de l'église — mais vivent dans deux tables. Deux entrées de
+   * menu pour un seul sujet obligeaient à chercher où l'on range quoi ; elles
+   * n'en font plus qu'une, avec des onglets.
+   *
+   * Chaque onglet reste une configuration complète : la page en active un à la
+   * fois et ne sait rien du groupement.
+   */
+  readonly tabs?: readonly ModuleConfig[];
   readonly module: PannelModule;
   /** Segment d'URL sous /cpannel. */
   readonly path: string;
@@ -411,14 +423,28 @@ const NEWSLETTER: ModuleConfig = {
   fields: [],
 };
 
+/**
+ * Entrée unique du menu pour les ressources.
+ *
+ * Elle emprunte sa forme au premier onglet — la page a besoin d'une
+ * configuration valide avant même qu'un onglet soit choisi — et porte la liste
+ * des deux.
+ */
+const RESOURCES: ModuleConfig = {
+  ...BOOKS,
+  path: 'ressources',
+  label: 'Ressources',
+  icon: 'book',
+  tabs: [BOOKS, MOBILE_APPS],
+};
+
 export const CPANNEL_MODULES: readonly ModuleConfig[] = [
   RDA,
   ARTICLES,
   ORACLES,
   PROGRAMMES,
   EXTENSIONS,
-  BOOKS,
-  MOBILE_APPS,
+  RESOURCES,
   NEWSLETTER,
 ];
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { CpannelAuthService } from '../../services/cpannel-auth.service';
 import { CPANNEL_MODULES } from '../../data/cpannel-modules';
@@ -14,6 +14,7 @@ import { CPANNEL_MODULES } from '../../data/cpannel-modules';
 })
 export class CpannelShellComponent {
   private readonly auth = inject(CpannelAuthService);
+  private readonly router = inject(Router);
 
   protected readonly profile = this.auth.adminProfile;
   protected readonly railOpen = signal(false);
@@ -38,7 +39,11 @@ export class CpannelShellComponent {
     this.railOpen.set(false);
   }
 
-  protected signOut(): Promise<void> {
-    return this.auth.signOut();
+  protected async signOut(): Promise<void> {
+    await this.auth.signOut();
+
+    // Retour au site public plutôt qu'à la page de connexion : se déconnecter
+    // veut dire quitter le back-office, pas s'apprêter à y revenir.
+    await this.router.navigateByUrl('/');
   }
 }

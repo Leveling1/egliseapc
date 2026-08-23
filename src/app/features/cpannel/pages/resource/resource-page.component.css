@@ -165,3 +165,35 @@
 .cp-switch input {
   accent-color: var(--cp-accent);
 }
+
+/* ---------- Onglets ---------- */
+/* Réunit sous une même page des sous-ensembles qui relèvent du même droit :
+   les livres et les applications sont tous deux des ressources. */
+.cp-res__tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--cp-border, rgb(0 0 0 / 8%));
+}
+
+.cp-res__tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 10px 16px;
+  font: 600 14px 'Poppins', sans-serif;
+  color: var(--cp-muted, rgb(0 0 0 / 55%));
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.cp-res__tab:hover {
+  color: var(--cp-text, #111);
+}
+
+.cp-res__tab--active {
+  color: var(--cp-primary, #1c1c8c);
+  border-bottom-color: var(--cp-primary, #1c1c8c);
+}

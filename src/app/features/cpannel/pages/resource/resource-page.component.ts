@@ -59,9 +59,30 @@ export class CpannelResourcePageComponent {
    */
   readonly modulePath = input.required<string>();
 
-  protected readonly config = computed(() => findModuleByPath(this.modulePath()) ?? null);
+  private readonly baseConfig = computed(() => findModuleByPath(this.modulePath()) ?? null);
+
+  /** Onglets de la page, quand elle en réunit plusieurs. */
+  protected readonly tabs = computed(() => this.baseConfig()?.tabs ?? null);
+  protected readonly activeTab = signal(0);
+
+  /**
+   * Configuration réellement affichée.
+   *
+   * Tout le reste du composant lit ceci et ignore l'existence des onglets :
+   * changer d'onglet revient exactement à changer de module, et l'effet de
+   * chargement s'en charge sans savoir lequel des deux s'est produit.
+   */
+  protected readonly config = computed(() => {
+    const base = this.baseConfig();
+    if (!base?.tabs) return base;
+    return base.tabs[this.activeTab()] ?? base.tabs[0];
+  });
 
   private readonly configSignal = this.config;
+
+  protected selectTab(index: number): void {
+    this.activeTab.set(index);
+  }
 
   protected readonly weekdays = WEEKDAYS;
 

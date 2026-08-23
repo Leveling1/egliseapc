@@ -26,6 +26,15 @@ export const cpannelGuard: CanActivateFn = async () => {
 
   if (auth.isAuthorized()) return true;
 
+  // Connecté mais sans habilitation : renvoi au site public, et non à la page
+  // de connexion. Se reconnecter n'y changerait rien — le compte existe, il
+  // n'a simplement aucun droit — et le laisser tourner en boucle sur l'écran
+  // de connexion lui laisserait croire à un problème d'identifiants.
+  //
+  // Cette redirection ne protège rien par elle-même : les politiques RLS
+  // restent seules garantes des données. Elle évite une impasse.
+  if (auth.isAuthenticatedButRejected()) return router.createUrlTree(['/']);
+
   return router.createUrlTree(['/cpannel/connexion']);
 };
 
@@ -39,6 +48,11 @@ export function cpannelModuleGuard(module: PannelModule): CanActivateFn {
     if (!auth.resolved()) await auth.restore();
 
     if (auth.can(module, 'view')) return true;
+
+    // Un compte désactivé ou sans aucun droit n'a rien à faire dans le
+    // back-office : le renvoyer au tableau de bord le ferait rebondir d'une
+    // page vide à l'autre.
+    if (!auth.isAuthorized()) return router.createUrlTree(['/']);
 
     return router.createUrlTree(['/cpannel']);
   };
