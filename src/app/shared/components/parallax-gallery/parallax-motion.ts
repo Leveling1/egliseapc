@@ -1,5 +1,5 @@
 /**
- * Mécanique du parallaxe de la galerie.
+ * Mécanique du mur de photos en parallaxe.
  *
  * Transposition du composant React de référence, qui s'appuyait sur
  * `motion/react` : `useScroll` pour la progression, `useTransform` pour les
@@ -7,6 +7,12 @@
  * ici, et il ne serait pas raisonnable d'importer une bibliothèque d'animation
  * React dans un projet Angular pour trois fonctions. Elles tiennent en une
  * centaine de lignes, et les avoir en clair permet de les vérifier.
+ *
+ * Le principe a changé depuis la première version, et c'est ce qui l'a
+ * simplifié : il n'existe qu'une seule mise en page — le mur — et l'animation
+ * ne fait que la déformer au départ pour la laisser revenir à sa place. La
+ * référence, elle, éloignait indéfiniment ses rangées ; ici tout converge vers
+ * zéro, et l'état final est le mur nu.
  *
  * Le module est sans dépendance au DOM : il reçoit des nombres et en rend.
  */
@@ -108,164 +114,314 @@ export function mapRange(
 }
 
 /**
- * Progression du défilement à travers la section.
+ * Progression de l'animation d'entrée.
  *
- * Reproduit `useScroll({ target, offset: ['start start', 'end start'] })` :
- * la progression vaut 0 quand le haut de la section atteint le haut de
- * l'écran, et 1 quand son bas l'atteint à son tour. Le trajet couvert vaut
- * donc exactement la hauteur de la section.
+ * Vaut 0 quand le haut de la section atteint le haut de l'écran, et 1 après
+ * `span` pixels de défilement supplémentaires.
+ *
+ * La référence rapportait cette progression à la hauteur de la section, ce qui
+ * ne convient plus : cette hauteur est désormais celle du mur, donc celle de
+ * ses photos. L'animation s'étirerait à mesure qu'on ajoute des images, et le
+ * mur mettrait de plus en plus de temps à se poser. On la rapporte à une
+ * course fixe — en pratique une hauteur d'écran — pour que l'entrée dure
+ * toujours autant, quel que soit le nombre de photos.
  */
-export function scrollProgress(rectTop: number, rectHeight: number): number {
-  if (rectHeight <= 0) return 0;
-  return clamp01(-rectTop / rectHeight);
+export function scrollProgress(rectTop: number, span: number): number {
+  if (span <= 0) return 0;
+  return clamp01(-rectTop / span);
 }
 
 /**
- * Amplitudes du mouvement.
+ * Progression retenue : elle ne redescend jamais.
+ *
+ * Le défaut qu'elle corrige : l'animation suivait le défilement dans les deux
+ * sens, si bien que remonter pour regarder une photo de plus près la renvoyait
+ * à sa position de départ. Le mur se dérobait à qui voulait l'examiner —
+ * exactement ce qu'une galerie ne doit pas faire.
+ *
+ * Une fois le mur rangé, il le reste. L'entrée est une entrée : elle a lieu
+ * une fois, à la première descente, et le reste de la visite se passe dans une
+ * galerie qui se tient tranquille. Recharger la page la rejoue.
+ */
+export function latchProgress(previous: number, measured: number): number {
+  return Math.max(previous, measured);
+}
+
+/**
+ * Amplitudes du mouvement, c'est-à-dire l'état de départ.
  *
  * Elles étaient écrites en dur, en pixels, telles que la référence les
  * donnait. Cela tenait sur un écran large et se défaisait sur un téléphone :
  * une remontée de 700 px vaut 86 % de la hauteur d'un écran de 812, si bien
  * que la galerie s'ouvrait sur un vide. Les sortir du calcul permet de les
- * accorder à l'écran sans toucher au mouvement lui-même.
+ * accorder à l'écran.
+ *
+ * Toutes convergent vers zéro : ce sont des écarts à la position juste, non
+ * des destinations.
  */
 export interface ParallaxAmplitudes {
-  /** Glissement horizontal total des rangées, en pixels. */
-  readonly slide: number;
   /** Basculement de départ autour de l'axe horizontal, en degrés. */
   readonly rotateX: number;
   /** Inclinaison de départ dans le plan de l'écran, en degrés. */
   readonly rotateZ: number;
-  /** Décalage vertical au départ, en pixels. Négatif : la grille arrive d'en haut. */
+  /** Décalage vertical du mur au départ, en pixels. Négatif : il arrive d'en haut. */
   readonly liftFrom: number;
-  /** Décalage vertical une fois la grille posée, en pixels. */
-  readonly liftTo: number;
+  /** Décalage vertical de départ des colonnes, en pixels. Alterné d'une colonne à l'autre. */
+  readonly columnOffset: number;
+  /** Agrandissement de départ du mur, qui le fait déborder de l'écran. */
+  readonly scaleFrom: number;
 }
-
-/** Amplitudes de la référence, inchangées sur écran large. */
-export const REFERENCE_AMPLITUDES: ParallaxAmplitudes = {
-  slide: 1000,
-  rotateX: 15,
-  rotateZ: 20,
-  liftFrom: -700,
-  liftTo: 500,
-};
-
-/** Au-delà de cette largeur, les amplitudes de la référence s'appliquent telles quelles. */
-export const NARROW_MAX_WIDTH = 700;
 
 /**
- * Part de la progression réellement atteignable au défilement.
+ * Agrandissement de la grille au départ.
  *
- * La progression ne vaut 1 que si le bas de la section peut rejoindre le haut
- * de l'écran — ce qui suppose un plein écran de contenu après elle. Le pied de
- * page, à lui seul, n'y suffit pas : sur téléphone la progression plafonnait à
- * 0,77, et près d'un quart de la rangée restait hors d'atteinte. Des photos
- * présentes dans la page qu'aucun défilement ne pouvait montrer.
+ * Il ne sert pas à faire joli mais à combler l'écran, et sa valeur vient de la
+ * mesure. Sur un écran de 1440 × 820, la grille de départ recouvre 39 % de la
+ * surface à l'échelle 1, 62 % à 1,35, et 83 % à 1,8 — plafond pratique, le mur
+ * rangé n'en couvrant lui-même que 82 % à cause des intervalles entre photos.
  *
- * Le plancher évite qu'une page anormalement courte ne réclame un glissement
- * démesuré.
+ * La raison en est arithmétique : dix-sept photos représentent une surface
+ * donnée, et une grille inclinée puis remontée n'en présente qu'une fraction à
+ * l'écran. Tant que les photos ne seront pas plus nombreuses, seul
+ * l'agrandissement peut fermer l'écart.
+ *
+ * 1,9 est le compromis retenu : l'écran est plein, et une colonne s'affiche à
+ * environ 760 px pour des fichiers larges de 1280 — encore réduits, donc nets.
  */
-export function reachableProgress(
-  sectionTop: number,
-  sectionHeight: number,
-  maxScroll: number,
+const INITIAL_ZOOM = 2.4;
+
+/**
+ * Retouche verticale du calage de la grille de départ, en pixels.
+ *
+ * La grille de départ est centrée sur l'écran par le calcul, mais ses colonnes
+ * n'ont pas toutes la même longueur — c'est le propre d'un mur — et son bord
+ * inférieur est donc irrégulier. Agrandi deux fois et demie, ce décrochement
+ * se compte en centaines de pixels et découvre le coin inférieur gauche. La
+ * descendre un peu le repousse hors du cadre.
+ *
+ * Mesuré : la couverture passe de 73 à 79 % sur un écran de 1440 × 820.
+ */
+const START_NUDGE = 120;
+
+/**
+ * Où placer le centre de la grille de départ, en coordonnées de mise en page.
+ *
+ * Le calcul n'est pas anodin : la remontée et l'agrandissement s'opèrent
+ * autour du centre du MUR, pas de celui de la grille de départ. Placer
+ * naïvement celle-ci au milieu de l'écran la projetait très au-dessus du
+ * regard — la couverture tombait à 38 %. Il faut donc remonter la
+ * transformation pour savoir où la poser.
+ */
+export function startGridCentre(
+  wallCentreY: number,
+  viewportHeight: number,
+  liftFrom: number,
+  zoom: number,
 ): number {
-  if (sectionHeight <= 0) return 1;
-  return Math.max(0.25, Math.min(1, (maxScroll - sectionTop) / sectionHeight));
+  if (zoom <= 0) return wallCentreY;
+  return wallCentreY + (viewportHeight / 2 - wallCentreY - liftFrom) / zoom + START_NUDGE;
 }
+
+/**
+ * Fraction de la hauteur d'écran dont les colonnes sont décalées au départ.
+ *
+ * Ce que la référence obtenait en faisant glisser ses rangées horizontalement,
+ * on l'obtient ici en décalant les colonnes verticalement — c'est leur axe. Un
+ * mur composé de colonnes se déchiffre de haut en bas ; les décaler dans ce
+ * sens brouille l'alignement sans jamais sortir une photo du cadre, ce qu'un
+ * décalage horizontal ferait aussitôt.
+ */
+const COLUMN_OFFSET_RATIO = 0.22;
+const NARROW_COLUMN_OFFSET_RATIO = 0.14;
+
+/**
+ * Amplitudes de la référence, sur écran large.
+ *
+ * Le basculement, l'inclinaison et la remontée sont ceux d'origine : cet état
+ * de départ convenait, et rien n'y est changé.
+ */
+export function referenceAmplitudes(
+  viewportHeight: number,
+  scaleFrom = INITIAL_ZOOM,
+): ParallaxAmplitudes {
+  return {
+    rotateX: 15,
+    rotateZ: 20,
+    liftFrom: -700,
+    columnOffset: COLUMN_OFFSET_RATIO * viewportHeight,
+    scaleFrom,
+  };
+}
+
+/** Au-delà de cette largeur, les amplitudes de la référence s'appliquent. */
+export const NARROW_MAX_WIDTH = 700;
 
 /**
  * Amplitudes accordées à un écran étroit.
  *
- * Le glissement n'est plus une constante mais le débord réel de la rangée,
- * rapporté à la course disponible : la rangée est ainsi parcourue d'un bout à
- * l'autre au moment précis où le défilement s'achève, sans laisser d'écran
- * vide à la fin ni s'arrêter avant la dernière photo.
- *
- * L'inclinaison est ramenée de 20 à 10 degrés. À 20, les extrémités d'une
- * rangée large de deux écrans et demi balancent de plus de cent cinquante
- * pixels en hauteur, et les photos sortent du cadre par le haut et par le bas.
+ * L'inclinaison est ramenée de 20 à 10 degrés : à 20, sur un écran étroit, les
+ * bords du mur balancent assez pour que les colonnes extrêmes sortent du cadre.
  *
  * Le décalage vertical passe en proportion de la hauteur d'écran, ce qui était
  * tout l'objet de la manœuvre.
  */
 export function narrowAmplitudes(
   viewportHeight: number,
-  rowOverflow: number,
-  reachable = 1,
+  scaleFrom = INITIAL_ZOOM,
 ): ParallaxAmplitudes {
   return {
-    slide: Math.max(0, rowOverflow) / reachable,
     rotateX: 15,
     rotateZ: 10,
     liftFrom: -0.42 * viewportHeight,
-    liftTo: 0.07 * viewportHeight,
+    columnOffset: NARROW_COLUMN_OFFSET_RATIO * viewportHeight,
+    scaleFrom,
   };
 }
 
-/**
- * Choisit les amplitudes selon la place disponible.
- *
- * Sur écran large, celles de la référence sont rendues telles quelles : ce
- * rendu-là convenait, et rien n'y est touché.
- */
+/** Choisit les amplitudes selon la place disponible. */
 export function amplitudesFor(
   viewportWidth: number,
   viewportHeight: number,
-  rowOverflow: number,
-  reachable = 1,
 ): ParallaxAmplitudes {
   return viewportWidth > NARROW_MAX_WIDTH
-    ? REFERENCE_AMPLITUDES
-    : narrowAmplitudes(viewportHeight, rowOverflow, reachable);
+    ? referenceAmplitudes(viewportHeight, INITIAL_ZOOM)
+    : narrowAmplitudes(viewportHeight, INITIAL_ZOOM);
+}
+
+/**
+ * Part de la course pendant laquelle le mur se redresse.
+ *
+ * Le redressement — basculement, opacité, remontée — s'achève ici, tandis que
+ * le décalage des colonnes se résorbe jusqu'au bout. C'est ce décalage entre
+ * les deux temps qui donne son « ensuite » à l'animation : le mur se pose
+ * d'abord, ses colonnes se rangent après.
+ */
+const SETTLE_END = 0.45;
+
+/**
+ * Nombre de colonnes de la grille de départ, à partir de celui du mur.
+ *
+ * Une colonne de plus : la grille est alors plus large que le mur, elle
+ * déborde de l'écran, et les photos des colonnes en trop repassent en dessous
+ * lorsqu'elle se resserre. C'est tout le réagencement.
+ *
+ * Pourquoi une seule de plus, et non deux ou trois : la surface des photos
+ * étant fixe, élargir la grille la raccourcit d'autant. Mesuré sur la page,
+ * quatre colonnes couvrent 71 % de l'écran de départ, cinq n'en couvrent plus
+ * que 51 % — la grille devient une bande trop courte pour remplir la hauteur.
+ */
+export function wideColumnCount(finalColumns: number): number {
+  return finalColumns + 1;
+}
+
+/** Position d'une photo dans une grille. */
+export interface GridCell {
+  readonly x: number;
+  readonly y: number;
+}
+
+/** Dimensions et positions d'une grille en colonnes. */
+export interface GridLayout {
+  readonly cells: readonly GridCell[];
+  readonly width: number;
+  readonly height: number;
+}
+
+/**
+ * Calcule où tombe chaque photo dans une grille de N colonnes.
+ *
+ * Même règle que `distributeColumns` — chaque photo rejoint la colonne la plus
+ * courte — mais en rendant les positions plutôt que les paquets. C'est ce qui
+ * permet de connaître la grille de départ sans jamais la construire dans le
+ * document : le document ne contient que le mur définitif, et les photos y
+ * sont simplement déplacées.
+ *
+ * Le choix de colonne ne dépend pas de leur largeur, les hauteurs étant
+ * comptées à l'échelle d'une colonne de largeur 1 ; les deux grilles restent
+ * donc cohérentes entre elles.
+ */
+export function masonryLayout<T extends Proportioned>(
+  photos: readonly T[],
+  columnCount: number,
+  columnWidth: number,
+  gap: number,
+): GridLayout {
+  if (columnCount <= 0 || photos.length === 0) {
+    return { cells: [], width: 0, height: 0 };
+  }
+
+  const heights = new Array<number>(columnCount).fill(0);
+  const cells = photos.map((photo) => {
+    let shortest = 0;
+    for (let i = 1; i < columnCount; i++) {
+      if (heights[i] < heights[shortest]) shortest = i;
+    }
+
+    const cell = { x: shortest * (columnWidth + gap), y: heights[shortest] };
+    const ratio = photo.width > 0 ? photo.height / photo.width : 1;
+    heights[shortest] += columnWidth * ratio + gap;
+
+    return cell;
+  });
+
+  return {
+    cells,
+    width: columnCount * columnWidth + (columnCount - 1) * gap,
+    height: Math.max(...heights) - gap,
+  };
 }
 
 /** Valeurs visées par les ressorts, avant amortissement. */
 export interface ParallaxTargets {
-  /** Glissement horizontal des rangées 1 et 3, en pixels. */
-  readonly translateX: number;
   /** Basculement autour de l'axe horizontal, en degrés. */
   readonly rotateX: number;
   /** Inclinaison dans le plan de l'écran, en degrés. */
   readonly rotateZ: number;
-  /** Décalage vertical de la grille, en pixels. */
+  /** Décalage vertical du mur, en pixels. */
   readonly translateY: number;
   readonly opacity: number;
+  /** Amplitude du décalage des colonnes, en pixels. */
+  readonly columnOffset: number;
+  /** Agrandissement du mur. Vaut 1 une fois rangé. */
+  readonly scale: number;
+  /** Part du chemin restant entre la grille large et le mur. Vaut 0 une fois rangé. */
+  readonly spread: number;
 }
 
-/**
- * Valeurs visées pour une progression donnée.
- *
- * Les six interpolations de la référence, aux mêmes bornes. Trois d'entre
- * elles se jouent sur le premier cinquième du défilement seulement : la grille
- * se redresse vite, puis ne fait plus que glisser.
- */
+/** Valeurs visées pour une progression donnée. Toutes s'annulent à l'arrivée. */
 export function parallaxTargets(
   progress: number,
-  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
+  amplitudes: ParallaxAmplitudes,
 ): ParallaxTargets {
   return {
-    translateX: mapRange(progress, 0, 1, 0, amplitudes.slide),
-    rotateX: mapRange(progress, 0, 0.2, amplitudes.rotateX, 0),
-    rotateZ: mapRange(progress, 0, 0.2, amplitudes.rotateZ, 0),
-    translateY: mapRange(progress, 0, 0.2, amplitudes.liftFrom, amplitudes.liftTo),
-    opacity: mapRange(progress, 0, 0.2, 0.2, 1),
+    rotateX: mapRange(progress, 0, SETTLE_END, amplitudes.rotateX, 0),
+    rotateZ: mapRange(progress, 0, SETTLE_END, amplitudes.rotateZ, 0),
+    translateY: mapRange(progress, 0, SETTLE_END, amplitudes.liftFrom, 0),
+    opacity: mapRange(progress, 0, SETTLE_END, 0.2, 1),
+    // L'agrandissement se résorbe sur toute la course, avec le décalage des
+    // colonnes : le mur se redresse d'abord, puis se range. C'est pendant ce
+    // second temps que les photos tranchées par le bord regagnent le cadre.
+    columnOffset: mapRange(progress, 0, 1, amplitudes.columnOffset, 0),
+    scale: mapRange(progress, 0, 1, amplitudes.scaleFrom, 1),
+    // Les photos rejoignent leur case un peu avant la fin : en voir encore
+    // glisser alors que tout le reste est posé donnerait l'impression d'un
+    // retardataire.
+    spread: mapRange(progress, 0, 0.85, 1, 0),
   };
 }
 
 /**
- * Glissement des rangées à contresens.
+ * Décalage d'une colonne, selon son rang.
  *
- * La référence entretenait un second ressort, visant l'opposé du premier. Ce
- * n'était pas nécessaire : un ressort est un système linéaire, donc amortir
- * l'opposé d'une cible revient exactement à prendre l'opposé de la valeur
- * amortie — à condition que les deux partent du même point, ce qui est le cas,
- * les deux valant zéro au départ. Un ressort de moins à intégrer à chaque
- * image, pour un résultat identique au flottant près.
+ * Les colonnes alternent, une vers le haut, la suivante vers le bas — comme
+ * alternaient les rangées de la référence. Le motif se répète sur trois rangs
+ * plutôt que deux : avec une simple alternance, la première et la troisième
+ * colonne d'un mur à trois colonnes partiraient ensemble, et l'on ne verrait
+ * qu'une colonne centrale décalée au milieu de deux jumelles.
  */
-export function reverseTranslate(translateX: number): number {
-  return -translateX;
+export function columnShift(offset: number, index: number): number {
+  const pattern = [-1, 1, -0.45, 0.7];
+  return offset * pattern[index % pattern.length];
 }
 
 /** Les cinq ressorts entretenus par le composant. */
@@ -274,19 +430,21 @@ export type ParallaxSprings = { readonly [K in keyof ParallaxTargets]: SpringSta
 /** État de repos, avant la première image. */
 export function initialSprings(
   progress: number,
-  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
+  amplitudes: ParallaxAmplitudes,
 ): ParallaxSprings {
   const targets = parallaxTargets(progress, amplitudes);
 
-  // Les ressorts démarrent sur leur cible plutôt qu'à zéro : sans cela, la
-  // grille traverserait tout son mouvement à l'ouverture de la page, même
-  // arrivée en cours de défilement par un lien profond.
+  // Les ressorts démarrent sur leur cible plutôt qu'à zéro : sans cela, le mur
+  // traverserait tout son mouvement à l'ouverture de la page, même arrivé en
+  // cours de défilement par un lien profond.
   return {
-    translateX: { value: targets.translateX, velocity: 0 },
     rotateX: { value: targets.rotateX, velocity: 0 },
     rotateZ: { value: targets.rotateZ, velocity: 0 },
     translateY: { value: targets.translateY, velocity: 0 },
     opacity: { value: targets.opacity, velocity: 0 },
+    columnOffset: { value: targets.columnOffset, velocity: 0 },
+    scale: { value: targets.scale, velocity: 0 },
+    spread: { value: targets.spread, velocity: 0 },
   };
 }
 
@@ -295,32 +453,74 @@ export function advanceParallax(
   springs: ParallaxSprings,
   progress: number,
   elapsedSeconds: number,
-  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
+  amplitudes: ParallaxAmplitudes,
   config: SpringConfig = REFERENCE_SPRING,
 ): ParallaxSprings {
   const targets = parallaxTargets(progress, amplitudes);
 
   return {
-    translateX: advanceSpring(springs.translateX, targets.translateX, elapsedSeconds, config),
     rotateX: advanceSpring(springs.rotateX, targets.rotateX, elapsedSeconds, config),
     rotateZ: advanceSpring(springs.rotateZ, targets.rotateZ, elapsedSeconds, config),
     translateY: advanceSpring(springs.translateY, targets.translateY, elapsedSeconds, config),
     opacity: advanceSpring(springs.opacity, targets.opacity, elapsedSeconds, config),
+    columnOffset: advanceSpring(
+      springs.columnOffset,
+      targets.columnOffset,
+      elapsedSeconds,
+      config,
+    ),
+    scale: advanceSpring(springs.scale, targets.scale, elapsedSeconds, config),
+    spread: advanceSpring(springs.spread, targets.spread, elapsedSeconds, config),
   };
 }
 
-/**
- * Répartit les photos en trois rangées de longueur égale.
- *
- * La référence découpait une liste de quinze en trois tranches de cinq. On
- * garde le principe mais on l'adapte au nombre réel de photos fournies, en
- * répétant si besoin : une rangée plus courte que les autres se remarque
- * immédiatement, puisqu'elles glissent côte à côte.
- */
-export function splitRows<T>(photos: readonly T[], perRow: number): T[][] {
-  if (photos.length === 0 || perRow <= 0) return [[], [], []];
+/** Nombre de colonnes du mur, selon la largeur disponible. */
+export function columnsFor(viewportWidth: number): number {
+  return viewportWidth <= NARROW_MAX_WIDTH ? 2 : 3;
+}
 
-  return [0, 1, 2].map((row) =>
-    Array.from({ length: perRow }, (_, i) => photos[(row * perRow + i) % photos.length]),
-  );
+/** Ce que la répartition a besoin de savoir d'une photo : sa forme. */
+export interface Proportioned {
+  readonly width: number;
+  readonly height: number;
+}
+
+/**
+ * Répartit les photos en colonnes, à la manière d'un mur Pinterest.
+ *
+ * Chaque photo rejoint la colonne la plus courte à cet instant, en comptant sa
+ * hauteur à l'échelle d'une colonne de largeur 1 — sa hauteur réelle est
+ * inconnue ici, mais son rapport suffit puisque toutes les colonnes ont la
+ * même largeur.
+ *
+ * Répartir simplement à tour de rôle donnerait des colonnes de longueurs très
+ * inégales dès que les formats diffèrent, et c'est justement le bas du mur qui
+ * trahit une mauvaise répartition : une colonne s'y arrête bien avant les
+ * autres.
+ *
+ * L'ordre de lecture n'est pas préservé — c'est le propre de ce type de mur, et
+ * sans conséquence pour des photos.
+ */
+export function distributeColumns<T extends Proportioned>(
+  photos: readonly T[],
+  columnCount: number,
+): T[][] {
+  if (columnCount <= 0) return [];
+
+  const columns: T[][] = Array.from({ length: columnCount }, () => []);
+  const heights = new Array<number>(columnCount).fill(0);
+
+  for (const photo of photos) {
+    if (photo.width <= 0) continue;
+
+    let shortest = 0;
+    for (let i = 1; i < columnCount; i++) {
+      if (heights[i] < heights[shortest]) shortest = i;
+    }
+
+    columns[shortest].push(photo);
+    heights[shortest] += photo.height / photo.width;
+  }
+
+  return columns;
 }

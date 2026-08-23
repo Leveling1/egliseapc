@@ -7,26 +7,23 @@ import {
   ParallaxGalleryComponent,
   type GalleryPhoto,
 } from '../../../shared/components/parallax-gallery/parallax-gallery.component';
+import { GALLERY_PHOTOS } from '../data/gallery-photos';
 
 /**
  * Photos de la galerie.
  *
- * Les fichiers disponibles à ce jour sont ceux du carrousel de la page
- * d'accueil. La galerie en demande quinze et n'en trouve que douze : les trois
- * dernières places sont comblées par répétition, faute de quoi une rangée
- * serait plus courte que les autres — ce qui se voit aussitôt, puisqu'elles
- * glissent côte à côte. Déposer d'autres fichiers dans `public/images/` et les
- * ajouter ici suffit à supprimer la répétition.
+ * La liste et les dimensions sont relevées au build par
+ * `scripts/generate-gallery-photos.mjs` : le mur conserve les proportions de
+ * chaque photo, et il lui faut donc les connaître avant l'affichage. Chaque
+ * photo n'apparaît qu'une fois — dans un mur, une répétition se remarque
+ * aussitôt, là où les rangées glissantes d'avant la dissimulaient.
  *
- * Les descriptions sont vides : ces photos n'ont pas été décrites, et inventer
- * un texte de remplacement identique sur les douze rendrait la page plus
- * pénible à parcourir au lecteur d'écran, pas moins. Le titre et le chapô de
- * la page portent seuls le sens.
+ * Les descriptions restent vides : ces photos n'ont pas été décrites, et
+ * inventer un texte identique sur les douze rendrait la page plus pénible à
+ * parcourir au lecteur d'écran, pas moins. Le titre et le chapô portent seuls
+ * le sens.
  */
-const PHOTOS: readonly GalleryPhoto[] = Array.from({ length: 12 }, (_, index) => ({
-  src: `/images/home/hero_${index + 1}.jpg`,
-  alt: '',
-}));
+const PHOTOS: readonly GalleryPhoto[] = GALLERY_PHOTOS;
 
 @Component({
   selector: 'app-gallery-page',

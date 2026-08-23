@@ -1,45 +1,45 @@
 /*
- * Galerie en parallaxe.
+ * Mur de photos en parallaxe.
  *
- * L'état posé ici est l'état FINAL : grille à plat, pleinement visible. Ce
- * n'est pas ce que montre la référence au repos — elle part inclinée et
- * presque effacée — mais c'est délibéré. Le site est prérendu et servi en
- * statique : ce CSS est ce que voit un visiteur dont le JavaScript n'a pas
- * abouti, et une galerie de photos figée à vingt pour cent d'opacité, penchée
- * de vingt degrés, n'est plus une galerie. Le composant applique l'état
- * d'entrée dès sa première image.
+ * L'état posé ici est l'état FINAL : le mur à sa place, à plat, pleinement
+ * visible. C'est délibéré. Le site est prérendu et servi en statique, donc ce
+ * CSS est ce que voit un visiteur dont le JavaScript n'a pas abouti — et une
+ * galerie figée à vingt pour cent d'opacité, penchée de vingt degrés, n'est
+ * plus une galerie. Le composant applique l'état d'entrée dès sa première
+ * image.
+ *
+ * Ce n'est pas un compromis : l'état final EST la mise en page. L'animation ne
+ * fait que l'écarter de sa place au départ pour l'y laisser revenir, si bien
+ * que l'absence d'animation ne retire rien à la galerie.
  */
 
-.apc-parallax {
-  /* Taille des cartes. La référence les fixait à 480 × 384 px ; on garde ce
-     rapport de 1,25 mais on laisse la largeur suivre l'écran, faute de quoi
-     une carte occuperait plus que la largeur d'un téléphone. */
-  --apc-card-width: clamp(230px, 33vw, 480px);
-  --apc-card-height: calc(var(--apc-card-width) / 1.25);
-  --apc-card-gap: clamp(24px, 5vw, 80px);
+.apc-wall {
+  --apc-wall-gap: clamp(10px, 1.6vw, 22px);
 
   position: relative;
-  height: 300vh;
   padding: 160px 0;
   box-sizing: border-box;
+
+  /* Le basculement de départ fait saillir les coins du mur au-delà de ses
+     bords ; sans cela, la page gagnerait une barre de défilement horizontale
+     pendant les premières secondes. */
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+
   background: var(--color-apc-black);
 
   /*
    * La profondeur qui donne son relief au basculement.
    *
-   * La référence posait aussi `transform-style: preserve-3d` ici. On ne le
-   * reprend pas : `overflow: hidden` sur le même élément le rend inopérant —
-   * la spécification impose alors un aplatissement. Il n'avait de toute façon
-   * rien à faire, le basculement portant sur un unique enfant direct, à qui
-   * cette perspective suffit.
+   * La référence posait aussi `transform-style: preserve-3d`. On ne le reprend
+   * pas : `overflow: hidden` sur le même élément le rend inopérant — la
+   * spécification impose alors un aplatissement. Il n'avait de toute façon rien
+   * à faire, le basculement portant sur un unique enfant direct, à qui cette
+   * perspective suffit.
    */
   perspective: 1000px;
 }
 
-.apc-parallax__header {
+.apc-wall__header {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
@@ -49,82 +49,95 @@
   padding: 80px 16px;
 }
 
-/* La grille entière bascule ; ses styles de mouvement sont écrits par le
+/* Le mur entier bascule ; ses styles de mouvement sont écrits par le
    composant, image par image. */
-.apc-parallax__grid {
+.apc-wall__grid {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--apc-wall-gap);
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
   will-change: transform, opacity;
 }
 
-.apc-parallax__row {
-  display: flex;
-  flex-direction: row;
-  gap: var(--apc-card-gap);
-  margin-bottom: var(--apc-card-gap);
-}
-
 /*
- * Rangées composées à l'envers.
+ * Une colonne du mur.
  *
- * Ce n'est pas un effet de style : une rangée mesure cinq cartes et déborde
- * largement de l'écran. Composée à l'endroit, elle déborde par la droite ;
- * à l'envers, par la gauche. C'est cette alternance qui fait que les trois
- * rangées ne se superposent pas et donnent l'impression d'une nappe.
+ * `flex: 1 1 0` et non `flex: 1` : la seconde forme laisse la largeur de base
+ * à `auto`, et les colonnes se répartiraient alors selon la largeur naturelle
+ * de leur contenu plutôt qu'à parts égales. `min-width: 0` complète le
+ * dispositif — sans lui, une image large empêcherait sa colonne de rétrécir.
  */
-.apc-parallax__row--reversed {
-  flex-direction: row-reverse;
+.apc-wall__column {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--apc-wall-gap);
+
+  /* Décalage de départ, écrit par le composant et résorbé au défilement.
+     Porté par `translate` et non par `transform`, laissé libre pour le
+     soulèvement au survol des photos — mêler les deux ferait passer le
+     parallaxe par la transition du survol, et il traînerait derrière le
+     défilement. */
+  translate: 0 var(--apc-column-shift, 0px);
 }
 
-.apc-parallax__card {
+.apc-wall__card {
   position: relative;
-  flex-shrink: 0;
-  width: var(--apc-card-width);
-  height: var(--apc-card-height);
   margin: 0;
   overflow: hidden;
   background: rgb(255 255 255 / 4%);
 
   /*
-   * Deux déplacements indépendants sur la même carte.
+   * Trajet des photos satellites, écrit par le composant.
    *
-   * Le glissement du parallaxe passe par la propriété `translate`, réécrite à
-   * chaque image ; le soulèvement au survol passe par `transform`, qui est
-   * seul à porter une transition. Les mélanger dans une même déclaration
-   * ferait passer le parallaxe par cette transition de 300 ms, et le
-   * glissement traînerait derrière le défilement.
-   *
-   * La valeur est héritée de la rangée : toutes ses cartes glissent ensemble.
+   * Trois déplacements se superposent sans jamais se contrarier, chacun sur sa
+   * propriété : la colonne porte le sien sur `translate`, la photo porte celui
+   * de son trajet sur `translate` également — mais dans son propre repère,
+   * puisqu'elle est imbriquée — et `transform` reste libre pour le soulèvement
+   * au survol, seul à porter une transition. Les réunir ferait passer le
+   * parallaxe par cette transition de 300 ms, et il traînerait derrière le
+   * défilement.
    */
-  translate: var(--apc-parallax-x, 0px) 0;
+  translate: var(--apc-photo-x, 0px) var(--apc-photo-y, 0px);
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.apc-parallax__card:hover,
-.apc-parallax__card:focus-within {
-  transform: translateY(-20px);
+.apc-wall__card:hover,
+.apc-wall__card:focus-within {
+  transform: translateY(-6px);
 }
 
-.apc-parallax__image {
+/*
+ * Les photos gardent leurs proportions.
+ *
+ * C'est tout l'objet du mur : plus aucun recadrage. Les attributs `width` et
+ * `height` du gabarit portent les dimensions réelles du fichier, relevées au
+ * build ; conjugués à `height: auto`, ils permettent au navigateur de réserver
+ * la bonne place avant même que l'image n'arrive. Sans eux, le mur se
+ * réorganiserait sous les yeux du visiteur au fil des chargements.
+ */
+.apc-wall__image {
   display: block;
   width: 100%;
-  height: 100%;
-  /* Cadrage par le haut, comme la référence : sur une photo de groupe, c'est
-     là que se trouvent les visages. */
-  object-fit: cover;
-  object-position: left top;
+  height: auto;
 }
 
 /*
  * Voile et légende, révélés ensemble au survol.
  *
  * Le voile est porté par la légende elle-même, en dégradé : un calque séparé
- * couvrant toute la carte à 80 % d'opacité, comme dans la référence, éteint la
- * photo au moment précis où l'on cherche à la regarder.
+ * couvrant toute la photo éteindrait celle-ci au moment précis où l'on cherche
+ * à la regarder.
  */
-.apc-parallax__caption {
+.apc-wall__caption {
   position: absolute;
   inset: auto 0 0;
-  padding: 48px 20px 16px;
-  font: 500 15px 'Poppins', sans-serif;
+  padding: 40px 16px 12px;
+  font: 500 14px 'Poppins', sans-serif;
   color: #fff;
   background: linear-gradient(transparent, rgb(0 0 0 / 78%));
   opacity: 0;
@@ -132,57 +145,26 @@
   pointer-events: none;
 }
 
-.apc-parallax__card:hover .apc-parallax__caption,
-.apc-parallax__card:focus-within .apc-parallax__caption {
+.apc-wall__card:hover .apc-wall__caption,
+.apc-wall__card:focus-within .apc-wall__caption {
   opacity: 1;
 }
 
-/*
- * Écrans étroits.
- *
- * La composition d'origine est un paysage : trois rangées larges qui glissent
- * horizontalement réclament de la largeur, et un téléphone n'a que de la
- * hauteur. Trois réglages la remettent d'aplomb.
- *
- * LA HAUTEUR DE LA SECTION cesse de valoir 300vh. C'était le défaut de fond :
- * la section grandit avec l'écran tandis que la grille, elle, ne mesure que
- * trois hauteurs de carte — et les cartes rétrécissent. Les deux évoluaient en
- * sens contraire, si bien que sur téléphone la grille tombait au quart de la
- * section et laissait plus d'un écran de noir après elle. La hauteur est donc
- * ramenée à ce que le contenu occupe réellement.
- *
- * LES CARTES passent à 78 % de la largeur : on en voit une entière à la fois,
- * ses voisines dépassant de part et d'autre. C'est la disposition habituelle
- * d'un carrousel sur téléphone, et elle vaut mieux que deux moitiés de photo.
- *
- * TROIS CARTES PAR RANGÉE au lieu de cinq. Les deux dernières sont retirées
- * en CSS et non côté composant : la rangée cesse alors de les mettre en page,
- * et la mesure du débord — dont se déduit le glissement — reste juste sans
- * qu'aucun code n'ait à connaître ce nombre.
- */
 @media (max-width: 700px) {
-  .apc-parallax {
-    --apc-card-width: 78vw;
-    --apc-card-gap: 16px;
-
-    height: 152vh;
+  .apc-wall {
     padding: 56px 0;
   }
 
-  .apc-parallax__header {
+  .apc-wall__header {
     padding: 32px 16px;
-  }
-
-  .apc-parallax__card:nth-child(n + 4) {
-    display: none;
   }
 }
 
 /* Le soulèvement au survol et la transition de la légende n'ont pas lieu
    d'être ; le basculement, lui, est déjà écarté par le composant. */
 @media (prefers-reduced-motion: reduce) {
-  .apc-parallax__card,
-  .apc-parallax__caption {
+  .apc-wall__card,
+  .apc-wall__caption {
     transition: none;
   }
 }
