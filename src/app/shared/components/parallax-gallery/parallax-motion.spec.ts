@@ -1,12 +1,17 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  NARROW_MAX_WIDTH,
+  REFERENCE_AMPLITUDES,
   REFERENCE_SPRING,
   advanceParallax,
   advanceSpring,
+  amplitudesFor,
   initialSprings,
   mapRange,
+  narrowAmplitudes,
   parallaxTargets,
+  reachableProgress,
   reverseTranslate,
   scrollProgress,
   splitRows,
@@ -90,6 +95,96 @@ describe('parallaxTargets', () => {
     expect(a.opacity).toBe(b.opacity);
     expect(a.translateX).toBe(500);
     expect(b.translateX).toBe(1000);
+  });
+});
+
+describe('amplitudesFor', () => {
+  it('laisse la référence intacte sur écran large', () => {
+    // Le rendu plein écran était jugé bon : rien ne doit y changer, quelle que
+    // soit la largeur mesurée des rangées.
+    expect(amplitudesFor(1280, 800, 1086)).toEqual(REFERENCE_AMPLITUDES);
+    expect(amplitudesFor(NARROW_MAX_WIDTH + 1, 800, 0)).toEqual(REFERENCE_AMPLITUDES);
+  });
+
+  it('bascule sur des amplitudes accordées à un écran étroit', () => {
+    const a = amplitudesFor(375, 812, 536);
+
+    expect(a).not.toEqual(REFERENCE_AMPLITUDES);
+    expect(a.slide).toBe(536);
+  });
+
+  it('exprime le décalage vertical en proportion de la hauteur', () => {
+    // C'était la cause du défaut : une remontée de 700 px valait 86 % de la
+    // hauteur d'un téléphone, et la galerie s'ouvrait sur un vide.
+    const petit = amplitudesFor(375, 600, 500);
+    const grand = amplitudesFor(375, 900, 500);
+
+    expect(Math.abs(petit.liftFrom) / 600).toBeCloseTo(Math.abs(grand.liftFrom) / 900, 6);
+    expect(Math.abs(petit.liftFrom)).toBeLessThan(600 * 0.5);
+  });
+
+  it('fait parcourir à la rangée exactement ce qui dépasse', () => {
+    // Glisser moins laisserait des photos inaccessibles ; glisser plus
+    // terminerait sur un écran vide.
+    expect(narrowAmplitudes(812, 536).slide).toBe(536);
+  });
+
+  it('compense la course que le défilement ne permet pas', () => {
+    // Le défaut mesuré sur la page : la progression plafonnait à 0,767, faute
+    // d'un plein écran de contenu après la section. Près d'un quart de la
+    // rangée restait alors hors d'atteinte — des photos présentes dans la page
+    // qu'aucun défilement ne pouvait montrer.
+    const a = narrowAmplitudes(812, 536, 0.767);
+
+    expect(a.slide * 0.767).toBeCloseTo(536, 6);
+  });
+
+  it('ne glisse pas quand la rangée tient dans l\'écran', () => {
+    expect(narrowAmplitudes(812, -40).slide).toBe(0);
+  });
+
+  it('adoucit l\'inclinaison', () => {
+    // À vingt degrés, les extrémités d'une rangée large de deux écrans et demi
+    // balancent de plus de cent cinquante pixels en hauteur.
+    expect(narrowAmplitudes(812, 536).rotateZ).toBeLessThan(REFERENCE_AMPLITUDES.rotateZ);
+  });
+});
+
+describe('reachableProgress', () => {
+  it('vaut un quand la page offre de quoi traverser la section', () => {
+    // Section de 0 à 1200, et l'on peut défiler jusqu'à 1200 : son bas atteint
+    // bien le haut de l'écran.
+    expect(reachableProgress(0, 1200, 1200)).toBe(1);
+    expect(reachableProgress(0, 1200, 3000)).toBe(1);
+  });
+
+  it("mesure la part atteignable quand la page s'arrête trop tôt", () => {
+    expect(reachableProgress(0, 1200, 920)).toBeCloseTo(0.767, 3);
+  });
+
+  it('se protège d\'une page anormalement courte', () => {
+    // Sans plancher, une course quasi nulle réclamerait un glissement
+    // démesuré — la rangée traverserait l'écran d'un bond.
+    expect(reachableProgress(0, 1200, 10)).toBe(0.25);
+    expect(reachableProgress(0, 1200, -500)).toBe(0.25);
+  });
+
+  it('supporte une section de hauteur nulle', () => {
+    expect(reachableProgress(0, 0, 1000)).toBe(1);
+  });
+});
+
+describe('parallaxTargets avec amplitudes', () => {
+  it('respecte les amplitudes fournies', () => {
+    const a = narrowAmplitudes(812, 536);
+
+    expect(parallaxTargets(1, a).translateX).toBe(536);
+    expect(parallaxTargets(0, a).translateY).toBeCloseTo(-0.42 * 812, 6);
+    expect(parallaxTargets(0.2, a).translateY).toBeCloseTo(0.07 * 812, 6);
+  });
+
+  it('garde la référence par défaut', () => {
+    expect(parallaxTargets(1).translateX).toBe(REFERENCE_AMPLITUDES.slide);
   });
 });
 

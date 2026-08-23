@@ -137,13 +137,44 @@
   opacity: 1;
 }
 
-@media (max-width: 768px) {
+/*
+ * Écrans étroits.
+ *
+ * La composition d'origine est un paysage : trois rangées larges qui glissent
+ * horizontalement réclament de la largeur, et un téléphone n'a que de la
+ * hauteur. Trois réglages la remettent d'aplomb.
+ *
+ * LA HAUTEUR DE LA SECTION cesse de valoir 300vh. C'était le défaut de fond :
+ * la section grandit avec l'écran tandis que la grille, elle, ne mesure que
+ * trois hauteurs de carte — et les cartes rétrécissent. Les deux évoluaient en
+ * sens contraire, si bien que sur téléphone la grille tombait au quart de la
+ * section et laissait plus d'un écran de noir après elle. La hauteur est donc
+ * ramenée à ce que le contenu occupe réellement.
+ *
+ * LES CARTES passent à 78 % de la largeur : on en voit une entière à la fois,
+ * ses voisines dépassant de part et d'autre. C'est la disposition habituelle
+ * d'un carrousel sur téléphone, et elle vaut mieux que deux moitiés de photo.
+ *
+ * TROIS CARTES PAR RANGÉE au lieu de cinq. Les deux dernières sont retirées
+ * en CSS et non côté composant : la rangée cesse alors de les mettre en page,
+ * et la mesure du débord — dont se déduit le glissement — reste juste sans
+ * qu'aucun code n'ait à connaître ce nombre.
+ */
+@media (max-width: 700px) {
   .apc-parallax {
-    padding: 80px 0;
+    --apc-card-width: 78vw;
+    --apc-card-gap: 16px;
+
+    height: 152vh;
+    padding: 56px 0;
   }
 
   .apc-parallax__header {
-    padding: 40px 16px;
+    padding: 32px 16px;
+  }
+
+  .apc-parallax__card:nth-child(n + 4) {
+    display: none;
   }
 }
 

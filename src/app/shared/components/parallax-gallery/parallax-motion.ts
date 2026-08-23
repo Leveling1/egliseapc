@@ -120,6 +120,107 @@ export function scrollProgress(rectTop: number, rectHeight: number): number {
   return clamp01(-rectTop / rectHeight);
 }
 
+/**
+ * Amplitudes du mouvement.
+ *
+ * Elles étaient écrites en dur, en pixels, telles que la référence les
+ * donnait. Cela tenait sur un écran large et se défaisait sur un téléphone :
+ * une remontée de 700 px vaut 86 % de la hauteur d'un écran de 812, si bien
+ * que la galerie s'ouvrait sur un vide. Les sortir du calcul permet de les
+ * accorder à l'écran sans toucher au mouvement lui-même.
+ */
+export interface ParallaxAmplitudes {
+  /** Glissement horizontal total des rangées, en pixels. */
+  readonly slide: number;
+  /** Basculement de départ autour de l'axe horizontal, en degrés. */
+  readonly rotateX: number;
+  /** Inclinaison de départ dans le plan de l'écran, en degrés. */
+  readonly rotateZ: number;
+  /** Décalage vertical au départ, en pixels. Négatif : la grille arrive d'en haut. */
+  readonly liftFrom: number;
+  /** Décalage vertical une fois la grille posée, en pixels. */
+  readonly liftTo: number;
+}
+
+/** Amplitudes de la référence, inchangées sur écran large. */
+export const REFERENCE_AMPLITUDES: ParallaxAmplitudes = {
+  slide: 1000,
+  rotateX: 15,
+  rotateZ: 20,
+  liftFrom: -700,
+  liftTo: 500,
+};
+
+/** Au-delà de cette largeur, les amplitudes de la référence s'appliquent telles quelles. */
+export const NARROW_MAX_WIDTH = 700;
+
+/**
+ * Part de la progression réellement atteignable au défilement.
+ *
+ * La progression ne vaut 1 que si le bas de la section peut rejoindre le haut
+ * de l'écran — ce qui suppose un plein écran de contenu après elle. Le pied de
+ * page, à lui seul, n'y suffit pas : sur téléphone la progression plafonnait à
+ * 0,77, et près d'un quart de la rangée restait hors d'atteinte. Des photos
+ * présentes dans la page qu'aucun défilement ne pouvait montrer.
+ *
+ * Le plancher évite qu'une page anormalement courte ne réclame un glissement
+ * démesuré.
+ */
+export function reachableProgress(
+  sectionTop: number,
+  sectionHeight: number,
+  maxScroll: number,
+): number {
+  if (sectionHeight <= 0) return 1;
+  return Math.max(0.25, Math.min(1, (maxScroll - sectionTop) / sectionHeight));
+}
+
+/**
+ * Amplitudes accordées à un écran étroit.
+ *
+ * Le glissement n'est plus une constante mais le débord réel de la rangée,
+ * rapporté à la course disponible : la rangée est ainsi parcourue d'un bout à
+ * l'autre au moment précis où le défilement s'achève, sans laisser d'écran
+ * vide à la fin ni s'arrêter avant la dernière photo.
+ *
+ * L'inclinaison est ramenée de 20 à 10 degrés. À 20, les extrémités d'une
+ * rangée large de deux écrans et demi balancent de plus de cent cinquante
+ * pixels en hauteur, et les photos sortent du cadre par le haut et par le bas.
+ *
+ * Le décalage vertical passe en proportion de la hauteur d'écran, ce qui était
+ * tout l'objet de la manœuvre.
+ */
+export function narrowAmplitudes(
+  viewportHeight: number,
+  rowOverflow: number,
+  reachable = 1,
+): ParallaxAmplitudes {
+  return {
+    slide: Math.max(0, rowOverflow) / reachable,
+    rotateX: 15,
+    rotateZ: 10,
+    liftFrom: -0.42 * viewportHeight,
+    liftTo: 0.07 * viewportHeight,
+  };
+}
+
+/**
+ * Choisit les amplitudes selon la place disponible.
+ *
+ * Sur écran large, celles de la référence sont rendues telles quelles : ce
+ * rendu-là convenait, et rien n'y est touché.
+ */
+export function amplitudesFor(
+  viewportWidth: number,
+  viewportHeight: number,
+  rowOverflow: number,
+  reachable = 1,
+): ParallaxAmplitudes {
+  return viewportWidth > NARROW_MAX_WIDTH
+    ? REFERENCE_AMPLITUDES
+    : narrowAmplitudes(viewportHeight, rowOverflow, reachable);
+}
+
 /** Valeurs visées par les ressorts, avant amortissement. */
 export interface ParallaxTargets {
   /** Glissement horizontal des rangées 1 et 3, en pixels. */
@@ -140,12 +241,15 @@ export interface ParallaxTargets {
  * elles se jouent sur le premier cinquième du défilement seulement : la grille
  * se redresse vite, puis ne fait plus que glisser.
  */
-export function parallaxTargets(progress: number): ParallaxTargets {
+export function parallaxTargets(
+  progress: number,
+  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
+): ParallaxTargets {
   return {
-    translateX: mapRange(progress, 0, 1, 0, 1000),
-    rotateX: mapRange(progress, 0, 0.2, 15, 0),
-    rotateZ: mapRange(progress, 0, 0.2, 20, 0),
-    translateY: mapRange(progress, 0, 0.2, -700, 500),
+    translateX: mapRange(progress, 0, 1, 0, amplitudes.slide),
+    rotateX: mapRange(progress, 0, 0.2, amplitudes.rotateX, 0),
+    rotateZ: mapRange(progress, 0, 0.2, amplitudes.rotateZ, 0),
+    translateY: mapRange(progress, 0, 0.2, amplitudes.liftFrom, amplitudes.liftTo),
     opacity: mapRange(progress, 0, 0.2, 0.2, 1),
   };
 }
@@ -168,8 +272,11 @@ export function reverseTranslate(translateX: number): number {
 export type ParallaxSprings = { readonly [K in keyof ParallaxTargets]: SpringState };
 
 /** État de repos, avant la première image. */
-export function initialSprings(progress: number): ParallaxSprings {
-  const targets = parallaxTargets(progress);
+export function initialSprings(
+  progress: number,
+  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
+): ParallaxSprings {
+  const targets = parallaxTargets(progress, amplitudes);
 
   // Les ressorts démarrent sur leur cible plutôt qu'à zéro : sans cela, la
   // grille traverserait tout son mouvement à l'ouverture de la page, même
@@ -188,9 +295,10 @@ export function advanceParallax(
   springs: ParallaxSprings,
   progress: number,
   elapsedSeconds: number,
+  amplitudes: ParallaxAmplitudes = REFERENCE_AMPLITUDES,
   config: SpringConfig = REFERENCE_SPRING,
 ): ParallaxSprings {
-  const targets = parallaxTargets(progress);
+  const targets = parallaxTargets(progress, amplitudes);
 
   return {
     translateX: advanceSpring(springs.translateX, targets.translateX, elapsedSeconds, config),

@@ -11,10 +11,13 @@ import {
 
 import {
   advanceParallax,
+  amplitudesFor,
   initialSprings,
+  reachableProgress,
   reverseTranslate,
   scrollProgress,
   splitRows,
+  type ParallaxAmplitudes,
   type ParallaxSprings,
 } from './parallax-motion';
 
@@ -69,9 +72,13 @@ export class ParallaxGalleryComponent {
   protected readonly rows = computed<readonly GalleryRow[]>(() => {
     const [first, second, third] = splitRows(this.photos(), PER_ROW);
 
+    // Les deux premières rangées sont chargées sans attendre : sur écran
+    // étroit, la grille est compacte et les trois rangées tiennent ensemble
+    // dans le premier écran. Les différer y retardait l'affichage de la plus
+    // grande image de la page, ce que le compilateur signalait (NG0913).
     return [
       { photos: first, reversed: true, forward: true, eager: true },
-      { photos: second, reversed: false, forward: false, eager: false },
+      { photos: second, reversed: false, forward: false, eager: true },
       { photos: third, reversed: true, forward: true, eager: false },
     ];
   });
@@ -98,7 +105,53 @@ export class ParallaxGalleryComponent {
         return scrollProgress(rect.top, rect.height);
       };
 
-      let springs: ParallaxSprings = initialSprings(measure());
+      /**
+       * Ce qui dépasse de l'écran, sur une rangée.
+       *
+       * Mesuré sur la mise en page plutôt que recalculé : la largeur d'une
+       * rangée dépend de la taille des cartes et de leur nombre, tous deux
+       * réglés en CSS. Les redériver ici reviendrait à tenir deux fois la même
+       * vérité, et à les voir diverger au premier ajustement de la feuille de
+       * style.
+       *
+       * `scrollWidth` ne convient pas : il ne compte que ce qui dépasse vers
+       * la droite, alors que les rangées inversées — deux sur trois — débordent
+       * vers la gauche. On relève donc l'étendue réelle des cartes. Les
+       * propriétés `offset*` décrivent la mise en page, et non le rendu : elles
+       * ne sont pas faussées par le basculement appliqué à la grille.
+       */
+      const rowOverflow = (row: HTMLElement): number => {
+        let left = Infinity;
+        let right = -Infinity;
+
+        for (const child of Array.from(row.children) as HTMLElement[]) {
+          // Les cartes retirées par le CSS sur écran étroit ne mettent rien en
+          // page ; les compter ramènerait l'origine à zéro.
+          if (child.offsetWidth === 0) continue;
+          left = Math.min(left, child.offsetLeft);
+          right = Math.max(right, child.offsetLeft + child.offsetWidth);
+        }
+
+        return left === Infinity ? 0 : Math.max(0, right - left - row.clientWidth);
+      };
+
+      /** Amplitudes du moment, accordées à l'écran et à la course disponible. */
+      const currentAmplitudes = (): ParallaxAmplitudes => {
+        const rect = root.getBoundingClientRect();
+
+        return amplitudesFor(
+          window.innerWidth,
+          window.innerHeight,
+          rowOverflow(rows[0]),
+          reachableProgress(
+            rect.top + window.scrollY,
+            rect.height,
+            document.documentElement.scrollHeight - window.innerHeight,
+          ),
+        );
+      };
+
+      let springs: ParallaxSprings = initialSprings(measure(), currentAmplitudes());
       let previous = performance.now();
       let running = true;
 
@@ -106,7 +159,7 @@ export class ParallaxGalleryComponent {
         const elapsed = (now - previous) / 1000;
         previous = now;
 
-        springs = advanceParallax(springs, measure(), elapsed);
+        springs = advanceParallax(springs, measure(), elapsed, currentAmplitudes());
 
         // L'ordre reproduit celui qu'appliquait la référence : la translation
         // d'abord, les rotations ensuite. L'inverser inclinerait le
