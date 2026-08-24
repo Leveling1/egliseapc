@@ -2,6 +2,7 @@ import { Injectable, PendingTasks, inject, signal } from '@angular/core';
 
 import { SupabaseService } from '../supabase/supabase.service';
 import type {
+  GalleryPhotoPublic,
   ArticlePublic,
   BookPublic,
   ContentLinkPublic,
@@ -24,6 +25,14 @@ import type {
  * production avec des pages vides. C'est le même mécanisme qui fait attendre
  * le rendu serveur sur les requêtes HttpClient.
  */
+/**
+ * Photos par page dans la galerie.
+ *
+ * Vingt : assez pour que le mur ait de la matière à répartir sur ses colonnes,
+ * assez peu pour que la page s'affiche vite sur une connexion modeste.
+ */
+export const GALLERY_PAGE_SIZE = 20;
+
 @Injectable({ providedIn: 'root' })
 export class PublicContentService {
   private readonly supabase = inject(SupabaseService).client;
@@ -193,6 +202,31 @@ export class PublicContentService {
         .returns<ContentLinkPublic[]>();
 
       return data ?? [];
+    });
+  }
+
+  /**
+   * Une page de photos de la galerie, et le total.
+   *
+   * Découpée par la base, non par le navigateur : une galerie a vocation à
+   * grandir, et charger cent photos pour n'en montrer vingt ferait payer au
+   * visiteur tout ce qu'il ne regarde pas.
+   */
+  async galleryPhotos(
+    options: { page?: number; pageSize?: number } = {},
+  ): Promise<{ photos: GalleryPhotoPublic[]; total: number }> {
+    return this.awaited(async () => {
+      const page = Math.max(1, options.page ?? 1);
+      const pageSize = Math.max(1, options.pageSize ?? GALLERY_PAGE_SIZE);
+      const from = (page - 1) * pageSize;
+
+      const { data, count } = await this.supabase
+        .from('gallery_photos_public')
+        .select('*', { count: 'exact' })
+        .range(from, from + pageSize - 1)
+        .returns<GalleryPhotoPublic[]>();
+
+      return { photos: data ?? [], total: count ?? 0 };
     });
   }
 

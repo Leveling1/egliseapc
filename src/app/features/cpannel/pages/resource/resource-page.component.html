@@ -28,7 +28,7 @@
           class="cp-res__search"
           placeholder="Rechercher…"
           [ngModel]="search()"
-          (ngModelChange)="search.set($event)"
+          (ngModelChange)="onSearch($event)"
           [ngModelOptions]="{ standalone: true }"
           [attr.aria-label]="'Rechercher dans ' + cfg.label"
         />
@@ -139,6 +139,14 @@
           </tbody>
         </table>
       </div>
+    }
+
+    @if (totalPages() > 1) {
+      <app-pagination
+        [currentPage]="page()"
+        [totalPages]="totalPages()"
+        (pageChange)="goToPage($event)"
+      />
     }
   </div>
 
@@ -302,6 +310,17 @@
                     [value]="fieldValue(field.key)"
                     [recommended]="field.recommended ?? ''"
                     (valueChange)="setFieldValue(field.key, $event)"
+                  />
+                }
+
+                @case ('media') {
+                  <app-cpannel-media-field
+                    [value]="fieldValue(field.key)"
+                    [label]="field.label"
+                    [recommended]="field.recommended ?? null"
+                    [module]="cfg.module"
+                    (uploaded)="onMediaUploaded(field.key, $event)"
+                    (cleared)="setFieldValue(field.key, '')"
                   />
                 }
 

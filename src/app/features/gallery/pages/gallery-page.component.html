@@ -1,13 +1,23 @@
 <app-header variant="overlay" />
 
 <main>
-  <app-parallax-gallery [photos]="photos">
+  <app-parallax-gallery [photos]="photos()">
     <h1 class="apc-gallery__title">Nos moments<br />en images</h1>
     <p class="apc-gallery__intro">
       Les cultes, le Rassemblement des Aigles et les rencontres qui font la vie de notre
       communauté — à Kinshasa comme dans chacune de nos extensions.
     </p>
   </app-parallax-gallery>
+
+  @if (totalPages() > 1) {
+    <div class="apc-gallery__pages">
+      <app-pagination
+        [currentPage]="page()"
+        [totalPages]="totalPages()"
+        (pageChange)="goToPage($event)"
+      />
+    </div>
+  }
 </main>
 
 <app-footer />

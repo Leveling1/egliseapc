@@ -20,6 +20,8 @@ export type FieldType =
   | 'weekdays'
   | 'image'
   | 'images'
+  /** Envoi vers le service média externe ; la colonne reçoit une URL complète. */
+  | 'media'
   | 'links'
   | 'boolean'
   | 'lines'
@@ -424,6 +426,49 @@ const NEWSLETTER: ModuleConfig = {
 };
 
 /**
+ * Photos de la galerie.
+ *
+ * Le champ `url` n'est pas une image du bucket mais une adresse rendue par le
+ * service média externe : l'envoi passe par une fonction Edge, qui contrôle le
+ * droit puis relaie le fichier. Les dimensions arrivent avec la réponse et
+ * sont enregistrées telles quelles — c'est d'elles que le mur déduit la place
+ * à réserver avant l'affichage.
+ */
+const GALLERY: ModuleConfig = {
+  module: 'gallery',
+  path: 'galerie',
+  label: 'Galerie',
+  singular: 'photo',
+  gender: 'f',
+  table: 'gallery_photos',
+  icon: 'image',
+  orderBy: { column: 'position', ascending: true },
+  columns: [
+    { key: 'url', label: 'Image' },
+    { key: 'caption', label: 'Légende' },
+    { key: 'position', label: 'Ordre' },
+  ],
+  fields: [
+    {
+      key: 'url',
+      label: 'Photo',
+      type: 'media',
+      required: true,
+      recommended: 'JPEG ou PNG, 1600 px de large au moins',
+      help: 'Envoyée au service média ; seule son adresse est conservée ici.',
+    },
+    { key: 'caption', label: 'Légende', type: 'text', help: 'Affichée au survol.' },
+    {
+      key: 'alt',
+      label: 'Description',
+      type: 'text',
+      help: "Pour les lecteurs d'écran. À laisser vide si la photo est purement décorative.",
+    },
+    { key: 'position', label: "Ordre d'affichage", type: 'number' },
+  ],
+};
+
+/**
  * Entrée unique du menu pour les ressources.
  *
  * Elle emprunte sa forme au premier onglet — la page a besoin d'une
@@ -445,6 +490,7 @@ export const CPANNEL_MODULES: readonly ModuleConfig[] = [
   PROGRAMMES,
   EXTENSIONS,
   RESOURCES,
+  GALLERY,
   NEWSLETTER,
 ];
 

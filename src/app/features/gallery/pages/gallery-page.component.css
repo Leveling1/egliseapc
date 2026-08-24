@@ -19,3 +19,10 @@
   font: 400 clamp(15px, 1.6vw, 20px) / 1.7 'Open Sans', sans-serif;
   color: rgb(255 255 255 / 82%);
 }
+
+/* Pagination sous le mur. Le fond noir est celui de la section qui précède :
+   sans lui, la bande de navigation apparaîtrait sur le blanc du document. */
+.apc-gallery__pages {
+  background: var(--color-apc-black);
+  padding: 0 24px 72px;
+}

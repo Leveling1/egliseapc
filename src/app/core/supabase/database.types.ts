@@ -21,7 +21,8 @@ export type PannelModule =
   | 'users'
   | 'settings'
   | 'resources'
-  | 'newsletter';
+  | 'newsletter'
+  | 'gallery';
 
 export type ProgrammeKind = 'recurrent' | 'special';
 
@@ -238,6 +239,19 @@ export interface BookStatus {
   name: string;
   position: number;
   is_visible: boolean;
+}
+
+/** Une photo de la galerie, telle que la rend `gallery_photos_public`. */
+export interface GalleryPhotoPublic {
+  readonly id: string;
+  /** Adresse complète rendue par le service média, ou chemin livré avec le site. */
+  readonly url: string;
+  /** Dimensions réelles du fichier : le mur en déduit la place à réserver. */
+  readonly width: number;
+  readonly height: number;
+  readonly alt: string | null;
+  readonly caption: string | null;
+  readonly position: number;
 }
 
 export interface BookPublic {

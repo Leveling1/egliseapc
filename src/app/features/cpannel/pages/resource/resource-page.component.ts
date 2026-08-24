@@ -21,7 +21,12 @@ import {
   type LinkDraft,
 } from '../../ui/link-list/link-list.component';
 import { CpannelImageListComponent } from '../../ui/image-list/image-list.component';
-import { CpannelDataService, type ContentRow } from '../../services/cpannel-data.service';
+import { DEFAULT_PAGE_SIZE, CpannelDataService, type ContentRow } from '../../services/cpannel-data.service';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import {
+  CpannelMediaFieldComponent,
+  type MediaUpload,
+} from '../../ui/media-field/media-field.component';
 import {
   WEEKDAYS,
   findModuleByPath,
@@ -36,6 +41,8 @@ type Draft = Record<string, unknown>;
   standalone: true,
   imports: [
     FormsModule,
+    PaginationComponent,
+    CpannelMediaFieldComponent,
     CpannelImageFieldComponent,
     CpannelImageListComponent,
     CpannelLinkListComponent,
@@ -120,19 +127,60 @@ export class CpannelResourcePageComponent {
     return config ? this.auth.can(config.module, 'publish') : false;
   });
 
-  protected readonly filteredRows = computed(() => {
-    const term = this.search().trim().toLowerCase();
-    if (!term) return this.rows();
+  /**
+   * Les lignes affichées sont celles que la base a rendues.
+   *
+   * Le filtrage se faisait ici, sur la liste complète ; il est maintenant
+   * envoyé avec la requête. Filtrer après découpage ne fouillerait que la page
+   * courante, et chercher un titre reviendrait à deviner d'abord sa page.
+   */
+  protected readonly filteredRows = this.rows;
 
-    const config = this.configSignal();
-    if (!config) return this.rows();
+  protected readonly totalRows = signal(0);
+  protected readonly page = signal(1);
+  protected readonly pageSize = DEFAULT_PAGE_SIZE;
 
-    return this.rows().filter((row) =>
-      config.columns.some((column) =>
-        String(row[column.key] ?? '').toLowerCase().includes(term),
-      ),
-    );
-  });
+  protected readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.totalRows() / this.pageSize)),
+  );
+
+  private searchTimer: ReturnType<typeof setTimeout> | null = null;
+
+  /**
+   * Relance la requête après une pause de frappe.
+   *
+   * La recherche s'exécute désormais dans la base : l'envoyer à chaque touche
+   * ferait une requête par caractère. Un tiers de seconde d'immobilité suffit
+   * à distinguer une frappe en cours d'une recherche terminée.
+   */
+  protected onSearch(term: string): void {
+    this.search.set(term);
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {
+      this.page.set(1);
+      void this.load();
+    }, 300);
+  }
+
+  /**
+   * Reporte l'adresse ET les dimensions rendues par le service média.
+   *
+   * Les enregistrer maintenant évite d'avoir à mesurer l'image plus tard :
+   * c'est de ces deux nombres que le mur public déduit la place à réserver.
+   * Les champs sont renseignés silencieusement, sans figurer au formulaire —
+   * ce ne sont pas des choix, mais des faits sur le fichier.
+   */
+  protected onMediaUploaded(key: string, media: MediaUpload): void {
+    this.setFieldValue(key, media.url);
+    if (media.width > 0) this.setFieldValue('width', String(media.width));
+    if (media.height > 0) this.setFieldValue('height', String(media.height));
+    if (media.mediaId) this.setFieldValue('media_id', media.mediaId);
+  }
+
+  protected goToPage(page: number): void {
+    this.page.set(page);
+    void this.load();
+  }
 
   constructor() {
     // Recharge la liste à chaque changement de module, y compris lors d'une
@@ -148,6 +196,7 @@ export class CpannelResourcePageComponent {
       void this.loadDynamicOptions(config);
       this.closeEditor();
       this.search.set('');
+      this.page.set(1);
       void this.load();
     });
   }
@@ -195,7 +244,21 @@ export class CpannelResourcePageComponent {
     this.error.set(null);
 
     try {
-      this.rows.set(await this.data.list(config));
+      const { rows, total } = await this.data.list(config, {
+        page: this.page(),
+        pageSize: this.pageSize,
+        search: this.search(),
+      });
+      this.rows.set(rows);
+      this.totalRows.set(total);
+
+      // Une recherche qui réduit la liste peut laisser la page courante
+      // au-delà du dernier résultat : on revient alors en tête plutôt que
+      // d'afficher un tableau vide sans explication.
+      if (rows.length === 0 && this.page() > 1) {
+        this.page.set(1);
+        await this.load();
+      }
     } catch (cause) {
       this.error.set(cause instanceof Error ? cause.message : String(cause));
     } finally {

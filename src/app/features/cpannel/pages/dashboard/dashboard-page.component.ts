@@ -67,6 +67,7 @@ export class CpannelDashboardPageComponent {
     users: 'Utilisateurs',
     resources: 'Ressources',
     newsletter: 'Abonnés',
+    gallery: 'Galerie',
     settings: 'Paramètres',
   };
 

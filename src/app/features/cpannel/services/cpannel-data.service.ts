@@ -23,22 +23,62 @@ export interface ContentRow {
  * sont les politiques RLS qui autorisent ou refusent, pas ce service. Une
  * requête forgée hors du cpannel se heurte aux mêmes règles.
  */
+/** Nombre d'enregistrements par page dans le cpannel. */
+export const DEFAULT_PAGE_SIZE = 20;
+
 @Injectable({ providedIn: 'root' })
 export class CpannelDataService {
   private readonly supabase = inject(SupabaseService).client;
   private readonly auth = inject(CpannelAuthService);
 
-  async list(config: ModuleConfig): Promise<ContentRow[]> {
-    const { data, error } = await this.supabase
+  /**
+   * Une page d'enregistrements, et le total.
+   *
+   * La liste est découpée côté base et non dans le navigateur : la galerie a
+   * vocation à compter des centaines de photos, et tout charger pour n'en
+   * afficher vingt ferait transiter chaque fois l'intégralité du catalogue.
+   *
+   * La recherche part avec la requête, pour la même raison. Filtrer après coup
+   * ne fouillerait que la page affichée, et chercher un titre reviendrait à
+   * deviner d'abord sur quelle page il se trouve.
+   */
+  async list(
+    config: ModuleConfig,
+    options: { page?: number; pageSize?: number; search?: string } = {},
+  ): Promise<{ rows: ContentRow[]; total: number }> {
+    const page = Math.max(1, options.page ?? 1);
+    const pageSize = Math.max(1, options.pageSize ?? DEFAULT_PAGE_SIZE);
+    const from = (page - 1) * pageSize;
+
+    let query = this.supabase
       .from(config.table)
-      .select(config.listSelect ?? '*')
+      .select(config.listSelect ?? '*', { count: 'exact' })
       .order(config.orderBy.column, {
         ascending: config.orderBy.ascending,
         nullsFirst: false,
-      });
+      })
+      .range(from, from + pageSize - 1);
+
+    const term = options.search?.trim();
+    if (term) {
+      // On ne cherche que dans les colonnes réellement affichées : chercher
+      // ailleurs ferait remonter des lignes dont rien à l'écran n'explique la
+      // présence. Les colonnes calculées par jointure sont écartées, la base
+      // ne sachant pas les filtrer ici.
+      const searchable = config.columns
+        .map((column) => column.key)
+        .filter((key) => !(config.listSelect ?? '').includes(`${key}:`));
+
+      if (searchable.length > 0) {
+        const escaped = term.replace(/[%,()]/g, ' ');
+        query = query.or(searchable.map((key) => `${key}.ilike.%${escaped}%`).join(','));
+      }
+    }
+
+    const { data, error, count } = await query;
 
     if (error) throw new Error(error.message);
-    return (data ?? []) as unknown as ContentRow[];
+    return { rows: (data ?? []) as unknown as ContentRow[], total: count ?? 0 };
   }
 
   async create(config: ModuleConfig, values: Record<string, unknown>): Promise<ContentRow> {

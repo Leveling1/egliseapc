@@ -1,0 +1,93 @@
+/* Envoi d'une photo vers le service média externe. Même allure que le champ
+   image du bucket, pour que l'administrateur n'ait pas à savoir lequel des
+   deux il utilise. */
+.cp-media {
+  display: block;
+}
+
+.cp-media__label {
+  display: block;
+  margin-bottom: 6px;
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--cp-text, #111);
+}
+
+.cp-media__drop {
+  border: 1px dashed rgb(0 0 0 / 18%);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgb(0 0 0 / 2%);
+}
+
+.cp-media__drop--busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cp-media__preview {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+  display: block;
+}
+
+.cp-media__hint {
+  margin: 0;
+  font: 400 13px 'Open Sans', sans-serif;
+  color: rgb(0 0 0 / 50%);
+  text-align: center;
+}
+
+.cp-media__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cp-media__button {
+  appearance: none;
+  border: 1px solid var(--cp-primary, #1c1c8c);
+  background: var(--cp-primary, #1c1c8c);
+  color: #fff;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font: 600 13px 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+.cp-media__button--ghost {
+  background: none;
+  color: var(--cp-primary, #1c1c8c);
+}
+
+.cp-media__button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cp-media__note {
+  margin: 6px 0 0;
+  font: 400 12px 'Open Sans', sans-serif;
+  color: rgb(0 0 0 / 50%);
+}
+
+.cp-media__error {
+  margin: 6px 0 0;
+  font: 400 12px 'Open Sans', sans-serif;
+  color: #b3261e;
+}
+
+/* Masqué sans `display: none` : un champ ainsi retiré du rendu ne peut plus
+   être ouvert par un clic programmé. */
+.cp-media__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
