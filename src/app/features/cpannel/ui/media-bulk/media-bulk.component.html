@@ -13,10 +13,12 @@
     (dragover)="allowDrop($event)"
   >
     <p class="cp-bulk__hint">
-      Glissez plusieurs images ici, ou choisissez-les. Chaque photo devient un enregistrement.
+      Glissez plusieurs photos ici, ou sélectionnez-en autant que vous voulez —
+      maintenez Ctrl (ou Cmd) pour en choisir plusieurs. Chaque photo devient un
+      enregistrement.
     </p>
     <button type="button" class="cp-bulk__button" (click)="pick()" [disabled]="running()">
-      {{ running() ? 'Envoi en cours…' : 'Choisir des images' }}
+      {{ running() ? 'Envoi en cours…' : 'Sélectionner des photos' }}
     </button>
   </div>
 

@@ -39,16 +39,22 @@
           </button>
         }
 
-        @if (cfg.bulkMedia && canEdit() && !cfg.readOnly) {
-          <button type="button" class="cp-btn" (click)="toggleBulk()">
-            Ajouter plusieurs photos
-          </button>
-        }
-
         @if (canEdit() && !cfg.readOnly) {
-          <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
-            {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
-          </button>
+          <!-- Sur un module qui s'alimente par lots, l'ajout unitaire n'est pas
+               l'action attendue : une galerie se remplit de vingt photos à la
+               fois, pas d'une seule à travers un formulaire. Le bouton
+               principal ouvre donc directement la sélection multiple. Les
+               enregistrements existants restent modifiables un par un, pour la
+               légende et l'ordre. -->
+          @if (cfg.bulkMedia) {
+            <button type="button" class="cp-btn cp-btn--primary" (click)="toggleBulk()">
+              Ajouter des photos
+            </button>
+          } @else {
+            <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
+              {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
+            </button>
+          }
         }
       </div>
     </header>
