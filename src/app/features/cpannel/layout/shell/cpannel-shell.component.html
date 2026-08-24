@@ -56,6 +56,19 @@
               @case ('map') {
                 <path d="M10 2a5 5 0 015 5c0 4-5 11-5 11S5 11 5 7a5 5 0 015-5zM10 5.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
               }
+              @case ('image') {
+                <path d="M3 4h14v12H3z" />
+                <path d="M3 13l4-4 3 3 3-3 4 4" />
+                <path d="M7.5 7.5h.01" />
+              }
+              @default {
+                <!-- Repli volontaire : sans lui, un module dont l'icône n'est
+                     pas prévue ici affiche un dessin vide, et son entrée du
+                     menu paraît cassée sans qu'on sache pourquoi. C'est
+                     exactement ce qui est arrivé à la galerie. -->
+                <path d="M4 4h12v12H4z" />
+                <path d="M4 8h12M8 4v12" />
+              }
             }
           </svg>
           <span class="cp-rail__label">{{ config.label }}</span>

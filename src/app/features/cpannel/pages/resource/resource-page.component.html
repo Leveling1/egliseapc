@@ -39,6 +39,12 @@
           </button>
         }
 
+        @if (cfg.bulkMedia && canEdit() && !cfg.readOnly) {
+          <button type="button" class="cp-btn" (click)="toggleBulk()">
+            Ajouter plusieurs photos
+          </button>
+        }
+
         @if (canEdit() && !cfg.readOnly) {
           <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
             {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
@@ -46,6 +52,15 @@
         }
       </div>
     </header>
+
+    @if (cfg.bulkMedia && bulkOpen()) {
+      <app-cpannel-media-bulk
+        [module]="cfg.module"
+        (photoReady)="onBulkPhoto($event)"
+        (finished)="onBulkFinished()"
+        (closed)="toggleBulk()"
+      />
+    }
 
     @if (error()) {
       <p class="cp-alert--error" role="alert">{{ error() }}</p>

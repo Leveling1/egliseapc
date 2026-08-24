@@ -28,6 +28,10 @@ import {
   type MediaUpload,
 } from '../../ui/media-field/media-field.component';
 import {
+  CpannelMediaBulkComponent,
+  type BulkResult,
+} from '../../ui/media-bulk/media-bulk.component';
+import {
   WEEKDAYS,
   findModuleByPath,
   type FieldConfig,
@@ -43,6 +47,7 @@ type Draft = Record<string, unknown>;
     FormsModule,
     PaginationComponent,
     CpannelMediaFieldComponent,
+    CpannelMediaBulkComponent,
     CpannelImageFieldComponent,
     CpannelImageListComponent,
     CpannelLinkListComponent,
@@ -175,6 +180,45 @@ export class CpannelResourcePageComponent {
     if (media.width > 0) this.setFieldValue('width', String(media.width));
     if (media.height > 0) this.setFieldValue('height', String(media.height));
     if (media.mediaId) this.setFieldValue('media_id', media.mediaId);
+  }
+
+  protected readonly bulkOpen = signal(false);
+
+  protected toggleBulk(): void {
+    this.bulkOpen.update((open) => !open);
+  }
+
+  /**
+   * Enregistre une photo dès qu'elle est en ligne, sans attendre la fin du lot.
+   *
+   * Chaque photo donne une ligne : c'est le sens de la demande, et cela rend
+   * l'opération reprenable. Une coupure au vingtième fichier laisse les dix-neuf
+   * précédents enregistrés au lieu de tout perdre.
+   *
+   * Le rang est calculé à partir du total connu : les nouvelles photos se
+   * rangent à la suite plutôt qu'en tête, l'ordre existant n'ayant pas à être
+   * bousculé par un ajout.
+   */
+  protected async onBulkPhoto(photo: BulkResult): Promise<void> {
+    const config = this.configSignal();
+    if (!config) return;
+
+    try {
+      await this.data.create(config, {
+        url: photo.url,
+        width: photo.width,
+        height: photo.height,
+        media_id: photo.mediaId || null,
+        position: this.totalRows() + 1,
+      });
+      this.totalRows.update((total) => total + 1);
+    } catch (cause) {
+      this.error.set(cause instanceof Error ? cause.message : String(cause));
+    }
+  }
+
+  protected async onBulkFinished(): Promise<void> {
+    await this.load();
   }
 
   protected goToPage(page: number): void {

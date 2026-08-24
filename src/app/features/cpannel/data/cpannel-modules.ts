@@ -66,6 +66,16 @@ export interface ModuleConfig {
    * fois et ne sait rien du groupement.
    */
   readonly tabs?: readonly ModuleConfig[];
+  /**
+   * Autorise l'envoi de plusieurs photos d'un coup.
+   *
+   * Réservé aux modules dont un enregistrement se réduit à une image : la
+   * galerie s'alimente par lots de vingt ou trente photos, et les saisir une
+   * par une dans le formulaire serait pénible pour rien. Un module dont les
+   * enregistrements portent d'autres champs obligatoires ne peut pas s'y
+   * prêter — il produirait des lignes incomplètes.
+   */
+  readonly bulkMedia?: boolean;
   readonly module: PannelModule;
   /** Segment d'URL sous /cpannel. */
   readonly path: string;
@@ -437,6 +447,7 @@ const NEWSLETTER: ModuleConfig = {
 const GALLERY: ModuleConfig = {
   module: 'gallery',
   path: 'galerie',
+  bulkMedia: true,
   label: 'Galerie',
   singular: 'photo',
   gender: 'f',

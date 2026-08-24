@@ -10,18 +10,13 @@ import {
   viewChild,
 } from '@angular/core';
 
-import { SupabaseService } from '../../../../core/supabase/supabase.service';
+import {
+  ACCEPTED_TYPES,
+  CpannelMediaService,
+  type MediaUpload,
+} from '../../services/cpannel-media.service';
 
-/** Ce que le service média renvoie après un envoi réussi. */
-export interface MediaUpload {
-  readonly url: string;
-  readonly width: number;
-  readonly height: number;
-  readonly mediaId: string;
-}
-
-/** Formats acceptés par le service média. */
-const ACCEPTED = ['image/jpeg', 'image/png'];
+export type { MediaUpload };
 
 /**
  * Envoi d'une photo au service média externe.
@@ -30,11 +25,6 @@ const ACCEPTED = ['image/jpeg', 'image/png'];
  * fonction Edge qui vérifie le droit de l'administrateur, puis relaie l'image
  * au service média avec une clé technique que le navigateur ne voit jamais.
  * Seule l'adresse publique revient, et c'est elle qui est enregistrée.
- *
- * Le composant renvoie aussi les dimensions rendues par le service. Elles ne
- * sont pas un ornement : le mur de la galerie conserve les proportions de
- * chaque photo, et sans elles la mise en page se réorganiserait à chaque
- * chargement d'image.
  */
 @Component({
   selector: 'app-cpannel-media-field',
@@ -54,7 +44,7 @@ export class CpannelMediaFieldComponent {
   readonly uploaded = output<MediaUpload>();
   readonly cleared = output<void>();
 
-  private readonly supabase = inject(SupabaseService).client;
+  private readonly media = inject(CpannelMediaService);
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('file');
 
   protected readonly uploading = signal(false);
@@ -87,8 +77,8 @@ export class CpannelMediaFieldComponent {
 
   private async send(file: File): Promise<void> {
     // Contrôle local avant d'occuper la ligne : le service refuse de toute
-    // façon, mais autant ne pas faire monter dix mégaoctets pour rien.
-    if (!ACCEPTED.includes(file.type)) {
+    // façon, mais autant ne pas faire monter huit mégaoctets pour rien.
+    if (!ACCEPTED_TYPES.includes(file.type)) {
       this.error.set('Seuls les fichiers JPEG et PNG sont acceptés.');
       return;
     }
@@ -97,26 +87,7 @@ export class CpannelMediaFieldComponent {
     this.error.set(null);
 
     try {
-      const form = new FormData();
-      form.set('photo', file);
-      form.set('module', this.module());
-      form.set('name', file.name.replace(/\.[^.]+$/, ''));
-
-      // `functions.invoke` joint le jeton de l'administrateur : c'est lui que
-      // la fonction relit pour décider du droit.
-      const { data, error } = await this.supabase.functions.invoke('post-media-pannel', {
-        body: form,
-      });
-
-      if (error) throw new Error(await readFunctionError(error));
-      if (!data?.url) throw new Error("Le service média n'a pas renvoyé d'adresse.");
-
-      this.uploaded.emit({
-        url: data.url,
-        width: data.width ?? 0,
-        height: data.height ?? 0,
-        mediaId: data.id ?? '',
-      });
+      this.uploaded.emit(await this.media.upload(file, this.module()));
     } catch (cause) {
       this.error.set(cause instanceof Error ? cause.message : String(cause));
     } finally {
@@ -127,25 +98,4 @@ export class CpannelMediaFieldComponent {
       if (input) input.value = '';
     }
   }
-}
-
-/**
- * Message d'erreur lisible.
- *
- * Les erreurs de fonction Edge portent le détail dans le corps de la réponse,
- * pas dans le message : sans cette lecture, l'administrateur ne verrait qu'un
- * « Edge Function returned a non-2xx status code » qui ne l'avance en rien.
- */
-async function readFunctionError(error: unknown): Promise<string> {
-  const context = (error as { context?: Response }).context;
-  if (context && typeof context.json === 'function') {
-    try {
-      const body = await context.json();
-      if (body?.error) return String(body.error);
-      if (body?.detail) return String(body.detail);
-    } catch {
-      // Corps illisible : on retombe sur le message générique.
-    }
-  }
-  return error instanceof Error ? error.message : String(error);
 }

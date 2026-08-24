@@ -1,0 +1,128 @@
+/* Panneau d'envoi en lot. Chaque fichier a sa ligne : sur un lot de trente
+   photos, une barre de progression globale ne dirait pas laquelle a échoué. */
+.cp-bulk {
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.cp-bulk__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cp-bulk__title {
+  margin: 0;
+  font: 600 15px 'Poppins', sans-serif;
+  color: var(--cp-text, #111);
+}
+
+.cp-bulk__close {
+  appearance: none;
+  border: none;
+  background: none;
+  font: 600 13px 'Poppins', sans-serif;
+  color: rgb(0 0 0 / 55%);
+  cursor: pointer;
+}
+
+.cp-bulk__close:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.cp-bulk__drop {
+  border: 1px dashed rgb(0 0 0 / 18%);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgb(0 0 0 / 2%);
+}
+
+.cp-bulk__drop--busy {
+  opacity: 0.7;
+}
+
+.cp-bulk__hint {
+  margin: 0;
+  text-align: center;
+  font: 400 13px 'Open Sans', sans-serif;
+  color: rgb(0 0 0 / 55%);
+}
+
+.cp-bulk__button {
+  appearance: none;
+  border: none;
+  background: var(--cp-primary, #1c1c8c);
+  color: #fff;
+  border-radius: 4px;
+  padding: 9px 18px;
+  font: 600 13px 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+.cp-bulk__button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cp-bulk__count {
+  margin: 14px 0 8px;
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--cp-text, #111);
+}
+
+.cp-bulk__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.cp-bulk__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+  font: 400 13px 'Open Sans', sans-serif;
+}
+
+.cp-bulk__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-bulk__state {
+  flex: 0 0 auto;
+  color: rgb(0 0 0 / 50%);
+  font-size: 12px;
+}
+
+.cp-bulk__item--done .cp-bulk__state {
+  color: #1b7f3b;
+}
+
+.cp-bulk__item--failed .cp-bulk__state {
+  color: #b3261e;
+}
+
+/* Masqué sans `display: none` : un champ ainsi retiré du rendu ne peut plus
+   être ouvert par un clic programmé. */
+.cp-bulk__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}

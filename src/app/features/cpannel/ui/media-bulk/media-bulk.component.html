@@ -1,0 +1,53 @@
+<div class="cp-bulk">
+  <header class="cp-bulk__head">
+    <h3 class="cp-bulk__title">Ajouter des photos</h3>
+    <button type="button" class="cp-bulk__close" (click)="close()" [disabled]="running()">
+      Fermer
+    </button>
+  </header>
+
+  <div
+    class="cp-bulk__drop"
+    [class.cp-bulk__drop--busy]="running()"
+    (drop)="onDrop($event)"
+    (dragover)="allowDrop($event)"
+  >
+    <p class="cp-bulk__hint">
+      Glissez plusieurs images ici, ou choisissez-les. Chaque photo devient un enregistrement.
+    </p>
+    <button type="button" class="cp-bulk__button" (click)="pick()" [disabled]="running()">
+      {{ running() ? 'Envoi en cours…' : 'Choisir des images' }}
+    </button>
+  </div>
+
+  @if (total() > 0) {
+    <p class="cp-bulk__count">
+      {{ done() }} / {{ total() }} envoyée(s)@if (failed()) { — {{ failed() }} en échec }
+    </p>
+
+    <ul class="cp-bulk__list">
+      @for (item of items(); track $index) {
+        <li class="cp-bulk__item cp-bulk__item--{{ item.state }}">
+          <span class="cp-bulk__name">{{ item.name }}</span>
+          <span class="cp-bulk__state">
+            @switch (item.state) {
+              @case ('pending') { En attente }
+              @case ('sending') { Envoi… }
+              @case ('done') { Enregistrée }
+              @case ('failed') { {{ item.error }} }
+            }
+          </span>
+        </li>
+      }
+    </ul>
+  }
+
+  <input
+    #files
+    type="file"
+    accept="image/jpeg,image/png"
+    multiple
+    class="cp-bulk__input"
+    (change)="onSelect($event)"
+  />
+</div>
