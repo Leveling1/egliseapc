@@ -24,7 +24,7 @@
 
 .apc-res-hero__lead {
   font: 400 17px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 20px auto 0;
   max-width: 600px;
 }

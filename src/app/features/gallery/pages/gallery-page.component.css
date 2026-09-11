@@ -26,3 +26,37 @@
   background: var(--color-apc-black);
   padding: 0 24px 72px;
 }
+
+/* État vide, sur le même noir que le mur qu'il remplace. */
+.apc-gallery__empty {
+  background: var(--color-apc-black);
+  padding: 24px 24px 96px;
+  text-align: center;
+}
+
+.apc-gallery__empty-title {
+  margin: 0;
+  font: 600 clamp(20px, 3vw, 28px) / 1.3 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-gallery__empty-text {
+  max-width: 480px;
+  margin: 10px auto 0;
+  font: 400 15px / 1.6 'Open Sans', sans-serif;
+  color: rgb(255 255 255 / 72%);
+}
+
+.apc-gallery__empty-link {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 0 5px;
+  font: 600 15px 'Poppins', sans-serif;
+  color: #fff;
+  border-bottom: 2px solid var(--color-apc-yellow);
+  transition: color 0.2s;
+}
+
+.apc-gallery__empty-link:hover {
+  color: var(--color-apc-yellow);
+}

@@ -6,6 +6,7 @@ import {
   inject,
   input,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -237,13 +238,20 @@ export class CpannelResourcePageComponent {
       const config = this.config();
       if (!config) return;
 
-      this.titleService.setTitle(`${config.label} - cpannel A.P.C`);
-      if (config.fields.some((field) => field.type === 'links')) void this.loadLinkTypes();
-      void this.loadDynamicOptions(config);
-      this.closeEditor();
-      this.search.set('');
-      this.page.set(1);
-      void this.load();
+      // Tout ce qui suit est hors suivi : `load()` lit la page et la
+      // recherche courantes avant son premier `await`, et sans `untracked`
+      // l'effet s'y abonnait. Chaque changement de page le relançait, qui
+      // remettait aussitôt la page à 1 - l'indicateur restait donc collé sur
+      // la première page alors que la liste, elle, avait bien changé.
+      untracked(() => {
+        this.titleService.setTitle(`${config.label} - cpannel A.P.C`);
+        if (config.fields.some((field) => field.type === 'links')) void this.loadLinkTypes();
+        void this.loadDynamicOptions(config);
+        this.closeEditor();
+        this.search.set('');
+        this.page.set(1);
+        void this.load();
+      });
     });
   }
 

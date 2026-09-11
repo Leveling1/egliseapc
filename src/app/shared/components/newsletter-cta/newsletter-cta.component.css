@@ -66,8 +66,23 @@
   color: #fff;
 }
 
+/* 62 % de blanc : 7,7:1 sur le noir et 6,7:1 sur le bleu du dégradé. À 40 %
+   l'indication tombait sous 3,5:1 - et c'est la seule qui dit quoi saisir. */
 .apc-newsletter__input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* L'outline est retiré plus haut pour éviter le rectangle bleu du navigateur
+   sur le fond sombre ; il est remplacé, pas supprimé : au clavier, le champ
+   s'éclaire d'un trait jaune - le même que sous les liens de l'affiche. */
+.apc-newsletter__input:focus-visible {
+  border-color: var(--color-apc-yellow);
+  box-shadow: inset 0 -2px 0 var(--color-apc-yellow);
+}
+
+.apc-newsletter__submit:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 .apc-newsletter__submit {

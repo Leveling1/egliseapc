@@ -34,7 +34,7 @@
 
 .apc-article-detail__not-found-text {
   font: 400 16px 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 0 0 24px;
 }
 
@@ -74,7 +74,7 @@
 
 .apc-article-detail__excerpt {
   font: 400 20px/1.6 'Open Sans', sans-serif;
-  color: #555;
+  color: var(--color-apc-ink-soft);
   margin: 0 0 28px;
 }
 
@@ -116,7 +116,7 @@
 
 .apc-article-detail__meta {
   font: 400 13px 'Open Sans', sans-serif;
-  color: #888;
+  color: var(--color-apc-ink-faint);
 }
 
 .apc-article-detail__cover {
@@ -211,7 +211,7 @@ img.apc-article-detail__share-icon {
 
 .apc-article-detail__author-card-bio {
   font: 400 14px/1.6 'Open Sans', sans-serif;
-  color: #777;
+  color: var(--color-apc-ink-faint);
   margin: 4px 0 0;
 }
 

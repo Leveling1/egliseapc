@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 
+import { RouterLink } from '@angular/router';
 import { SeoService } from '../../../core/seo/seo.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
@@ -22,10 +23,27 @@ import { toArticleView, type ArticleView } from '../data/article-view';
 
 const ALL_CATEGORIES = 'Tous';
 
+/**
+ * Articles par page : trois rangées de la grille à trois colonnes.
+ *
+ * La pagination était jusqu'ici décorative - trois pages affichées quel que
+ * soit le nombre d'articles, et toutes les cartes rendues sur chacune.
+ */
+const PAGE_SIZE = 9;
+
+/** Normalise pour la recherche : minuscules, sans accents. */
+function fold(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
 @Component({
   selector: 'app-blog-page',
   standalone: true,
   imports: [
+    RouterLink,
     HeaderComponent,
     FooterComponent,
     FilterBarComponent,
@@ -45,6 +63,8 @@ export class BlogPageComponent implements OnInit {
 
   protected readonly currentPage = signal(1);
   protected readonly selectedCategory = signal(ALL_CATEGORIES);
+  protected readonly searchTerm = signal('');
+  protected readonly loading = signal(true);
 
   private readonly all = signal<readonly ArticleView[]>([]);
   private readonly featuredId = signal<string | null>(null);
@@ -77,14 +97,35 @@ export class BlogPageComponent implements OnInit {
   /** Un seul choix possible ne mérite pas une barre de filtres. */
   protected readonly showFilters = computed(() => this.categories().length > 1);
 
-  protected readonly articles = computed(() => {
+  /** Tous les articles qui répondent au filtre et à la recherche. */
+  protected readonly matching = computed(() => {
     const featured = this.featured();
     const category = this.selectedCategory();
+    const term = fold(this.searchTerm().trim());
 
     return this.all()
       .filter((article) => article.id !== featured?.id)
-      .filter((article) => category === ALL_CATEGORIES || article.category === category);
+      .filter((article) => category === ALL_CATEGORIES || article.category === category)
+      .filter(
+        (article) =>
+          term === '' || fold(`${article.title} ${article.excerpt} ${article.category}`).includes(term),
+      );
   });
+
+  protected readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.matching().length / PAGE_SIZE)),
+  );
+
+  /** La page courante seulement - le reste de la liste attend son tour. */
+  protected readonly articles = computed(() => {
+    const start = (this.currentPage() - 1) * PAGE_SIZE;
+    return this.matching().slice(start, start + PAGE_SIZE);
+  });
+
+  /** Un filtre ou une recherche est actif : la liste vide n'est pas un site vide. */
+  protected readonly isFiltering = computed(
+    () => this.selectedCategory() !== ALL_CATEGORIES || this.searchTerm().trim() !== '',
+  );
 
   constructor() {
     void this.load();
@@ -101,10 +142,24 @@ export class BlogPageComponent implements OnInit {
 
   protected onPageChange(page: number): void {
     this.currentPage.set(page);
+    // La grille commence sous le hero et l'article à la une : y revenir
+    // plutôt qu'au sommet, sinon chaque page se paie deux écrans de défilement.
+    document.querySelector('.apc-blog-grid-wrap')?.scrollIntoView({ block: 'start' });
   }
 
   protected onCategoryChange(category: string): void {
     this.selectedCategory.set(category);
+    this.currentPage.set(1);
+  }
+
+  protected onSearchChange(term: string): void {
+    this.searchTerm.set(term);
+    this.currentPage.set(1);
+  }
+
+  protected clearFilters(): void {
+    this.selectedCategory.set(ALL_CATEGORIES);
+    this.searchTerm.set('');
     this.currentPage.set(1);
   }
 
@@ -120,6 +175,7 @@ export class BlogPageComponent implements OnInit {
     );
 
     this.featuredId.set(articles.find((article) => article.is_featured)?.id ?? null);
+    this.loading.set(false);
   }
 
   private publicUrl(path: string | null): string | null {

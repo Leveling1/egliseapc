@@ -73,7 +73,7 @@
 
 .apc-featured-article__excerpt {
   font: 400 15px/1.7 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 0 0 20px;
 }
 
@@ -103,7 +103,7 @@
 
 .apc-featured-article__meta {
   font: 400 12px 'Open Sans', sans-serif;
-  color: #999;
+  color: var(--color-apc-ink-faint);
 }
 
 .apc-featured-article__cta-row {

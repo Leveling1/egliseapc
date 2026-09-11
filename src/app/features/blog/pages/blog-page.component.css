@@ -16,6 +16,46 @@
   gap: 28px;
 }
 
+/* ---------- États vides ----------
+   Même voix que le reste de la page : un titre Poppins, une phrase, une
+   sortie. Centré dans la largeur de la grille pour ne pas laisser un trou. */
+.apc-blog-empty {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 0;
+  text-align: center;
+  font: 400 15px/1.6 'Open Sans', sans-serif;
+  color: var(--color-apc-ink-secondary);
+}
+
+.apc-blog-empty__title {
+  margin: 0;
+  font: 600 20px/1.3 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+}
+
+.apc-blog-empty__text {
+  margin: 8px 0 0;
+}
+
+.apc-blog-empty__action {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 0 5px;
+  border: none;
+  background: none;
+  font: 600 14px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  border-bottom: 2px solid var(--color-apc-blue-dark);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.apc-blog-empty__action:hover {
+  color: var(--color-apc-black);
+  border-bottom-color: var(--color-apc-black);
+}
+
 @media (max-width: 900px) {
   .apc-blog-grid {
     grid-template-columns: repeat(2, 1fr);

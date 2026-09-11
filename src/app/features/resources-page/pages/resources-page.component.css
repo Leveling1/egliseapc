@@ -28,7 +28,7 @@
 
 .apc-books__intro {
   font: 400 16px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 16px auto 0;
   max-width: 560px;
 }

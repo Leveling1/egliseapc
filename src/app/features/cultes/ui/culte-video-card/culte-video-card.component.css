@@ -73,5 +73,5 @@
 
 .apc-video-card__date {
   font: 400 13px 'Open Sans', sans-serif;
-  color: #888;
+  color: var(--color-apc-ink-faint);
 }

@@ -1,6 +1,6 @@
 <app-header variant="overlay" />
 
-<main>
+<main id="contenu">
   <app-parallax-gallery [photos]="photos()">
     <h1 class="apc-gallery__title">Nos moments<br />en images</h1>
     <p class="apc-gallery__intro">
@@ -8,6 +8,19 @@
       communauté - à Kinshasa comme dans chacune de nos extensions.
     </p>
   </app-parallax-gallery>
+
+  @if (!loading() && photos().length === 0) {
+    <!-- Mur vide : sans ce mot, le titre est suivi du pied de page et la
+         page se lit comme une panne. -->
+    <div class="apc-gallery__empty">
+      <p class="apc-gallery__empty-title">Les photos arrivent</p>
+      <p class="apc-gallery__empty-text">
+        La galerie se remplit après chaque culte et chaque rassemblement. En attendant,
+        nos enseignements sont en vidéo.
+      </p>
+      <a routerLink="/nos-cultes" class="apc-gallery__empty-link">Voir nos cultes</a>
+    </div>
+  }
 
   @if (totalPages() > 1) {
     <div class="apc-gallery__pages">

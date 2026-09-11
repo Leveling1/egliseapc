@@ -17,7 +17,7 @@
   border: none;
   padding: 8px 20px;
   background: var(--color-apc-gray-light);
-  color: #555;
+  color: var(--color-apc-ink-soft);
   font: 500 13px 'Poppins', sans-serif;
   border-radius: 8px;
   cursor: pointer;
@@ -47,7 +47,20 @@
 }
 
 .apc-filters__search-icon {
-  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: var(--color-apc-ink-faint);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+/* Le champ n'a pas de bordure propre : c'est son conteneur qui prend
+   l'anneau de focus, pour que le repère entoure toute la boîte de recherche. */
+.apc-filters__search:focus-within {
+  border-color: var(--color-apc-blue-dark);
+  box-shadow: 0 0 0 3px rgb(28 28 140 / 18%);
 }
 
 .apc-filters__search-label {
@@ -70,7 +83,7 @@
 }
 
 .apc-filters__search-input::placeholder {
-  color: #aaa;
+  color: var(--color-apc-ink-faint);
 }
 
 @media (max-width: 640px) {

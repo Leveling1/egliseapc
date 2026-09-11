@@ -28,7 +28,7 @@
 
 .apc-sermons__intro {
   font: 400 16px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 16px auto 0;
   max-width: 560px;
 }
@@ -176,7 +176,7 @@
 
 .apc-sermons__card-meta {
   font: 400 13px 'Open Sans', sans-serif;
-  color: #888;
+  color: var(--color-apc-ink-faint);
 }
 
 .apc-sermons__more {

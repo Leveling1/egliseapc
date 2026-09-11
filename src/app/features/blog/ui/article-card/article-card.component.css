@@ -55,7 +55,7 @@
 
 .apc-article-card__excerpt {
   font: 400 14px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 0 0 16px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -71,7 +71,7 @@
 
 .apc-article-card__date {
   font: 400 12px 'Open Sans', sans-serif;
-  color: #999;
+  color: var(--color-apc-ink-faint);
 }
 
 .apc-article-card__link {

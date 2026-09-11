@@ -3,7 +3,7 @@
 <div class="apc-article-detail__progress" [style.width.%]="readProgress() * 100" aria-hidden="true"></div>
 
 @if (article(); as art) {
-  <main class="apc-article-detail">
+  <main id="contenu" class="apc-article-detail">
     <div class="apc-article-detail__top">
       <a routerLink="/blog" class="apc-article-detail__back">← Retour au blog</a>
     </div>
@@ -117,7 +117,7 @@
     </section>
   }
 } @else if (loaded()) {
-  <main class="apc-article-detail apc-article-detail--not-found">
+  <main id="contenu" class="apc-article-detail apc-article-detail--not-found">
     <p class="apc-article-detail__not-found-title">Article introuvable</p>
     <p class="apc-article-detail__not-found-text">Cet article n'existe pas ou plus.</p>
     <a routerLink="/blog" class="apc-article-detail__back">← Retour au blog</a>

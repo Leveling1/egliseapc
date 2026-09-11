@@ -14,13 +14,19 @@
   </div>
 
   <div class="apc-filters__search">
-    <span class="apc-filters__search-icon" aria-hidden="true">🔍</span>
+    <svg class="apc-filters__search-icon" viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="8.5" cy="8.5" r="5.5" />
+      <path d="M12.7 12.7L17 17" />
+    </svg>
     <label class="apc-filters__search-label" for="apc-filter-search">Rechercher</label>
     <input
       id="apc-filter-search"
       type="search"
       class="apc-filters__search-input"
+      autocomplete="off"
       [placeholder]="searchPlaceholder()"
+      [value]="search()"
+      (input)="onSearch($event)"
     />
   </div>
 </div>

@@ -103,7 +103,7 @@
 
 .apc-book__text {
   font: 400 14px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 0;
 }
 

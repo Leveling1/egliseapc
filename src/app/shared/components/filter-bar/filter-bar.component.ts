@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-filter-bar',
@@ -10,14 +10,26 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
 export class FilterBarComponent {
   readonly filters = input.required<readonly string[]>();
   readonly searchPlaceholder = input('Rechercher…');
+  /** Filtre actif, piloté par la page : elle peut le réinitialiser. */
+  readonly selected = input<string | null>(null);
+  /** Texte de recherche, piloté par la page pour la même raison. */
+  readonly search = input('');
 
   /** Filtre choisi, pour que la page puisse réellement filtrer sa liste. */
   readonly filterChange = output<string>();
+  /** Texte saisi, à chaque frappe : la page décide de quoi le faire. */
+  readonly searchChange = output<string>();
 
-  protected readonly selectedIndex = signal(0);
+  protected readonly selectedIndex = computed(() => {
+    const index = this.filters().indexOf(this.selected() ?? '');
+    return index === -1 ? 0 : index;
+  });
 
   protected select(index: number): void {
-    this.selectedIndex.set(index);
     this.filterChange.emit(this.filters()[index] ?? '');
+  }
+
+  protected onSearch(event: Event): void {
+    this.searchChange.emit((event.target as HTMLInputElement).value);
   }
 }

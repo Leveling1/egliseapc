@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
@@ -13,7 +14,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 @Component({
   selector: 'app-gallery-page',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, ParallaxGalleryComponent, PaginationComponent],
+  imports: [RouterLink, HeaderComponent, FooterComponent, ParallaxGalleryComponent, PaginationComponent],
   templateUrl: './gallery-page.component.html',
   styleUrl: './gallery-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

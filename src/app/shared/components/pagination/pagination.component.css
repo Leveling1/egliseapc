@@ -16,7 +16,7 @@
   background: var(--color-apc-gray-light);
   border-radius: 8px;
   font: 500 14px 'Poppins', sans-serif;
-  color: #888;
+  color: var(--color-apc-ink-faint);
   cursor: pointer;
   transition: background 0.2s;
 }

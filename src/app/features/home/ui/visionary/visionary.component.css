@@ -51,7 +51,7 @@
 
 .apc-visionary__quote {
   font: italic 18px/1.7 'Open Sans', sans-serif;
-  color: #555;
+  color: var(--color-apc-ink-soft);
   margin: 0 0 16px;
   border-left: 3px solid var(--color-apc-blue-dark);
   padding-left: 16px;
@@ -59,7 +59,7 @@
 
 .apc-visionary__paragraph {
   font: 400 16px/1.8 'Open Sans', sans-serif;
-  color: #444;
+  color: var(--color-apc-ink-soft);
   margin: 0 0 28px;
 }
 

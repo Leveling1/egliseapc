@@ -1,6 +1,6 @@
 <app-header variant="light" />
 
-<main>
+<main id="contenu">
   <app-blog-hero />
   @if (featured(); as article) {
     <app-featured-article [article]="article" />
@@ -10,27 +10,60 @@
     <div class="apc-blog-filters">
       <app-filter-bar
         [filters]="categories()"
-        searchPlaceholder="Rechercher…"
+        [selected]="selectedCategory()"
+        [search]="searchTerm()"
+        searchPlaceholder="Rechercher un article…"
         (filterChange)="onCategoryChange($event)"
+        (searchChange)="onSearchChange($event)"
       />
     </div>
   }
 
   <div class="apc-blog-grid-wrap">
-    <div class="apc-blog-grid">
-      @for (article of articles(); track article.slug) {
-        <app-article-card
-          [slug]="article.slug"
-          [category]="article.category"
-          [background]="article.background"
-          [title]="article.title"
-          [excerpt]="article.excerpt"
-          [date]="article.date"
-        />
-      }
-    </div>
+    @if (articles().length > 0) {
+      <div class="apc-blog-grid">
+        @for (article of articles(); track article.slug) {
+          <app-article-card
+            [slug]="article.slug"
+            [category]="article.category"
+            [background]="article.background"
+            [title]="article.title"
+            [excerpt]="article.excerpt"
+            [date]="article.date"
+          />
+        }
+      </div>
+    } @else if (loading()) {
+      <p class="apc-blog-empty" role="status">Chargement des articles…</p>
+    } @else if (isFiltering()) {
+      <!-- Une recherche sans résultat n'est pas un blog vide : on le dit, et
+           on offre le chemin du retour. -->
+      <div class="apc-blog-empty" role="status">
+        <p class="apc-blog-empty__title">Aucun article ne correspond</p>
+        <p class="apc-blog-empty__text">
+          Essayez un autre mot, ou revenez à l'ensemble des articles.
+        </p>
+        <button type="button" class="apc-blog-empty__action" (click)="clearFilters()">
+          Voir tous les articles
+        </button>
+      </div>
+    } @else if (!featured()) {
+      <div class="apc-blog-empty">
+        <p class="apc-blog-empty__title">Les premiers articles arrivent</p>
+        <p class="apc-blog-empty__text">
+          En attendant, retrouvez nos enseignements en vidéo.
+        </p>
+        <a routerLink="/nos-cultes" class="apc-blog-empty__action">Voir nos cultes</a>
+      </div>
+    }
 
-    <app-pagination [currentPage]="currentPage()" [totalPages]="3" (pageChange)="onPageChange($event)" />
+    @if (totalPages() > 1) {
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)"
+      />
+    }
   </div>
 </main>
 

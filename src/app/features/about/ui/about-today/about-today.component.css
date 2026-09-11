@@ -48,7 +48,7 @@
 
 .apc-today__paragraph {
   font: 400 16px/1.8 'Open Sans', sans-serif;
-  color: #444;
+  color: var(--color-apc-ink-soft);
   margin: 0;
 }
 

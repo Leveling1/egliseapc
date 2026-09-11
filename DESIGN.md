@@ -7,8 +7,9 @@ colors:
   highlighter-yellow: "#ffe600"
   paper-white: "#ffffff"
   section-gray: "#f5f5f5"
+  ink-soft: "#444444"
   ink-secondary: "#666666"
-  ink-faint: "#999999"
+  ink-faint: "#6f6f6f"
   ember-orange: "#e05e00"
   cp-accent: "#1c1c8c"
   cp-accent-hover: "#2a2ab0"
@@ -19,10 +20,10 @@ colors:
   cp-surface: "#ffffff"
   cp-surface-muted: "#f7f7fa"
   cp-ink: "#0b0b0b"
-  cp-ink-soft: "#5c5c68"
-  cp-ink-muted: "#9a9aa8"
+  cp-ink-soft: "#53535f"
+  cp-ink-muted: "#696978"
   cp-line: "#e6e6ec"
-  cp-positive: "#1a7f4b"
+  cp-positive: "#177344"
   cp-positive-soft: "#e6f4ec"
   cp-neutral-stat: "#6b6b78"
   cp-neutral-stat-soft: "#eeeef1"
@@ -219,8 +220,9 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 ### Neutral
 - **Blanc papier** (`paper-white`) : texte sur fond noir, fond des cartes et des pages claires.
 - **Gris de section** (`section-gray`) : fond des sections alternées sur pages claires (sermons, listes).
+- **Encre douce** (`ink-soft`) : paragraphes longs sur fond clair (histoire, fondements, article).
 - **Encre secondaire** (`ink-secondary`) : introductions et extraits sur fond clair.
-- **Encre pâle** (`ink-faint`) : dates et métadonnées.
+- **Encre pâle** (`ink-faint`) : dates, métadonnées, placeholders. La plus claire des encres reste à 4,6:1 sur le gris de section : sur un téléphone au soleil, une date doit encore se lire.
 - **Blanc voilé** : sur fond noir, le texte secondaire est du blanc à 70–85 % (`rgba(255,255,255,0.7)` pour les introductions, `0.75–0.85` pour les liens de navigation, `0.5` pour le slogan du pied de page) – jamais un gris opaque.
 
 ### Cpannel
@@ -240,6 +242,8 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 **The Red Means Delete Rule.** Dans le cpannel, le rouge n'apparaît que sur une action destructrice ou son avertissement. Une statistique en baisse ou un contenu masqué passent en gris neutre.
 
 **The No Yellow Backstage Rule.** Aucun jaune dans le cpannel. Son seul accent est le bleu profond, décliné en teintes claires.
+
+**The Readable Gray Rule.** Une encre « atténuée » porte encore de l'information - une date, un en-tête de colonne, une aide de champ - donc elle passe 4,5:1 sur toutes les surfaces où elle apparaît. Le gris qui ne passe pas n'est pas une encre, c'est un filet ou un fond.
 
 ## Typography
 

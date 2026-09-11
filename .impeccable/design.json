@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-11T19:59:20.083Z",
+  "generatedAt": "2026-09-11T20:22:55.197Z",
   "title": "Design System: Ambassadeurs pour Christ",
   "extensions": {
     "colorMeta": {
@@ -79,6 +79,21 @@
           "oklch(95.0% 0.000 89.9)"
         ]
       },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Encre douce",
+        "canonical": "oklch(38.7% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.0% 0.000 89.9)",
+          "oklch(37.0% 0.000 89.9)",
+          "oklch(48.0% 0.000 89.9)",
+          "oklch(60.0% 0.000 89.9)",
+          "oklch(72.0% 0.000 89.9)",
+          "oklch(84.0% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
       "ink-secondary": {
         "role": "neutral",
         "displayName": "Encre secondaire",
@@ -97,7 +112,7 @@
       "ink-faint": {
         "role": "neutral",
         "displayName": "Encre pâle",
-        "canonical": "oklch(68.3% 0.000 89.9)",
+        "canonical": "oklch(54.2% 0.000 89.9)",
         "tonalRamp": [
           "oklch(15.0% 0.000 89.9)",
           "oklch(26.0% 0.000 89.9)",
@@ -262,31 +277,31 @@
       "cp-ink-soft": {
         "role": "neutral",
         "displayName": "Cpannel – Encre douce",
-        "canonical": "oklch(47.9% 0.019 285.7)",
+        "canonical": "oklch(44.7% 0.019 285.6)",
         "tonalRamp": [
-          "oklch(15.0% 0.019 285.7)",
-          "oklch(26.0% 0.019 285.7)",
-          "oklch(37.0% 0.019 285.7)",
-          "oklch(48.0% 0.019 285.7)",
-          "oklch(60.0% 0.019 285.7)",
-          "oklch(72.0% 0.019 285.7)",
-          "oklch(84.0% 0.019 285.7)",
-          "oklch(95.0% 0.019 285.7)"
+          "oklch(15.0% 0.019 285.6)",
+          "oklch(26.0% 0.019 285.6)",
+          "oklch(37.0% 0.019 285.6)",
+          "oklch(48.0% 0.019 285.6)",
+          "oklch(60.0% 0.019 285.6)",
+          "oklch(72.0% 0.019 285.6)",
+          "oklch(84.0% 0.019 285.6)",
+          "oklch(95.0% 0.019 285.6)"
         ]
       },
       "cp-ink-muted": {
         "role": "neutral",
         "displayName": "Cpannel – Encre atténuée",
-        "canonical": "oklch(69.1% 0.020 285.9)",
+        "canonical": "oklch(52.6% 0.023 285.6)",
         "tonalRamp": [
-          "oklch(15.0% 0.020 285.9)",
-          "oklch(26.0% 0.020 285.9)",
-          "oklch(37.0% 0.020 285.9)",
-          "oklch(48.0% 0.020 285.9)",
-          "oklch(60.0% 0.020 285.9)",
-          "oklch(72.0% 0.020 285.9)",
-          "oklch(84.0% 0.020 285.9)",
-          "oklch(95.0% 0.020 285.9)"
+          "oklch(15.0% 0.023 285.6)",
+          "oklch(26.0% 0.023 285.6)",
+          "oklch(37.0% 0.023 285.6)",
+          "oklch(48.0% 0.023 285.6)",
+          "oklch(60.0% 0.023 285.6)",
+          "oklch(72.0% 0.023 285.6)",
+          "oklch(84.0% 0.023 285.6)",
+          "oklch(95.0% 0.023 285.6)"
         ]
       },
       "cp-line": {
@@ -307,16 +322,16 @@
       "cp-positive": {
         "role": "tertiary",
         "displayName": "Cpannel – Positif",
-        "canonical": "oklch(52.8% 0.121 155.0)",
+        "canonical": "oklch(49.2% 0.112 155.2)",
         "tonalRamp": [
-          "oklch(15.0% 0.121 155.0)",
-          "oklch(26.0% 0.121 155.0)",
-          "oklch(37.0% 0.121 155.0)",
-          "oklch(48.0% 0.121 155.0)",
-          "oklch(60.0% 0.121 155.0)",
-          "oklch(72.0% 0.121 155.0)",
-          "oklch(84.0% 0.121 155.0)",
-          "oklch(95.0% 0.121 155.0)"
+          "oklch(15.0% 0.112 155.2)",
+          "oklch(26.0% 0.112 155.2)",
+          "oklch(37.0% 0.112 155.2)",
+          "oklch(48.0% 0.112 155.2)",
+          "oklch(60.0% 0.112 155.2)",
+          "oklch(72.0% 0.112 155.2)",
+          "oklch(84.0% 0.112 155.2)",
+          "oklch(95.0% 0.112 155.2)"
         ]
       },
       "cp-positive-soft": {
@@ -587,7 +602,7 @@
       "refersTo": "newsletter-submit",
       "description": "Seul bouton plein du site public : jaune accolé au champ, orange braise au survol.",
       "html": "<form class=\"ds-nl\" onsubmit=\"return false\"><input class=\"ds-nl__input\" type=\"email\" placeholder=\"Votre adresse e-mail\"><button class=\"ds-nl__submit\" type=\"submit\">S'abonner</button></form>",
-      "css": ".ds-nl{display:flex;max-width:480px;padding:32px;background:linear-gradient(135deg,#0b0b0b,#1c1c8c)}.ds-nl__input{flex:1;min-width:0;padding:14px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-right:none;border-radius:4px 0 0 10px;font:400 14px \"Open Sans\",sans-serif;color:#fff;outline:none}.ds-nl__input::placeholder{color:rgba(255,255,255,.4)}.ds-nl__input:focus{border-color:#ffe600}.ds-nl__submit{border:none;padding:14px 28px;background:#ffe600;color:#0b0b0b;font:600 14px Poppins,sans-serif;border-radius:0 10px 10px 0;cursor:pointer;white-space:nowrap;transition:background .2s}.ds-nl__submit:hover{background:#e05e00}.ds-nl__submit:focus-visible{outline:2px solid #fff;outline-offset:2px}"
+      "css": ".ds-nl{display:flex;max-width:480px;padding:32px;background:linear-gradient(135deg,#0b0b0b,#1c1c8c)}.ds-nl__input{flex:1;min-width:0;padding:14px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-right:none;border-radius:4px 0 0 10px;font:400 14px \"Open Sans\",sans-serif;color:#fff;outline:none}.ds-nl__input::placeholder{color:rgba(255,255,255,.62)}.ds-nl__input:focus{border-color:#ffe600}.ds-nl__submit{border:none;padding:14px 28px;background:#ffe600;color:#0b0b0b;font:600 14px Poppins,sans-serif;border-radius:0 10px 10px 0;cursor:pointer;white-space:nowrap;transition:background .2s}.ds-nl__submit:hover{background:#e05e00}.ds-nl__submit:focus-visible{outline:2px solid #fff;outline-offset:2px}"
     },
     {
       "name": "Carte d'article",
@@ -595,7 +610,7 @@
       "refersTo": "card",
       "description": "Carte blanche à coins de 4 px, ombre à 6 %, montée de 3 px au survol, étiquette floutée sur le média.",
       "html": "<a class=\"ds-card\" href=\"#\"><div class=\"ds-card__media\"><span class=\"ds-card__tag\">Enseignement</span></div><div class=\"ds-card__body\"><h3 class=\"ds-card__title\">La réconciliation, cœur de notre mission</h3><p class=\"ds-card__excerpt\">Pourquoi le nom de notre église est un mandat, et ce qu'il change dans notre manière de vivre.</p><div class=\"ds-card__footer\"><span class=\"ds-card__date\">12 août 2026</span><span class=\"ds-card__link\">Lire</span></div></div></a>",
-      "css": ".ds-card{display:block;width:320px;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06);border:1px solid rgba(28,28,140,.04);text-decoration:none;color:inherit;transition:transform .2s}.ds-card:hover{transform:translateY(-3px)}.ds-card:focus-visible{outline:2px solid #1c1c8c;outline-offset:2px}.ds-card__media{height:160px;position:relative;background:linear-gradient(135deg,#0b0b0b,#1c1c8c)}.ds-card__tag{position:absolute;top:12px;left:12px;padding:4px 10px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border-radius:5px;font:500 11px Poppins,sans-serif;color:#fff}.ds-card__body{padding:20px 24px 24px}.ds-card__title{font:600 17px/1.4 Poppins,sans-serif;color:#0b0b0b;margin:0 0 8px}.ds-card__excerpt{font:400 14px/1.6 \"Open Sans\",sans-serif;color:#666;margin:0 0 16px}.ds-card__footer{display:flex;justify-content:space-between;align-items:center}.ds-card__date{font:400 12px \"Open Sans\",sans-serif;color:#999}.ds-card__link{font:500 13px Poppins,sans-serif;color:#1c1c8c}"
+      "css": ".ds-card{display:block;width:320px;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06);border:1px solid rgba(28,28,140,.04);text-decoration:none;color:inherit;transition:transform .2s}.ds-card:hover{transform:translateY(-3px)}.ds-card:focus-visible{outline:2px solid #1c1c8c;outline-offset:2px}.ds-card__media{height:160px;position:relative;background:linear-gradient(135deg,#0b0b0b,#1c1c8c)}.ds-card__tag{position:absolute;top:12px;left:12px;padding:4px 10px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border-radius:5px;font:500 11px Poppins,sans-serif;color:#fff}.ds-card__body{padding:20px 24px 24px}.ds-card__title{font:600 17px/1.4 Poppins,sans-serif;color:#0b0b0b;margin:0 0 8px}.ds-card__excerpt{font:400 14px/1.6 \"Open Sans\",sans-serif;color:#666;margin:0 0 16px}.ds-card__footer{display:flex;justify-content:space-between;align-items:center}.ds-card__date{font:400 12px \"Open Sans\",sans-serif;color:#6f6f6f}.ds-card__link{font:500 13px Poppins,sans-serif;color:#1c1c8c}"
     },
     {
       "name": "Badge jaune",
@@ -643,7 +658,7 @@
       "refersTo": "cp-input",
       "description": "Champ blanc à filet gris, rayon 10 px, anneau bleu très clair au focus, libellé et aide.",
       "html": "<div class=\"ds-cp-field\"><label class=\"ds-cp-field__label\" for=\"ds-cp-in\">Légende <span class=\"ds-cp-field__req\">*</span></label><input class=\"ds-cp-input\" id=\"ds-cp-in\" type=\"text\" placeholder=\"Culte du dimanche 23 août\"><p class=\"ds-cp-field__help\">Affichée sous la photo sur le site public.</p></div>",
-      "css": ".ds-cp-field{width:320px;padding:24px;background:#eeeef2}.ds-cp-field__label{display:block;margin-bottom:6px;font:500 13px Poppins,sans-serif;color:#0b0b0b}.ds-cp-field__req{color:#1c1c8c}.ds-cp-input{width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid #e6e6ec;border-radius:10px;background:#fff;font:400 14px \"Open Sans\",sans-serif;color:#0b0b0b}.ds-cp-input:focus{outline:none;border-color:#c9c9e6;box-shadow:0 0 0 3px #f5f5fb}.ds-cp-field__help{display:flex;gap:6px;margin:7px 0 0;font:400 11.5px/1.55 \"Open Sans\",sans-serif;color:#9a9aa8}.ds-cp-field__help::before{content:\"i\";flex:none;width:13px;height:13px;margin-top:1px;border-radius:50%;background:#ececf7;color:#1c1c8c;font:600 9px/13px Poppins,sans-serif;text-align:center}"
+      "css": ".ds-cp-field{width:320px;padding:24px;background:#eeeef2}.ds-cp-field__label{display:block;margin-bottom:6px;font:500 13px Poppins,sans-serif;color:#0b0b0b}.ds-cp-field__req{color:#1c1c8c}.ds-cp-input{width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid #e6e6ec;border-radius:10px;background:#fff;font:400 14px \"Open Sans\",sans-serif;color:#0b0b0b}.ds-cp-input:focus{outline:none;border-color:#c9c9e6;box-shadow:0 0 0 3px #f5f5fb}.ds-cp-field__help{display:flex;gap:6px;margin:7px 0 0;font:400 11.5px/1.55 \"Open Sans\",sans-serif;color:#696978}.ds-cp-field__help::before{content:\"i\";flex:none;width:13px;height:13px;margin-top:1px;border-radius:50%;background:#ececf7;color:#1c1c8c;font:600 9px/13px Poppins,sans-serif;text-align:center}"
     },
     {
       "name": "Cpannel – Carte et pastilles",
@@ -651,7 +666,7 @@
       "refersTo": "cp-card",
       "description": "Carte blanche à 18 px de rayon sur canevas, relief à 4 % ; pastilles en ligne / masqué / accent.",
       "html": "<div class=\"ds-cp-wrap\"><div class=\"ds-cp-card\"><h4 class=\"ds-cp-card__title\">Galerie</h4><p class=\"ds-cp-card__text\">17 photos publiées</p><span class=\"ds-cp-badge ds-cp-badge--online\">En ligne</span> <span class=\"ds-cp-badge ds-cp-badge--neutral\">Masqué</span> <span class=\"ds-cp-badge ds-cp-badge--accent\">Spécial</span></div></div>",
-      "css": ".ds-cp-wrap{padding:24px;background:#eeeef2;display:inline-block}.ds-cp-card{width:280px;padding:22px 24px;background:#fff;border-radius:18px;box-shadow:0 1px 2px rgb(11 11 11 / 4%),0 8px 24px rgb(11 11 11 / 4%)}.ds-cp-card__title{margin:0;font:600 17px Poppins,sans-serif;color:#0b0b0b}.ds-cp-card__text{margin:4px 0 14px;font:400 13px \"Open Sans\",sans-serif;color:#9a9aa8}.ds-cp-badge{display:inline-block;padding:4px 12px;border-radius:999px;font:500 12px Poppins,sans-serif}.ds-cp-badge--online{background:#e6f4ec;color:#1a7f4b}.ds-cp-badge--neutral{background:#eeeef1;color:#6b6b78}.ds-cp-badge--accent{background:#ececf7;color:#1c1c8c}"
+      "css": ".ds-cp-wrap{padding:24px;background:#eeeef2;display:inline-block}.ds-cp-card{width:280px;padding:22px 24px;background:#fff;border-radius:18px;box-shadow:0 1px 2px rgb(11 11 11 / 4%),0 8px 24px rgb(11 11 11 / 4%)}.ds-cp-card__title{margin:0;font:600 17px Poppins,sans-serif;color:#0b0b0b}.ds-cp-card__text{margin:4px 0 14px;font:400 13px \"Open Sans\",sans-serif;color:#696978}.ds-cp-badge{display:inline-block;padding:4px 12px;border-radius:999px;font:500 12px Poppins,sans-serif}.ds-cp-badge--online{background:#e6f4ec;color:#177344}.ds-cp-badge--neutral{background:#eeeef1;color:#6b6b78}.ds-cp-badge--accent{background:#ececf7;color:#1c1c8c}"
     }
   ],
   "narrative": {
@@ -689,6 +704,11 @@
       {
         "name": "The No Yellow Backstage Rule",
         "body": "Aucun jaune dans le cpannel. Son seul accent est le bleu profond, décliné en teintes claires.",
+        "section": "colors"
+      },
+      {
+        "name": "The Readable Gray Rule",
+        "body": "Une encre « atténuée » porte encore de l'information - une date, un en-tête de colonne, une aide de champ - donc elle passe 4,5:1 sur toutes les surfaces où elle apparaît. Le gris qui ne passe pas n'est pas une encre, c'est un filet ou un fond.",
         "section": "colors"
       },
       {

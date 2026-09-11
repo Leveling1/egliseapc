@@ -101,7 +101,7 @@
 
 .apc-rda-latest__card-text {
   font: 400 15px/1.6 'Open Sans', sans-serif;
-  color: #666;
+  color: var(--color-apc-ink-secondary);
   margin: 0;
   max-width: 500px;
 }

@@ -111,7 +111,7 @@
 
 .apc-timeline__description {
   font: 400 14px/1.7 'Open Sans', sans-serif;
-  color: #444;
+  color: var(--color-apc-ink-soft);
   margin: 0 0 16px;
   max-width: 640px;
 }
