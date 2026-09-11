@@ -66,7 +66,7 @@ export class CpannelUsersPageComponent {
   );
 
   constructor() {
-    inject(Title).setTitle('Utilisateurs — cpannel A.P.C');
+    inject(Title).setTitle('Utilisateurs - cpannel A.P.C');
     void this.load();
   }
 
@@ -139,7 +139,7 @@ export class CpannelUsersPageComponent {
     this.newEmail.set('');
     this.notice.set(
       `${email} est autorisé. L'accès sera actif dès sa première connexion Google. ` +
-        "Pensez à lui attribuer des droits, sinon il n'aura accès à aucun module.",
+      "Pensez à lui attribuer des droits, sinon il n'aura accès à aucun module.",
     );
     await this.load();
   }
@@ -177,8 +177,8 @@ export class CpannelUsersPageComponent {
     const { error } = existing
       ? await this.supabase.from('admin_permissions').update(patch).eq('id', existing.id)
       : await this.supabase
-          .from('admin_permissions')
-          .insert({ admin_user_id: row.id, module, ...patch });
+        .from('admin_permissions')
+        .insert({ admin_user_id: row.id, module, ...patch });
 
     if (error) {
       this.error.set(error.message);

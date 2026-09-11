@@ -97,7 +97,7 @@ export class CpannelArticleEditorPageComponent {
   constructor() {
     effect(() => {
       const id = this.id();
-      this.titleService.setTitle(id ? 'Modifier un article — cpannel' : 'Nouvel article — cpannel');
+      this.titleService.setTitle(id ? 'Modifier un article - cpannel' : 'Nouvel article - cpannel');
       void this.load(id);
     });
   }

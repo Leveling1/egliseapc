@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
  * selon la plateforme : sur le serveur il n'existe ni `localStorage` ni URL de
  * redirection OAuth, donc toute persistance de session y est désactivée. Sans
  * cela, le rendu serveur tenterait d'écrire une session dans un stockage
- * inexistant — et surtout, une session lue côté serveur serait partagée entre
+ * inexistant - et surtout, une session lue côté serveur serait partagée entre
  * toutes les requêtes, donc entre tous les visiteurs.
  */
 @Injectable({ providedIn: 'root' })

@@ -23,13 +23,13 @@ export class RdaLatestEditionComponent {
   protected readonly edition = signal<RdaEditionPublic | null>(null);
   protected readonly links = signal<readonly ContentLinkPublic[]>([]);
 
-  /** « 15ème édition — La lampe brûle encore », ou l'année si le numéro manque. */
+  /** « 15ème édition - La lampe brûle encore », ou l'année si le numéro manque. */
   protected readonly heading = computed(() => {
     const edition = this.edition();
     if (!edition) return '';
 
     const rank = edition.edition_number === 1 ? '1ère édition' : `${edition.edition_number}ème édition`;
-    return `${rank} — ${edition.title}`;
+    return `${rank} - ${edition.title}`;
   });
 
   protected readonly replayUrl = computed(() => {

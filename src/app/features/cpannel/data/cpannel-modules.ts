@@ -6,7 +6,7 @@ import type { PannelModule } from '../../../core/supabase/database.types';
  * Les six modules partagent exactement le même cycle de vie : lister,
  * créer, modifier, basculer la visibilité. Les décrire par des données
  * plutôt que d'écrire six fois le même composant évite que les écrans
- * divergent au fil des retouches — et garantit que la règle du soft delete
+ * divergent au fil des retouches - et garantit que la règle du soft delete
  * s'applique partout de la même manière.
  */
 
@@ -57,8 +57,8 @@ export interface ModuleConfig {
   /**
    * Sous-pages réunies sous une même entrée de menu.
    *
-   * Les livres et les applications relèvent du même droit et du même métier —
-   * les ressources de l'église — mais vivent dans deux tables. Deux entrées de
+   * Les livres et les applications relèvent du même droit et du même métier -
+   * les ressources de l'église - mais vivent dans deux tables. Deux entrées de
    * menu pour un seul sujet obligeaient à chercher où l'on range quoi ; elles
    * n'en font plus qu'une, avec des onglets.
    *
@@ -73,7 +73,7 @@ export interface ModuleConfig {
    * galerie s'alimente par lots de vingt ou trente photos, et les saisir une
    * par une dans le formulaire serait pénible pour rien. Un module dont les
    * enregistrements portent d'autres champs obligatoires ne peut pas s'y
-   * prêter — il produirait des lignes incomplètes.
+   * prêter - il produirait des lignes incomplètes.
    */
   readonly bulkMedia?: boolean;
   readonly module: PannelModule;
@@ -92,7 +92,7 @@ export interface ModuleConfig {
   readonly columns: readonly { readonly key: string; readonly label: string }[];
   readonly fields: readonly FieldConfig[];
   /**
-   * Clause SELECT sur mesure, quand la liste doit résoudre une relation —
+   * Clause SELECT sur mesure, quand la liste doit résoudre une relation -
    * par exemple afficher le nom de la catégorie plutôt que son identifiant.
    */
   readonly listSelect?: string;
@@ -254,7 +254,7 @@ const PROGRAMMES: ModuleConfig = {
       label: 'Jours concernés',
       type: 'weekdays',
       help:
-        'Pour exclure un jour d\'une période, il suffit de ne pas le cocher — ' +
+        'Pour exclure un jour d\'une période, il suffit de ne pas le cocher - ' +
         'par exemple « du lundi au dimanche sauf le samedi ».',
     },
     { key: 'start_date', label: 'Date de début', type: 'date', help: 'Obligatoire pour un programme spécial.' },
@@ -456,7 +456,7 @@ const NEWSLETTER: ModuleConfig = {
  * Le champ `url` n'est pas une image du bucket mais une adresse rendue par le
  * service média externe : l'envoi passe par une fonction Edge, qui contrôle le
  * droit puis relaie le fichier. Les dimensions arrivent avec la réponse et
- * sont enregistrées telles quelles — c'est d'elles que le mur déduit la place
+ * sont enregistrées telles quelles - c'est d'elles que le mur déduit la place
  * à réserver avant l'affichage.
  */
 const GALLERY: ModuleConfig = {
@@ -497,8 +497,8 @@ const GALLERY: ModuleConfig = {
 /**
  * Entrée unique du menu pour les ressources.
  *
- * Elle emprunte sa forme au premier onglet — la page a besoin d'une
- * configuration valide avant même qu'un onglet soit choisi — et porte la liste
+ * Elle emprunte sa forme au premier onglet - la page a besoin d'une
+ * configuration valide avant même qu'un onglet soit choisi - et porte la liste
  * des deux.
  */
 const RESOURCES: ModuleConfig = {

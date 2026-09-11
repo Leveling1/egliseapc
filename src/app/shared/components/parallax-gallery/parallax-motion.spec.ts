@@ -236,7 +236,7 @@ describe('distributeColumns', () => {
 
   it("ne laisse jamais un écart supérieur à la plus haute photo", () => {
     // C'est la garantie du placement au plus court, et la bonne borne à
-    // vérifier — j'avais d'abord exigé un équilibre que ce placement ne
+    // vérifier - j'avais d'abord exigé un équilibre que ce placement ne
     // promet pas : il traite les photos dans l'ordre reçu, sans les trier,
     // parce que l'ordre d'une galerie a un sens.
     //

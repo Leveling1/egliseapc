@@ -26,7 +26,7 @@
 
 @if (growStyle(); as style) {
   <!-- Deliberately outside `.apc-parallax` (position: absolute; z-index: 0)
-       — that establishes its own stacking context, which would otherwise
+       - that establishes its own stacking context, which would otherwise
        trap this element's z-index: 1000 inside it and cap it at 0 from the
        page's point of view, letting z-indexed hero content render above it. -->
   <div class="apc-parallax__grow" [style]="style">

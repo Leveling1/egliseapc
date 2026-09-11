@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { CpannelImageFieldComponent } from '../image-field/image-field.component';
 
 /**
- * Liste ordonnée d'images — captures d'écran d'une application, par exemple.
+ * Liste ordonnée d'images - captures d'écran d'une application, par exemple.
  *
  * Réutilise le champ image unitaire pour chaque entrée : la zone de dépôt,
  * la prévisualisation et le rappel de dimensions restent identiques partout.

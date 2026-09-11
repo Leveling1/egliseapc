@@ -7,7 +7,7 @@
  *
  * Le principe de l'écriture : un balayage traverse le lettrage de gauche à
  * droite à vitesse constante, comme une main qui avance. Chaque lettre est
- * dévoilée pendant que le balayage franchit sa largeur — sa position dicte
+ * dévoilée pendant que le balayage franchit sa largeur - sa position dicte
  * donc quand elle paraît, et sa largeur combien de temps elle met.
  *
  * Ce découpage n'est pas qu'une commodité : les lettres cursives se
@@ -53,7 +53,7 @@ export interface IntroTiming {
  * Reprise au millimètre de la cascade lettre par lettre qu'elle remplace :
  * quarante-deux intervalles de 29 ms, plus les 1 200 ms que mettait la
  * dernière lettre à s'installer. La consigne était de conserver exactement le
- * même minutage, et tout ce qui suit — effacement, rideau, acte 2 — s'y
+ * même minutage, et tout ce qui suit - effacement, rideau, acte 2 - s'y
  * accroche sans changer d'un millième.
  */
 const WRITE_SPAN = 2418;
@@ -63,7 +63,7 @@ const WRITE_SPAN = 2418;
  *
  * Volontairement longue : à 500 ms l'accueil s'effaçait d'un coup et le titre
  * lui succédait presque sans transition. C'est aussi pendant ce laps que le
- * rideau se lève sur le carrousel — un mouvement trop bref le rendrait
+ * rideau se lève sur le carrousel - un mouvement trop bref le rendrait
  * saccadé.
  */
 const OUTRO_DURATION = 1000;
@@ -72,7 +72,7 @@ const OUTRO_DURATION = 1000;
  * Durée d'apparition du titre définitif, en ms.
  *
  * Allongée depuis les 800 ms d'origine, qui rendaient l'entrée brusque. Le
- * titre déborde ainsi un peu sur la fin de l'écriture — c'est voulu : il se
+ * titre déborde ainsi un peu sur la fin de l'écriture - c'est voulu : il se
  * précise pendant que la main achève le dernier mot, au lieu de surgir.
  */
 const TITLE_DURATION = 1000;
@@ -121,7 +121,7 @@ export function penLift(strokes: readonly WelcomeStroke[]): number {
 /**
  * Répartit la durée d'écriture sur les lettres, au prorata de leur position.
  *
- * La progression est linéaire d'un bout à l'autre — le stylo ne ralentit ni
+ * La progression est linéaire d'un bout à l'autre - le stylo ne ralentit ni
  * n'accélère. Ce n'est pas un détail : chaque lettre porte sa propre
  * animation, et une courbe d'accélération appliquée à chacune ferait avancer
  * l'encre par à-coups au lieu d'une ligne continue.

@@ -10,7 +10,7 @@
  * par un balayage qui progresse de gauche à droite à vitesse constante, comme
  * une main qui avance. Le moment où une lettre apparaît est donc dicté par sa
  * position horizontale, et sa durée par sa largeur. Les lettres cursives se
- * chevauchent — la levée du « B » passe sous le « i » — et ce chevauchement se
+ * chevauchent - la levée du « B » passe sous le « i » - et ce chevauchement se
  * traduit naturellement en fenêtres de temps qui se recouvrent.
  *
  *   node scripts/generate-welcome-strokes.mjs
@@ -70,7 +70,7 @@ function quadExtrema(p0, p1, p2) {
  * Points échantillonnés le long d'un arc elliptique.
  *
  * Premier essai écarté : encadrer l'arc par ses extrémités élargies de ses
- * rayons. C'est un majorant valide, mais bien trop lâche ici — le lettrage
+ * rayons. C'est un majorant valide, mais bien trop lâche ici - le lettrage
  * emploie des arcs de rayon 60 pour de simples inflexions, et la boîte
  * obtenue débordait la viewBox de plus de cent unités.
  *
@@ -344,7 +344,7 @@ const strokes = raw.map((p, index) => {
 // et le défaut serait difficile à diagnostiquer sur le rendu final.
 //
 // C'est bien le point de pose qu'on teste, et non le bord gauche de la
-// lettre : les boîtes englobantes, elles, se chevauchent légitimement — la
+// lettre : les boîtes englobantes, elles, se chevauchent légitimement - la
 // hampe du « h » déborde sur le « c » qui le précède. Exiger des boîtes
 // disjointes reviendrait à refuser une écriture liée.
 for (let i = 1; i < strokes.length; i++) {
@@ -359,7 +359,7 @@ const spanEnd = Math.max(...strokes.map((s) => s.end));
 // Le lettrage doit tenir dans sa viewBox : c'est ce qu'affirme le fichier
 // d'origine, et le mesurer nous-mêmes vérifie du même coup notre calcul de
 // boîte englobante. Une première version, qui encadrait les arcs par leurs
-// rayons, débordait de plus de cent unités — sans ce contrôle, l'erreur se
+// rayons, débordait de plus de cent unités - sans ce contrôle, l'erreur se
 // serait vue non pas ici mais dans le minutage, où elle aurait été bien plus
 // difficile à rattacher à sa cause.
 const [, , boxWidth] = viewBox.split(/[\s,]+/).map(Number);
@@ -367,7 +367,7 @@ const TOLERANCE = 1;
 if (spanStart < -TOLERANCE || spanEnd > boxWidth + TOLERANCE) {
   throw new Error(
     `le lettrage mesuré (${spanStart.toFixed(1)} → ${spanEnd.toFixed(1)}) ` +
-      `déborde la viewBox (0 → ${boxWidth})`,
+    `déborde la viewBox (0 → ${boxWidth})`,
   );
 }
 
@@ -391,7 +391,7 @@ const body = strokes
 const file = `/**
  * Lettres de « Bienvenue chez », extraites de ${SOURCE}.
  *
- * FICHIER GÉNÉRÉ — ne pas modifier à la main.
+ * FICHIER GÉNÉRÉ - ne pas modifier à la main.
  * Régénérer avec : node scripts/generate-welcome-strokes.mjs
  *
  * Chaque entrée est une lettre du lettrage, avec les abscisses où elle

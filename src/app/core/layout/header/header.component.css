@@ -65,7 +65,7 @@
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* "home": Accueil — Helvetica font, brighter white */
+/* "home": Accueil - Helvetica font, brighter white */
 .apc-nav--home .apc-nav__wordmark,
 .apc-nav--home .apc-nav__link,
 .apc-nav--home .apc-nav__link--active {
@@ -76,7 +76,7 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* "light": white-hero pages (Ressources, Blog) — dark text, no shadow, blue underline */
+/* "light": white-hero pages (Ressources, Blog) - dark text, no shadow, blue underline */
 .apc-nav--light .apc-nav__wordmark {
   color: var(--color-apc-black);
   text-shadow: none;
@@ -97,7 +97,7 @@
   text-shadow: none;
 }
 
-/* Hamburger toggle — hidden on desktop, shown on mobile below */
+/* Hamburger toggle - hidden on desktop, shown on mobile below */
 .apc-nav__toggle {
   display: none;
   flex-direction: column;

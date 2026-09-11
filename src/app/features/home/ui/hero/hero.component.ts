@@ -48,7 +48,7 @@ export class HeroComponent {
    *
    * Il complète le titre au lieu de le doubler : les deux forment une seule
    * phrase, disposée comme sur l'affiche de référence. Le lettrage reste
-   * masqué aux lecteurs d'écran — c'est une image de texte, et le titre qui
+   * masqué aux lecteurs d'écran - c'est une image de texte, et le titre qui
    * suit porte déjà le nom de l'Église.
    */
   protected readonly scriptViewBox = WELCOME_VIEWBOX;
@@ -107,7 +107,7 @@ export class HeroComponent {
 
       // Boucle continue plutôt qu'écoute de l'événement `scroll` : pendant un
       // défilement rapide ou inertiel, des événements sont regroupés ou
-      // manqués, et l'animation se fige dans un état intermédiaire —
+      // manqués, et l'animation se fige dans un état intermédiaire -
       // typiquement en remontant vers le haut de la page.
       requestAnimationFrame(update);
 
@@ -121,8 +121,8 @@ export class HeroComponent {
    * L'accueil animé ne se joue qu'une fois par visite.
    *
    * Au premier passage, on pose la marque en session : l'animation, déjà
-   * lancée par le CSS, se joue normalement. Aux passages suivants — retour à
-   * l'accueil depuis une autre page — la marque existe : on pose la classe qui
+   * lancée par le CSS, se joue normalement. Aux passages suivants - retour à
+   * l'accueil depuis une autre page - la marque existe : on pose la classe qui
    * fige le hero dans son état final, et rien ne rejoue.
    *
    * Sur un chargement complet, c'est le script en ligne d'index.html qui pose
@@ -131,7 +131,7 @@ export class HeroComponent {
    *
    * `sessionStorage` et non `localStorage` : la marque doit s'effacer à la
    * fermeture de l'onglet. Un visiteur qui revient le lendemain doit
-   * retrouver l'accueil complet — c'est la définition du « lancement du site ».
+   * retrouver l'accueil complet - c'est la définition du « lancement du site ».
    */
   private rememberIntro(): void {
     try {

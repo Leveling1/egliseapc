@@ -3,7 +3,7 @@
 // Le site lit désormais les articles depuis Supabase (vue articles_public).
 // Ce fichier reste la source d'amorçage : scripts/generate-seed-sql.mjs le
 // transpile pour produire le SQL d'insertion initial. Le modifier n'a plus
-// aucun effet sur le site — passez par le cpannel.
+// aucun effet sur le site - passez par le cpannel.
 export interface BlogArticle {
   readonly slug: string;
   readonly category: string;
@@ -21,7 +21,7 @@ export const FEATURED_ARTICLE: BlogArticle = {
   slug: 'puissance-de-la-foi-resume-culte-dominical',
   category: 'Résumé de culte',
   gradient: 'linear-gradient(135deg,#0b0b0b,#1c1c8c)',
-  title: 'La puissance de la foi — Résumé du culte dominical',
+  title: 'La puissance de la foi - Résumé du culte dominical',
   excerpt:
     "Retour sur l'enseignement du dimanche 28 juillet 2026, par le Prophète Garry KENGE. Un message puissant sur la foi qui déplace les montagnes.",
   date: '28 juillet 2026',
@@ -54,8 +54,8 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
       "Le lieu de travail est, pour la majorité des croyants, l'endroit où ils passent le plus de temps hors de leur foyer et de l'église. C'est pourtant souvent là que la tentation de « mettre sa foi de côté » se fait le plus sentir, entre pression des résultats, culture d'entreprise éloignée des valeurs bibliques et peur du regard des collègues.",
       "L'apôtre Paul écrivait aux Colossiens : « Tout ce que vous faites, faites-le de bon cœur, comme pour le Seigneur et non pour des hommes » (Colossiens 3:23). Ce verset déplace le centre de gravité : notre travail n'est pas d'abord destiné à notre employeur, mais à Dieu lui-même. Cette perspective change radicalement notre rapport à l'excellence, à l'intégrité et à la persévérance dans les tâches, même les plus ingrates.",
       "Être ambassadeur au travail ne signifie pas prêcher à chaque pause café, mais incarner un caractère différent : ponctualité, honnêteté dans les rapports, refus de la médisance, respect de la hiérarchie sans flatterie. C'est souvent ce témoignage silencieux, tenu dans la durée, qui ouvre des portes pour partager sa foi plus explicitement, au moment opportun.",
-      "Beaucoup de membres de notre communauté témoignent d'une même expérience : les périodes de difficulté professionnelle — restructuration, conflit avec un supérieur, échec d'un projet — sont souvent celles où leur foi a été la plus visible aux yeux de leurs collègues, précisément parce qu'ils ont choisi de garder la paix et l'espérance là où d'autres cédaient à l'anxiété.",
-      "Concrètement, quelques disciplines aident à tenir cette posture dans la durée : commencer sa journée par un temps bref de prière ou de lecture, se fixer une limite claire entre ce qui relève de la conscience et ce qui n'en relève pas, et rechercher la compagnie d'autres croyants — dans l'église ou ailleurs — pour ne pas porter seul les tensions du quotidien professionnel.",
+      "Beaucoup de membres de notre communauté témoignent d'une même expérience : les périodes de difficulté professionnelle - restructuration, conflit avec un supérieur, échec d'un projet - sont souvent celles où leur foi a été la plus visible aux yeux de leurs collègues, précisément parce qu'ils ont choisi de garder la paix et l'espérance là où d'autres cédaient à l'anxiété.",
+      "Concrètement, quelques disciplines aident à tenir cette posture dans la durée : commencer sa journée par un temps bref de prière ou de lecture, se fixer une limite claire entre ce qui relève de la conscience et ce qui n'en relève pas, et rechercher la compagnie d'autres croyants - dans l'église ou ailleurs - pour ne pas porter seul les tensions du quotidien professionnel.",
       "Enfin, rappelons-nous que notre vocation professionnelle, quelle qu'elle soit, s'inscrit dans le mandat plus large que Dieu nous a confié : être ses ambassadeurs, en tout lieu et en toute saison (2 Corinthiens 5:20). Le bureau, l'atelier ou le chantier sont, eux aussi, un champ de mission.",
     ],
   },
@@ -71,11 +71,11 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     authorInitials: 'MN',
     readingTime: '4 min de lecture',
     content: [
-      "Je m'appelle Marie, je fais partie de l'extension de Bruxelles depuis maintenant trois ans. On m'a demandé de partager mon parcours, et j'ai longtemps hésité — parler de soi n'est jamais simple — mais je crois que mon histoire peut encourager quelqu'un qui traverse aujourd'hui ce que j'ai traversé.",
+      "Je m'appelle Marie, je fais partie de l'extension de Bruxelles depuis maintenant trois ans. On m'a demandé de partager mon parcours, et j'ai longtemps hésité - parler de soi n'est jamais simple - mais je crois que mon histoire peut encourager quelqu'un qui traverse aujourd'hui ce que j'ai traversé.",
       "Il y a quelques années, j'étais arrivée à un point où je n'attendais plus rien de la vie. Un divorce difficile, une perte d'emploi, l'éloignement de ma famille restée au pays : tout s'est enchaîné en l'espace de quelques mois. Je fonctionnais, mais je ne vivais plus vraiment.",
       "C'est une collègue de travail, membre de notre église, qui m'a invitée à un culte un dimanche où je n'avais, honnêtement, rien de mieux à faire. Je ne m'attendais à rien de particulier. Mais dès les premiers chants, quelque chose s'est passé en moi que je ne saurais expliquer autrement que par la présence de Dieu.",
       "Ce qui m'a le plus marquée, ce n'est pas un miracle spectaculaire, mais la constance. Semaine après semaine, à travers les enseignements, la prière et l'accompagnement de l'équipe pastorale, j'ai appris à poser mes fardeaux plutôt qu'à les porter seule. J'ai réappris à espérer.",
-      "Aujourd'hui, mon emploi s'est stabilisé, mes relations familiales se reconstruisent lentement, et surtout, j'ai retrouvé une paix intérieure que je pensais avoir perdue pour toujours. Je ne dis pas que tout est parfait — la vie continue d'avoir ses épreuves — mais je ne les traverse plus seule.",
+      "Aujourd'hui, mon emploi s'est stabilisé, mes relations familiales se reconstruisent lentement, et surtout, j'ai retrouvé une paix intérieure que je pensais avoir perdue pour toujours. Je ne dis pas que tout est parfait - la vie continue d'avoir ses épreuves - mais je ne les traverse plus seule.",
       "Si vous lisez ce témoignage et que vous traversez une saison difficile, sachez que Dieu n'a pas fini d'écrire votre histoire. Il ne l'avait pas fini pour moi non plus.",
     ],
   },
@@ -83,7 +83,7 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     slug: 'marcher-dans-la-grace-resume',
     category: 'Résumé',
     gradient: 'linear-gradient(135deg,#1C1C8C,rgba(255,255,255,.55))',
-    title: 'Marcher dans la grâce — Résumé',
+    title: 'Marcher dans la grâce - Résumé',
     excerpt: "Les points essentiels de l'enseignement du mercredi sur la grâce et la miséricorde divine.",
     date: '18 juil. 2026',
     authorName: 'Prophète Garry KENGE',
@@ -111,7 +111,7 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     content: [
       "L'équipe d'organisation du Rassemblement des Aigles (RDA) a le plaisir d'annoncer les premières informations concernant l'édition 2026 de cet événement annuel désormais incontournable pour toute la communauté A.P.C, en République Démocratique du Congo comme dans nos extensions à travers le monde.",
       "Cette nouvelle édition marquera une étape importante puisqu'elle prolonge une tradition d'enseignements prophétiques initiée il y a plusieurs années par le Prophète Garry KENGE. Chaque année, le RDA rassemble des fidèles venus de Kinshasa, mais aussi de Paris, Bruxelles, Nairobi, Luanda et Lisbonne, pour un temps fort de communion, d'enseignement et de prière.",
-      "Si le programme détaillé — dates précises, thème de l'année, intervenants invités — sera communiqué dans les semaines à venir, l'équipe d'organisation confirme d'ores et déjà que l'édition 2026 s'inscrira dans la continuité de l'Oracle de l'année, avec un accent particulier mis sur la préparation spirituelle des participants en amont de l'événement.",
+      "Si le programme détaillé - dates précises, thème de l'année, intervenants invités - sera communiqué dans les semaines à venir, l'équipe d'organisation confirme d'ores et déjà que l'édition 2026 s'inscrira dans la continuité de l'Oracle de l'année, avec un accent particulier mis sur la préparation spirituelle des participants en amont de l'événement.",
       "Les membres des différentes extensions sont invités à se rapprocher de leurs responsables locaux pour connaître les modalités d'inscription et, le cas échéant, d'organisation du déplacement vers Kinshasa. Comme chaque année, une attention particulière sera portée à l'accueil des délégations venues de l'étranger.",
       "Nous vous invitons à rester connectés à ce blog et aux canaux habituels de communication de l'église pour ne manquer aucune annonce concernant cette édition qui s'annonce, une fois de plus, comme un rendez-vous marquant pour toute la famille A.P.C.",
     ],
@@ -120,7 +120,7 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     slug: 'appel-du-disciple-resume',
     category: 'Résumé',
     gradient: 'linear-gradient(135deg,#1C1C8C,#0B0B0B)',
-    title: "L'appel du disciple — Résumé",
+    title: "L'appel du disciple - Résumé",
     excerpt: "Retour sur l'enseignement puissant du dimanche 21 juillet sur l'appel et l'engagement du disciple.",
     date: '12 juil. 2026',
     authorName: 'Prophète Garry KENGE',
@@ -129,7 +129,7 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     content: [
       "Le culte du dimanche 21 juillet a été consacré à un enseignement fondamental sur la notion de disciple, à partir de Luc 9:23 : « Si quelqu'un veut venir après moi, qu'il renonce à lui-même, qu'il se charge chaque jour de sa croix, et qu'il me suive. » Un verset exigeant, que le Prophète Garry KENGE a pris soin de replacer dans son contexte avant d'en tirer les implications pratiques.",
       "Être disciple, a-t-il rappelé, ne se résume pas à assister régulièrement au culte ni même à connaître beaucoup de versets bibliques. C'est avant tout une posture du cœur : celle d'un apprenti qui suit son maître, prêt à être corrigé, façonné et envoyé. « On ne devient pas disciple par accident, on le devient par décision », a-t-il insisté.",
-      "Trois marques du disciple ont structuré l'enseignement. D'abord, le renoncement à soi : accepter que ses propres plans passent après ceux de Dieu. Ensuite, la constance dans l'épreuve, symbolisée par « la croix portée chaque jour » — non pas un fardeau ponctuel, mais un engagement quotidien renouvelé. Enfin, la disponibilité à suivre, c'est-à-dire à obéir même lorsque la direction n'est pas entièrement comprise.",
+      "Trois marques du disciple ont structuré l'enseignement. D'abord, le renoncement à soi : accepter que ses propres plans passent après ceux de Dieu. Ensuite, la constance dans l'épreuve, symbolisée par « la croix portée chaque jour » - non pas un fardeau ponctuel, mais un engagement quotidien renouvelé. Enfin, la disponibilité à suivre, c'est-à-dire à obéir même lorsque la direction n'est pas entièrement comprise.",
       "Le Prophète a également souligné que l'appel au discipulat n'est jamais une affaire strictement individuelle : il s'exerce dans une communauté, au sein de l'Église, où l'on est à la fois formé et appelé à former d'autres. « Un disciple qui ne fait pas de disciples n'a pas fini de comprendre son appel », a-t-il déclaré, en écho au mandat de Matthieu 28:19.",
       "L'assemblée a été invitée à un temps de consécration personnelle, chacun étant encouragé à identifier concrètement une zone de sa vie où le renoncement à soi devait encore progresser. Un enseignement qui a résonné comme un appel renouvelé à l'engagement, au-delà des habitudes religieuses.",
     ],
@@ -145,12 +145,12 @@ export const BLOG_ARTICLES: readonly BlogArticle[] = [
     authorInitials: 'DK',
     readingTime: '7 min de lecture',
     content: [
-      "Dans la vie de l'église, peu de disciplines sont autant recommandées — et pourtant autant négligées — que la prière. Nous la savons essentielle, nous l'enseignons volontiers aux autres, mais elle reste souvent la première chose sacrifiée lorsque nos journées se remplissent. Cet article se veut un rappel simple : la prière n'est pas une option pour le croyant, c'est une arme.",
-      "L'apôtre Paul, dans sa lettre aux Éphésiens, dresse la liste de l'armure du chrétien — la vérité, la justice, la foi, le salut, la Parole — avant de conclure par un appel à « prier en tout temps par l'Esprit » (Éphésiens 6:18). La prière n'est pas une pièce d'armure supplémentaire parmi d'autres : elle est ce qui active et maintient en mouvement toutes les autres.",
+      "Dans la vie de l'église, peu de disciplines sont autant recommandées - et pourtant autant négligées - que la prière. Nous la savons essentielle, nous l'enseignons volontiers aux autres, mais elle reste souvent la première chose sacrifiée lorsque nos journées se remplissent. Cet article se veut un rappel simple : la prière n'est pas une option pour le croyant, c'est une arme.",
+      "L'apôtre Paul, dans sa lettre aux Éphésiens, dresse la liste de l'armure du chrétien - la vérité, la justice, la foi, le salut, la Parole - avant de conclure par un appel à « prier en tout temps par l'Esprit » (Éphésiens 6:18). La prière n'est pas une pièce d'armure supplémentaire parmi d'autres : elle est ce qui active et maintient en mouvement toutes les autres.",
       "Notre église organise chaque semaine une réunion de prière matinale, du lundi au vendredi, de 5h50 à 6h50. Ce choix n'est pas anodin. Prier tôt, avant que la journée ne nous submerge de sollicitations, permet de fixer notre cœur sur Dieu avant de le fixer sur nos préoccupations. C'est une discipline exigeante, mais ceux qui la pratiquent avec constance en témoignent : elle change la trajectoire de la journée entière.",
-      "La prière n'est pas seulement une demande adressée à Dieu ; c'est avant tout une relation entretenue. Trop souvent, nous limitons la prière à des moments de crise, alors qu'elle est conçue pour être un dialogue continu — comme le suggère l'exhortation de Paul aux Thessaloniciens de « prier sans cesse » (1 Thessaloniciens 5:17).",
+      "La prière n'est pas seulement une demande adressée à Dieu ; c'est avant tout une relation entretenue. Trop souvent, nous limitons la prière à des moments de crise, alors qu'elle est conçue pour être un dialogue continu - comme le suggère l'exhortation de Paul aux Thessaloniciens de « prier sans cesse » (1 Thessaloniciens 5:17).",
       "Sur le plan spirituel, la prière est aussi un acte de combat. Elle ne se contente pas de nous rassurer psychologiquement ; elle s'attaque, dans l'invisible, à ce qui s'oppose aux desseins de Dieu pour notre vie, notre famille et notre église. C'est pourquoi les temps de jeûne et de prière collective occupent une place particulière dans notre calendrier, notamment lors des veillées et du Rassemblement des Aigles.",
-      "Concrètement, comment progresser dans cette discipline ? Commencer petit, mais avec régularité, vaut mieux qu'une ambition immédiate difficile à tenir. Se joindre à un groupe de prière permet également de porter ensemble ce qui serait lourd à porter seul. Enfin, tenir un carnet de prière — notant sujets et réponses reçues — aide à mesurer, avec le temps, la fidélité de Dieu.",
+      "Concrètement, comment progresser dans cette discipline ? Commencer petit, mais avec régularité, vaut mieux qu'une ambition immédiate difficile à tenir. Se joindre à un groupe de prière permet également de porter ensemble ce qui serait lourd à porter seul. Enfin, tenir un carnet de prière - notant sujets et réponses reçues - aide à mesurer, avec le temps, la fidélité de Dieu.",
       "Que cette réflexion soit une invitation, non à la culpabilité, mais au renouvellement : et si, cette semaine, nous redonnions à la prière la place centrale qui lui revient dans notre marche de disciple ?",
     ],
   },

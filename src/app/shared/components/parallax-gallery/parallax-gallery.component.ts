@@ -63,13 +63,13 @@ const ENTRY_SPAN_RATIO = 1;
 /**
  * Mur de photos en parallaxe.
  *
- * Il n'existe qu'une seule mise en page — les colonnes du mur, où chaque photo
+ * Il n'existe qu'une seule mise en page - les colonnes du mur, où chaque photo
  * garde ses proportions. L'animation ne fait que la déformer au départ : le mur
  * arrive incliné, remonté, effacé, ses colonnes décalées les unes par rapport
  * aux autres, puis tout se résorbe et il retrouve sa place. L'état final est
  * donc le mur nu, sans aucune transformation.
  *
- * Toute la mécanique — progression, interpolations, ressorts, répartition —
+ * Toute la mécanique - progression, interpolations, ressorts, répartition -
  * vit dans parallax-motion.ts, testé à part. Ce composant ne fait que mesurer
  * et appliquer.
  */
@@ -107,7 +107,7 @@ export class ParallaxGalleryComponent {
 
       // Sans mouvement, le mur reste tel que le CSS le pose : à plat, à sa
       // place. C'est aussi ce que voient ceux dont le JavaScript n'a pas
-      // abouti — la galerie reste alors une galerie.
+      // abouti - la galerie reste alors une galerie.
       const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // La progression ne redescend jamais : remonter pour regarder une photo
@@ -124,7 +124,7 @@ export class ParallaxGalleryComponent {
       /**
        * Amplitudes du moment.
        *
-       * La largeur du mur est relevée sur la mise en page — `offsetWidth`, non
+       * La largeur du mur est relevée sur la mise en page - `offsetWidth`, non
        * faussé par l'agrandissement en cours, contrairement à
        * `getBoundingClientRect`. C'est elle qui détermine de combien il faut
        * agrandir pour déborder de l'écran : le mur étant plafonné à 1280 px,
@@ -138,7 +138,7 @@ export class ParallaxGalleryComponent {
        * Le document ne contient jamais que le mur définitif : la grille de
        * départ n'est pas construite, elle est calculée. Chaque photo reçoit le
        * déplacement qui l'amène de sa case dans le mur à sa case dans la
-       * grille large — et c'est ce déplacement qui se résorbe au défilement.
+       * grille large - et c'est ce déplacement qui se résorbe au défilement.
        *
        * L'arrivée est donc exacte par construction : quand le déplacement
        * s'annule, chaque photo est là où la mise en page l'a posée, sans que
@@ -168,7 +168,7 @@ export class ParallaxGalleryComponent {
           return;
         }
 
-        // Tout se lit sur la mise en page — `offset*` — et jamais sur le
+        // Tout se lit sur la mise en page - `offset*` - et jamais sur le
         // rendu : `getBoundingClientRect` renverrait la boîte de la forme
         // inclinée et agrandie, qui n'a rien à voir avec les cases.
         const columnWidth = column.offsetWidth;

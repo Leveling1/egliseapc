@@ -62,7 +62,7 @@
           @for (row of rows(); track row.id) {
             <tr [class.cp-table__row--inactive]="!row.is_active">
               <td>
-                <span class="cp-users__name">{{ row.full_name || '—' }}</span>
+                <span class="cp-users__name">{{ row.full_name || '-' }}</span>
                 <span class="cp-users__email">{{ row.email }}</span>
               </td>
 
@@ -123,7 +123,7 @@
       <h3 id="cp-deact-title" class="cp-modal__title">Désactiver cet accès ?</h3>
       <p class="cp-modal__text">
         {{ row.email }} ne pourra plus entrer dans le cpannel. Le compte reste dans la
-        liste et vous pourrez le réactiver à tout moment — rien n'est supprimé.
+        liste et vous pourrez le réactiver à tout moment - rien n'est supprimé.
       </p>
 
       @if (row.id === currentAdminId()) {

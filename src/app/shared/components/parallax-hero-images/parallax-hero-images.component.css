@@ -17,7 +17,7 @@
 
 .apc-parallax__pos {
   position: absolute;
-  /* transform is spring-driven per animation frame in TS — no CSS
+  /* transform is spring-driven per animation frame in TS - no CSS
      transition here, it would fight the JS-smoothed motion. */
 }
 
@@ -37,8 +37,8 @@
 }
 
 /* Detached from `.apc-parallax` (which is bounded to the hero section) so
-   it can travel above literally everything else on the page while growing —
-   the header (z-index: 100) included — its own top/left/width/height are
+   it can travel above literally everything else on the page while growing -
+   the header (z-index: 100) included - its own top/left/width/height are
    scroll-interpolated inline styles. */
 .apc-parallax__grow {
   position: fixed;

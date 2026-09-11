@@ -7,8 +7,8 @@
 
 /*
  * Grand « APC » en filigrane derrière le contenu, purement décoratif. Posé
- * directement sur `.apc-footer` — et non sur `.apc-footer__inner`, qui porte
- * les retraits — pour venir au ras du coin inférieur gauche.
+ * directement sur `.apc-footer` - et non sur `.apc-footer__inner`, qui porte
+ * les retraits - pour venir au ras du coin inférieur gauche.
  *
  * Trois réglages font tout l'effet :
  *
@@ -32,7 +32,7 @@
  * du bas du pied de page, qui mesure environ 470 px sur grand écran :
  * au-delà, les capitales sortiraient par le haut et `overflow: hidden` les
  * trancherait. Trois lettres ne peuvent donc pas à la fois barrer toute la
- * largeur et tenir en hauteur — le modèle en comptait neuf, ce qui lui permet
+ * largeur et tenir en hauteur - le modèle en comptait neuf, ce qui lui permet
  * d'être large sans être haut.
  *
  * LE CONTRASTE est celui du modèle : environ six pour cent de blanc sur le

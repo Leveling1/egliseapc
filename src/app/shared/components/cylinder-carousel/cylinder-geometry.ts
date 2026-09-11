@@ -8,7 +8,7 @@
  * Le principe : au lieu de fixer une taille de carte et de subir le rayon
  * qui en découle, on part du conteneur. Le rayon est choisi pour que la
  * silhouette du cylindre occupe toute la place disponible, puis le nombre de
- * cartes s'en déduit — et non l'inverse.
+ * cartes s'en déduit - et non l'inverse.
  */
 
 export type CylinderAxis = 'horizontal' | 'vertical';
@@ -69,7 +69,7 @@ const MIN_COUNT = 8;
  *
  * En rotation verticale, seule la HAUTEUR des cartes participe à la géométrie
  * du cylindre : c'est elle qui les répartit autour de l'axe. La largeur est
- * donc libre — mais pas sans limite.
+ * donc libre - mais pas sans limite.
  *
  * La perspective agrandit les cartes de premier plan d'un facteur
  * PERSPECTIVE_RATIO / (PERSPECTIVE_RATIO − 1), soit environ 1,55. Au-delà
@@ -105,7 +105,7 @@ export function cylinderGeometry(input: CylinderInput): CylinderGeometry {
 
   // En rotation horizontale, `extent` est la largeur et la hauteur en
   // découle par le rapport demandé. En rotation verticale, `extent` est la
-  // hauteur — et la largeur n'a plus de contrainte géométrique.
+  // hauteur - et la largeur n'a plus de contrainte géométrique.
   const cardHeight = axis === 'horizontal' ? extent / aspectRatio : extent;
   const cardWidth =
     axis === 'horizontal'

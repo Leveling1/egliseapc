@@ -14,7 +14,7 @@
 }
 
 @media (max-width: 768px) {
-  /* background-attachment: fixed is unreliable on mobile browsers — it can
+  /* background-attachment: fixed is unreliable on mobile browsers - it can
      fail to paint or make background-size: cover zoom against the wrong
      viewport. Fall back to a normal scrolling background below desktop
      widths. */

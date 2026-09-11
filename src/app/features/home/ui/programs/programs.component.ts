@@ -44,7 +44,7 @@ export class ProgramsComponent {
 
   protected readonly oracleTitle = computed(() => {
     const oracle = this.oracle();
-    return oracle ? `Oracle ${oracle.year} — ${oracle.title}` : '';
+    return oracle ? `Oracle ${oracle.year} - ${oracle.title}` : '';
   });
 
   private async load(): Promise<void> {

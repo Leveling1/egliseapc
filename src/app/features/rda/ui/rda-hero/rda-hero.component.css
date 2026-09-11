@@ -49,7 +49,7 @@
 }
 
 @media (max-width: 768px) {
-  /* background-attachment: fixed is unreliable on mobile browsers — see
+  /* background-attachment: fixed is unreliable on mobile browsers - see
      hero.component.css for the same fix applied to the home page hero. */
   .apc-rda-hero__background {
     background-attachment: scroll;

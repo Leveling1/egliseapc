@@ -105,7 +105,7 @@ export class CylinderCarouselComponent {
       measure();
 
       // ResizeObserver plutôt que l'événement `resize` de la fenêtre : le
-      // conteneur peut changer de taille sans que la fenêtre bouge — barre
+      // conteneur peut changer de taille sans que la fenêtre bouge - barre
       // d'adresse mobile qui se rétracte, polices qui finissent de charger.
       const observer = new ResizeObserver(measure);
       observer.observe(element);

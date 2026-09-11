@@ -28,7 +28,7 @@ interface MapCity {
   // Leaflet builds its DOM (tiles, markers) imperatively, outside Angular's
   // template compiler, so Emulated encapsulation's scoping attribute never
   // reaches it. `::ng-deep` is banned project-wide, so this component's
-  // styles are left unscoped instead — still colocated and lazy-loaded
+  // styles are left unscoped instead - still colocated and lazy-loaded
   // with the component, just not attribute-scoped.
   encapsulation: ViewEncapsulation.None,
 })
@@ -54,7 +54,7 @@ export class WorldPresenceComponent {
       // Leaflet is a CommonJS/UMD package. The production build's dynamic
       // `import()` returns its whole exports object wrapped under `.default`
       // (unlike the dev server, which unwraps it), so `L.map` etc. would be
-      // undefined without this fallback — the actual reported bug.
+      // undefined without this fallback - the actual reported bug.
       L = (imported as unknown as { default?: typeof import('leaflet') }).default ?? imported;
     } catch (error) {
       console.error('Impossible de charger Leaflet pour la carte des extensions.', error);

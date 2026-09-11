@@ -30,7 +30,7 @@ export class CpannelMediaService {
    *
    * Les dimensions accompagnent la réponse : le service média les mesure au
    * moment où il réencode le fichier, ce qui évite d'avoir à les relire dans
-   * le navigateur. Elles comptent — c'est d'elles que le mur public déduit la
+   * le navigateur. Elles comptent - c'est d'elles que le mur public déduit la
    * place à réserver avant l'arrivée de l'image.
    */
   async upload(file: File, module: string): Promise<MediaUpload> {
@@ -87,7 +87,7 @@ export async function readFunctionError(error: unknown): Promise<string> {
       } catch {
         // Pas du JSON : le texte brut vaut mieux que rien.
       }
-      if (text.trim()) return `${context.status} — ${text.trim().slice(0, 200)}`;
+      if (text.trim()) return `${context.status} - ${text.trim().slice(0, 200)}`;
       return `Réponse ${context.status} sans détail.`;
     } catch {
       // Corps illisible : on retombe sur le message générique.

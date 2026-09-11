@@ -56,7 +56,7 @@ describe('handwriting', () => {
 
   it("ne s'interrompt que là où le lettrage lui-même s'interrompt", () => {
     // La propriété qui compte : le temps doit épouser la géométrie. L'encre ne
-    // peut s'arrêter que si le lettrage présente un blanc au même endroit —
+    // peut s'arrêter que si le lettrage présente un blanc au même endroit -
     // sinon le stylo semblerait hésiter au milieu d'un mot.
     //
     // Le lettrage en compte deux, et non un seul comme je l'avais d'abord
@@ -120,7 +120,7 @@ describe('introTiming', () => {
   });
 
   it('laisse au titre le temps de se poser sans à-coup', () => {
-    // Une entrée trop courte paraît sèche — c'était le défaut de la première
+    // Une entrée trop courte paraît sèche - c'était le défaut de la première
     // version, à 800 ms. Le titre a le droit de déborder sur la fin de
     // l'écriture : il achève de se préciser pendant le dernier mot. En
     // revanche il doit être posé avant que le relais ne commence, sinon trois

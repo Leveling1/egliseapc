@@ -7,7 +7,7 @@ import { MEDIA_BUCKET, type ProgrammePublic } from '../../../../core/supabase/da
 /**
  * Présentation de la Journée du Parfum.
  *
- * Le contenu — dates, lieu, description, affiche — n'est pas écrit ici : il
+ * Le contenu - dates, lieu, description, affiche - n'est pas écrit ici : il
  * vient du programme spécial « Journée du Parfum » du module Programmes, que
  * le cpannel gère comme n'importe quel autre rendez-vous. La section ne
  * connaît que le titre. Tant que le programme n'est pas renseigné, elle

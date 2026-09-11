@@ -72,7 +72,7 @@ export class CpannelDashboardPageComponent {
   };
 
   constructor() {
-    inject(Title).setTitle('Tableau de bord — cpannel A.P.C');
+    inject(Title).setTitle('Tableau de bord - cpannel A.P.C');
     void this.load();
   }
 

@@ -81,7 +81,7 @@ function toIsoDate(french) {
 }
 
 const lines = [
-  '-- Fichier GÉNÉRÉ par scripts/generate-seed-sql.mjs — ne pas modifier à la main.',
+  '-- Fichier GÉNÉRÉ par scripts/generate-seed-sql.mjs - ne pas modifier à la main.',
   '-- Amorçage du contenu du cpannel depuis les données du dépôt.',
   '',
   '-- Articles de blog : contenu réel, publié directement (is_visible = true)',
@@ -121,7 +121,7 @@ lines.push('-- sont créées à compléter depuis le cpannel, et restent masqué
 lines.push('-- qu\'elles ne contiennent pas d\'information vérifiée. Inventer des dates');
 lines.push('-- ou des lieux pour un historique d\'église tromperait les visiteurs.');
 lines.push('insert into public.rda_editions (edition_number, title, is_visible)');
-lines.push('select n, \'Édition \' || n || \' — à compléter\', false');
+lines.push('select n, \'Édition \' || n || \' - à compléter\', false');
 lines.push('  from generate_series(1, 18) as n');
 lines.push('on conflict (edition_number) do nothing;');
 lines.push('');
@@ -129,4 +129,4 @@ lines.push('');
 writeFileSync(OUTPUT, lines.join('\n'));
 unlinkSync(TEMP);
 
-console.log(`[seed] ${OUTPUT} généré — ${articles.length} articles + 18 éditions RDA.`);
+console.log(`[seed] ${OUTPUT} généré - ${articles.length} articles + 18 éditions RDA.`);

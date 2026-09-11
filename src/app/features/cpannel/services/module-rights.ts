@@ -16,7 +16,7 @@ export interface RightsContext {
  * tests directs.
  *
  * Doit rester le miroir exact de `has_module_right()` en base. En cas de
- * divergence, c'est la base qui fait autorité — cette fonction ne sert qu'à
+ * divergence, c'est la base qui fait autorité - cette fonction ne sert qu'à
  * éviter d'afficher des actions vouées à être refusées.
  */
 export function hasModuleRight(

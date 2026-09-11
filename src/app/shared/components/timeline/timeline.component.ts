@@ -72,7 +72,7 @@ export class TimelineComponent {
       this.resizeObserver.observe(trackEl);
 
       // Scroll/resize listeners stay attached for the component's whole
-      // lifetime — recompute is rAF-throttled and just reads a bounding
+      // lifetime - recompute is rAF-throttled and just reads a bounding
       // rect, so this is cheap even while the section is off-screen, and
       // guarantees the line animation is always live once mounted.
       const onScroll = (): void => this.scheduleRecompute();

@@ -17,7 +17,7 @@ interface SermonSummary {
 })
 export class SermonsComponent {
   protected readonly featuredSermon: SermonSummary = {
-    title: 'Culte dominical — La puissance de la foi',
+    title: 'Culte dominical - La puissance de la foi',
     date: 'Dimanche 28 juillet 2026',
     duration: '1h 24min',
   };

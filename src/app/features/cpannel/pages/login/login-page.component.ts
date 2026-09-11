@@ -41,6 +41,6 @@ export class CpannelLoginPageComponent {
   }
 
   constructor() {
-    inject(Title).setTitle('Connexion — cpannel A.P.C');
+    inject(Title).setTitle('Connexion - cpannel A.P.C');
   }
 }

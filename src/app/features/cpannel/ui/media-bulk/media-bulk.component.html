@@ -14,7 +14,7 @@
     (dragover)="allowDrop($event)"
   >
     <p class="cp-bulk__hint">
-      Glissez vos photos ici, ou sélectionnez-en autant que vous voulez — maintenez
+      Glissez vos photos ici, ou sélectionnez-en autant que vous voulez - maintenez
       Ctrl (ou Cmd) dans la boîte de dialogue pour en prendre plusieurs.
     </p>
     <button type="button" class="cp-bulk__button cp-bulk__button--ghost" (click)="pick()" [disabled]="running()">
@@ -86,7 +86,7 @@
 
     @if (running() || isComplete()) {
       <p class="cp-bulk__count">
-        {{ done() }} / {{ total() }} enregistrée(s)@if (failed()) { — {{ failed() }} en échec }
+        {{ done() }} / {{ total() }} enregistrée(s)@if (failed()) { - {{ failed() }} en échec }
       </p>
     }
   }

@@ -7,7 +7,7 @@
  *
  * Distinction importante : les types `*Public` correspondent aux VUES
  * exposées au site grand public. Ils ne contiennent volontairement pas
- * `is_visible`, `created_at`, `updated_at` ni `updated_by` — ces colonnes
+ * `is_visible`, `created_at`, `updated_at` ni `updated_by` - ces colonnes
  * sont internes au cpannel et le rôle anonyme n'a même pas le privilège de
  * les lire.
  */
@@ -84,7 +84,7 @@ export interface ArticlePublic {
   excerpt: string | null;
   /** Texte brut, un paragraphe par entrée. Dérivé du HTML, sert de repli. */
   content: string[];
-  /** Contenu riche produit par l'éditeur — source de vérité de l'article. */
+  /** Contenu riche produit par l'éditeur - source de vérité de l'article. */
   content_html: string | null;
   author_name: string | null;
   author_initials: string | null;

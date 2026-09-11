@@ -45,7 +45,7 @@ a {
 
    Aucun jaune. Le rouge ne signifie qu'une seule chose dans tout le
    cpannel : une action destructrice. Il n'est donc jamais utilisé pour une
-   statistique en baisse — celles-ci passent en gris neutre.
+   statistique en baisse - celles-ci passent en gris neutre.
    ------------------------------------------------------------ */
 .cpannel {
   --cp-accent: #1c1c8c;

@@ -47,7 +47,7 @@ const PACE_MS = 250;
 /**
  * Ajout de photos par lot, en trois temps.
  *
- *   1. On choisit les fichiers — autant qu'on veut — et on les voit en aperçu.
+ *   1. On choisit les fichiers - autant qu'on veut - et on les voit en aperçu.
  *   2. On renseigne les informations DU LOT : une légende et une description
  *      valables pour toutes les photos sélectionnées.
  *   3. On enregistre. Rien ne part avant ce clic.

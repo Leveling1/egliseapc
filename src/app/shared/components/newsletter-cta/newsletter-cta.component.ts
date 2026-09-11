@@ -41,8 +41,8 @@ export class NewsletterCtaComponent {
    * Écoute l'événement natif « submit » et non ngSubmit.
    *
    * Ce composant n'importe que ReactiveFormsModule : aucune directive de
-   * formulaire ne s'applique donc au <form>, et ngSubmit — qui est une
-   * sortie de NgForm — ne se déclenchait jamais. Le navigateur envoyait le
+   * formulaire ne s'applique donc au <form>, et ngSubmit - qui est une
+   * sortie de NgForm - ne se déclenchait jamais. Le navigateur envoyait le
    * formulaire nativement et rechargeait la page, si bien que le message de
    * confirmation ne pouvait pas apparaître.
    */

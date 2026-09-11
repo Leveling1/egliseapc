@@ -60,7 +60,7 @@ export class ArticleDetailPageComponent {
 
     // Runs on every slug change too (not just once), so meta tags stay
     // correct when navigating from one article straight into another via
-    // the "related articles" links below — the component instance is
+    // the "related articles" links below - the component instance is
     // reused by the router, so ngOnInit alone wouldn't re-fire here.
     effect(() => {
       const slug = this.slug();

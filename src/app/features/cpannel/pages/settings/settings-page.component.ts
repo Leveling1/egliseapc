@@ -49,7 +49,7 @@ export class CpannelSettingsPageComponent {
   protected readonly canPublish = computed(() => this.auth.can('settings', 'publish'));
 
   constructor() {
-    inject(Title).setTitle('Paramètres — cpannel A.P.C');
+    inject(Title).setTitle('Paramètres - cpannel A.P.C');
     void this.load();
   }
 

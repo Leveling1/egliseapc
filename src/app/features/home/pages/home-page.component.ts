@@ -30,7 +30,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Ambassadeurs Pour Christ (A.P.C) — Église chrétienne",
+      title: "Ambassadeurs Pour Christ (A.P.C) - Église chrétienne",
       description:
         "Église Les Ambassadeurs Pour Christ (A.P.C) : cultes, enseignements, programmes hebdomadaires et Rassemblement des Aigles (RDA). Siège à Kinshasa et extensions dans plusieurs pays.",
       path: '/',

@@ -1,6 +1,6 @@
 /* Seuls les styles propres à cette page. Boutons, pastilles, champs,
    tableaux et modales viennent des primitives `.cpannel` déclarées dans
-   styles.css — les dupliquer ici les ferait diverger. */
+   styles.css - les dupliquer ici les ferait diverger. */
 
 .cp-res__head {
   display: flex;
@@ -129,7 +129,7 @@
   }
 }
 
-/* Retour de la recherche de coordonnées : information, jamais un blocage —
+/* Retour de la recherche de coordonnées : information, jamais un blocage -
    la latitude et la longitude restent saisissables à la main. */
 .cp-geo {
   margin: 6px 0 0;
@@ -143,7 +143,7 @@
 }
 
 /* Interrupteur d'un champ booléen. Le libellé est répété à l'intérieur du
-   contrôle pour agrandir la zone cliquable — les cases à cocher seules sont
+   contrôle pour agrandir la zone cliquable - les cases à cocher seules sont
    pénibles à viser, en particulier au doigt. */
 .cp-switch {
   display: inline-flex;

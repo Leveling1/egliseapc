@@ -55,7 +55,7 @@ export class AboutPageComponent implements OnInit {
       title: "Vers la naissance de l'A.P.C",
       paragraphs: [
         "Le groupe trouve refuge dans un ancien garage de la concession de papa MAZAZA, grâce à l'intercession de sa fille Jeanine. Ne pouvant plus le diriger, sœur Arlette en confie la conduite au frère Garry KENGE, qui accepte après un temps de prière : il donne au groupe une vision nouvelle et le rebaptise « les Ambassadeurs Pour Christ » (A.P.C).",
-        'Trois ans plus tard, papa MAZAZA vend sa parcelle et le groupe se retrouve sans lieu où se réunir — certaines réunions de prière se tiennent même dans la rue.',
+        'Trois ans plus tard, papa MAZAZA vend sa parcelle et le groupe se retrouve sans lieu où se réunir - certaines réunions de prière se tiennent même dans la rue.',
       ],
       imagePlaceholderLabel: 'photo de la croissance\nde la communauté',
       imageGradient: 'linear-gradient(135deg,#1C1C8C,rgba(255,255,255,.55))',
@@ -66,7 +66,7 @@ export class AboutPageComponent implements OnInit {
       chapterNumber: 3,
       title: 'Une Identité Affirmée',
       paragraphs: [
-        "Le 25 avril 1994, papa MENGI accorde au groupe le droit de se réunir dans sa concession. Le 28 août 1995, l'A.P.C célèbre son tout premier culte dominical — jusqu'alors, le groupe ne se réunissait que les lundis et jeudis, selon le modèle des « groupes de prière » de l'époque.",
+        "Le 25 avril 1994, papa MENGI accorde au groupe le droit de se réunir dans sa concession. Le 28 août 1995, l'A.P.C célèbre son tout premier culte dominical - jusqu'alors, le groupe ne se réunissait que les lundis et jeudis, selon le modèle des « groupes de prière » de l'époque.",
         "Sous la conduite du frère Garry KENGE, le groupe affirme son identité et prend le nom d'Église les Ambassadeurs Pour Christ.",
       ],
       imagePlaceholderLabel: "photo de l'expansion\ninternationale",

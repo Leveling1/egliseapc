@@ -1,4 +1,4 @@
-# SPA fallback — toutes les routes inconnues servent index.html
+# SPA fallback - toutes les routes inconnues servent index.html
 # (nécessaire pour /cms sur hébergement statique o2switch)
 RewriteEngine On
 RewriteBase /

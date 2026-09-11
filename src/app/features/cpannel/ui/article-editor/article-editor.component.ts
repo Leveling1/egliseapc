@@ -18,9 +18,9 @@ import type Quill from 'quill';
  * et un bouton « + » sur les lignes vides pour insérer une image.
  *
  * Adapté de l'éditeur du projet IGF, avec deux différences :
- *  — l'envoi d'image renvoie une promesse plutôt qu'un Observable, ce projet
+ *  - l'envoi d'image renvoie une promesse plutôt qu'un Observable, ce projet
  *    n'utilisant pas RxJS pour ses appels Supabase ;
- *  — la sortie est du HTML et du texte brut plutôt qu'un Delta Quill, car
+ *  - la sortie est du HTML et du texte brut plutôt qu'un Delta Quill, car
  *    c'est le HTML que le site public doit rendre.
  *
  * Quill est importé dynamiquement : il touche `document` dès son chargement,
@@ -224,10 +224,10 @@ export class ArticleEditorComponent implements OnDestroy {
     const source = upload
       ? await upload(file)
       : await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(file);
-        });
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      });
 
     this.quill.insertEmbed(index, 'image', source);
     this.quill.setSelection(index + 1);

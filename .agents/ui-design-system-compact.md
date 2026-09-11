@@ -1,10 +1,10 @@
 # ui-design-system-compact.md
 
-## Design System — Ambassadeurs pour Christ (Site Vitrine)
+## Design System - Ambassadeurs pour Christ (Site Vitrine)
 
 Référence visuelle extraite de la **Charte Graphique officielle** (v1.0) de l'église Ambassadeurs pour Christ. Tout composant Angular du site vitrine doit respecter ces tokens et conventions.
 
-Les tokens marqués **[charte]** viennent directement du document officiel. Les tokens marqués **[dérivé]** sont des conventions UI nécessaires à l'implémentation web, déduites de la charte mais non explicitement chiffrées dans celle-ci — à valider avec le client si besoin.
+Les tokens marqués **[charte]** viennent directement du document officiel. Les tokens marqués **[dérivé]** sont des conventions UI nécessaires à l'implémentation web, déduites de la charte mais non explicitement chiffrées dans celle-ci - à valider avec le client si besoin.
 
 ---
 
@@ -14,8 +14,8 @@ Les tokens marqués **[charte]** viennent directement du document officiel. Les 
 - **Alliance** : *« Sainteté à l'Éternel »*
 - **Baseline / valeurs [charte]** : Foi • Espérance • Amour • Unité • Mission
 - **Versets de base** :
-  - *« Nous faisons donc les fonctions d'ambassadeurs pour Christ… »* — 2 Corinthiens 5:20
-  - *« Aller, faire de toutes les nations des disciples… »* — Matthieu 28:19 [charte]
+  - *« Nous faisons donc les fonctions d'ambassadeurs pour Christ… »* - 2 Corinthiens 5:20
+  - *« Aller, faire de toutes les nations des disciples… »* - Matthieu 28:19 [charte]
 - **Ton de communication [charte]** :
   | Trait | Description |
   | --- | --- |
@@ -31,7 +31,7 @@ Conséquence UI : rédaction chaleureuse et accessible, jamais commerciale ni ag
 ## 1. Logo
 
 - **Composition [charte]** : globe (bleu, effet réseau/monde) + croix en bois + livre ouvert (Bible) posés devant le globe + rayonnement soleil orange/jaune en arrière-plan.
-- **Fichier source** : logo fourni en illustration vectorielle/raster complexe (pas un simple SVG de lignes) — utiliser l'asset officiel exporté (SVG/PNG haute résolution), ne jamais le redessiner en version simplifiée.
+- **Fichier source** : logo fourni en illustration vectorielle/raster complexe (pas un simple SVG de lignes) - utiliser l'asset officiel exporté (SVG/PNG haute résolution), ne jamais le redessiner en version simplifiée.
 - **Règles d'utilisation [charte]** :
   - Version originale uniquement, aucune modification (couleurs, proportions, éléments, orientation).
   - Toujours lisible et visible sur tous les supports.
@@ -67,7 +67,7 @@ Conséquence UI : rédaction chaleureuse et accessible, jamais commerciale ni ag
 - Poppins : 500 (Medium), 600 (SemiBold), 700 (Bold)
 - Open Sans : 400 (Regular), 600 (SemiBold), 700 (Bold)
 
-### Échelle typographique [dérivé — à valider]
+### Échelle typographique [dérivé - à valider]
 
 | Usage | Taille | Famille / Poids | Line-height |
 | --- | --- | --- | --- |
@@ -78,11 +78,11 @@ Conséquence UI : rédaction chaleureuse et accessible, jamais commerciale ni ag
 | Corps de texte | `16px` | Open Sans 400 | 1.65 |
 | Corps de texte (large) | `18px` | Open Sans 400 | 1.65 |
 | Citation biblique | `clamp(1.3rem, 2.4vw, 1.8rem)` | Poppins 600 | 1.35 |
-| Référence citation | `13px` | Open Sans 700, uppercase | — |
-| Overline / label | `13px` | Poppins 700, uppercase, tracking 0.06em | — |
-| Nav link | `14.5px` | Open Sans 600 | — |
-| Bouton | `15px` | Poppins 600 | — |
-| Petit texte / footer | `14px` | Open Sans 400 | — |
+| Référence citation | `13px` | Open Sans 700, uppercase | - |
+| Overline / label | `13px` | Poppins 700, uppercase, tracking 0.06em | - |
+| Nav link | `14.5px` | Open Sans 600 | - |
+| Bouton | `15px` | Poppins 600 | - |
+| Petit texte / footer | `14px` | Open Sans 400 | - |
 
 ### Conventions texte
 
@@ -107,7 +107,7 @@ Conséquence UI : rédaction chaleureuse et accessible, jamais commerciale ni ag
 | `--apc-brown` | `#8B5A2B` | Marron | Détails croix / livre uniquement (usage iconographique, pas UI générale) |
 | `--apc-beige` | `#D9B27A` | Beige | Détails livre uniquement (usage iconographique, pas UI générale) |
 | `--apc-black` | `#0B0B0B` | Noir | Texte principal, détails, fonds très foncés |
-| `--apc-white` | `#FFFFFF` | — | Fonds clairs, texte sur fond foncé |
+| `--apc-white` | `#FFFFFF` | - | Fonds clairs, texte sur fond foncé |
 
 ### Dégradé [charte]
 
@@ -119,7 +119,7 @@ Usage : fonds de section (hero, contact), boutons principaux, éléments graphiq
 - **Primaire (actions, liens, focus)** : `--apc-blue` (#3B39FF), hover `--apc-blue-dark` (#1C1C8C)
 - **Fond clair par défaut** : `#FFFFFF` / `--apc-blue-pale` (#F2F3FF) pour sections alternées
 - **Fond foncé (hero, footer, CTA fort)** : `--apc-blue-dark` (#1C1C8C) ou dégradé `--apc-gradient-blue`
-- **Accents événementiels / mise en avant ponctuelle** : `--apc-orange`, `--apc-yellow` — à utiliser avec modération (badges, icône "nouveau", surlignage), jamais en grande surface
+- **Accents événementiels / mise en avant ponctuelle** : `--apc-orange`, `--apc-yellow` - à utiliser avec modération (badges, icône "nouveau", surlignage), jamais en grande surface
 - **Marron / beige** : réservés aux illustrations liées à la croix et à la Bible, ne pas les utiliser comme couleurs UI (boutons, fonds, textes)
 - **Texte principal sur fond clair** : `--apc-black` (#0B0B0B) ou `--apc-blue-dark`
 - **Texte principal sur fond foncé** : `--apc-white` ou `--apc-blue-pale`
@@ -173,7 +173,7 @@ Usage web [dérivé] : icônes 20–24px en ligne de texte, 40×40px dans un ico
 
 ## 5. Éléments graphiques [charte]
 
-- Globe, colombe, livre ouvert, personnes, mains en prière — utilisés comme illustrations ou pictos de section
+- Globe, colombe, livre ouvert, personnes, mains en prière - utilisés comme illustrations ou pictos de section
 - Formes arrondies et harmonieuses privilégiées partout (boutons, cartes, images)
 - Décors : barre / pastille en dégradé bleu, halo lumineux doux, rayons de soleil (repris du logo) en élément décoratif discret sur fond foncé
 - Styles décoratifs à appliquer **avec modération** pour ne pas nuire à la lisibilité
@@ -362,5 +362,5 @@ scrollbar-color: rgba(255,255,255,0.28) transparent;
 ## 13. Points à valider avec le client
 
 - Fichier logo source (vecteur) haute résolution + déclinaisons (favicon, monochrome)
-- Contenu réel des sections (ministères, horaires de cultes, prédicateurs, moyens de don) — la structure ci-dessus est une proposition basée sur des sites d'église classiques, à confirmer
+- Contenu réel des sections (ministères, horaires de cultes, prédicateurs, moyens de don) - la structure ci-dessus est une proposition basée sur des sites d'église classiques, à confirmer
 - Charte typographique web : licences Poppins/Open Sans via Google Fonts (gratuites, déjà compatibles usage web)

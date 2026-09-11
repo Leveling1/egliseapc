@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
  *
  * La production est un site statique : ce sont ces pages, générées ici, qui
  * seront servies. Un article publié depuis le cpannel apparaîtra donc au
- * prochain déploiement — le navigateur, lui, voit le contenu à jour dès la
+ * prochain déploiement - le navigateur, lui, voit le contenu à jour dès la
  * première visite puisque les composants relisent la base au chargement.
  *
  * Le client est créé directement plutôt qu'injecté : cette fonction s'exécute

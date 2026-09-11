@@ -1,4 +1,4 @@
-# Contexte IA — Angular Best Practices pour le front-end egliseapc
+# Contexte IA - Angular Best Practices pour le front-end egliseapc
 
 > **But du fichier**  
 > Ce document sert de contexte de référence pour tout agent IA qui génère, corrige ou refactorise du code Angular pour le front-end du site de egliseapc.  

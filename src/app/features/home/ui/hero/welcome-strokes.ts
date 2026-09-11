@@ -1,7 +1,7 @@
 /**
  * Lettres de « Bienvenue chez », extraites de public/icons/welcome_to.svg.
  *
- * FICHIER GÉNÉRÉ — ne pas modifier à la main.
+ * FICHIER GÉNÉRÉ - ne pas modifier à la main.
  * Régénérer avec : node scripts/generate-welcome-strokes.mjs
  *
  * Chaque entrée est une lettre du lettrage, avec les abscisses où elle

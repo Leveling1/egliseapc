@@ -77,8 +77,8 @@ describe('heroFrame', () => {
   });
 
   it('reste visible après le décollage, pour être recouvert', () => {
-    // Une fois le hero décollé, le portrait garde sa place — il est en
-    // position fixe, donc immobile — pendant que la section suivante remonte
+    // Une fois le hero décollé, le portrait garde sa place - il est en
+    // position fixe, donc immobile - pendant que la section suivante remonte
     // par-dessus lui. L'effacer ici supprimerait ce recouvrement, qui est
     // voulu.
     expect(heroFrame(STICKY + 10, VIEWPORT, PIN).portraitOpacity).toBeGreaterThan(0.9);
@@ -87,7 +87,7 @@ describe('heroFrame', () => {
 
   it("joue toute l'animation pendant que le hero est immobile", () => {
     // Si le fondu débordait de la phase collée, il se jouerait pendant que le
-    // hero s'en va — et la section suivante remonterait par-dessus.
+    // hero s'en va - et la section suivante remonterait par-dessus.
     let fin = 0;
     for (let scrolled = 0; scrolled < STICKY; scrolled += 10) {
       if (heroFrame(scrolled, VIEWPORT, PIN).historyOpacity[1] < 0.995) fin = scrolled;

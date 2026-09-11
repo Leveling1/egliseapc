@@ -66,8 +66,8 @@ const POSITION_STYLES: Record<ParallaxPosition, ParallaxPositionStyle> = {
 };
 
 // Below 1280px the desktop left/right spread has no safe gap left around the
-// centered hero text, so images are regrouped into two horizontal rows —
-// three above the text, three below — instead of being hidden entirely.
+// centered hero text, so images are regrouped into two horizontal rows -
+// three above the text, three below - instead of being hidden entirely.
 const POSITION_STYLES_STACKED: Record<ParallaxPosition, ParallaxPositionStyle> = {
   'top-left': { top: '14%', left: '12%' },
   'top-right': { top: '14%', left: '50%' },
@@ -111,7 +111,7 @@ const ENTRANCE_DELAY_STEP_SECONDS = 0.12;
 const GROW_START_BORDER_RADIUS_PX = 8;
 // First half of the scroll range: the image slides to the exact viewport
 // center at its normal (unchanged) size. Only past this point does it start
-// growing — from that centered point outward — up to fullscreen.
+// growing - from that centered point outward - up to fullscreen.
 const GROW_CENTER_PHASE_END = 0.5;
 // How much of the scroll range still lets the mouse-parallax jitter show
 // through before the deliberate centering motion fully takes over.
@@ -138,7 +138,7 @@ export class ParallaxHeroImagesComponent {
   readonly variant = input<ParallaxVariant>('default');
   readonly imageClass = input('');
   // When set, this image detaches from the parallax layer as soon as the
-  // page scrolls and grows into a fullscreen fixed overlay in its place —
+  // page scrolls and grows into a fullscreen fixed overlay in its place -
   // handing off to the next section's own fixed background once fully grown.
   readonly growImage = input<string | null>(null);
 
@@ -149,14 +149,14 @@ export class ParallaxHeroImagesComponent {
 
   private readonly growProgress = signal(0);
   // `growProgress` reaches 1 after one viewport-height of scroll (the
-  // move-then-grow motion). The clone then holds at fullscreen — while
+  // move-then-grow motion). The clone then holds at fullscreen - while
   // `.apc-hero-pin` keeps the hero pinned for whatever it layers on top
   // next (see hero.component.ts), and later while the hero scrolls away
-  // for real underneath — until scrolled fully past the pin's whole height,
+  // for real underneath - until scrolled fully past the pin's whole height,
   // by which point the next section's real content already fully covers
   // the viewport, so unmounting the clone at that exact point is invisible
   // (no opacity fade needed, which would otherwise briefly expose whatever
-  // — different — content is still behind it).
+  // - different - content is still behind it).
   private readonly growCloneActive = signal(true);
   private readonly growAnchorRect = signal<GrowRect | null>(null);
   private readonly viewportSize = signal({ width: 0, height: 0 });
@@ -225,7 +225,7 @@ export class ParallaxHeroImagesComponent {
     };
   });
 
-  // Mirrors the `.apc-parallax` breakpoint below — true means the stacked
+  // Mirrors the `.apc-parallax` breakpoint below - true means the stacked
   // (3 above / 3 below) mobile layout is active instead of the desktop
   // left/right spread.
   private readonly stackedLayout = signal(false);
@@ -287,7 +287,7 @@ export class ParallaxHeroImagesComponent {
       zIndex: Math.round(item.depth * 10),
       isGrowImage: item.src === growImage,
       // `translate(-50%, -50%)` centers the (now smaller) image on its
-      // top/left/right anchor point instead of anchoring by its corner —
+      // top/left/right anchor point instead of anchoring by its corner -
       // otherwise shrinking the image would visibly widen the gaps
       // between images. The parallax offset is then layered on top.
       transform: `translate(-50%, -50%) translate3d(${x * MAX_OFFSET_PX * item.depth}px, ${y * MAX_OFFSET_PX * item.depth}px, 0)`,
@@ -342,7 +342,7 @@ export class ParallaxHeroImagesComponent {
       this.stackedLayout.set(stackedQuery.matches);
       const onStackedChange = (event: MediaQueryListEvent): void => {
         this.stackedLayout.set(event.matches);
-        // The anchor's position map (spread vs. stacked) just swapped —
+        // The anchor's position map (spread vs. stacked) just swapped -
         // wait for that new layout to paint before re-measuring it.
         requestAnimationFrame(measureGrowAnchor);
       };
@@ -356,7 +356,7 @@ export class ParallaxHeroImagesComponent {
         // The move-then-grow motion always completes after exactly one
         // viewport-height of scroll, regardless of how much further pin
         // budget follows (e.g. hero.component.ts's own text crossfade,
-        // layered on top once this reaches fullscreen — no dead scroll in
+        // layered on top once this reaches fullscreen - no dead scroll in
         // between since that phase starts immediately where this one ends).
         const pinEl = this.elementRef.nativeElement.closest<HTMLElement>('.apc-hero-pin');
         if (!pinEl) {
@@ -368,7 +368,7 @@ export class ParallaxHeroImagesComponent {
         const motionProgress = Math.max(0, Math.min(1, scrolledIntoPin / motionDistance));
         this.growProgress.set(motionProgress);
 
-        // Only unmount once scrolled fully past the pin's whole height — by
+        // Only unmount once scrolled fully past the pin's whole height - by
         // then the hero has scrolled away and the next section's real
         // content already fully covers the viewport, so removing the clone
         // at that exact point is invisible.
@@ -380,7 +380,7 @@ export class ParallaxHeroImagesComponent {
       };
 
       // Re-measured every frame (not just on 'scroll') so scrolling back up
-      // into the hero is exactly as reliable as scrolling down — 'scroll'
+      // into the hero is exactly as reliable as scrolling down - 'scroll'
       // events can be coalesced or skipped by the browser (e.g. during fast
       // trackpad/momentum scrolling), which would otherwise leave the clone
       // stuck at a stale size instead of shrinking back to its anchor.
@@ -396,7 +396,7 @@ export class ParallaxHeroImagesComponent {
 
         // `stackedLayout` was just set above, but that signal write hasn't
         // reached the DOM yet, so the anchor is still laid out at its
-        // previous (possibly desktop) position — wait a frame before
+        // previous (possibly desktop) position - wait a frame before
         // measuring it and starting the tracking loop.
         requestAnimationFrame(() => {
           measureGrowAnchor();

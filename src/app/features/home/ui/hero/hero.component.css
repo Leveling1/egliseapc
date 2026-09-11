@@ -1,8 +1,8 @@
 /* Un seul pin continu pour toute la séquence d'ouverture.
      Sa hauteur n'est pas arbitraire : `.apc-hero` est en position sticky, il
      ne reste donc collé que sur `hauteur du pin − 100vh`. L'animation dure
-     200vh — 100 pour la traversée du carrousel vers le portrait, 100 pour le
-     fondu « Qui sommes-nous » ⇄ « Le Visionnaire » — il faut donc 300vh pour
+     200vh - 100 pour la traversée du carrousel vers le portrait, 100 pour le
+     fondu « Qui sommes-nous » ⇄ « Le Visionnaire » - il faut donc 300vh pour
      que toute la séquence se joue pendant que le hero est immobile.
 
      Réduire cette hauteur décolle le hero en plein fondu et laisse la section
@@ -58,7 +58,7 @@
 
 /* Voile du carrousel : plus léger que celui du fond, pour que les images qui
    tournent restent le sujet tout en laissant le titre lisible.
-   Son opacité est fixée ici et nulle part ailleurs — aucun code d'animation ne
+   Son opacité est fixée ici et nulle part ailleurs - aucun code d'animation ne
    peut la faire varier, elle est donc constante d'un bout à l'autre. */
 .apc-hero__scrim {
   position: absolute;
@@ -95,7 +95,7 @@
 /* Rideau du premier acte.
    Presque opaque tant que l'accueil se déroule, il se lève pendant le passage
    au titre : le carrousel et la photo se découvrent alors progressivement.
-   Piloté uniquement par une animation CSS au chargement — le code de
+   Piloté uniquement par une animation CSS au chargement - le code de
    défilement n'y touche pas, et ne peut donc pas le faire clignoter. */
 .apc-hero__curtain {
   position: absolute;
@@ -198,7 +198,7 @@
      Le pied du « B » descend alors jusqu'au bas des capitales, qu'il traverse.
      Ancrer par le bas donnerait le même résultat sur une ligne, mais placerait
      l'écriture au-dessus de la *dernière* ligne dès que le titre se replie sur
-     deux — c'est-à-dire au milieu du titre. */
+     deux - c'est-à-dire au milieu du titre. */
   top: 0;
   width: 7.65em;
   height: auto;
@@ -223,7 +223,7 @@
  *
  * `inset()` appliqué à un élément SVG se réfère à sa fill-box, c'est-à-dire à
  * la boîte englobante du tracé lui-même. Chaque lettre est donc balayée dans
- * ses propres limites — et comme sa fenêtre de temps est déduite de cette même
+ * ses propres limites - et comme sa fenêtre de temps est déduite de cette même
  * boîte, les treize balayages se recomposent en une seule ligne d'encre qui
  * traverse le mot sans rupture.
  *
@@ -279,7 +279,7 @@
  * Sur écran étroit, le titre se replie sur deux lignes.
  *
  * La ligne unique de l'affiche ne tient plus son rang ici : à 375 px de large,
- * elle imposait un titre de 15 px — la taille d'un paragraphe pour le titre
+ * elle imposait un titre de 15 px - la taille d'un paragraphe pour le titre
  * principal de la page. Mieux vaut renoncer à la ligne unique qu'au titre.
  * L'écriture, elle, garde sa place au-dessus de la première ligne et suit la
  * taille du bloc, puisqu'elle est réglée en `em`.
@@ -290,7 +290,7 @@
     /* Les deux lignes du titre se centrent l'une sur l'autre, comme le reste
        du hero. L'alignement à gauche de l'affiche suppose une ligne unique :
        dès que le titre se replie, il laisse la seconde ligne, plus courte,
-       flotter contre le bord — ce qui se lit comme un défaut. */
+       flotter contre le bord - ce qui se lit comme un défaut. */
     text-align: center;
   }
 
@@ -413,12 +413,12 @@
    lettrage à vitesse constante. Le titre paraît en cours de route, pendant la
    levée du stylo entre les deux mots, et l'affiche se trouve alors complète.
    Acte 2 : l'écriture s'efface, le rideau se lève, et le reste du contenu
-   prend le relais sous le titre — qui, lui, ne bouge plus.
+   prend le relais sous le titre - qui, lui, ne bouge plus.
 
    Tout repose sur des animations CSS, et non sur des transitions déclenchées
    depuis le script. C'est délibéré : le HTML du site est prérendu, et si le
    JavaScript tardait ou échouait, une approche par classe laisserait le titre
-   invisible — or c'est lui que lisent les moteurs de recherche. Ici le texte
+   invisible - or c'est lui que lisent les moteurs de recherche. Ici le texte
    est présent et s'anime tout seul.
 
    Les durées et retards viennent du composant, en variables CSS. */
@@ -427,7 +427,7 @@
  * Le titre se précise pendant que la main écrit encore.
  *
  * Il ne surgit pas : il émerge d'un flou, comme une image qui vient au point.
- * L'entrée précédente était sèche, et la courbe en était la cause — une
+ * L'entrée précédente était sèche, et la courbe en était la cause - une
  * exponentielle sortante (0.16, 1, 0.3, 1) parcourt les quatre cinquièmes du
  * chemin dans le premier cinquième du temps. Le titre était donc déjà arrivé
  * quand l'animation commençait à peine.
@@ -513,7 +513,7 @@
  * Accueil déjà joué pendant cette visite.
  *
  * L'entrée n'est jouée qu'une fois par session : à la première arrivée sur le
- * site. Revenir sur la page d'accueil depuis une autre page ne la rejoue pas —
+ * site. Revenir sur la page d'accueil depuis une autre page ne la rejoue pas -
  * un visiteur qui a déjà lu « Bienvenue » n'a pas à l'attendre une seconde
  * fois pour accéder au contenu.
  *

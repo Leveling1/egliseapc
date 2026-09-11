@@ -172,7 +172,7 @@ export class CpannelResourcePageComponent {
    *
    * Les enregistrer maintenant évite d'avoir à mesurer l'image plus tard :
    * c'est de ces deux nombres que le mur public déduit la place à réserver.
-   * Les champs sont renseignés silencieusement, sans figurer au formulaire —
+   * Les champs sont renseignés silencieusement, sans figurer au formulaire -
    * ce ne sont pas des choix, mais des faits sur le fichier.
    */
   protected onMediaUploaded(key: string, media: MediaUpload): void {
@@ -237,7 +237,7 @@ export class CpannelResourcePageComponent {
       const config = this.config();
       if (!config) return;
 
-      this.titleService.setTitle(`${config.label} — cpannel A.P.C`);
+      this.titleService.setTitle(`${config.label} - cpannel A.P.C`);
       if (config.fields.some((field) => field.type === 'links')) void this.loadLinkTypes();
       void this.loadDynamicOptions(config);
       this.closeEditor();
@@ -482,18 +482,18 @@ export class CpannelResourcePageComponent {
   protected displayCell(row: ContentRow, key: string): string {
     const value = row[key];
 
-    if (value === null || value === undefined || value === '') return '—';
+    if (value === null || value === undefined || value === '') return '-';
 
     // Relation résolue par PostgREST (ex. { name: 'Article' }) : on affiche
     // le libellé plutôt que « [object Object] ».
     if (typeof value === 'object' && !Array.isArray(value)) {
       const named = value as { name?: unknown };
-      return typeof named.name === 'string' ? named.name : '—';
+      return typeof named.name === 'string' ? named.name : '-';
     }
 
     if (value === 'recurrent') return 'Récurrent';
     if (value === 'special') return 'Spécial';
-    if (Array.isArray(value)) return value.length ? `${value.length} élément(s)` : '—';
+    if (Array.isArray(value)) return value.length ? `${value.length} élément(s)` : '-';
 
     return String(value);
   }
@@ -577,7 +577,7 @@ export class CpannelResourcePageComponent {
 
       if (!result) {
         this.geocodeStatus.set(
-          "Adresse introuvable — saisissez la latitude et la longitude à la main.",
+          "Adresse introuvable - saisissez la latitude et la longitude à la main.",
         );
         return;
       }
@@ -585,10 +585,10 @@ export class CpannelResourcePageComponent {
       this.draft.update((draft) =>
         draft
           ? {
-              ...draft,
-              [target.lat]: String(result.latitude),
-              [target.lng]: String(result.longitude),
-            }
+            ...draft,
+            [target.lat]: String(result.latitude),
+            [target.lng]: String(result.longitude),
+          }
           : draft,
       );
       this.geocodeStatus.set(`Lieu trouvé : ${result.displayName}`);

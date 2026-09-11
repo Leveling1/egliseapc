@@ -29,7 +29,7 @@ export function phase(progress: number, start: number, end: number): number {
  * Ils étaient auparavant liés à la disparition du texte : ils s'effaçaient
  * donc en cours de traversée et le carrousel reprenait brutalement sa teinte
  * pleine, au moment précis où l'attention devait glisser vers le portrait.
- * Les sortir du calcul d'animation garantit qu'ils resteront constants — la
+ * Les sortir du calcul d'animation garantit qu'ils resteront constants - la
  * question ne peut plus se reposer par accident.
  */
 export interface HeroFrame {
@@ -58,7 +58,7 @@ export function heroFrame(scrolled: number, viewport: number, pinHeight: number)
   // document ; elle se peint donc au-dessus de son contexte d'empilement, où
   // le `z-index: 1000` du portrait reste enfermé.
   //
-  // Les effacer au décollage supprimerait cet effet — il n'y aurait plus rien
+  // Les effacer au décollage supprimerait cet effet - il n'y aurait plus rien
   // à recouvrir. Au-delà du pin, en revanche, ils doivent disparaître : sinon
   // ils resteraient à l'écran par-dessus toutes les sections suivantes.
   const past = scrolled >= pinHeight;
@@ -69,7 +69,7 @@ export function heroFrame(scrolled: number, viewport: number, pinHeight: number)
   // cylindre nous engloutit donnerait une impression de surcharge.
   const textOut = phase(entry, 0, 0.32);
 
-  // Le cylindre avance vers nous puis se dissipe — on le traverse.
+  // Le cylindre avance vers nous puis se dissipe - on le traverse.
   const advance = smoothstep(entry);
   const stageOut = phase(entry, 0.42, 0.9);
 

@@ -9,7 +9,7 @@
  * centaine de lignes, et les avoir en clair permet de les vérifier.
  *
  * Le principe a changé depuis la première version, et c'est ce qui l'a
- * simplifié : il n'existe qu'une seule mise en page — le mur — et l'animation
+ * simplifié : il n'existe qu'une seule mise en page - le mur - et l'animation
  * ne fait que la déformer au départ pour la laisser revenir à sa place. La
  * référence, elle, éloignait indéfiniment ses rangées ; ici tout converge vers
  * zéro, et l'état final est le mur nu.
@@ -123,7 +123,7 @@ export function mapRange(
  * ne convient plus : cette hauteur est désormais celle du mur, donc celle de
  * ses photos. L'animation s'étirerait à mesure qu'on ajoute des images, et le
  * mur mettrait de plus en plus de temps à se poser. On la rapporte à une
- * course fixe — en pratique une hauteur d'écran — pour que l'entrée dure
+ * course fixe - en pratique une hauteur d'écran - pour que l'entrée dure
  * toujours autant, quel que soit le nombre de photos.
  */
 export function scrollProgress(rectTop: number, span: number): number {
@@ -136,7 +136,7 @@ export function scrollProgress(rectTop: number, span: number): number {
  *
  * Le défaut qu'elle corrige : l'animation suivait le défilement dans les deux
  * sens, si bien que remonter pour regarder une photo de plus près la renvoyait
- * à sa position de départ. Le mur se dérobait à qui voulait l'examiner —
+ * à sa position de départ. Le mur se dérobait à qui voulait l'examiner -
  * exactement ce qu'une galerie ne doit pas faire.
  *
  * Une fois le mur rangé, il le reste. L'entrée est une entrée : elle a lieu
@@ -177,7 +177,7 @@ export interface ParallaxAmplitudes {
  *
  * Il ne sert pas à faire joli mais à combler l'écran, et sa valeur vient de la
  * mesure. Sur un écran de 1440 × 820, la grille de départ recouvre 39 % de la
- * surface à l'échelle 1, 62 % à 1,35, et 83 % à 1,8 — plafond pratique, le mur
+ * surface à l'échelle 1, 62 % à 1,35, et 83 % à 1,8 - plafond pratique, le mur
  * rangé n'en couvrant lui-même que 82 % à cause des intervalles entre photos.
  *
  * La raison en est arithmétique : dix-sept photos représentent une surface
@@ -186,7 +186,7 @@ export interface ParallaxAmplitudes {
  * l'agrandissement peut fermer l'écart.
  *
  * 1,9 est le compromis retenu : l'écran est plein, et une colonne s'affiche à
- * environ 760 px pour des fichiers larges de 1280 — encore réduits, donc nets.
+ * environ 760 px pour des fichiers larges de 1280 - encore réduits, donc nets.
  */
 const INITIAL_ZOOM = 2.4;
 
@@ -194,7 +194,7 @@ const INITIAL_ZOOM = 2.4;
  * Retouche verticale du calage de la grille de départ, en pixels.
  *
  * La grille de départ est centrée sur l'écran par le calcul, mais ses colonnes
- * n'ont pas toutes la même longueur — c'est le propre d'un mur — et son bord
+ * n'ont pas toutes la même longueur - c'est le propre d'un mur - et son bord
  * inférieur est donc irrégulier. Agrandi deux fois et demie, ce décrochement
  * se compte en centaines de pixels et découvre le coin inférieur gauche. La
  * descendre un peu le repousse hors du cadre.
@@ -209,7 +209,7 @@ const START_NUDGE = 120;
  * Le calcul n'est pas anodin : la remontée et l'agrandissement s'opèrent
  * autour du centre du MUR, pas de celui de la grille de départ. Placer
  * naïvement celle-ci au milieu de l'écran la projetait très au-dessus du
- * regard — la couverture tombait à 38 %. Il faut donc remonter la
+ * regard - la couverture tombait à 38 %. Il faut donc remonter la
  * transformation pour savoir où la poser.
  */
 export function startGridCentre(
@@ -226,7 +226,7 @@ export function startGridCentre(
  * Fraction de la hauteur d'écran dont les colonnes sont décalées au départ.
  *
  * Ce que la référence obtenait en faisant glisser ses rangées horizontalement,
- * on l'obtient ici en décalant les colonnes verticalement — c'est leur axe. Un
+ * on l'obtient ici en décalant les colonnes verticalement - c'est leur axe. Un
  * mur composé de colonnes se déchiffre de haut en bas ; les décaler dans ce
  * sens brouille l'alignement sans jamais sortir une photo du cadre, ce qu'un
  * décalage horizontal ferait aussitôt.
@@ -291,7 +291,7 @@ export function amplitudesFor(
 /**
  * Part de la course pendant laquelle le mur se redresse.
  *
- * Le redressement — basculement, opacité, remontée — s'achève ici, tandis que
+ * Le redressement - basculement, opacité, remontée - s'achève ici, tandis que
  * le décalage des colonnes se résorbe jusqu'au bout. C'est ce décalage entre
  * les deux temps qui donne son « ensuite » à l'animation : le mur se pose
  * d'abord, ses colonnes se rangent après.
@@ -308,7 +308,7 @@ const SETTLE_END = 0.45;
  * Pourquoi une seule de plus, et non deux ou trois : la surface des photos
  * étant fixe, élargir la grille la raccourcit d'autant. Mesuré sur la page,
  * quatre colonnes couvrent 71 % de l'écran de départ, cinq n'en couvrent plus
- * que 51 % — la grille devient une bande trop courte pour remplir la hauteur.
+ * que 51 % - la grille devient une bande trop courte pour remplir la hauteur.
  */
 export function wideColumnCount(finalColumns: number): number {
   return finalColumns + 1;
@@ -330,8 +330,8 @@ export interface GridLayout {
 /**
  * Calcule où tombe chaque photo dans une grille de N colonnes.
  *
- * Même règle que `distributeColumns` — chaque photo rejoint la colonne la plus
- * courte — mais en rendant les positions plutôt que les paquets. C'est ce qui
+ * Même règle que `distributeColumns` - chaque photo rejoint la colonne la plus
+ * courte - mais en rendant les positions plutôt que les paquets. C'est ce qui
  * permet de connaître la grille de départ sans jamais la construire dans le
  * document : le document ne contient que le mur définitif, et les photos y
  * sont simplement déplacées.
@@ -413,7 +413,7 @@ export function parallaxTargets(
 /**
  * Décalage d'une colonne, selon son rang.
  *
- * Les colonnes alternent, une vers le haut, la suivante vers le bas — comme
+ * Les colonnes alternent, une vers le haut, la suivante vers le bas - comme
  * alternaient les rangées de la référence. Le motif se répète sur trois rangs
  * plutôt que deux : avec une simple alternance, la première et la troisième
  * colonne d'un mur à trois colonnes partiraient ensemble, et l'on ne verrait
@@ -489,7 +489,7 @@ export interface Proportioned {
  * Répartit les photos en colonnes, à la manière d'un mur Pinterest.
  *
  * Chaque photo rejoint la colonne la plus courte à cet instant, en comptant sa
- * hauteur à l'échelle d'une colonne de largeur 1 — sa hauteur réelle est
+ * hauteur à l'échelle d'une colonne de largeur 1 - sa hauteur réelle est
  * inconnue ici, mais son rapport suffit puisque toutes les colonnes ont la
  * même largeur.
  *
@@ -498,7 +498,7 @@ export interface Proportioned {
  * trahit une mauvaise répartition : une colonne s'y arrête bien avant les
  * autres.
  *
- * L'ordre de lecture n'est pas préservé — c'est le propre de ce type de mur, et
+ * L'ordre de lecture n'est pas préservé - c'est le propre de ce type de mur, et
  * sans conséquence pour des photos.
  */
 export function distributeColumns<T extends Proportioned>(

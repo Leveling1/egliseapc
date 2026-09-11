@@ -192,7 +192,7 @@
 /* ---------- Bandeau catégorie / auteur ----------
    Placé sous le titre plutôt que dans le panneau de paramètres : ce sont des
    informations qu'on renseigne en écrivant, pas des réglages. Sans bordure ni
-   fond, pour rester dans la continuité de la page de rédaction — la
+   fond, pour rester dans la continuité de la page de rédaction - la
    soulignure au survol suffit à signaler qu'ils sont modifiables. */
 .ae-meta {
   display: flex;

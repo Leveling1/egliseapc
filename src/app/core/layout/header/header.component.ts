@@ -5,9 +5,9 @@ import { PublicContentService } from '../../content/public-content.service';
 
 /**
  * Reflects three distinct nav stylings found across the source mockups:
- * - 'home'    : Accueil — Helvetica, white text @ .85 opacity, yellow underline
- * - 'overlay' : dark/photo hero pages (À propos, Nos Cultes, RDA) — Poppins, white text @ .75 opacity, yellow underline
- * - 'light'   : white-hero pages (Ressources, Blog) — Poppins, dark text @ .65 opacity, blue underline
+ * - 'home'    : Accueil - Helvetica, white text @ .85 opacity, yellow underline
+ * - 'overlay' : dark/photo hero pages (À propos, Nos Cultes, RDA) - Poppins, white text @ .75 opacity, yellow underline
+ * - 'light'   : white-hero pages (Ressources, Blog) - Poppins, dark text @ .65 opacity, blue underline
  */
 export type HeaderVariant = 'home' | 'overlay' | 'light';
 

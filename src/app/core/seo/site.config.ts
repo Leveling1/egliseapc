@@ -3,7 +3,7 @@
  *
  * Ces valeurs se retrouvent dans les balises de partage, les données
  * structurées et les URL canoniques. Les rassembler ici évite qu'une adresse
- * ou un nom diverge d'une page à l'autre — ce qui brouillerait justement le
+ * ou un nom diverge d'une page à l'autre - ce qui brouillerait justement le
  * signal envoyé aux moteurs de recherche.
  */
 
