@@ -68,10 +68,9 @@
   align-items: start;
 }
 
+/* Fond, rayon et ombre viennent de la primitive `.cp-card` de styles.css ;
+   seul le retrait est propre au tableau de bord. */
 .cp-card {
-  background: var(--cp-surface);
-  border-radius: var(--cp-radius-card);
-  box-shadow: var(--cp-shadow);
   padding: 24px;
 }
 
@@ -148,14 +147,27 @@
   gap: 2px;
 }
 
+/* Un fil chronologique : un filet continu et un point d'accent par entrée,
+   plutôt qu'une bordure colorée épaisse qui ferait lire chaque ligne comme
+   une carte à onglet. */
 .cp-activity__item {
+  position: relative;
   display: flex;
   gap: 12px;
-  padding: 10px 0 10px 12px;
-  border-left: 2px solid var(--cp-accent-border);
-  /* Pas d'arrondi : une bordure sur un seul côté et des coins arrondis ne
-     vont pas ensemble visuellement. */
-  border-radius: 0;
+  padding: 10px 0 10px 18px;
+  border-left: 1px solid var(--cp-line);
+}
+
+.cp-activity__item::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 17px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  box-shadow: 0 0 0 2px var(--cp-surface);
 }
 
 .cp-activity__action {

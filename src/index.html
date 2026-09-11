@@ -20,6 +20,31 @@
          tôt évite d'attendre la négociation TLS au moment du premier appel. -->
     <link rel="preconnect" href="https://frcatxbhpwtkqroumqrp.supabase.co" />
     <link rel="dns-prefetch" href="https://frcatxbhpwtkqroumqrp.supabase.co" />
+
+    <!-- Polices. Demandées ici plutôt que par un @import dans styles.css :
+         l'@import n'est découvert qu'une fois la feuille principale arrivée,
+         ce qui enchaîne trois allers-retours avant la première lettre. Le
+         <link> part avec le HTML, et les deux preconnect ouvrent les
+         connexions pendant qu'il se télécharge.
+
+         Chargée sans bloquer le rendu (preload puis promotion en feuille) :
+         sur une connexion lente, le texte paraît immédiatement dans la
+         police de repli et se rhabille à l'arrivée (display=swap). Seules
+         les graisses réellement employées sont demandées. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Dancing+Script:wght@600&display=swap"
+      onload="this.onload = null; this.rel = 'stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Dancing+Script:wght@600&display=swap"
+      />
+    </noscript>
     <!-- L'accueil animé ne se joue qu'une fois par visite. Ce script pose la
          marque AVANT le premier rendu : posée plus tard par l'application,
          l'animation aurait déjà commencé et sauterait à sa fin. Enveloppé

@@ -1,10 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Dancing+Script:wght@600;700&display=swap');
+/* Les polices sont demandées depuis index.html, sans bloquer le rendu :
+   voir le commentaire qui y accompagne le <link>. */
 @import 'tailwindcss';
-/* Thème « bubble » de Quill, utilisé par l'éditeur d'article du cpannel.
-   Import global assumé : Quill génère sa barre flottante dynamiquement, donc
-   après l'encapsulation des styles de composant, qui ne l'atteindraient pas. */
-@import 'quill/dist/quill.bubble.css';
+/* Le thème de Quill (éditeur d'article) et la feuille de Leaflet (carte)
+   sont importés par les composants qui s'en servent, en encapsulation
+   « None » : le site public ne les télécharge que sur les pages qui les
+   affichent. */
 
 @theme {
   --color-apc-blue-dark: #1c1c8c;
@@ -81,6 +82,29 @@ a {
   font-family: var(--font-body);
   color: var(--cp-ink);
   background: var(--cp-canvas);
+}
+
+/* Ce que le navigateur dessine tout seul - anneau de focus, sélection,
+   cases à cocher, curseur de texte - prend la couleur d'accent : ce sont les
+   surfaces qui trahissent le plus vite une interface assemblée sans soin. */
+.cpannel {
+  accent-color: var(--cp-accent);
+  caret-color: var(--cp-accent);
+}
+
+.cpannel ::selection {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+}
+
+.cpannel :focus-visible {
+  outline: 2px solid var(--cp-accent);
+  outline-offset: 2px;
+}
+
+/* Les champs ont déjà leur anneau au focus, dessiné en ombre. */
+.cpannel .cp-input:focus-visible {
+  outline: none;
 }
 
 /* Primitives partagées par toutes les pages du cpannel.
@@ -244,10 +268,131 @@ a {
   min-height: 220px;
 }
 
+/* ---------- Zone de dépôt ----------
+   Grande zone en pointillés, icône centrée, invitation à déposer ou
+   parcourir, et mentions discrètes en dessous. Partagée par les trois champs
+   d'envoi du cpannel pour qu'un administrateur retrouve le même geste
+   partout - et pour qu'un réglage ne se fasse qu'une fois. */
+.cpannel .cp-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 30px 20px;
+  border: 1.5px dashed var(--cp-accent-border);
+  border-radius: var(--cp-radius-control);
+  background: var(--cp-accent-softer);
+  text-align: center;
+  transition: border-color 0.18s, background 0.18s, opacity 0.18s;
+}
+
+/* Une étiquette qui englobe son champ est cliquable de bout en bout. */
+.cpannel label.cp-drop {
+  cursor: pointer;
+}
+
+.cpannel .cp-drop:hover,
+.cpannel .cp-drop--over {
+  border-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+}
+
+.cpannel .cp-drop--busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cpannel .cp-drop__input {
+  display: none;
+}
+
+.cpannel .cp-drop__icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  fill: none;
+  stroke: var(--cp-accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
+
+.cpannel .cp-drop__title {
+  margin: 0;
+  font: 500 14px var(--font-heading);
+  color: var(--cp-ink);
+}
+
+/* « parcourez » est tantôt un simple mot dans une étiquette cliquable,
+   tantôt un vrai bouton : dans les deux cas il se présente comme un lien. */
+.cpannel .cp-drop__browse {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--cp-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+
+.cpannel .cp-drop__browse:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.cpannel .cp-drop__meta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--cp-ink-muted);
+}
+
+.cpannel .cp-drop__reco {
+  margin: 6px 0 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cp-surface);
+  font-size: 11.5px;
+  color: var(--cp-ink-soft);
+}
+
+/* Aperçu d'une image déjà en place, avec ses actions dessous. */
+.cpannel .cp-img {
+  border: 1px solid var(--cp-line);
+  border-radius: var(--cp-radius-control);
+  overflow: hidden;
+  background: var(--cp-surface-muted);
+}
+
+.cpannel .cp-img__preview {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+}
+
+.cpannel .cp-img__actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--cp-surface);
+  border-top: 1px solid var(--cp-line);
+}
+
 /* ---------- Tableaux ---------- */
 .cpannel .cp-tablewrap {
   padding: 8px;
   overflow-x: auto;
+  transition: opacity 0.18s;
+}
+
+/* Une page suivante ou une recherche en cours : le tableau s'estompe sans
+   disparaître, pour que la mise en page ne saute pas. */
+.cpannel .cp-tablewrap--busy {
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .cpannel .cp-table {

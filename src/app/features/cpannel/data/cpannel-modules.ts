@@ -53,6 +53,16 @@ export interface FieldConfig {
   readonly linkOwner?: 'article' | 'extension' | 'rda';
 }
 
+export interface ColumnConfig {
+  readonly key: string;
+  readonly label: string;
+  /**
+   * Une colonne « image » affiche une vignette plutôt que l'adresse du
+   * fichier : dans une galerie, c'est la photo qu'on reconnaît, pas son URL.
+   */
+  readonly kind?: 'image';
+}
+
 export interface ModuleConfig {
   /**
    * Sous-pages réunies sous une même entrée de menu.
@@ -89,7 +99,7 @@ export interface ModuleConfig {
   /** Colonne de tri par défaut, la plus récente en tête. */
   readonly orderBy: { readonly column: string; readonly ascending: boolean };
   /** Colonnes affichées dans le tableau de la liste. */
-  readonly columns: readonly { readonly key: string; readonly label: string }[];
+  readonly columns: readonly ColumnConfig[];
   readonly fields: readonly FieldConfig[];
   /**
    * Clause SELECT sur mesure, quand la liste doit résoudre une relation -
@@ -470,7 +480,7 @@ const GALLERY: ModuleConfig = {
   icon: 'image',
   orderBy: { column: 'position', ascending: true },
   columns: [
-    { key: 'url', label: 'Image' },
+    { key: 'url', label: 'Photo', kind: 'image' },
     { key: 'caption', label: 'Légende' },
     { key: 'position', label: 'Ordre' },
   ],

@@ -7,7 +7,7 @@
 .apc-theme__background {
   position: absolute;
   inset: 0;
-  background-image: url('/images/home/monte-ici.png');
+  background-image: url('/images/home/monte-ici.webp');
   background-size: cover;
   background-position: center;
 }

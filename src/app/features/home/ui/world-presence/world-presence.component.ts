@@ -41,8 +41,36 @@ export class WorldPresenceComponent {
     const destroyRef = inject(DestroyRef);
 
     afterNextRender(() => {
-      void this.initMap(destroyRef);
+      this.whenNear(destroyRef, () => void this.initMap(destroyRef));
     });
+  }
+
+  /**
+   * N'appelle `ready` qu'à l'approche de la section.
+   *
+   * La carte est loin sous le pli - le hero seul occupe trois écrans. Charger
+   * Leaflet et ses tuiles dès l'arrivée faisait partir près d'un mégaoctet
+   * en concurrence avec les photos du hero, sur des connexions où chaque
+   * kilooctet compte. On attend donc que le lecteur soit à un écran de là.
+   */
+  private whenNear(destroyRef: DestroyRef, ready: () => void): void {
+    const host = this.mapContainer().nativeElement;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      ready();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        ready();
+      },
+      { rootMargin: '100% 0px' },
+    );
+    observer.observe(host);
+    destroyRef.onDestroy(() => observer.disconnect());
   }
 
   private async initMap(destroyRef: DestroyRef): Promise<void> {

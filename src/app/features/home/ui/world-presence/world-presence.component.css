@@ -1,3 +1,7 @@
+/* Feuille de Leaflet importée par le seul composant qui affiche une carte :
+   les autres pages du site ne la téléchargent pas. */
+@import 'leaflet/dist/leaflet.css';
+
 .apc-world {
   padding: 100px 0;
   background: var(--color-apc-gray-light);

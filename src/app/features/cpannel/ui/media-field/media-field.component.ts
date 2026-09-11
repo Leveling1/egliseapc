@@ -36,7 +36,6 @@ export type { MediaUpload };
 export class CpannelMediaFieldComponent {
   /** Adresse actuelle, ou chaîne vide. */
   readonly value = input<string>('');
-  readonly label = input<string>('Photo');
   readonly recommended = input<string | null>(null);
   /** Module concerné : la fonction Edge vérifie le droit d'écriture dessus. */
   readonly module = input.required<string>();
@@ -48,6 +47,8 @@ export class CpannelMediaFieldComponent {
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('file');
 
   protected readonly uploading = signal(false);
+  /** Vrai pendant qu'un glisser survole la zone : elle s'éclaire en réponse. */
+  protected readonly dragging = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly hasImage = computed(() => this.value().trim() !== '');
 
@@ -62,12 +63,18 @@ export class CpannelMediaFieldComponent {
 
   protected onDrop(event: DragEvent): void {
     event.preventDefault();
+    this.dragging.set(false);
     const file = event.dataTransfer?.files?.[0];
     if (file) void this.send(file);
   }
 
   protected allowDrop(event: DragEvent): void {
     event.preventDefault();
+    if (!this.uploading()) this.dragging.set(true);
+  }
+
+  protected onDragLeave(): void {
+    this.dragging.set(false);
   }
 
   protected clear(): void {

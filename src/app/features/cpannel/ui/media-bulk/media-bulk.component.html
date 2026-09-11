@@ -1,37 +1,81 @@
-<div class="cp-bulk">
+<section class="cp-card cp-bulk" aria-labelledby="cp-bulk-title">
   <header class="cp-bulk__head">
-    <h3 class="cp-bulk__title">Ajouter des photos</h3>
-    <button type="button" class="cp-bulk__close" (click)="close()" [disabled]="running()">
-      Fermer
+    <div>
+      <h3 id="cp-bulk-title" class="cp-bulk__title">Ajouter des photos</h3>
+      <p class="cp-bulk__sub">Sélectionnez, vérifiez, puis enregistrez le lot en une fois.</p>
+    </div>
+    <button
+      type="button"
+      class="cp-modal__close"
+      aria-label="Fermer"
+      (click)="close()"
+      [disabled]="running()"
+    >
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
     </button>
   </header>
 
   <!-- 1. Sélection. Rien ne part d'ici : on accumule seulement. -->
   <div
-    class="cp-bulk__drop"
-    [class.cp-bulk__drop--busy]="running()"
+    class="cp-drop"
+    [class.cp-drop--over]="dragging()"
+    [class.cp-drop--busy]="running()"
     (drop)="onDrop($event)"
     (dragover)="allowDrop($event)"
+    (dragleave)="onDragLeave()"
   >
-    <p class="cp-bulk__hint">
-      Glissez vos photos ici, ou sélectionnez-en autant que vous voulez - maintenez
-      Ctrl (ou Cmd) dans la boîte de dialogue pour en prendre plusieurs.
+    <svg class="cp-drop__icon" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="6" y="9" width="36" height="30" rx="4" />
+      <circle cx="17" cy="20" r="3.5" />
+      <path d="M9 34l10-10 8 8 6-5 6 6" />
+    </svg>
+
+    <p class="cp-drop__title">
+      Déposez vos photos ici, ou
+      <button type="button" class="cp-drop__browse" (click)="pick()" [disabled]="running()">
+        {{ total() ? "ajoutez-en d'autres" : 'parcourez' }}
+      </button>
     </p>
-    <button type="button" class="cp-bulk__button cp-bulk__button--ghost" (click)="pick()" [disabled]="running()">
-      {{ total() ? 'Ajouter d\'autres photos' : 'Sélectionner des photos' }}
-    </button>
+    <p class="cp-drop__meta">
+      JPEG ou PNG, 8 Mo maximum par photo. Dans la boîte de dialogue, maintenez Ctrl (ou
+      Cmd) pour en prendre plusieurs.
+    </p>
   </div>
 
   @if (total() > 0) {
     <!-- 2. Aperçu de la sélection. -->
-    <ul class="cp-bulk__grid">
+    <ul class="cp-bulk__grid" aria-label="Photos sélectionnées">
       @for (item of items(); track $index) {
         <li class="cp-bulk__thumb cp-bulk__thumb--{{ item.state }}">
-          @if (item.preview) {
-            <img [src]="item.preview" alt="" class="cp-bulk__img" />
-          } @else {
-            <div class="cp-bulk__img cp-bulk__img--none"></div>
-          }
+          <div class="cp-bulk__frame">
+            @if (item.preview) {
+              <img [src]="item.preview" alt="" class="cp-bulk__img" />
+            } @else {
+              <div class="cp-bulk__img cp-bulk__img--none"></div>
+            }
+
+            @if (item.state === 'selected' && !running()) {
+              <button
+                type="button"
+                class="cp-bulk__remove"
+                (click)="remove($index)"
+                [attr.aria-label]="'Retirer ' + item.file.name"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+              </button>
+            }
+
+            @if (item.state === 'done') {
+              <span class="cp-bulk__mark cp-bulk__mark--done" aria-hidden="true">
+                <svg viewBox="0 0 20 20"><path d="M4 10.5l4 4 8-9" /></svg>
+              </span>
+            } @else if (item.state === 'failed') {
+              <span class="cp-bulk__mark cp-bulk__mark--failed" aria-hidden="true">
+                <svg viewBox="0 0 20 20"><path d="M10 4v7M10 14.5v.5" /></svg>
+              </span>
+            }
+          </div>
+
           <span class="cp-bulk__name" [title]="item.file.name">{{ item.file.name }}</span>
           <span class="cp-bulk__state">
             @switch (item.state) {
@@ -41,9 +85,6 @@
               @case ('failed') { {{ item.error }} }
             }
           </span>
-          @if (item.state === 'selected' && !running()) {
-            <button type="button" class="cp-bulk__remove" (click)="remove($index)" aria-label="Retirer">×</button>
-          }
         </li>
       }
     </ul>
@@ -51,44 +92,56 @@
     <!-- 3. Informations du lot, communes à toutes les photos sélectionnées. -->
     @if (pending() > 0) {
       <div class="cp-bulk__form">
-        <label class="cp-bulk__field">
-          <span class="cp-bulk__label">Légende du lot</span>
+        <div class="cp-field">
+          <label class="cp-field__label" for="cp-bulk-caption">Légende du lot</label>
           <input
+            id="cp-bulk-caption"
             type="text"
-            class="cp-bulk__input-text"
+            class="cp-input"
             [ngModel]="caption()"
             (ngModelChange)="caption.set($event)"
             [ngModelOptions]="{ standalone: true }"
             [disabled]="running()"
             placeholder="Ex. : Rassemblement des Aigles 2026"
           />
-          <span class="cp-bulk__help">Affichée au survol, sur chacune des {{ pending() }} photo(s).</span>
-        </label>
+          <p class="cp-field__help">
+            Affichée au survol, sur chacune des {{ pending() }} photo(s).
+          </p>
+        </div>
 
-        <label class="cp-bulk__field">
-          <span class="cp-bulk__label">Description (lecteurs d'écran)</span>
+        <div class="cp-field">
+          <label class="cp-field__label" for="cp-bulk-alt">Description (lecteurs d'écran)</label>
           <input
+            id="cp-bulk-alt"
             type="text"
-            class="cp-bulk__input-text"
+            class="cp-input"
             [ngModel]="alt()"
             (ngModelChange)="alt.set($event)"
             [ngModelOptions]="{ standalone: true }"
             [disabled]="running()"
             placeholder="Laisser vide si les photos sont décoratives"
           />
-        </label>
-
-        <button type="button" class="cp-bulk__button" (click)="save()" [disabled]="!canSave()">
-          {{ running() ? 'Envoi en cours…' : 'Enregistrer ' + pending() + ' photo(s)' }}
-        </button>
+        </div>
       </div>
     }
 
-    @if (running() || isComplete()) {
-      <p class="cp-bulk__count">
-        {{ done() }} / {{ total() }} enregistrée(s)@if (failed()) { - {{ failed() }} en échec }
+    <footer class="cp-bulk__footer">
+      <p class="cp-bulk__count" aria-live="polite">
+        @if (running() || isComplete()) {
+          {{ done() }} / {{ total() }} enregistrée(s)@if (failed()) { – {{ failed() }} en échec }
+        } @else {
+          {{ pending() }} photo(s) prête(s)
+        }
       </p>
-    }
+
+      @if (pending() > 0) {
+        <button type="button" class="cp-btn cp-btn--primary" (click)="save()" [disabled]="!canSave()">
+          {{ running() ? 'Envoi en cours…' : 'Enregistrer ' + pending() + ' photo(s)' }}
+        </button>
+      } @else if (isComplete()) {
+        <button type="button" class="cp-btn cp-btn--ghost" (click)="close()">Terminer</button>
+      }
+    </footer>
   }
 
   <input
@@ -96,7 +149,9 @@
     type="file"
     accept="image/jpeg,image/png"
     multiple
-    class="cp-bulk__input"
+    class="cp-sr"
+    tabindex="-1"
+    aria-hidden="true"
     (change)="onSelect($event)"
   />
-</div>
+</section>

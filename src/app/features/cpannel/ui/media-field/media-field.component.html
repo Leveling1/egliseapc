@@ -1,44 +1,58 @@
-<div class="cp-media">
-  <span class="cp-media__label">{{ label() }}</span>
+@if (hasImage()) {
+  <div class="cp-img" [class.cp-media--busy]="uploading()">
+    <img [src]="value()" alt="" class="cp-img__preview" />
 
-  <div
-    class="cp-media__drop"
-    [class.cp-media__drop--busy]="uploading()"
-    (drop)="onDrop($event)"
-    (dragover)="allowDrop($event)"
-  >
-    @if (hasImage()) {
-      <img [src]="value()" alt="" class="cp-media__preview" />
-    } @else {
-      <p class="cp-media__hint">Glissez une image ici, ou choisissez un fichier.</p>
-    }
-
-    <div class="cp-media__actions">
-      <button type="button" class="cp-media__button" (click)="pick()" [disabled]="uploading()">
-        {{ uploading() ? 'Envoi…' : hasImage() ? 'Remplacer' : 'Choisir une image' }}
+    <div class="cp-img__actions">
+      <button type="button" class="cp-btn cp-btn--ghost" (click)="pick()" [disabled]="uploading()">
+        {{ uploading() ? 'Envoi…' : 'Remplacer' }}
       </button>
-
-      @if (hasImage() && !uploading()) {
-        <button type="button" class="cp-media__button cp-media__button--ghost" (click)="clear()">
-          Retirer
-        </button>
-      }
+      <button type="button" class="cp-btn cp-btn--danger" (click)="clear()" [disabled]="uploading()">
+        Retirer
+      </button>
     </div>
   </div>
+} @else {
+  <div
+    class="cp-drop"
+    [class.cp-drop--over]="dragging()"
+    [class.cp-drop--busy]="uploading()"
+    (drop)="onDrop($event)"
+    (dragover)="allowDrop($event)"
+    (dragleave)="onDragLeave()"
+  >
+    <svg class="cp-drop__icon" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="6" y="9" width="36" height="30" rx="4" />
+      <circle cx="17" cy="20" r="3.5" />
+      <path d="M9 34l10-10 8 8 6-5 6 6" />
+    </svg>
 
-  @if (recommended()) {
-    <p class="cp-media__note">Recommandé : {{ recommended() }}</p>
-  }
+    @if (uploading()) {
+      <p class="cp-drop__title">Envoi en cours…</p>
+    } @else {
+      <p class="cp-drop__title">
+        Déposez votre photo ici, ou
+        <button type="button" class="cp-drop__browse" (click)="pick()">parcourez</button>
+      </p>
+    }
 
-  @if (error()) {
-    <p class="cp-media__error">{{ error() }}</p>
-  }
+    <p class="cp-drop__meta">JPEG ou PNG, 8 Mo maximum</p>
 
-  <input
-    #file
-    type="file"
-    accept="image/jpeg,image/png"
-    class="cp-media__input"
-    (change)="onSelect($event)"
-  />
-</div>
+    @if (recommended()) {
+      <p class="cp-drop__reco">Recommandé : {{ recommended() }}</p>
+    }
+  </div>
+}
+
+@if (error()) {
+  <p class="cp-media__error" role="alert">{{ error() }}</p>
+}
+
+<input
+  #file
+  type="file"
+  accept="image/jpeg,image/png"
+  class="cp-sr"
+  tabindex="-1"
+  aria-hidden="true"
+  (change)="onSelect($event)"
+/>

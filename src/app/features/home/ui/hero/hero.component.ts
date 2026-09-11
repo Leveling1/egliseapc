@@ -29,18 +29,18 @@ import { WELCOME_STROKES, WELCOME_TRANSFORM, WELCOME_VIEWBOX } from './welcome-s
 })
 export class HeroComponent {
   protected readonly carouselImages: readonly CarouselImage[] = [
-    { src: '/images/home/hero_1.jpg', alt: '' },
-    { src: '/images/home/hero_2.jpg', alt: '' },
-    { src: '/images/home/hero_3.jpg', alt: '' },
-    { src: '/images/home/hero_4.jpg', alt: '' },
-    { src: '/images/home/hero_5.jpg', alt: '' },
-    { src: '/images/home/hero_6.jpg', alt: '' },
-    { src: '/images/home/hero_7.jpg', alt: '' },
-    { src: '/images/home/hero_8.jpg', alt: '' },
-    { src: '/images/home/hero_9.jpg', alt: '' },
-    { src: '/images/home/hero_10.jpg', alt: '' },
-    { src: '/images/home/hero_11.jpg', alt: '' },
-    { src: '/images/home/hero_12.jpg', alt: '' },
+    { src: '/images/home/hero_1.webp', alt: '' },
+    { src: '/images/home/hero_2.webp', alt: '' },
+    { src: '/images/home/hero_3.webp', alt: '' },
+    { src: '/images/home/hero_4.webp', alt: '' },
+    { src: '/images/home/hero_5.webp', alt: '' },
+    { src: '/images/home/hero_6.webp', alt: '' },
+    { src: '/images/home/hero_7.webp', alt: '' },
+    { src: '/images/home/hero_8.webp', alt: '' },
+    { src: '/images/home/hero_9.webp', alt: '' },
+    { src: '/images/home/hero_10.webp', alt: '' },
+    { src: '/images/home/hero_11.webp', alt: '' },
+    { src: '/images/home/hero_12.webp', alt: '' },
   ];
 
   /**

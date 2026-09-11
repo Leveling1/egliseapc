@@ -84,6 +84,8 @@ export class CpannelMediaBulkComponent {
 
   protected readonly items = signal<readonly BulkItem[]>([]);
   protected readonly running = signal(false);
+  /** Vrai pendant qu'un glisser survole la zone : elle s'éclaire en réponse. */
+  protected readonly dragging = signal(false);
 
   /** Informations communes à tout le lot. */
   protected readonly caption = signal('');
@@ -116,12 +118,18 @@ export class CpannelMediaBulkComponent {
 
   protected onDrop(event: DragEvent): void {
     event.preventDefault();
+    this.dragging.set(false);
     const files = event.dataTransfer?.files;
     if (files?.length) this.add(Array.from(files));
   }
 
   protected allowDrop(event: DragEvent): void {
     event.preventDefault();
+    if (!this.running()) this.dragging.set(true);
+  }
+
+  protected onDragLeave(): void {
+    this.dragging.set(false);
   }
 
   protected remove(index: number): void {

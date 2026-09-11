@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ViewEncapsulation,
   ElementRef,
   NgZone,
   OnDestroy,
@@ -35,6 +36,10 @@ import type Quill from 'quill';
     </div>
   `,
   styleUrl: './article-editor.component.css',
+  // Sans encapsulation : Quill crée sa barre flottante hors du gabarit
+  // Angular, l'attribut de portée ne l'atteindrait pas. Les règles sont
+  // préfixées `.ae-root` pour ne pas déborder.
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleEditorComponent implements OnDestroy {

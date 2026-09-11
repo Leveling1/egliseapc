@@ -19,7 +19,13 @@
     <header class="cp-res__head">
       <div>
         <h2 class="cp-res__title">{{ cfg.label }}</h2>
-        <p class="cp-res__count">{{ rows().length }} enregistrement(s)</p>
+        <p class="cp-res__count">
+          @if (totalRows() > 1) {
+            {{ totalRows() }} enregistrements
+          } @else {
+            {{ totalRows() }} enregistrement
+          }
+        </p>
       </div>
 
       <div class="cp-res__actions">
@@ -72,8 +78,11 @@
       <p class="cp-alert--error" role="alert">{{ error() }}</p>
     }
 
-    @if (loading()) {
-      <p class="cp-muted">Chargement…</p>
+    <!-- Le tableau reste affiché pendant qu'une autre page ou une recherche
+         se charge, simplement estompé : le remplacer par « Chargement… » à
+         chaque clic faisait sauter toute la page. -->
+    @if (loading() && filteredRows().length === 0) {
+      <p class="cp-muted" role="status">Chargement…</p>
     } @else if (filteredRows().length === 0) {
       <div class="cp-card cp-res__empty">
         @if (search()) {
@@ -108,7 +117,7 @@
         }
       </div>
     } @else {
-      <div class="cp-card cp-tablewrap">
+      <div class="cp-card cp-tablewrap" [class.cp-tablewrap--busy]="loading()" [attr.aria-busy]="loading()">
         <table class="cp-table">
           <thead>
             <tr>
@@ -123,7 +132,13 @@
             @for (row of filteredRows(); track row.id) {
               <tr [class.cp-table__row--hidden]="!row.is_visible">
                 @for (column of cfg.columns; track column.key) {
-                  <td>{{ displayCell(row, column.key) }}</td>
+                  @if (column.kind === 'image' && row[column.key]) {
+                    <td class="cp-table__cell--image">
+                      <img [src]="displayCell(row, column.key)" alt="" class="cp-table__thumb" loading="lazy" />
+                    </td>
+                  } @else {
+                    <td>{{ displayCell(row, column.key) }}</td>
+                  }
                 }
 
                 <td>
@@ -347,7 +362,6 @@
                 @case ('media') {
                   <app-cpannel-media-field
                     [value]="fieldValue(field.key)"
-                    [label]="field.label"
                     [recommended]="field.recommended ?? null"
                     [module]="cfg.module"
                     (uploaded)="onMediaUploaded(field.key, $event)"

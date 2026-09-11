@@ -1,4 +1,11 @@
-:host {
+/* Thème « bubble » de Quill, importé ici et non dans styles.css : seul
+   l'éditeur d'article en a besoin, le site public n'a pas à le charger. Le
+   composant renonce à l'encapsulation (voir le .ts) pour que ces règles
+   atteignent la barre flottante que Quill insère lui-même dans le DOM ;
+   elles restent cantonnées par le préfixe `.ae-root`. */
+@import 'quill/dist/quill.bubble.css';
+
+app-article-editor {
   display: block;
 }
 
@@ -12,7 +19,7 @@
    Colonne de lecture confortable et typographie généreuse : on écrit dans
    quelque chose qui ressemble déjà à l'article publié, pas dans un
    formulaire. */
-:host ::ng-deep .ql-container {
+.ae-root .ql-container {
   border: none;
   font-family: var(--font-body);
   font-size: 19px;
@@ -20,34 +27,34 @@
   color: var(--cp-ink);
 }
 
-:host ::ng-deep .ql-editor {
+.ae-root .ql-editor {
   padding: 0;
   min-height: 320px;
 }
 
-:host ::ng-deep .ql-editor.ql-blank::before {
+.ae-root .ql-editor.ql-blank::before {
   left: 0;
   right: 0;
   font-style: normal;
   color: var(--cp-ink-muted);
 }
 
-:host ::ng-deep .ql-editor p {
+.ae-root .ql-editor p {
   margin: 0 0 24px;
 }
 
-:host ::ng-deep .ql-editor h2 {
+.ae-root .ql-editor h2 {
   margin: 40px 0 12px;
   font: 600 27px var(--font-heading);
   letter-spacing: -0.5px;
 }
 
-:host ::ng-deep .ql-editor h3 {
+.ae-root .ql-editor h3 {
   margin: 32px 0 10px;
   font: 600 21px var(--font-heading);
 }
 
-:host ::ng-deep .ql-editor blockquote {
+.ae-root .ql-editor blockquote {
   margin: 28px 0;
   padding-left: 20px;
   border-left: 3px solid var(--cp-accent);
@@ -56,33 +63,33 @@
   font-style: italic;
 }
 
-:host ::ng-deep .ql-editor img {
+.ae-root .ql-editor img {
   display: block;
   max-width: 100%;
   margin: 28px auto;
   border-radius: var(--cp-radius-control);
 }
 
-:host ::ng-deep .ql-editor a {
+.ae-root .ql-editor a {
   color: var(--cp-accent);
   text-decoration: underline;
 }
 
 /* ---------- Barre flottante de sélection ---------- */
-:host ::ng-deep .ql-bubble .ql-tooltip {
+.ae-root .ql-bubble .ql-tooltip {
   background: var(--cp-ink);
   border-radius: var(--cp-radius-control);
 }
 
-:host ::ng-deep .ql-bubble .ql-stroke {
+.ae-root .ql-bubble .ql-stroke {
   stroke: #fff;
 }
 
-:host ::ng-deep .ql-bubble .ql-fill {
+.ae-root .ql-bubble .ql-fill {
   fill: #fff;
 }
 
-:host ::ng-deep .ql-bubble .ql-active .ql-stroke {
+.ae-root .ql-bubble .ql-active .ql-stroke {
   stroke: var(--color-apc-yellow, #ffe600);
 }
 
