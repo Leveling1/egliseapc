@@ -312,6 +312,21 @@ const EXTENSIONS: ModuleConfig = {
     { key: 'leader_name', label: 'Responsable', type: 'text' },
     { key: 'phone', label: 'Téléphone', type: 'text', placeholder: '+243 892 211 899' },
     {
+      key: 'whatsapp',
+      label: 'WhatsApp',
+      type: 'text',
+      placeholder: '+243 892 211 899',
+      help: "Numéro joignable sur WhatsApp, s'il diffère du téléphone.",
+    },
+    { key: 'email', label: 'Adresse e-mail', type: 'text', placeholder: 'contact@egliseapc.org' },
+    {
+      key: 'opening_hours',
+      label: "Horaires d'accueil",
+      type: 'text',
+      placeholder: 'Lun.–Ven. 9h–17h',
+      help: 'Affiché tel quel sur la page Contact.',
+    },
+    {
       key: 'image_path',
       label: 'Photo',
       type: 'image',

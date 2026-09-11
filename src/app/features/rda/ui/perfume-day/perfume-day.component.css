@@ -1,0 +1,81 @@
+/* Même langage que les autres sections sombres du site : fond noir, accent
+   jaune de la charte pour le surtitre. */
+.apc-perfume {
+  background: var(--color-apc-black);
+  padding: 96px 24px;
+}
+
+.apc-perfume__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
+.apc-perfume__text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.apc-perfume__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-perfume__title {
+  margin: 10px 0 20px;
+  font: 700 clamp(28px, 4vw, 44px) / 1.15 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.apc-perfume__when {
+  margin: 0 0 4px;
+  font: 600 16px 'Poppins', sans-serif;
+  color: var(--color-apc-yellow);
+}
+
+.apc-perfume__where {
+  margin: 0 0 18px;
+  font: 400 15px 'Open Sans', sans-serif;
+  color: rgb(255 255 255 / 70%);
+}
+
+.apc-perfume__description {
+  margin: 0;
+  max-width: 560px;
+  font: 400 16px/1.8 'Open Sans', sans-serif;
+  color: rgb(255 255 255 / 85%);
+  white-space: pre-line;
+}
+
+.apc-perfume__poster {
+  flex: 0 0 320px;
+  width: 320px;
+  max-width: 40%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 45%);
+}
+
+/* Empilement explicite : le bloc de texte porte `min-width: 0`, donc
+   `flex-wrap` seul ne le ferait jamais passer sous l'affiche. */
+@media (max-width: 768px) {
+  .apc-perfume {
+    padding: 64px 20px;
+  }
+
+  .apc-perfume__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 32px;
+  }
+
+  .apc-perfume__poster {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}

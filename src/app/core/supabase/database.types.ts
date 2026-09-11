@@ -141,6 +141,10 @@ export interface ExtensionPublic {
   leader_name: string | null;
   phone: string | null;
   image_path: string | null;
+  email: string | null;
+  whatsapp: string | null;
+  /** Texte libre, tel que saisi : « Lun.–Ven. 9h–17h ». */
+  opening_hours: string | null;
 }
 export type Extension = ExtensionPublic & ContentMeta;
 

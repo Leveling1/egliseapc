@@ -91,9 +91,19 @@
           </p>
           }
           @if (canEdit() && !cfg.readOnly) {
-            <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
-              {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
-            </button>
+            <!-- Même règle que l'en-tête : sur un module alimenté par lots, la
+                 porte d'entrée est la sélection multiple, y compris quand la
+                 liste est vide. C'est précisément ce chemin — liste vide, puis
+                 « Nouvelle photo » — qui menait au formulaire unitaire. -->
+            @if (cfg.bulkMedia) {
+              <button type="button" class="cp-btn cp-btn--primary" (click)="toggleBulk()">
+                Ajouter des photos
+              </button>
+            } @else {
+              <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
+                {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
+              </button>
+            }
           }
         }
       </div>

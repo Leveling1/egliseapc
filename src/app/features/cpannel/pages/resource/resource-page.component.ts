@@ -209,6 +209,8 @@ export class CpannelResourcePageComponent {
         width: photo.width,
         height: photo.height,
         media_id: photo.mediaId || null,
+        caption: photo.caption,
+        alt: photo.alt,
         position: this.totalRows() + 1,
       });
       this.totalRows.update((total) => total + 1);

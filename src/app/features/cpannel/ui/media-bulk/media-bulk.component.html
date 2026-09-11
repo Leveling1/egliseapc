@@ -6,6 +6,7 @@
     </button>
   </header>
 
+  <!-- 1. Sélection. Rien ne part d'ici : on accumule seulement. -->
   <div
     class="cp-bulk__drop"
     [class.cp-bulk__drop--busy]="running()"
@@ -13,35 +14,81 @@
     (dragover)="allowDrop($event)"
   >
     <p class="cp-bulk__hint">
-      Glissez plusieurs photos ici, ou sélectionnez-en autant que vous voulez —
-      maintenez Ctrl (ou Cmd) pour en choisir plusieurs. Chaque photo devient un
-      enregistrement.
+      Glissez vos photos ici, ou sélectionnez-en autant que vous voulez — maintenez
+      Ctrl (ou Cmd) dans la boîte de dialogue pour en prendre plusieurs.
     </p>
-    <button type="button" class="cp-bulk__button" (click)="pick()" [disabled]="running()">
-      {{ running() ? 'Envoi en cours…' : 'Sélectionner des photos' }}
+    <button type="button" class="cp-bulk__button cp-bulk__button--ghost" (click)="pick()" [disabled]="running()">
+      {{ total() ? 'Ajouter d\'autres photos' : 'Sélectionner des photos' }}
     </button>
   </div>
 
   @if (total() > 0) {
-    <p class="cp-bulk__count">
-      {{ done() }} / {{ total() }} envoyée(s)@if (failed()) { — {{ failed() }} en échec }
-    </p>
-
-    <ul class="cp-bulk__list">
+    <!-- 2. Aperçu de la sélection. -->
+    <ul class="cp-bulk__grid">
       @for (item of items(); track $index) {
-        <li class="cp-bulk__item cp-bulk__item--{{ item.state }}">
-          <span class="cp-bulk__name">{{ item.name }}</span>
+        <li class="cp-bulk__thumb cp-bulk__thumb--{{ item.state }}">
+          @if (item.preview) {
+            <img [src]="item.preview" alt="" class="cp-bulk__img" />
+          } @else {
+            <div class="cp-bulk__img cp-bulk__img--none"></div>
+          }
+          <span class="cp-bulk__name" [title]="item.file.name">{{ item.file.name }}</span>
           <span class="cp-bulk__state">
             @switch (item.state) {
-              @case ('pending') { En attente }
+              @case ('selected') { Prête }
               @case ('sending') { Envoi… }
               @case ('done') { Enregistrée }
               @case ('failed') { {{ item.error }} }
             }
           </span>
+          @if (item.state === 'selected' && !running()) {
+            <button type="button" class="cp-bulk__remove" (click)="remove($index)" aria-label="Retirer">×</button>
+          }
         </li>
       }
     </ul>
+
+    <!-- 3. Informations du lot, communes à toutes les photos sélectionnées. -->
+    @if (pending() > 0) {
+      <div class="cp-bulk__form">
+        <label class="cp-bulk__field">
+          <span class="cp-bulk__label">Légende du lot</span>
+          <input
+            type="text"
+            class="cp-bulk__input-text"
+            [ngModel]="caption()"
+            (ngModelChange)="caption.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="running()"
+            placeholder="Ex. : Rassemblement des Aigles 2026"
+          />
+          <span class="cp-bulk__help">Affichée au survol, sur chacune des {{ pending() }} photo(s).</span>
+        </label>
+
+        <label class="cp-bulk__field">
+          <span class="cp-bulk__label">Description (lecteurs d'écran)</span>
+          <input
+            type="text"
+            class="cp-bulk__input-text"
+            [ngModel]="alt()"
+            (ngModelChange)="alt.set($event)"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="running()"
+            placeholder="Laisser vide si les photos sont décoratives"
+          />
+        </label>
+
+        <button type="button" class="cp-bulk__button" (click)="save()" [disabled]="!canSave()">
+          {{ running() ? 'Envoi en cours…' : 'Enregistrer ' + pending() + ' photo(s)' }}
+        </button>
+      </div>
+    }
+
+    @if (running() || isComplete()) {
+      <p class="cp-bulk__count">
+        {{ done() }} / {{ total() }} enregistrée(s)@if (failed()) { — {{ failed() }} en échec }
+      </p>
+    }
   }
 
   <input

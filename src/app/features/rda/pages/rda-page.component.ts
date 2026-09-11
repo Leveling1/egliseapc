@@ -10,6 +10,8 @@ import { TimelineComponent, type TimelineEntry } from '../../../shared/component
 import { RdaHeroComponent } from '../ui/rda-hero/rda-hero.component';
 import { RdaIntroComponent } from '../ui/rda-intro/rda-intro.component';
 import { RdaLatestEditionComponent } from '../ui/rda-latest-edition/rda-latest-edition.component';
+import { PerfumeDayComponent } from '../ui/perfume-day/perfume-day.component';
+import type { ProgrammePublic } from '../../../core/supabase/database.types';
 
 
 @Component({
@@ -23,6 +25,7 @@ import { RdaLatestEditionComponent } from '../ui/rda-latest-edition/rda-latest-e
     RdaHeroComponent,
     RdaIntroComponent,
     RdaLatestEditionComponent,
+    PerfumeDayComponent,
   ],
   templateUrl: './rda-page.component.html',
   styleUrl: './rda-page.component.css',
@@ -34,8 +37,25 @@ export class RdaPageComponent implements OnInit {
 
   protected readonly timelineEntries = signal<readonly TimelineEntry[]>([]);
 
+  /**
+   * La Journée du Parfum, lue parmi les programmes spéciaux.
+   *
+   * On la reconnaît à son nom : c'est le cpannel qui la crée et la met à jour
+   * dans le module Programmes, comme n'importe quel autre rendez-vous. Absente,
+   * la section s'affiche tout de même avec un simple « date à venir ».
+   */
+  protected readonly perfumeDay = signal<ProgrammePublic | null>(null);
+
   constructor() {
     void this.loadEditions();
+    void this.loadPerfumeDay();
+  }
+
+  private async loadPerfumeDay(): Promise<void> {
+    const programmes = await this.content.programmes();
+    this.perfumeDay.set(
+      programmes.find((p) => p.kind === 'special' && /parfum/i.test(p.name)) ?? null,
+    );
   }
 
   /**
@@ -60,10 +80,10 @@ export class RdaPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Rassemblement des Aigles (RDA) | Ambassadeurs Pour Christ (A.P.C)",
+      title: 'Nos activités | Ambassadeurs Pour Christ (A.P.C)',
       description:
-        "Le Rassemblement des Aigles (RDA), événement annuel qui réunit les Ambassadeurs Pour Christ du monde entier : thèmes, éditions passées et dernier rassemblement.",
-      path: '/rda',
+        "Les grands rendez-vous de l'Église Les Ambassadeurs Pour Christ (A.P.C) : le Rassemblement des Aigles (RDA), ses éditions passées, et la Journée du Parfum.",
+      path: '/nos-activites',
     });
   }
 }

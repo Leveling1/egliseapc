@@ -1,8 +1,10 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
+  PLATFORM_ID,
   afterNextRender,
   computed,
   inject,
@@ -61,6 +63,10 @@ export class HeroComponent {
   constructor() {
     const destroyRef = inject(DestroyRef);
 
+    // Avant le premier rendu, et non après : la classe doit être en place
+    // quand le gabarit se peint, sinon l'animation démarre puis se fige.
+    if (isPlatformBrowser(inject(PLATFORM_ID))) this.rememberIntro();
+
     afterNextRender(() => {
       const root = this.elementRef.nativeElement;
       const pin = root.querySelector<HTMLElement>('.apc-hero-pin');
@@ -110,4 +116,37 @@ export class HeroComponent {
       });
     });
   }
+
+  /**
+   * L'accueil animé ne se joue qu'une fois par visite.
+   *
+   * Au premier passage, on pose la marque en session : l'animation, déjà
+   * lancée par le CSS, se joue normalement. Aux passages suivants — retour à
+   * l'accueil depuis une autre page — la marque existe : on pose la classe qui
+   * fige le hero dans son état final, et rien ne rejoue.
+   *
+   * Sur un chargement complet, c'est le script en ligne d'index.html qui pose
+   * cette classe avant le premier rendu ; ici on ne fait que couvrir les
+   * navigations internes, où ce script ne s'exécute pas.
+   *
+   * `sessionStorage` et non `localStorage` : la marque doit s'effacer à la
+   * fermeture de l'onglet. Un visiteur qui revient le lendemain doit
+   * retrouver l'accueil complet — c'est la définition du « lancement du site ».
+   */
+  private rememberIntro(): void {
+    try {
+      if (sessionStorage.getItem(INTRO_PLAYED_KEY)) {
+        document.documentElement.classList.add(INTRO_PLAYED_CLASS);
+      } else {
+        sessionStorage.setItem(INTRO_PLAYED_KEY, '1');
+      }
+    } catch {
+      // Stockage inaccessible (navigation privée stricte) : l'accueil se joue
+      // alors à chaque fois, ce qui vaut mieux que de ne jamais le montrer.
+    }
+  }
 }
+
+/** Clé de session : doit rester identique à celle du script d'index.html. */
+const INTRO_PLAYED_KEY = 'apc-intro-played';
+const INTRO_PLAYED_CLASS = 'apc-intro-played';

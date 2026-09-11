@@ -20,6 +20,18 @@
          tôt évite d'attendre la négociation TLS au moment du premier appel. -->
     <link rel="preconnect" href="https://frcatxbhpwtkqroumqrp.supabase.co" />
     <link rel="dns-prefetch" href="https://frcatxbhpwtkqroumqrp.supabase.co" />
+    <!-- L'accueil animé ne se joue qu'une fois par visite. Ce script pose la
+         marque AVANT le premier rendu : posée plus tard par l'application,
+         l'animation aurait déjà commencé et sauterait à sa fin. Enveloppé
+         d'un try : sessionStorage peut être inaccessible (navigation privée
+         stricte), et l'animation se joue alors simplement à chaque fois. -->
+    <script>
+      try {
+        if (sessionStorage.getItem('apc-intro-played')) {
+          document.documentElement.classList.add('apc-intro-played');
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <app-root></app-root>

@@ -1,0 +1,79 @@
+<app-header variant="light" />
+
+<main class="apc-contact">
+  <header class="apc-contact__head">
+    <span class="apc-contact__overline">Nous joindre</span>
+    <h1 class="apc-contact__title">Contact</h1>
+    <p class="apc-contact__intro">
+      Le siège de Kinshasa et chacune de nos extensions vous accueillent. Voici comment les joindre.
+    </p>
+  </header>
+
+  @if (loading()) {
+    <p class="apc-contact__empty">Chargement des coordonnées…</p>
+  } @else if (!hasAny()) {
+    <p class="apc-contact__empty">Les coordonnées seront bientôt disponibles.</p>
+  } @else {
+    <ul class="apc-contact__grid">
+      @for (ext of extensions(); track ext.id) {
+        <li class="apc-contact__card">
+          <h2 class="apc-contact__name">{{ ext.name }}</h2>
+          @if (ext.city || ext.country) {
+            <p class="apc-contact__place">
+              {{ ext.city }}@if (ext.city && ext.country) {, }{{ ext.country }}
+            </p>
+          }
+
+          <dl class="apc-contact__details">
+            @if (ext.address) {
+              <div class="apc-contact__row">
+                <dt>Adresse</dt>
+                <dd>{{ ext.address }}</dd>
+              </div>
+            }
+            @if (ext.leader_name) {
+              <div class="apc-contact__row">
+                <dt>Responsable</dt>
+                <dd>{{ ext.leader_name }}</dd>
+              </div>
+            }
+            @if (ext.phone) {
+              <div class="apc-contact__row">
+                <dt>Téléphone</dt>
+                <dd><a [href]="tel(ext.phone)" class="apc-contact__link">{{ ext.phone }}</a></dd>
+              </div>
+            }
+            @if (ext.whatsapp) {
+              <div class="apc-contact__row">
+                <dt>WhatsApp</dt>
+                <dd>
+                  <a [href]="whatsapp(ext.whatsapp)" class="apc-contact__link" target="_blank" rel="noopener">
+                    {{ ext.whatsapp }}
+                  </a>
+                </dd>
+              </div>
+            }
+            @if (ext.email) {
+              <div class="apc-contact__row">
+                <dt>E-mail</dt>
+                <dd><a [href]="'mailto:' + ext.email" class="apc-contact__link">{{ ext.email }}</a></dd>
+              </div>
+            }
+            @if (ext.opening_hours) {
+              <div class="apc-contact__row">
+                <dt>Horaires</dt>
+                <dd>{{ ext.opening_hours }}</dd>
+              </div>
+            }
+          </dl>
+
+          @if (map(ext); as itinerary) {
+            <a [href]="itinerary" class="apc-contact__cta" target="_blank" rel="noopener">Itinéraire →</a>
+          }
+        </li>
+      }
+    </ul>
+  }
+</main>
+
+<app-footer />

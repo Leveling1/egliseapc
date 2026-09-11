@@ -17,8 +17,19 @@ export const routes: Routes = [
       import('./features/cultes/pages/cultes-page.component').then((m) => m.CultesPageComponent),
   },
   {
-    path: 'rda',
+    path: 'nos-activites',
     loadComponent: () => import('./features/rda/pages/rda-page.component').then((m) => m.RdaPageComponent),
+  },
+  {
+    // Ancienne adresse de la page, conservée pour les liens déjà partagés et
+    // les moteurs de recherche qui l'ont indexée.
+    path: 'rda',
+    redirectTo: 'nos-activites',
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./features/contact/pages/contact-page.component').then((m) => m.ContactPageComponent),
   },
   {
     path: 'galerie',

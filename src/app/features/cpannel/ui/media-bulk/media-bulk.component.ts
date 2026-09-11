@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   computed,
   inject,
@@ -9,24 +10,29 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { ACCEPTED_TYPES, CpannelMediaService } from '../../services/cpannel-media.service';
 
-/** Où en est un fichier de la sélection. */
-export type ItemState = 'pending' | 'sending' | 'done' | 'failed';
+/** Où en est un fichier du lot. */
+export type ItemState = 'selected' | 'sending' | 'done' | 'failed';
 
 export interface BulkItem {
-  readonly name: string;
+  readonly file: File;
+  /** Aperçu local, révoqué à la fermeture. */
+  readonly preview: string;
   readonly state: ItemState;
   readonly error?: string;
 }
 
-/** Une photo prête à être enregistrée. */
+/** Une photo en ligne, prête à être enregistrée avec les informations du lot. */
 export interface BulkResult {
   readonly url: string;
   readonly width: number;
   readonly height: number;
   readonly mediaId: string;
+  readonly caption: string | null;
+  readonly alt: string | null;
 }
 
 /**
@@ -34,25 +40,31 @@ export interface BulkResult {
  *
  * Le service média limite le débit et répond 429 quand on le presse. Envoyer
  * les fichiers l'un après l'autre, avec un temps mort, coûte quelques secondes
- * sur un lot important mais évite qu'une moitié du lot soit refusée — ce qui
- * obligerait à recommencer en devinant lesquels sont passés.
+ * sur un lot important mais évite qu'une moitié du lot soit refusée.
  */
 const PACE_MS = 250;
 
 /**
- * Envoi de plusieurs photos en une fois.
+ * Ajout de photos par lot, en trois temps.
  *
- * Chaque fichier part séparément et donne un enregistrement séparé : le
- * service média traite une image par requête, et la galerie tient une ligne
- * par photo. Ce composant ne fait qu'enchaîner, en rendant compte de chacune.
+ *   1. On choisit les fichiers — autant qu'on veut — et on les voit en aperçu.
+ *   2. On renseigne les informations DU LOT : une légende et une description
+ *      valables pour toutes les photos sélectionnées.
+ *   3. On enregistre. Rien ne part avant ce clic.
  *
- * L'échec d'un fichier — format refusé, boîte pleine, coupure — n'interrompt
- * pas les suivants. Rien n'est plus décourageant qu'un lot de trente photos
- * abandonné à la troisième.
+ * Une première version envoyait chaque fichier dès sa sélection, sans aperçu
+ * ni possibilité de renseigner quoi que ce soit. C'était prendre l'utilisateur
+ * de vitesse : on ne devrait jamais rien expédier qu'il n'ait explicitement
+ * validé.
+ *
+ * L'échec d'un fichier n'interrompt pas les suivants, et chaque photo passée
+ * est enregistrée aussitôt : une coupure au vingtième fichier laisse les
+ * dix-neuf précédents en base.
  */
 @Component({
   selector: 'app-cpannel-media-bulk',
   standalone: true,
+  imports: [FormsModule],
   templateUrl: './media-bulk.component.html',
   styleUrl: './media-bulk.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,7 +73,7 @@ export class CpannelMediaBulkComponent {
   /** Module concerné : la fonction Edge vérifie le droit d'écriture dessus. */
   readonly module = input.required<string>();
 
-  /** Émis pour chaque photo réussie, dans l'ordre de la sélection. */
+  /** Émis pour chaque photo réussie, avec les informations du lot. */
   readonly photoReady = output<BulkResult>();
   /** Émis une fois le lot terminé, réussites et échecs confondus. */
   readonly finished = output<{ sent: number; failed: number }>();
@@ -73,9 +85,22 @@ export class CpannelMediaBulkComponent {
   protected readonly items = signal<readonly BulkItem[]>([]);
   protected readonly running = signal(false);
 
+  /** Informations communes à tout le lot. */
+  protected readonly caption = signal('');
+  protected readonly alt = signal('');
+
+  protected readonly total = computed(() => this.items().length);
   protected readonly done = computed(() => this.items().filter((i) => i.state === 'done').length);
   protected readonly failed = computed(() => this.items().filter((i) => i.state === 'failed').length);
-  protected readonly total = computed(() => this.items().length);
+  protected readonly pending = computed(() => this.items().filter((i) => i.state === 'selected').length);
+  protected readonly canSave = computed(() => this.pending() > 0 && !this.running());
+  protected readonly isComplete = computed(() => this.total() > 0 && this.pending() === 0 && !this.running());
+
+  constructor() {
+    // Les aperçus sont des URL d'objet : le navigateur garde le fichier en
+    // mémoire tant qu'elles existent. On les libère en quittant.
+    inject(DestroyRef).onDestroy(() => this.revokeAll());
+  }
 
   protected pick(): void {
     this.fileInput()?.nativeElement.click();
@@ -83,23 +108,53 @@ export class CpannelMediaBulkComponent {
 
   protected onSelect(event: Event): void {
     const files = (event.target as HTMLInputElement).files;
-    if (files?.length) void this.send(Array.from(files));
+    if (files?.length) this.add(Array.from(files));
+    // Sans cela, resélectionner les mêmes fichiers ne déclenche rien : la
+    // valeur du champ n'a pas changé, donc aucun événement.
+    (event.target as HTMLInputElement).value = '';
   }
 
   protected onDrop(event: DragEvent): void {
     event.preventDefault();
     const files = event.dataTransfer?.files;
-    if (files?.length) void this.send(Array.from(files));
+    if (files?.length) this.add(Array.from(files));
   }
 
   protected allowDrop(event: DragEvent): void {
     event.preventDefault();
   }
 
+  protected remove(index: number): void {
+    if (this.running()) return;
+    const item = this.items()[index];
+    if (item) URL.revokeObjectURL(item.preview);
+    this.items.update((items) => items.filter((_, i) => i !== index));
+  }
+
   protected close(): void {
     if (this.running()) return;
+    this.revokeAll();
     this.items.set([]);
+    this.caption.set('');
+    this.alt.set('');
     this.closed.emit();
+  }
+
+  /** Ajoute à la sélection sans rien envoyer : l'envoi attend le clic Enregistrer. */
+  private add(files: readonly File[]): void {
+    if (this.running()) return;
+
+    const accepted = files.map((file) => {
+      const ok = ACCEPTED_TYPES.includes(file.type);
+      return {
+        file,
+        preview: ok ? URL.createObjectURL(file) : '',
+        state: ok ? ('selected' as const) : ('failed' as const),
+        error: ok ? undefined : 'Format refusé : seuls JPEG et PNG.',
+      };
+    });
+
+    this.items.update((items) => [...items, ...accepted]);
   }
 
   private setState(index: number, state: ItemState, error?: string): void {
@@ -108,31 +163,30 @@ export class CpannelMediaBulkComponent {
     );
   }
 
-  private async send(files: readonly File[]): Promise<void> {
-    if (this.running()) return;
+  private revokeAll(): void {
+    for (const item of this.items()) if (item.preview) URL.revokeObjectURL(item.preview);
+  }
 
-    this.items.set(files.map((file) => ({ name: file.name, state: 'pending' as const })));
+  /** Envoie le lot, dans l'ordre de sélection, avec les informations communes. */
+  protected async save(): Promise<void> {
+    if (!this.canSave()) return;
     this.running.set(true);
 
+    const caption = this.caption().trim() || null;
+    const alt = this.alt().trim() || null;
     let sent = 0;
     let failed = 0;
 
-    for (const [index, file] of files.entries()) {
-      if (!ACCEPTED_TYPES.includes(file.type)) {
-        this.setState(index, 'failed', 'Format refusé : seuls JPEG et PNG.');
-        failed++;
-        continue;
-      }
+    for (const [index, item] of this.items().entries()) {
+      if (item.state !== 'selected') continue;
 
       this.setState(index, 'sending');
 
       try {
-        const upload = await this.media.upload(file, this.module());
-
-        // La photo est annoncée dès qu'elle est en ligne, sans attendre la fin
-        // du lot : la page peut l'enregistrer aussitôt, et une interruption
-        // laisse en base tout ce qui est déjà passé.
-        this.photoReady.emit(upload);
+        const upload = await this.media.upload(item.file, this.module());
+        // Annoncée dès qu'elle est en ligne, sans attendre la fin du lot : la
+        // page peut l'enregistrer aussitôt.
+        this.photoReady.emit({ ...upload, caption, alt });
         this.setState(index, 'done');
         sent++;
       } catch (cause) {
@@ -144,12 +198,6 @@ export class CpannelMediaBulkComponent {
     }
 
     this.running.set(false);
-
-    const input = this.fileInput()?.nativeElement;
-    // Sans cela, resélectionner les mêmes fichiers ne déclenche rien : la
-    // valeur du champ n'a pas changé, donc aucun événement.
-    if (input) input.value = '';
-
     this.finished.emit({ sent, failed });
   }
 }

@@ -1,0 +1,129 @@
+.apc-contact {
+  background: var(--color-apc-gray-light);
+  padding: 140px 24px 96px;
+}
+
+.apc-contact__head {
+  max-width: 720px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.apc-contact__overline {
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-contact__title {
+  margin: 10px 0 16px;
+  font: 700 clamp(32px, 5vw, 52px) / 1.1 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+}
+
+.apc-contact__intro {
+  margin: 0;
+  font: 400 17px/1.7 'Open Sans', sans-serif;
+  color: rgb(0 0 0 / 65%);
+}
+
+.apc-contact__empty {
+  text-align: center;
+  font: 400 15px 'Open Sans', sans-serif;
+  color: rgb(0 0 0 / 55%);
+}
+
+.apc-contact__grid {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1200px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.apc-contact__card {
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 6px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.apc-contact__name {
+  margin: 0;
+  font: 700 20px 'Poppins', sans-serif;
+  color: var(--color-apc-black);
+}
+
+.apc-contact__place {
+  margin: 4px 0 20px;
+  font: 600 13px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.apc-contact__details {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.apc-contact__row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  font: 400 15px/1.5 'Open Sans', sans-serif;
+}
+
+.apc-contact__row dt {
+  color: rgb(0 0 0 / 50%);
+  font-weight: 600;
+  font-size: 13px;
+  padding-top: 2px;
+}
+
+.apc-contact__row dd {
+  margin: 0;
+  color: var(--color-apc-black);
+  overflow-wrap: anywhere;
+}
+
+.apc-contact__link {
+  color: var(--color-apc-blue-dark);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.apc-contact__link:hover {
+  border-bottom-color: currentColor;
+}
+
+.apc-contact__cta {
+  margin-top: 24px;
+  align-self: flex-start;
+  font: 600 14px 'Poppins', sans-serif;
+  color: var(--color-apc-blue-dark);
+  text-decoration: none;
+}
+
+.apc-contact__cta:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .apc-contact {
+    padding: 110px 20px 64px;
+  }
+
+  .apc-contact__card {
+    padding: 22px;
+  }
+}

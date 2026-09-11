@@ -509,6 +509,41 @@
   }
 }
 
+/*
+ * Accueil déjà joué pendant cette visite.
+ *
+ * L'entrée n'est jouée qu'une fois par session : à la première arrivée sur le
+ * site. Revenir sur la page d'accueil depuis une autre page ne la rejoue pas —
+ * un visiteur qui a déjà lu « Bienvenue » n'a pas à l'attendre une seconde
+ * fois pour accéder au contenu.
+ *
+ * La classe est posée sur <html> par un script en ligne d'index.html, AVANT
+ * le premier rendu, puis par le composant lors des navigations internes.
+ * Poser ces mêmes règles depuis le composant seul aurait laissé l'animation
+ * démarrer pendant l'hydratation, puis sauter d'un coup à son état final.
+ *
+ * Les règles sont celles de la préférence « mouvement réduit » ci-dessus :
+ * mêmes éléments, même état d'arrivée. Elles sont répétées parce qu'un bloc
+ * de média et un sélecteur d'ancêtre ne peuvent pas partager une déclaration.
+ */
+:host-context(.apc-intro-played) .apc-hero__script {
+  display: none;
+}
+
+:host-context(.apc-intro-played) .apc-hero__lockup {
+  padding-top: 0;
+}
+
+:host-context(.apc-intro-played) .apc-hero__title,
+:host-context(.apc-intro-played) .apc-hero__final,
+:host-context(.apc-intro-played) .apc-hero__curtain {
+  animation: none;
+}
+
+:host-context(.apc-intro-played) .apc-hero__curtain {
+  opacity: 0;
+}
+
 @media (max-width: 640px) {
   .apc-hero__story {
     font-size: 14px;

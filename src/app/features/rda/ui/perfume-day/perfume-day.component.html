@@ -1,0 +1,28 @@
+<section class="apc-perfume" id="journee-du-parfum" aria-labelledby="apc-perfume-title">
+  <div class="apc-perfume__inner">
+    <div class="apc-perfume__text">
+      <span class="apc-perfume__overline">Rendez-vous</span>
+      <h2 id="apc-perfume-title" class="apc-perfume__title">La Journée du Parfum</h2>
+
+      @if (programme(); as p) {
+        @if (when(); as date) {
+          <p class="apc-perfume__when">{{ date }}</p>
+        }
+        @if (p.location) {
+          <p class="apc-perfume__where">{{ p.location }}</p>
+        }
+        @if (p.description) {
+          <p class="apc-perfume__description">{{ p.description }}</p>
+        }
+      } @else {
+        <p class="apc-perfume__description">
+          La prochaine date sera communiquée prochainement.
+        </p>
+      }
+    </div>
+
+    @if (poster(); as src) {
+      <img [src]="src" alt="Affiche de la Journée du Parfum" class="apc-perfume__poster" loading="lazy" />
+    }
+  </div>
+</section>

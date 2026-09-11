@@ -67,15 +67,28 @@ export class CpannelMediaService {
  * Les erreurs de fonction Edge portent le détail dans le corps de la réponse,
  * pas dans le message : sans cette lecture, l'administrateur ne verrait qu'un
  * « Edge Function returned a non-2xx status code » qui ne l'avance en rien.
+ *
+ * Le corps est lu sur une copie : si la bibliothèque l'a déjà consommé, une
+ * seconde lecture échouerait, et l'on retomberait sur le message générique
+ * précisément quand on a le plus besoin du détail. On tente le JSON, puis le
+ * texte brut, avant de renoncer.
  */
 export async function readFunctionError(error: unknown): Promise<string> {
   const context = (error as { context?: Response }).context;
 
-  if (context && typeof context.json === 'function') {
+  if (context instanceof Response) {
     try {
-      const body = await context.json();
-      if (body?.error) return String(body.error);
-      if (body?.detail) return String(body.detail);
+      const text = await context.clone().text();
+      try {
+        const body = JSON.parse(text);
+        if (body?.error) return String(body.error);
+        if (body?.detail) return String(body.detail);
+        if (body?.message) return String(body.message);
+      } catch {
+        // Pas du JSON : le texte brut vaut mieux que rien.
+      }
+      if (text.trim()) return `${context.status} — ${text.trim().slice(0, 200)}`;
+      return `Réponse ${context.status} sans détail.`;
     } catch {
       // Corps illisible : on retombe sur le message générique.
     }
