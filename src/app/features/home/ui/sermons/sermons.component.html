@@ -1,41 +1,59 @@
-<section class="apc-sermons" aria-labelledby="apc-sermons-title">
-  <div class="apc-sermons__inner">
-    <div class="apc-sermons__header">
-      <span class="apc-sermons__overline">Enseignements</span>
-      <h2 id="apc-sermons-title" class="apc-sermons__title">Nos Cultes</h2>
-      <p class="apc-sermons__intro">Retrouvez les 3 derniers cultes de notre chaîne YouTube.</p>
-    </div>
+@if (featuredSermon(); as featured) {
+  <section class="apc-sermons" aria-labelledby="apc-sermons-title">
+    <div class="apc-sermons__inner">
+      <div class="apc-sermons__header">
+        <span class="apc-sermons__overline">Enseignements</span>
+        <h2 id="apc-sermons-title" class="apc-sermons__title">Nos Cultes</h2>
+        <p class="apc-sermons__intro">Les derniers cultes de notre chaîne YouTube.</p>
+      </div>
 
-    <button type="button" class="apc-sermons__featured" [attr.aria-label]="'Lire : ' + featuredSermon.title">
-      <span class="apc-sermons__featured-thumb">
-        <span class="apc-sermons__play apc-sermons__play--large" aria-hidden="true">
-          <span class="apc-sermons__play-icon apc-sermons__play-icon--large"></span>
+      <a
+        class="apc-sermons__featured"
+        [href]="featured.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="'Regarder sur YouTube : ' + featured.title"
+      >
+        <span class="apc-sermons__featured-thumb">
+          <img [src]="featured.thumbnail" alt="" class="apc-sermons__img" loading="lazy" decoding="async" />
+          <span class="apc-sermons__play apc-sermons__play--large" aria-hidden="true">
+            <span class="apc-sermons__play-icon apc-sermons__play-icon--large"></span>
+          </span>
         </span>
-      </span>
-      <span class="apc-sermons__featured-caption">
-        <span class="apc-sermons__featured-title">{{ featuredSermon.title }}</span>
-        <span class="apc-sermons__featured-meta">{{ featuredSermon.date }} · {{ featuredSermon.duration }}</span>
-      </span>
-    </button>
+        <span class="apc-sermons__featured-caption">
+          <span class="apc-sermons__featured-title">{{ featured.title }}</span>
+          <span class="apc-sermons__featured-meta">{{ featured.date }} · {{ featured.duration }}</span>
+        </span>
+      </a>
 
-    <div class="apc-sermons__grid">
-      @for (sermon of recentSermons; track sermon.title) {
-        <button type="button" class="apc-sermons__card" [attr.aria-label]="'Lire : ' + sermon.title">
-          <span class="apc-sermons__card-thumb">
-            <span class="apc-sermons__play apc-sermons__play--small" aria-hidden="true">
-              <span class="apc-sermons__play-icon apc-sermons__play-icon--small"></span>
-            </span>
-          </span>
-          <span class="apc-sermons__card-body">
-            <span class="apc-sermons__card-title">{{ sermon.title }}</span>
-            <span class="apc-sermons__card-meta">{{ sermon.date }} · {{ sermon.duration }}</span>
-          </span>
-        </button>
+      @if (recentSermons().length > 0) {
+        <div class="apc-sermons__grid">
+          @for (sermon of recentSermons(); track sermon.id) {
+            <a
+              class="apc-sermons__card"
+              [href]="sermon.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Regarder sur YouTube : ' + sermon.title"
+            >
+              <span class="apc-sermons__card-thumb">
+                <img [src]="sermon.thumbnail" alt="" class="apc-sermons__img" loading="lazy" decoding="async" />
+                <span class="apc-sermons__play apc-sermons__play--small" aria-hidden="true">
+                  <span class="apc-sermons__play-icon apc-sermons__play-icon--small"></span>
+                </span>
+              </span>
+              <span class="apc-sermons__card-body">
+                <span class="apc-sermons__card-title">{{ sermon.title }}</span>
+                <span class="apc-sermons__card-meta">{{ sermon.date }} · {{ sermon.duration }}</span>
+              </span>
+            </a>
+          }
+        </div>
       }
-    </div>
 
-    <div class="apc-sermons__more">
-      <a routerLink="/nos-cultes" class="apc-sermons__more-link">Voir tous les cultes →</a>
+      <div class="apc-sermons__more">
+        <a routerLink="/nos-cultes" class="apc-sermons__more-link">Voir tous les cultes →</a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+}

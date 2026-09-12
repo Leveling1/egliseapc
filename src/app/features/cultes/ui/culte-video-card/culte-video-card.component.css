@@ -1,4 +1,7 @@
 .apc-video-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   appearance: none;
   border: none;
   padding: 0;
@@ -23,11 +26,33 @@
 
 .apc-video-card__thumb {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+  background: var(--color-apc-black);
+}
+
+.apc-video-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.apc-video-card:hover .apc-video-card__img {
+  transform: scale(1.04);
+}
+
+/* Le bouton de lecture et la durée passent au-dessus de la vignette. */
+.apc-video-card__play,
+.apc-video-card__duration {
+  position: relative;
+  z-index: 1;
 }
 
 .apc-video-card__play {

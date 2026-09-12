@@ -10,11 +10,19 @@ import {
 } from '../../../shared/components/parallax-gallery/parallax-gallery.component';
 import { GALLERY_PAGE_SIZE, PublicContentService } from '../../../core/content/public-content.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 @Component({
   selector: 'app-gallery-page',
   standalone: true,
-  imports: [RouterLink, HeaderComponent, FooterComponent, ParallaxGalleryComponent, PaginationComponent],
+  imports: [
+    RouterLink,
+    HeaderComponent,
+    FooterComponent,
+    ParallaxGalleryComponent,
+    PaginationComponent,
+    SpecialEventsComponent,
+  ],
   templateUrl: './gallery-page.component.html',
   styleUrl: './gallery-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,12 @@
-<button type="button" class="apc-video-card" [attr.aria-label]="'Lire : ' + title()">
-  <span class="apc-video-card__thumb" [style.background]="gradient()">
+<a
+  class="apc-video-card"
+  [href]="href()"
+  target="_blank"
+  rel="noopener noreferrer"
+  [attr.aria-label]="'Regarder sur YouTube : ' + title()"
+>
+  <span class="apc-video-card__thumb">
+    <img [src]="thumbnail()" alt="" class="apc-video-card__img" loading="lazy" decoding="async" />
     <span class="apc-video-card__play" aria-hidden="true">
       <span class="apc-video-card__play-icon"></span>
     </span>
@@ -9,4 +16,4 @@
     <span class="apc-video-card__title">{{ title() }}</span>
     <span class="apc-video-card__date">{{ date() }}</span>
   </span>
-</button>
+</a>

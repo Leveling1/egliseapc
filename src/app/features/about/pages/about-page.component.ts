@@ -8,6 +8,7 @@ import { StoryChapterComponent } from '../ui/story-chapter/story-chapter.compone
 import { AboutTodayComponent } from '../ui/about-today/about-today.component';
 import { FoundationsComponent } from '../ui/foundations/foundations.component';
 import { FoundingVerseComponent } from '../ui/founding-verse/founding-verse.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 interface StoryChapterData {
   readonly chapterNumber: number;
@@ -23,6 +24,7 @@ interface StoryChapterData {
   selector: 'app-about-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
     AboutHeroComponent,

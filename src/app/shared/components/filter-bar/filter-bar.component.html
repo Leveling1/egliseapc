@@ -1,4 +1,5 @@
 <div class="apc-filters">
+  @if (filters().length > 0) {
   <div class="apc-filters__pills" role="group" aria-label="Filtrer par catégorie">
     @for (filter of filters(); track filter; let i = $index) {
       <button
@@ -12,6 +13,7 @@
       </button>
     }
   </div>
+  }
 
   <div class="apc-filters__search">
     <svg class="apc-filters__search-icon" viewBox="0 0 20 20" aria-hidden="true">

@@ -13,6 +13,7 @@ import { ResourcesHeroComponent } from '../ui/resources-hero/resources-hero.comp
 import { AppShowcaseComponent } from '../ui/app-showcase/app-showcase.component';
 import { BookCardComponent } from '../ui/book-card/book-card.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 /** Légère rotation alternée des couvertures, comme dans la maquette. */
 const COVER_ROTATIONS = ['-2deg', '1deg', '-1deg'];
@@ -24,6 +25,7 @@ const BOOKS_PER_PAGE = 6;
   selector: 'app-resources-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
     NewsletterCtaComponent,

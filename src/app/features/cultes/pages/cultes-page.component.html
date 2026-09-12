@@ -1,31 +1,99 @@
-<app-header [variant]="isLive() ? 'overlay' : 'light'" />
+<app-header [variant]="live() ? 'overlay' : 'light'" />
 
 <main id="contenu">
-  <app-live-banner [isLive]="isLive()" />
+  <app-live-banner [live]="live()" />
   <app-cultes-hero />
 
-  <app-featured-culte
-    title="La puissance de la foi - Culte dominical"
-    meta="Dimanche 28 juillet 2026 · Prophète Garry KENGE · 1h 24min"
-  />
+  @if (featured(); as video) {
+    <app-featured-culte
+      [title]="video.title"
+      [meta]="video.date + ' · ' + video.duration"
+      [thumbnail]="video.thumbnail"
+      [href]="video.href"
+    />
+  }
 
-  <div class="apc-cultes-filters">
-    <app-filter-bar [filters]="filters" searchPlaceholder="Rechercher un culte…" />
-  </div>
-
-  <div class="apc-cultes-grid-wrap">
-    <div class="apc-cultes-grid">
-      @for (video of videos; track video.title) {
-        <app-culte-video-card
-          [title]="video.title"
-          [date]="video.date"
-          [duration]="video.duration"
-          [gradient]="video.gradient"
+  @if (all().length > 1) {
+    <div class="apc-cultes-search">
+      <form class="apc-cultes-search__form" role="search" (submit)="$event.preventDefault()">
+        <svg class="apc-cultes-search__icon" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" />
+          <path d="M12.7 12.7L17 17" />
+        </svg>
+        <label class="apc-cultes-search__label" for="apc-cultes-search">Rechercher un culte</label>
+        <input
+          id="apc-cultes-search"
+          type="search"
+          class="apc-cultes-search__input"
+          placeholder="Rechercher un culte, un enseignement, une date…"
+          autocomplete="off"
+          [value]="search()"
+          (input)="onSearch($any($event.target).value)"
         />
+        @if (search()) {
+          <button type="button" class="apc-cultes-search__clear" aria-label="Effacer la recherche" (click)="clearSearch()">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>
+          </button>
+        }
+      </form>
+      @if (isSearching()) {
+        <p class="apc-cultes-search__hint" aria-live="polite">
+          @if (searching()) {
+            Recherche sur toute la chaîne…
+          } @else {
+            {{ videos().length }} résultat(s) sur toute la chaîne
+          }
+        </p>
       }
     </div>
+  }
 
-    <app-pagination [currentPage]="currentPage()" [totalPages]="3" (pageChange)="onPageChange($event)" />
+  <div class="apc-cultes-grid-wrap">
+    @if (videos().length > 0) {
+      <div class="apc-cultes-grid" [class.apc-cultes-grid--busy]="searching()">
+        @for (video of videos(); track video.id) {
+          <app-culte-video-card
+            [title]="video.title"
+            [date]="video.date"
+            [duration]="video.duration"
+            [thumbnail]="video.thumbnail"
+            [href]="video.href"
+          />
+        }
+      </div>
+    } @else if (loading() || searching()) {
+      <p class="apc-cultes-empty" role="status">Chargement des cultes…</p>
+    } @else if (isSearching()) {
+      <div class="apc-cultes-empty" role="status">
+        <p class="apc-cultes-empty__title">Aucun culte ne correspond</p>
+        <p class="apc-cultes-empty__text">Essayez un autre mot, ou une date.</p>
+        <button type="button" class="apc-cultes-more__button" (click)="clearSearch()">
+          Voir tous les cultes
+        </button>
+      </div>
+    } @else if (!featured()) {
+      <!-- Chaîne vide ou injoignable : on renvoie vers YouTube plutôt que de
+           laisser une grille absente sans un mot. -->
+      <div class="apc-cultes-empty">
+        <p class="apc-cultes-empty__title">Les vidéos ne sont pas disponibles pour le moment</p>
+        <p class="apc-cultes-empty__text">
+          Retrouvez tous nos cultes directement sur notre chaîne YouTube.
+        </p>
+      </div>
+    }
+
+    @if (nextPage() && !isSearching()) {
+      <div class="apc-cultes-more">
+        <button
+          type="button"
+          class="apc-cultes-more__button"
+          [disabled]="loadingMore()"
+          (click)="loadMore()"
+        >
+          {{ loadingMore() ? 'Chargement…' : 'Voir plus de cultes' }}
+        </button>
+      </div>
+    }
   </div>
 
   <app-special-events />

@@ -36,9 +36,13 @@
 
 .apc-live__cta {
   display: inline-block;
-  padding: 6px 20px;
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
   background: var(--color-apc-yellow);
-  color: #fff;
+  /* Noir sur jaune : le blanc sur jaune de la version précédente ne se
+     lisait pas (1,1:1). */
+  color: var(--color-apc-black);
   font: 600 12px var(--font-heading);
   border-radius: 6px;
   text-decoration: none;
@@ -47,15 +51,9 @@
 
 .apc-live__cta:hover {
   background: var(--color-apc-blue-dark);
+  color: #fff;
 }
 
-.apc-live__note {
-  padding: 4px 24px;
-  background: var(--color-apc-gray-light);
-  text-align: center;
-  font: 400 11px var(--font-body);
-  color: var(--color-apc-ink-faint);
-}
 
 @media (max-width: 640px) {
   .apc-live {

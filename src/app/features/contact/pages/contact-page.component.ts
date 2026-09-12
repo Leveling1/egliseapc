@@ -5,6 +5,7 @@ import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { SeoService } from '../../../core/seo/seo.service';
 import type { ExtensionPublic } from '../../../core/supabase/database.types';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 /**
  * Coordonnées des extensions, telles que le cpannel les renseigne.
@@ -16,7 +17,7 @@ import type { ExtensionPublic } from '../../../core/supabase/database.types';
 @Component({
   selector: 'app-contact-page',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, SpecialEventsComponent],
   templateUrl: './contact-page.component.html',
   styleUrl: './contact-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,15 @@
 <div class="apc-featured">
-  <button type="button" class="apc-featured__card" [attr.aria-label]="'Lire : ' + title()">
+  <a
+    class="apc-featured__card"
+    [href]="href()"
+    target="_blank"
+    rel="noopener noreferrer"
+    [attr.aria-label]="'Regarder sur YouTube : ' + title()"
+  >
     <span class="apc-featured__thumb">
+      @if (thumbnail(); as src) {
+        <img [src]="src" alt="" class="apc-featured__img" fetchpriority="high" decoding="async" />
+      }
       <span class="apc-featured__play" aria-hidden="true">
         <span class="apc-featured__play-icon"></span>
       </span>
@@ -10,5 +19,5 @@
       <span class="apc-featured__title">{{ title() }}</span>
       <span class="apc-featured__meta">{{ meta() }}</span>
     </span>
-  </button>
+  </a>
 </div>

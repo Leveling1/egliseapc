@@ -11,5 +11,8 @@ export class CulteVideoCardComponent {
   readonly title = input.required<string>();
   readonly date = input.required<string>();
   readonly duration = input.required<string>();
-  readonly gradient = input.required<string>();
+  /** Vignette YouTube de la vidéo. */
+  readonly thumbnail = input.required<string>();
+  /** Page de la vidéo sur YouTube : la lecture se fait là-bas, dans un nouvel onglet. */
+  readonly href = input.required<string>();
 }

@@ -3,6 +3,9 @@
 }
 
 .apc-featured__card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   appearance: none;
   border: none;
   padding: 0;
@@ -27,6 +30,20 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+}
+
+.apc-featured__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.apc-featured__play {
+  position: relative;
+  z-index: 1;
 }
 
 .apc-featured__play {

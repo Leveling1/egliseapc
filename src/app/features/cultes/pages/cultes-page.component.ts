@@ -1,23 +1,54 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 
 import { SeoService } from '../../../core/seo/seo.service';
+import {
+  YoutubeService,
+  formatDuration,
+  formatPublished,
+  watchUrl,
+  type YoutubeLive,
+  type YoutubeVideo,
+} from '../../../core/content/youtube.service';
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
-import { FilterBarComponent } from '../../../shared/components/filter-bar/filter-bar.component';
-import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 import { LiveBannerComponent } from '../ui/live-banner/live-banner.component';
 import { CultesHeroComponent } from '../ui/cultes-hero/cultes-hero.component';
 import { FeaturedCulteComponent } from '../ui/featured-culte/featured-culte.component';
 import { CulteVideoCardComponent } from '../ui/culte-video-card/culte-video-card.component';
-import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 interface CulteVideo {
+  readonly id: string;
   readonly title: string;
   readonly date: string;
   readonly duration: string;
-  readonly gradient: string;
+  readonly thumbnail: string;
+  /** Page de la vidéo sur YouTube. */
+  readonly href: string;
 }
 
+/** Délai entre la dernière frappe et la recherche, en ms. */
+const SEARCH_DELAY_MS = 350;
+
+/**
+ * Nos cultes : la chaîne YouTube de l'église, en direct et en replay.
+ *
+ * Tout vient de la fonction Edge `get-youtube` : la vidéo à la une est la
+ * plus récente, la grille suit, page après page (« Voir plus de cultes »),
+ * et la bannière du direct n'apparaît que si la chaîne diffuse. La recherche
+ * interroge toute la chaîne, par titre - pas seulement ce qui est affiché.
+ *
+ * La lecture se fait sur YouTube, dans un nouvel onglet : chaque vignette est
+ * un lien vers la page de la vidéo, pas un lecteur intégré.
+ */
 @Component({
   selector: 'app-cultes-page',
   standalone: true,
@@ -25,8 +56,6 @@ interface CulteVideo {
     SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
-    FilterBarComponent,
-    PaginationComponent,
     LiveBannerComponent,
     CultesHeroComponent,
     FeaturedCulteComponent,
@@ -38,64 +67,105 @@ interface CulteVideo {
 })
 export class CultesPageComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly youtube = inject(YoutubeService);
 
-  protected readonly filters = ['Tous', 'Dimanche', 'Mercredi', 'Vendredi', 'Prière'] as const;
-  protected readonly currentPage = signal(1);
+  protected readonly live = signal<YoutubeLive | null>(null);
+  protected readonly all = signal<readonly CulteVideo[]>([]);
+  protected readonly nextPage = signal<string | null>(null);
+  protected readonly loading = signal(true);
+  protected readonly loadingMore = signal(false);
 
-  // Drives both the live banner and the header's nav theme: the banner's
-  // dark gradient needs light nav text ("overlay"), but once hidden the
-  // hero underneath is plain white and needs dark nav text ("light").
-  protected readonly isLive = signal(false);
+  protected readonly search = signal('');
+  protected readonly searching = signal(false);
+  /** Résultats de la dernière recherche ; null hors recherche. */
+  protected readonly results = signal<readonly CulteVideo[] | null>(null);
 
-  protected readonly videos: readonly CulteVideo[] = [
-    {
-      title: 'Marcher dans la grâce',
-      date: 'Mercredi 24 juil. 2026',
-      duration: '52:18',
-      gradient: 'linear-gradient(135deg,#0B0B0B,#1C1C8C)',
-    },
-    {
-      title: "L'appel du disciple",
-      date: 'Dimanche 21 juil. 2026',
-      duration: '1:12:04',
-      gradient: 'linear-gradient(135deg,#0B0B0B,#1C1C8C)',
-    },
-    {
-      title: 'Le combat spirituel',
-      date: 'Vendredi 18 juil. 2026',
-      duration: '1:05:32',
-      gradient: 'linear-gradient(135deg,#1C1C8C,#0B0B0B)',
-    },
-    {
-      title: 'Vivre par la Parole',
-      date: 'Mercredi 16 juil. 2026',
-      duration: '48:22',
-      gradient: 'linear-gradient(135deg,#1C1C8C,#1C1C8C)',
-    },
-    {
-      title: "L'onction de Dieu",
-      date: 'Dimanche 14 juil. 2026',
-      duration: '1:18:45',
-      gradient: 'linear-gradient(135deg,#0B0B0B,#1C1C8C)',
-    },
-    {
-      title: 'La prière efficace',
-      date: 'Vendredi 11 juil. 2026',
-      duration: '55:10',
-      gradient: 'linear-gradient(135deg,#1C1C8C,#1C1C8C)',
-    },
-  ];
+  /** La plus récente, mise en avant ; la grille commence à la suivante. */
+  protected readonly featured = computed(() => this.all()[0] ?? null);
+
+  protected readonly isSearching = computed(() => this.search().trim().length >= 2);
+
+  /** En recherche : les résultats ; sinon la grille, sans la vidéo à la une. */
+  protected readonly videos = computed(() =>
+    this.isSearching() ? (this.results() ?? []) : this.all().slice(1),
+  );
+
+  private searchTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    void this.load();
+    inject(DestroyRef).onDestroy(() => {
+      if (this.searchTimer) clearTimeout(this.searchTimer);
+    });
+  }
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Nos cultes et enseignements | Ambassadeurs Pour Christ (A.P.C)",
+      title: 'Nos cultes et enseignements | Ambassadeurs Pour Christ (A.P.C)',
       description:
         "Cultes en direct, replays et enseignements de l'Église Les Ambassadeurs Pour Christ (A.P.C), suivis depuis Kinshasa et toutes ses extensions.",
       path: '/nos-cultes',
     });
   }
 
-  protected onPageChange(page: number): void {
-    this.currentPage.set(page);
+  protected onSearch(term: string): void {
+    this.search.set(term);
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+
+    if (term.trim().length < 2) {
+      this.results.set(null);
+      this.searching.set(false);
+      return;
+    }
+
+    // On attend la fin de la frappe : une requête par mot, pas par lettre.
+    this.searching.set(true);
+    this.searchTimer = setTimeout(() => void this.runSearch(term), SEARCH_DELAY_MS);
   }
+
+  protected clearSearch(): void {
+    this.onSearch('');
+  }
+
+  private async runSearch(term: string): Promise<void> {
+    const videos = await this.youtube.search(term);
+    // La saisie a pu changer pendant la requête : on n'affiche que la
+    // réponse à ce qui est encore dans le champ.
+    if (this.search() !== term) return;
+    this.results.set(videos.map(toCulteVideo));
+    this.searching.set(false);
+  }
+
+  protected async loadMore(): Promise<void> {
+    const token = this.nextPage();
+    if (!token || this.loadingMore()) return;
+
+    this.loadingMore.set(true);
+    try {
+      const page = await this.youtube.page(token);
+      this.all.update((videos) => [...videos, ...page.videos.map(toCulteVideo)]);
+      this.nextPage.set(page.nextPage);
+    } finally {
+      this.loadingMore.set(false);
+    }
+  }
+
+  private async load(): Promise<void> {
+    const page = await this.youtube.page();
+    this.live.set(page.live);
+    this.all.set(page.videos.map(toCulteVideo));
+    this.nextPage.set(page.nextPage);
+    this.loading.set(false);
+  }
+}
+
+function toCulteVideo(video: YoutubeVideo): CulteVideo {
+  return {
+    id: video.id,
+    title: video.title,
+    date: formatPublished(video.publishedAt),
+    duration: formatDuration(video.duration),
+    thumbnail: video.thumbnail,
+    href: watchUrl(video.id),
+  };
 }

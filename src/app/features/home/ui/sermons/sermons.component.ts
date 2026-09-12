@@ -1,12 +1,35 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import {
+  YoutubeService,
+  formatDuration,
+  formatPublished,
+  watchUrl,
+  type YoutubeVideo,
+} from '../../../../core/content/youtube.service';
+
 interface SermonSummary {
+  readonly id: string;
   readonly title: string;
   readonly date: string;
   readonly duration: string;
+  readonly thumbnail: string;
+  /** Page de la vidéo sur YouTube. */
+  readonly href: string;
 }
 
+/** Vidéos sous celle à la une : une rangée. */
+const RECENT_COUNT = 3;
+
+/**
+ * Les derniers cultes de la chaîne YouTube, sur l'accueil.
+ *
+ * La vidéo la plus récente à la une, les trois suivantes en rangée ; tout
+ * vient de la fonction Edge `get-youtube`, comme la page des cultes. Tant que
+ * rien n'est chargé - ou si la chaîne est injoignable - la section s'efface :
+ * un accueil sans vidéo vaut mieux qu'un accueil avec des cadres vides.
+ */
 @Component({
   selector: 'app-sermons',
   standalone: true,
@@ -16,14 +39,30 @@ interface SermonSummary {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SermonsComponent {
-  protected readonly featuredSermon: SermonSummary = {
-    title: 'Culte dominical - La puissance de la foi',
-    date: 'Dimanche 28 juillet 2026',
-    duration: '1h 24min',
-  };
+  private readonly youtube = inject(YoutubeService);
 
-  protected readonly recentSermons: readonly SermonSummary[] = [
-    { title: 'Marcher dans la grâce', date: 'Mercredi 24 juillet', duration: '52min' },
-    { title: "L'appel du disciple", date: 'Dimanche 21 juillet', duration: '1h 12min' },
-  ];
+  private readonly videos = signal<readonly SermonSummary[]>([]);
+
+  protected readonly featuredSermon = computed(() => this.videos()[0] ?? null);
+  protected readonly recentSermons = computed(() => this.videos().slice(1, 1 + RECENT_COUNT));
+
+  constructor() {
+    void this.load();
+  }
+
+  private async load(): Promise<void> {
+    const page = await this.youtube.page();
+    this.videos.set(page.videos.slice(0, 1 + RECENT_COUNT).map(toSummary));
+  }
+}
+
+function toSummary(video: YoutubeVideo): SermonSummary {
+  return {
+    id: video.id,
+    title: video.title,
+    date: formatPublished(video.publishedAt),
+    duration: formatDuration(video.duration),
+    thumbnail: video.thumbnail,
+    href: watchUrl(video.id),
+  };
 }
