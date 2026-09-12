@@ -128,7 +128,15 @@ export interface ProgrammePublic {
   /** Mis en avant dans la grille des programmes. */
   is_featured: boolean;
 }
-export type Programme = ProgrammePublic & ContentMeta;
+export type Programme = ProgrammePublic &
+  ContentMeta & {
+    /**
+     * Programme spécial dont la dernière date est passée. Tenu à jour par la
+     * base (déclencheur à l'écriture, tâche cron quotidienne) ; le site
+     * public ne voit jamais ces lignes, le cpannel les range en historique.
+     */
+    is_past: boolean;
+  };
 
 export interface ExtensionPublic {
   id: string;

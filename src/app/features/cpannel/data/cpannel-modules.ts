@@ -86,6 +86,22 @@ export interface ModuleConfig {
    * prêter - il produirait des lignes incomplètes.
    */
   readonly bulkMedia?: boolean;
+  /**
+   * Colonne booléenne qui range une ligne dans l'historique.
+   *
+   * La liste principale ne montre que les lignes où elle est fausse ; un
+   * bouton « Historique » à côté de la création bascule sur les autres. La
+   * colonne est tenue à jour par la base, jamais saisie dans le formulaire.
+   */
+  readonly archive?: { readonly column: string; readonly label: string };
+  /**
+   * Répartition de la liste en blocs, dans cet ordre, selon la valeur d'une
+   * colonne. Un bloc sans ligne n'apparaît pas.
+   */
+  readonly groups?: {
+    readonly column: string;
+    readonly values: readonly { readonly value: string; readonly label: string }[];
+  };
   readonly module: PannelModule;
   /** Segment d'URL sous /cpannel. */
   readonly path: string;
@@ -241,6 +257,14 @@ const PROGRAMMES: ModuleConfig = {
   table: 'programmes',
   icon: 'clock',
   orderBy: { column: 'start_time', ascending: true },
+  archive: { column: 'is_past', label: 'Historique' },
+  groups: {
+    column: 'kind',
+    values: [
+      { value: 'special', label: 'Programmes spéciaux' },
+      { value: 'recurrent', label: 'Programmes récurrents' },
+    ],
+  },
   columns: [
     { key: 'name', label: 'Nom' },
     { key: 'kind', label: 'Type' },

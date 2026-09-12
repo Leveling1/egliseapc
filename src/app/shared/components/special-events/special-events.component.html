@@ -1,0 +1,45 @@
+@if (events().length > 0) {
+  <section class="apc-events" aria-labelledby="apc-events-title">
+    <div class="apc-events__inner">
+      <header class="apc-events__header">
+        <span class="apc-events__overline">À ne pas manquer</span>
+        <h2 id="apc-events-title" class="apc-events__title">
+          @if (single()) {
+            Notre prochain événement
+          } @else {
+            Nos prochains événements
+          }
+        </h2>
+      </header>
+
+      <ul class="apc-events__list" [class.apc-events__list--single]="single()">
+        @for (event of events(); track event.id) {
+          <li class="apc-events__card">
+            @if (event.poster) {
+              <img
+                [src]="event.poster"
+                [alt]="'Affiche : ' + event.name"
+                class="apc-events__poster"
+                loading="lazy"
+                decoding="async"
+              />
+            }
+
+            <div class="apc-events__body">
+              <h3 class="apc-events__name">{{ event.name }}</h3>
+              @if (event.when) {
+                <p class="apc-events__when">{{ event.when }}</p>
+              }
+              @if (event.location) {
+                <p class="apc-events__where">{{ event.location }}</p>
+              }
+              @if (event.description) {
+                <p class="apc-events__description">{{ event.description }}</p>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}

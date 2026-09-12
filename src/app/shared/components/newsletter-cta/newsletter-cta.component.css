@@ -1,6 +1,8 @@
 .apc-newsletter {
   padding: 80px 24px;
-  background: linear-gradient(135deg, #0b0b0b, #1c1c8c);
+  /* Le noir du pied de page, que cette section précède le plus souvent :
+     les deux se fondent en un seul bloc sombre qui clôt la page. */
+  background: var(--color-apc-black);
   position: relative;
   overflow: hidden;
 }

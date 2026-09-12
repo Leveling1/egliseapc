@@ -216,7 +216,7 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 
 ### Primary
 - **Noir de nuit** (`night-black`) : fond du hero, du pied de page, des sections à photo voilée ; encre principale sur fond clair. Ce n'est pas un gris anthracite : le contraste avec le blanc doit rester total.
-- **Bleu profond** (`deep-blue`) : couleur des liens, des surlignements et des overlines sur fond clair ; icône « lecture » des vidéos ; extrémité du dégradé `linear-gradient(135deg, #0b0b0b, #1c1c8c)` qui habille newsletter, couvertures de livres et vignettes sans image. Sur fond noir, il n'apparaît qu'en halo radial très faible derrière le hero (`rgb(28 28 140 / 22%)`).
+- **Bleu profond** (`deep-blue`) : couleur des liens, des surlignements et des overlines sur fond clair ; icône « lecture » des vidéos ; extrémité du dégradé `linear-gradient(135deg, #0b0b0b, #1c1c8c)` qui habille couvertures de livres et vignettes sans image (la newsletter, elle, est sur le noir du pied de page). Sur fond noir, il n'apparaît qu'en halo radial très faible derrière le hero (`rgb(28 28 140 / 22%)`).
 
 ### Secondary
 - **Jaune Surligneur** (`highlighter-yellow`) : le trait de marqueur de l'affiche. Écriture manuscrite « Bienvenue chez », soulignement du lien actif et des liens du hero, bordure gauche de la citation-oracle, overline de la newsletter, référence biblique du thème de l'année, badge « nouveau » sur les livres, séparateur du slogan du pied de page. Il survient toujours sur fond noir ou sur blanc pur ; jamais sur gris.

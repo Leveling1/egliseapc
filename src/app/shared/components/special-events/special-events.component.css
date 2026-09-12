@@ -1,0 +1,135 @@
+/* Même langage que les autres sections sombres : noir de nuit, surtitre
+   jaune, cartes à peine plus claires que le fond. */
+.apc-events {
+  background: var(--color-apc-black);
+  padding: 96px 24px;
+}
+
+.apc-events__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.apc-events__header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.apc-events__overline {
+  font: 600 13px var(--font-heading);
+  color: var(--color-apc-yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.apc-events__title {
+  margin: 12px 0 0;
+  font: 700 clamp(28px, 4vw, 40px) / 1.2 var(--font-heading);
+  color: #fff;
+}
+
+.apc-events__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 24px;
+}
+
+.apc-events__card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 10%);
+}
+
+.apc-events__poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.apc-events__body {
+  padding: 24px 24px 28px;
+}
+
+.apc-events__name {
+  margin: 0;
+  font: 600 clamp(20px, 2.2vw, 24px) / 1.25 var(--font-heading);
+  color: #fff;
+}
+
+.apc-events__when {
+  margin: 12px 0 0;
+  font: 600 15px var(--font-heading);
+  color: var(--color-apc-yellow);
+}
+
+.apc-events__where {
+  margin: 4px 0 0;
+  font: 400 15px var(--font-body);
+  color: rgb(255 255 255 / 70%);
+}
+
+.apc-events__description {
+  margin: 16px 0 0;
+  font: 400 15px / 1.75 var(--font-body);
+  color: rgb(255 255 255 / 85%);
+  white-space: pre-line;
+}
+
+/* Un seul événement : l'affiche à gauche, le texte à droite, comme un
+   encart d'annonce - une carte de grille seule flotterait au milieu. */
+.apc-events__list--single {
+  grid-template-columns: 1fr;
+}
+
+.apc-events__list--single .apc-events__card {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.apc-events__list--single .apc-events__poster {
+  flex: 0 0 40%;
+  width: 40%;
+  aspect-ratio: auto;
+}
+
+.apc-events__list--single .apc-events__body {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 40px;
+  align-self: center;
+}
+
+.apc-events__list--single .apc-events__name {
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+@media (max-width: 768px) {
+  .apc-events {
+    padding: 64px 20px;
+  }
+
+  .apc-events__header {
+    margin-bottom: 32px;
+  }
+
+  .apc-events__list--single .apc-events__card {
+    flex-direction: column;
+  }
+
+  .apc-events__list--single .apc-events__poster {
+    width: 100%;
+    flex: 0 0 auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .apc-events__list--single .apc-events__body {
+    padding: 24px 24px 28px;
+  }
+}

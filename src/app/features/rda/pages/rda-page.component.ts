@@ -12,12 +12,14 @@ import { RdaIntroComponent } from '../ui/rda-intro/rda-intro.component';
 import { RdaLatestEditionComponent } from '../ui/rda-latest-edition/rda-latest-edition.component';
 import { PerfumeDayComponent } from '../ui/perfume-day/perfume-day.component';
 import type { ProgrammePublic } from '../../../core/supabase/database.types';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 
 @Component({
   selector: 'app-rda-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
     NewsletterCtaComponent,

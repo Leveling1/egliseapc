@@ -9,11 +9,13 @@ import { HeroComponent } from '../ui/hero/hero.component';
 import { ProgramsComponent } from '../ui/programs/programs.component';
 import { SermonsComponent } from '../ui/sermons/sermons.component';
 import { WorldPresenceComponent } from '../ui/world-presence/world-presence.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
     HeroComponent,

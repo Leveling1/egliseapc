@@ -9,6 +9,7 @@ import { LiveBannerComponent } from '../ui/live-banner/live-banner.component';
 import { CultesHeroComponent } from '../ui/cultes-hero/cultes-hero.component';
 import { FeaturedCulteComponent } from '../ui/featured-culte/featured-culte.component';
 import { CulteVideoCardComponent } from '../ui/culte-video-card/culte-video-card.component';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 interface CulteVideo {
   readonly title: string;
@@ -21,6 +22,7 @@ interface CulteVideo {
   selector: 'app-cultes-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     HeaderComponent,
     FooterComponent,
     FilterBarComponent,

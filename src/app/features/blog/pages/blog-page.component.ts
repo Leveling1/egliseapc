@@ -20,6 +20,7 @@ import { BlogHeroComponent } from '../ui/blog-hero/blog-hero.component';
 import { FeaturedArticleComponent } from '../ui/featured-article/featured-article.component';
 import { ArticleCardComponent } from '../ui/article-card/article-card.component';
 import { toArticleView, type ArticleView } from '../data/article-view';
+import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 const ALL_CATEGORIES = 'Tous';
 
@@ -43,6 +44,7 @@ function fold(text: string): string {
   selector: 'app-blog-page',
   standalone: true,
   imports: [
+    SpecialEventsComponent,
     RouterLink,
     HeaderComponent,
     FooterComponent,

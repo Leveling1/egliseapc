@@ -1,3 +1,4 @@
+import { LowerCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -45,6 +46,7 @@ type Draft = Record<string, unknown>;
   selector: 'app-cpannel-resource-page',
   standalone: true,
   imports: [
+    LowerCasePipe,
     FormsModule,
     PaginationComponent,
     CpannelMediaFieldComponent,
@@ -141,6 +143,36 @@ export class CpannelResourcePageComponent {
    * courante, et chercher un titre reviendrait à deviner d'abord sa page.
    */
   protected readonly filteredRows = this.rows;
+
+  /** Historique affiché (lignes archivées) plutôt que la liste courante. */
+  protected readonly archived = signal(false);
+
+  /**
+   * Lignes réparties en blocs, quand le module le demande.
+   *
+   * Chaque bloc ne reprend que les lignes de sa valeur ; un bloc vide est
+   * omis, la page se lit alors comme s'il n'existait pas. Sans groupes, un
+   * seul bloc sans titre porte toute la liste.
+   */
+  protected readonly groupedRows = computed(() => {
+    const config = this.config();
+    const rows = this.filteredRows();
+    if (!config?.groups) return [{ label: null as string | null, rows }];
+
+    const { column, values } = config.groups;
+    return values
+      .map((group) => ({
+        label: group.label as string | null,
+        rows: rows.filter((row) => row[column] === group.value),
+      }))
+      .filter((group) => group.rows.length > 0);
+  });
+
+  protected toggleArchive(): void {
+    this.archived.update((value) => !value);
+    this.page.set(1);
+    void this.load();
+  }
 
   protected readonly totalRows = signal(0);
   protected readonly page = signal(1);
@@ -250,6 +282,7 @@ export class CpannelResourcePageComponent {
         this.closeEditor();
         this.search.set('');
         this.page.set(1);
+        this.archived.set(false);
         void this.load();
       });
     });
@@ -302,6 +335,7 @@ export class CpannelResourcePageComponent {
         page: this.page(),
         pageSize: this.pageSize,
         search: this.search(),
+        archived: this.archived(),
       });
       this.rows.set(rows);
       this.totalRows.set(total);

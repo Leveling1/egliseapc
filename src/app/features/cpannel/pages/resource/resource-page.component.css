@@ -16,6 +16,22 @@
   font: 600 20px var(--font-heading);
 }
 
+.cp-res__title-note {
+  font-weight: 500;
+  color: var(--cp-ink-muted);
+}
+
+/* Titre d'un bloc de lignes (programmes spéciaux, récurrents…). */
+.cp-res__group {
+  margin: 22px 0 10px 4px;
+  font: 600 14px var(--font-heading);
+  color: var(--cp-ink-soft);
+}
+
+.cp-res__group:first-of-type {
+  margin-top: 0;
+}
+
 .cp-res__count {
   margin: 4px 0 0;
   font-size: 13px;

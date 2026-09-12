@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-12T09:12:58.112Z",
+  "generatedAt": "2026-09-12T11:00:34.777Z",
   "title": "Design System: Ambassadeurs pour Christ",
   "extensions": {
     "colorMeta": {
@@ -662,7 +662,7 @@
       "refersTo": "newsletter-submit",
       "description": "Seul bouton plein du site public : jaune accolé au champ, orange braise au survol.",
       "html": "<form class=\"ds-nl\" onsubmit=\"return false\"><input class=\"ds-nl__input\" type=\"email\" placeholder=\"Votre adresse e-mail\"><button class=\"ds-nl__submit\" type=\"submit\">S'abonner</button></form>",
-      "css": ".ds-nl{display:flex;max-width:480px;padding:32px;background:linear-gradient(135deg,#0b0b0b,#1c1c8c)}.ds-nl__input{flex:1;min-width:0;padding:14px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-right:none;border-radius:4px 0 0 10px;font:400 14px \"Open Sans\",sans-serif;color:#fff;outline:none}.ds-nl__input::placeholder{color:rgba(255,255,255,.62)}.ds-nl__input:focus{border-color:#ffe600}.ds-nl__submit{border:none;padding:14px 28px;background:#ffe600;color:#0b0b0b;font:600 14px Poppins,sans-serif;border-radius:0 10px 10px 0;cursor:pointer;white-space:nowrap;transition:background .2s}.ds-nl__submit:hover{background:#e05e00}.ds-nl__submit:focus-visible{outline:2px solid #fff;outline-offset:2px}"
+      "css": ".ds-nl{display:flex;max-width:480px;padding:32px;background:#0b0b0b}.ds-nl__input{flex:1;min-width:0;padding:14px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-right:none;border-radius:4px 0 0 10px;font:400 14px \"Open Sans\",sans-serif;color:#fff;outline:none}.ds-nl__input::placeholder{color:rgba(255,255,255,.62)}.ds-nl__input:focus{border-color:#ffe600}.ds-nl__submit{border:none;padding:14px 28px;background:#ffe600;color:#0b0b0b;font:600 14px Poppins,sans-serif;border-radius:0 10px 10px 0;cursor:pointer;white-space:nowrap;transition:background .2s}.ds-nl__submit:hover{background:#e05e00}.ds-nl__submit:focus-visible{outline:2px solid #fff;outline-offset:2px}"
     },
     {
       "name": "Carte d'article",

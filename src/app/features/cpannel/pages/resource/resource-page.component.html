@@ -18,7 +18,9 @@
 
     <header class="cp-res__head">
       <div>
-        <h2 class="cp-res__title">{{ cfg.label }}</h2>
+        <h2 class="cp-res__title">
+          {{ cfg.label }}@if (archived()) { <span class="cp-res__title-note">- historique</span> }
+        </h2>
         <p class="cp-res__count">
           @if (totalRows() > 1) {
             {{ totalRows() }} enregistrements
@@ -42,6 +44,20 @@
         @if (cfg.exportable && rows().length) {
           <button type="button" class="cp-btn cp-btn--ghost" (click)="exportCsv()">
             Exporter en CSV
+          </button>
+        }
+
+        @if (cfg.archive; as archive) {
+          <!-- Bascule liste courante / historique. Pressé, le bouton se lit
+               comme un onglet actif : on sait qu'on regarde le passé. -->
+          <button
+            type="button"
+            class="cp-btn cp-btn--ghost"
+            [class.cp-btn--pressed]="archived()"
+            [attr.aria-pressed]="archived()"
+            (click)="toggleArchive()"
+          >
+            {{ archive.label }}
           </button>
         }
 
@@ -87,6 +103,11 @@
       <div class="cp-card cp-res__empty">
         @if (search()) {
           <p class="cp-res__empty-title">Aucun résultat pour « {{ search() }} »</p>
+        } @else if (archived()) {
+          <p class="cp-res__empty-title">L'historique est vide</p>
+          <p class="cp-res__empty-text">
+            Les {{ cfg.label | lowercase }} dont la date est passée viendront ici, automatiquement.
+          </p>
         } @else {
           @if (cfg.readOnly) {
             <p class="cp-res__empty-title">Aucun {{ cfg.singular }} pour l'instant</p>
@@ -117,6 +138,10 @@
         }
       </div>
     } @else {
+      @for (group of groupedRows(); track group.label) {
+      @if (group.label) {
+        <h3 class="cp-res__group">{{ group.label }}</h3>
+      }
       <div class="cp-card cp-tablewrap" [class.cp-tablewrap--busy]="loading()" [attr.aria-busy]="loading()">
         <table class="cp-table">
           <thead>
@@ -129,7 +154,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (row of filteredRows(); track row.id) {
+            @for (row of group.rows; track row.id) {
               <tr [class.cp-table__row--hidden]="!row.is_visible">
                 @for (column of cfg.columns; track column.key) {
                   @if (column.kind === 'image' && row[column.key]) {
@@ -185,6 +210,7 @@
           </tbody>
         </table>
       </div>
+      }
     }
 
     @if (totalPages() > 1) {

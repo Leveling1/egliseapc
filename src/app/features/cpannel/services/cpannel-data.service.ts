@@ -44,7 +44,7 @@ export class CpannelDataService {
    */
   async list(
     config: ModuleConfig,
-    options: { page?: number; pageSize?: number; search?: string } = {},
+    options: { page?: number; pageSize?: number; search?: string; archived?: boolean } = {},
   ): Promise<{ rows: ContentRow[]; total: number }> {
     const page = Math.max(1, options.page ?? 1);
     const pageSize = Math.max(1, options.pageSize ?? DEFAULT_PAGE_SIZE);
@@ -58,6 +58,11 @@ export class CpannelDataService {
         nullsFirst: false,
       })
       .range(from, from + pageSize - 1);
+
+    // Liste courante ou historique, jamais les deux mêlés.
+    if (config.archive) {
+      query = query.eq(config.archive.column, options.archived === true);
+    }
 
     const term = options.search?.trim();
     if (term) {
