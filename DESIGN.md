@@ -11,22 +11,26 @@ colors:
   ink-secondary: "#666666"
   ink-faint: "#6f6f6f"
   ember-orange: "#e05e00"
+  charte-orange: "#ff6a00"
+  charte-blue-light: "#b3b6ff"
+  rule-gray: "#e5e5e5"
+  rule-gray-strong: "#d4d4d4"
   cp-accent: "#1c1c8c"
-  cp-accent-hover: "#2a2ab0"
-  cp-accent-soft: "#ececf7"
-  cp-accent-softer: "#f5f5fb"
-  cp-accent-border: "#c9c9e6"
-  cp-canvas: "#eeeef2"
+  cp-accent-hover: "#2333a3"
+  cp-accent-soft: "#e4e9f7"
+  cp-accent-softer: "#eff3fb"
+  cp-accent-border: "#b7c3e8"
+  cp-canvas: "#edf0f5"
   cp-surface: "#ffffff"
-  cp-surface-muted: "#f7f7fa"
+  cp-surface-muted: "#f5f7fa"
   cp-ink: "#0b0b0b"
-  cp-ink-soft: "#53535f"
-  cp-ink-muted: "#696978"
-  cp-line: "#e6e6ec"
+  cp-ink-soft: "#515865"
+  cp-ink-muted: "#656c7b"
+  cp-line: "#e2e6ee"
   cp-positive: "#177344"
   cp-positive-soft: "#e6f4ec"
-  cp-neutral-stat: "#6b6b78"
-  cp-neutral-stat-soft: "#eeeef1"
+  cp-neutral-stat: "#5f6675"
+  cp-neutral-stat-soft: "#eaedf2"
   cp-danger: "#b4231f"
   cp-danger-hover: "#911b18"
   cp-danger-soft: "#fbeceb"
@@ -38,32 +42,32 @@ typography:
     lineHeight: 1.15
     letterSpacing: "0.02em"
   display:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "56px"
     fontWeight: 700
     lineHeight: 1.1
   headline:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "40px"
     fontWeight: 700
     lineHeight: 1.2
   title:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "17px"
     fontWeight: 600
     lineHeight: 1.4
   body:
-    fontFamily: "Open Sans, sans-serif"
+    fontFamily: "Open Sans, Open Sans Fallback, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.6
   quote:
-    fontFamily: "Open Sans, sans-serif"
+    fontFamily: "Open Sans, Open Sans Fallback, sans-serif"
     fontSize: "19px"
     fontWeight: 400
     lineHeight: 1.7
   label:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "13px"
     fontWeight: 600
     letterSpacing: "2px"
@@ -72,16 +76,16 @@ typography:
     fontSize: "34px"
     fontWeight: 600
   cp-control:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "13px"
     fontWeight: 500
   cp-body:
-    fontFamily: "Open Sans, sans-serif"
+    fontFamily: "Open Sans, Open Sans Fallback, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.6
   cp-column:
-    fontFamily: "Poppins, sans-serif"
+    fontFamily: "Poppins, Poppins Fallback, sans-serif"
     fontSize: "12px"
     fontWeight: 500
     letterSpacing: "0.6px"
@@ -91,6 +95,7 @@ rounded:
   md: "6px"
   pill: "999px"
   circle: "50%"
+  cp-small: "6px"
   cp-control: "10px"
   cp-card: "18px"
   cp-rail: "34px"
@@ -195,7 +200,7 @@ Le site public est une affiche d'événement collée dans la nuit de Kinshasa, q
 
 Sur les pages claires (Ressources, Blog, Contact) l'affiche se retourne : fond blanc ou gris très clair, encre noire, le bleu profond de la charte prend le rôle du jaune pour les surlignements. La densité est faible partout – sections de 100 px, colonnes de lecture à 560–760 px – et les composants sont discrets et nets : des liens soulignés d'un trait plutôt que des boutons pleins, des cartes blanches à coins de 4 px, aucune ombre qu'on remarque.
 
-Le back-office « cpannel » est un second monde, volontairement distinct : un canevas gris-bleu clair, des cartes blanches à grand rayon séparées par le blanc et une ombre à peine perceptible, et un seul accent – le bleu profond – décliné en teintes très claires. Aucun jaune n'y entre ; le rouge n'y a qu'un sens, la suppression.
+Le back-office « cpannel » est un second monde, volontairement distinct : un canevas gris-bleu clair (teintes glissées vers 216–232° pour que l'accent de la charte, à 240° pur, se lise bleu et non violet), des cartes blanches à grand rayon séparées par le blanc et une ombre à peine perceptible, et un seul accent – le bleu profond – décliné en teintes très claires. Aucun jaune n'y entre ; le rouge n'y a qu'un sens, la suppression.
 
 **Key Characteristics:**
 - Noir de nuit (#0b0b0b) comme fond principal du site public ; photos toujours sous un voile noir de 55 à 82 %.
@@ -216,12 +221,15 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 ### Secondary
 - **Jaune Surligneur** (`highlighter-yellow`) : le trait de marqueur de l'affiche. Écriture manuscrite « Bienvenue chez », soulignement du lien actif et des liens du hero, bordure gauche de la citation-oracle, overline de la newsletter, référence biblique du thème de l'année, badge « nouveau » sur les livres, séparateur du slogan du pied de page. Il survient toujours sur fond noir ou sur blanc pur ; jamais sur gris.
 - **Orange braise** (`ember-orange`) : une seule apparition, le survol du bouton d'envoi jaune de la newsletter – le marqueur qui chauffe. Écho à l'orange du logo, sans autre usage.
+- **Orange de la charte** (`charte-orange`, à 90 %) : badge d'événement sur l'article à la une et la dernière édition du RDA – le seul accent chaud, jamais une surface.
+- **Bleu clair de la charte** (`charte-blue-light`) : accent sur fond noir, là où le jaune est interdit – l'outil actif de la barre de l'éditeur du cpannel.
 
 ### Neutral
 - **Blanc papier** (`paper-white`) : texte sur fond noir, fond des cartes et des pages claires.
 - **Gris de section** (`section-gray`) : fond des sections alternées sur pages claires (sermons, listes).
 - **Encre douce** (`ink-soft`) : paragraphes longs sur fond clair (histoire, fondements, article).
 - **Encre secondaire** (`ink-secondary`) : introductions et extraits sur fond clair.
+- **Filets** (`rule-gray`, `rule-gray-strong`) : lignes et points de la chronologie, séparateurs sur fond clair – jamais du texte.
 - **Encre pâle** (`ink-faint`) : dates, métadonnées, placeholders. La plus claire des encres reste à 4,6:1 sur le gris de section : sur un téléphone au soleil, une date doit encore se lire.
 - **Blanc voilé** : sur fond noir, le texte secondaire est du blanc à 70–85 % (`rgba(255,255,255,0.7)` pour les introductions, `0.75–0.85` pour les liens de navigation, `0.5` pour le slogan du pied de page) – jamais un gris opaque.
 
@@ -248,8 +256,8 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 ## Typography
 
 **Poster Font:** Helvetica (avec Arial, sans-serif)
-**Display Font:** Poppins (avec sans-serif)
-**Body Font:** Open Sans (avec sans-serif)
+**Display Font:** Poppins (avec « Poppins Fallback » – Arial aux métriques ajustées – puis sans-serif)
+**Body Font:** Open Sans (avec « Open Sans Fallback » – Arial ajustée – puis sans-serif)
 **Script Font:** Dancing Script (avec cursive) ; le mot « Bienvenue chez » du hero est un SVG de lettrage, pas une police.
 
 **Character :** une grotesque grasse pour crier le nom sur l'affiche, une géométrique ronde et bienveillante pour parler, une humaniste sobre pour lire. L'écriture manuscrite – SVG jaune dans le hero, Dancing Script sur le thème de l'année – est la main qui a signé l'affiche.
@@ -270,6 +278,8 @@ Une palette de nuit – noir, blanc, un jaune de marqueur – tenue par le bleu 
 **The Poster Exception Rule.** Helvetica n'existe qu'à trois endroits : le lockup du hero, le filigrane « APC » du pied de page (700, `clamp(120px, 42vw, 360px)`, 6 % de blanc) et la navigation de la page d'accueil. Partout ailleurs, Poppins titre et Open Sans lit.
 
 **The Reference Rule.** Une citation biblique porte toujours sa référence, en Poppins 600 sous le texte – jaune sur noir, bleu sur clair. Jamais de verset orphelin.
+
+**The Silent Swap Rule.** Les polices web arrivent après le texte ; les faces de repli occupent exactement leur place (largeur à ±1,5 %, hauteurs alignées) pour que le rhabillage ne recompose aucune ligne. Toute police est appelée par son jeton – `--font-heading`, `--font-body`, `--font-script` – jamais par son nom.
 
 **The One Line Rule.** Le nom de l'église dans le hero ne se replie jamais au-dessus de 700 px ; la taille se calcule sur la largeur disponible plutôt que de laisser le titre casser.
 
@@ -309,7 +319,7 @@ Coins presque droits sur le site public : 4 px sur les cartes, couvertures, vign
 
 Le trait jaune est la forme signature : 2 px sous un lien, 3 px à gauche d'une citation, un mot manuscrit qui déborde du bloc de capitales.
 
-Le cpannel arrondit davantage : 10 px pour tout contrôle (boutons, champs, alertes), 18 px pour les cartes et modales, 34 px pour le rail-pilule et 21 px pour ses éléments.
+Le cpannel arrondit davantage, sur trois rayons seulement : 6 px pour les petits éléments (vignettes, étiquettes de code, sélecteurs en ligne), 10 px pour tout contrôle (boutons, champs, alertes), 18 px pour toute surface qui s'appelle carte – `.cp-card`, modales, tuiles du tableau de bord, connexion. Le rail-pilule (34 px) et ses éléments (21 px) sont les seules exceptions, dictées par leur forme.
 
 ## Components
 

@@ -10,7 +10,7 @@
 }
 
 .apc-contact__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -18,19 +18,19 @@
 
 .apc-contact__title {
   margin: 10px 0 16px;
-  font: 700 clamp(32px, 5vw, 52px) / 1.1 'Poppins', sans-serif;
+  font: 700 clamp(32px, 5vw, 52px) / 1.1 var(--font-heading);
   color: var(--color-apc-black);
 }
 
 .apc-contact__intro {
   margin: 0;
-  font: 400 17px/1.7 'Open Sans', sans-serif;
+  font: 400 17px/1.7 var(--font-body);
   color: rgb(0 0 0 / 65%);
 }
 
 .apc-contact__empty {
   text-align: center;
-  font: 400 15px 'Open Sans', sans-serif;
+  font: 400 15px var(--font-body);
   color: rgb(0 0 0 / 55%);
 }
 
@@ -41,7 +41,9 @@
   max-width: 1200px;
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* `min(320px, 100%)` : sur un téléphone de 320 px, la colonne de contenu ne
+     fait que 272 px ; réclamer 320 faisait déborder la page de 20 px. */
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
 }
 
 .apc-contact__card {
@@ -55,13 +57,13 @@
 
 .apc-contact__name {
   margin: 0;
-  font: 700 20px 'Poppins', sans-serif;
+  font: 700 20px var(--font-heading);
   color: var(--color-apc-black);
 }
 
 .apc-contact__place {
   margin: 4px 0 20px;
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -79,7 +81,7 @@
   display: grid;
   grid-template-columns: 96px 1fr;
   gap: 12px;
-  font: 400 15px/1.5 'Open Sans', sans-serif;
+  font: 400 15px/1.5 var(--font-body);
 }
 
 .apc-contact__row dt {
@@ -109,7 +111,7 @@
 .apc-contact__cta {
   margin-top: 24px;
   align-self: flex-start;
-  font: 600 14px 'Poppins', sans-serif;
+  font: 600 14px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-decoration: none;
 }
@@ -125,5 +127,14 @@
 
   .apc-contact__card {
     padding: 22px;
+  }
+}
+
+/* Au doigt, le lien « Itinéraire » devient une zone de 44 px : un trait de
+   texte de 21 px se rate un coup sur deux au pouce. */
+@media (pointer: coarse) {
+  .apc-contact__cta {
+    padding: 12px 0;
+    margin-top: 12px;
   }
 }

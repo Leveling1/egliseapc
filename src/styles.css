@@ -21,9 +21,78 @@
   --color-apc-ink-secondary: #666666;
   --color-apc-ink-faint: #6f6f6f;
 
-  --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Open Sans', sans-serif;
+  /* Filets et repères sur fond clair : lignes de chronologie, points. */
+  --color-apc-rule: #e5e5e5;
+  --color-apc-rule-strong: #d4d4d4;
+
+  /* Orange de la charte : le seul accent chaud, pour un badge d'événement. */
+  --color-apc-orange: #ff6a00;
+  /* Bleu clair de la charte : accent sur fond noir (barre de l'éditeur). */
+  --color-apc-blue-light: #b3b6ff;
+
+  --font-heading: 'Poppins', 'Poppins Fallback', sans-serif;
+  --font-body: 'Open Sans', 'Open Sans Fallback', sans-serif;
   --font-script: 'Dancing Script', cursive;
+}
+
+/* ------------------------------------------------------------
+   Polices de repli aux métriques ajustées
+   ------------------------------------------------------------
+   Les polices web arrivent après le texte (display=swap, voir index.html).
+   Sur une connexion lente, la page se lit d'abord en Arial, puis se rhabille
+   - et si Arial n'a pas la même chasse que Poppins, chaque ligne change de
+   longueur à ce moment-là : les paragraphes se recomposent sous les yeux du
+   lecteur. Ces deux faces sont Arial redimensionnée pour occuper exactement
+   la place de Poppins et d'Open Sans, ligne pour ligne. Le rhabillage devient
+   un simple changement de dessin, sans saut de mise en page.
+
+   Chasses mesurées dans le navigateur sur un texte français, aux graisses
+   réellement employées : Poppins fait 106-107 % d'Arial en 600/700 (les
+   titres) et 112 % en 400 (rare) ; Open Sans, 103 % en 400 (le corps) et
+   100-103 % en 600/700. Les hauteurs viennent des métriques des fichiers
+   Google Fonts. Helvetica du hero n'en a pas besoin : Arial en est le clone
+   métrique. */
+@font-face {
+  font-family: 'Poppins Fallback';
+  font-weight: 100 500;
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+  size-adjust: 112%;
+  ascent-override: 93.5%;
+  descent-override: 31%;
+  line-gap-override: 8.9%;
+}
+
+/* Un second visage pour les graisses fortes : sans lui, le navigateur
+   épaissirait Arial Regular artificiellement, plus étroit que la vraie Arial
+   Bold que Poppins Bold doit remplacer. */
+@font-face {
+  font-family: 'Poppins Fallback';
+  font-weight: 600 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  size-adjust: 106.5%;
+  ascent-override: 93.5%;
+  descent-override: 31%;
+  line-gap-override: 8.9%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback';
+  font-weight: 100 500;
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+  size-adjust: 103.3%;
+  ascent-override: 101.5%;
+  descent-override: 27.8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback';
+  font-weight: 600 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  size-adjust: 101%;
+  ascent-override: 101.5%;
+  descent-override: 27.8%;
+  line-gap-override: 0%;
 }
 
 body {
@@ -115,38 +184,49 @@ main:focus {
    statistique en baisse - celles-ci passent en gris neutre.
    ------------------------------------------------------------ */
 .cpannel {
+  /* Le bleu de la charte, tel quel. Ses déclinaisons, elles, ne sont plus de
+     simples éclaircissements : à 240° pur, les teintes claires tournaient au
+     lavande et faisaient lire tout le cpannel en violet - alors que sur le
+     site public le même bleu voisine avec du noir et du jaune. Les teintes
+     glissent donc de 8 à 24° vers le cyan (216-232°) en perdant de la
+     saturation : le canevas redevient un gris bleuté, les fonds de pastille
+     un bleu pâle, et l'accent ressort bleu. */
   --cp-accent: #1c1c8c;
-  --cp-accent-hover: #2a2ab0;
-  --cp-accent-soft: #ececf7;
-  --cp-accent-softer: #f5f5fb;
-  --cp-accent-border: #c9c9e6;
+  --cp-accent-hover: #2333a3;
+  --cp-accent-soft: #e4e9f7;
+  --cp-accent-softer: #eff3fb;
+  --cp-accent-border: #b7c3e8;
 
-  --cp-canvas: #eeeef2;
+  --cp-canvas: #edf0f5;
   --cp-surface: #fff;
-  --cp-surface-muted: #f7f7fa;
+  --cp-surface-muted: #f5f7fa;
 
   --cp-ink: #0b0b0b;
-  --cp-ink-soft: #53535f;
-  /* « Atténuée » mais lisible : 5,4:1 sur blanc, 4,7:1 sur le canevas. Cette
+  --cp-ink-soft: #515865;
+  /* « Atténuée » mais lisible : 5,3:1 sur blanc, 4,6:1 sur le canevas. Cette
      encre porte des informations - en-têtes de colonnes, aides de champ,
      compteurs - et non de la décoration ; l'ancien #9a9aa8 (2,8:1) la
      rendait illisible au soleil. */
-  --cp-ink-muted: #696978;
+  --cp-ink-muted: #656c7b;
 
-  --cp-line: #e6e6ec;
+  --cp-line: #e2e6ee;
 
   --cp-positive: #177344;
   --cp-positive-soft: #e6f4ec;
-  --cp-neutral-stat: #6b6b78;
-  --cp-neutral-stat-soft: #eeeef1;
+  --cp-neutral-stat: #5f6675;
+  --cp-neutral-stat-soft: #eaedf2;
 
   /* Réservé aux suppressions et aux avertissements destructeurs. */
   --cp-danger: #b4231f;
   --cp-danger-hover: #911b18;
   --cp-danger-soft: #fbeceb;
 
+  /* Trois rayons, pas un de plus : la carte (18), le contrôle (10) et le
+     petit élément - vignette, étiquette, icône - (6). Toute surface qui
+     s'appelle « carte » porte `.cp-card` et donc les 18 px. */
   --cp-radius-card: 18px;
   --cp-radius-control: 10px;
+  --cp-radius-small: 6px;
   --cp-shadow: 0 1px 2px rgb(11 11 11 / 4%), 0 8px 24px rgb(11 11 11 / 4%);
 
   font-family: var(--font-body);

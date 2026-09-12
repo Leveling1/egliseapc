@@ -1,114 +1,254 @@
-.apc-foundations {
-  padding: 100px 24px;
-  background: #fff;
+/*
+ * Nos fondements - trois parties en plein écran, chacune sur sa photo voilée.
+ *
+ * Deux états, un seul balisage :
+ *
+ * EMPILÉ (défaut, HTML prérendu, sans JavaScript, mouvement réduit) : les
+ * trois parties se suivent, chacune haute d'un écran.
+ *
+ * ÉPINGLÉ (`.apc-found--pinned`, posé par le composant) : l'enveloppe fait
+ * trois écrans de haut, la scène reste collée pendant qu'on la traverse, et
+ * les parties, superposées, se fondent l'une dans l'autre au rythme de
+ * `--apc-panel` (0 → 1) que le composant écrit à chaque image.
+ */
+
+.apc-found {
+  position: relative;
+  background: var(--color-apc-black);
 }
 
-.apc-foundations__inner {
-  max-width: 1200px;
-  margin: 0 auto;
+.apc-found__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.apc-foundations__header {
+.apc-found__stage {
+  position: relative;
+}
+
+.apc-found--pinned .apc-found__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------- Partie ---------- */
+.apc-found__panel {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 120px 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* 1 : pleinement posée. Le composant fait varier cette valeur en mode
+     épinglé ; empilée, elle reste à 1 et rien ne bouge. */
+  --apc-panel: 1;
+}
+
+.apc-found--pinned .apc-found__panel {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  opacity: var(--apc-panel);
+}
+
+/* La partie éteinte (marquée `aria-hidden` par le composant) ne reçoit ni les
+   clics ni la sélection : seule la partie en cours répond. */
+.apc-found--pinned .apc-found__panel[aria-hidden='true'] {
+  pointer-events: none;
+}
+
+/* ---------- Photo et voile ---------- */
+.apc-found__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.apc-found__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Le voile : 68 % de noir, dans la fourchette du site (55-82 %) - assez
+   dense pour un paragraphe de texte, assez léger pour reconnaître la scène.
+   Un peu plus sombre vers le bas, où le texte long de la Mission descend. */
+.apc-found__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(11 11 11 / 62%), rgb(11 11 11 / 76%));
+}
+
+/* Épinglée, chaque photo arrive légèrement agrandie et se pose à sa taille à
+   mesure qu'elle apparaît : un mouvement de caméra, pas un simple fondu. */
+.apc-found--pinned .apc-found__img {
+  transform: scale(calc(1.08 - 0.08 * var(--apc-panel)));
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* ---------- Texte ---------- */
+.apc-found__content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
   text-align: center;
-  margin-bottom: 56px;
+  color: #fff;
 }
 
-.apc-foundations__overline {
-  font: 600 13px 'Poppins', sans-serif;
-  color: var(--color-apc-blue-dark);
+/* Le texte monte en place avec sa partie, un peu après la photo. */
+.apc-found--pinned .apc-found__content {
+  transform: translateY(calc((1 - var(--apc-panel)) * 28px));
+}
+
+/* La partie en dessous s'efface doucement quand la suivante l'a recouverte :
+   son texte ne doit pas transparaître dans le fondu, la photo suffit. */
+.apc-found--pinned .apc-found__panel[aria-hidden='true'] .apc-found__content {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.apc-found__overline {
+  display: block;
+  font: 600 13px var(--font-heading);
+  color: var(--color-apc-yellow);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
-.apc-foundations__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
-  color: var(--color-apc-black);
-  margin: 12px 0 0;
-}
-
-.apc-foundations__intro {
-  font: 400 16px/1.6 'Open Sans', sans-serif;
-  color: var(--color-apc-ink-secondary);
-  margin: 16px auto 0;
-  max-width: 640px;
-}
-
-.apc-foundations__grid {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.apc-foundations__card {
-  flex: 1;
-  min-width: 260px;
-  padding: 36px;
-  background: var(--color-apc-gray-light);
-  border-radius: 4px;
-  text-align: left;
-  border: 1px solid rgba(28, 28, 140, 0.06);
-}
-
-.apc-foundations__icon {
-  width: 56px;
-  height: 56px;
-  background: var(--color-apc-blue-dark);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 0 20px;
-  color: #fff;
-  font-size: 24px;
-}
-
-.apc-foundations__card-title {
-  font: 700 22px 'Poppins', sans-serif;
-  color: var(--color-apc-black);
-  margin: 0 0 12px;
-}
-
-.apc-foundations__card-text {
-  font: 400 15px/1.7 'Open Sans', sans-serif;
-  color: var(--color-apc-ink-soft);
-  margin: 0;
-}
-
-.apc-foundations__list {
+/* Le nom de la partie, en capitales d'affiche - c'est lui qu'on lit de loin. */
+.apc-found__title {
   margin: 16px 0 0;
-  padding-left: 20px;
+  font: 700 clamp(44px, 8vw, 96px) / 1 var(--font-heading);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.apc-found__text {
+  margin: 28px auto 0;
+  max-width: 640px;
+  font: 400 clamp(16px, 1.5vw, 19px) / 1.7 var(--font-body);
+  color: rgb(255 255 255 / 85%);
+}
+
+.apc-found__list {
+  margin: 24px auto 0;
+  padding: 0;
+  max-width: 640px;
+  list-style: none;
+  counter-reset: aile;
+  text-align: left;
+}
+
+.apc-found__item {
+  position: relative;
+  padding-left: 40px;
+  margin-top: 14px;
+  font: 400 15px / 1.65 var(--font-body);
+  color: rgb(255 255 255 / 82%);
+}
+
+/* Numéro d'aile, en jaune, dans la marge - un repère, pas une puce. */
+.apc-found__item::before {
+  counter-increment: aile;
+  content: counter(aile);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--color-apc-yellow);
+  border-radius: 50%;
+  font: 600 12px / 24px var(--font-heading);
+  color: var(--color-apc-yellow);
+  text-align: center;
+}
+
+/* ---------- Points de progression ---------- */
+.apc-found__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 32px;
+  z-index: 3;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  gap: 8px;
 }
 
-.apc-foundations__list-item {
-  font: 400 14px/1.7 'Open Sans', sans-serif;
-  color: var(--color-apc-ink-soft);
+/* Empilée, la section n'a pas de scène fixe : les points n'ont pas de bord où
+   se poser, on les retire. */
+.apc-found:not(.apc-found--pinned) .apc-found__dots {
+  display: none;
 }
 
-@media (max-width: 768px) {
-  .apc-foundations {
-    padding: 64px 20px;
+/* Zone de 24 px pour un point de 8 : on vise la zone, pas le point. */
+.apc-found__dot {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.apc-found__dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 40%);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.apc-found__dot:hover::before {
+  background: rgb(255 255 255 / 75%);
+}
+
+.apc-found__dot--active::before {
+  background: var(--color-apc-yellow);
+  transform: scale(1.35);
+}
+
+/* ---------- Téléphone ---------- */
+@media (max-width: 640px) {
+  .apc-found__panel {
+    padding: 100px 20px 88px;
   }
 
-  .apc-foundations__header {
-    margin-bottom: 40px;
+  .apc-found__text {
+    margin-top: 20px;
   }
 
-  .apc-foundations__title {
-    font-size: 30px;
-  }
-
-  .apc-foundations__card {
-    padding: 28px;
-    min-width: 100%;
+  .apc-found__item {
+    font-size: 14px;
+    padding-left: 36px;
   }
 }
 
-@media (max-width: 400px) {
-  .apc-foundations__title {
-    font-size: 26px;
+/* Écran bas (téléphone en paysage) : la Mission et ses deux ailes dépassent
+   un écran ; le texte peut alors défiler à l'intérieur de sa partie. */
+@media (max-height: 560px) {
+  .apc-found--pinned .apc-found__panel {
+    place-items: start center;
+    overflow-y: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apc-found__dot::before {
+    transition: none;
   }
 }

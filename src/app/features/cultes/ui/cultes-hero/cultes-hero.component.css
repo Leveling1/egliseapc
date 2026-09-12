@@ -1,5 +1,7 @@
 .apc-cultes-hero {
-  padding: 60px 24px;
+  /* 140 px en haut : l'en-tête (80 px, posé en absolu) puis la même
+     respiration que la page Contact. À 60 px, l'overline se collait au menu. */
+  padding: 140px 24px 60px;
   background: #fff;
 }
 
@@ -10,20 +12,20 @@
 }
 
 .apc-cultes-hero__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-cultes-hero__title {
-  font: 700 48px/1.15 'Poppins', sans-serif;
+  font: 700 48px/1.15 var(--font-heading);
   color: var(--color-apc-black);
   margin: 12px 0 0;
 }
 
 .apc-cultes-hero__lead {
-  font: 400 17px/1.6 'Open Sans', sans-serif;
+  font: 400 17px/1.6 var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 20px auto 0;
   max-width: 600px;
@@ -31,7 +33,7 @@
 
 @media (max-width: 640px) {
   .apc-cultes-hero {
-    padding: 60px 20px;
+    padding: 110px 20px 48px;
   }
 
   .apc-cultes-hero__title {

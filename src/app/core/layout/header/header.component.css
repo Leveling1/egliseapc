@@ -34,7 +34,7 @@
 
 /* Default ("overlay"): white text over a dark/photo hero, Poppins */
 .apc-nav__wordmark {
-  font: 700 18px 'Poppins', sans-serif;
+  font: 700 18px var(--font-heading);
   color: #fff;
   letter-spacing: 1px;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -47,7 +47,7 @@
 }
 
 .apc-nav__link {
-  font: 400 14px 'Poppins', sans-serif;
+  font: 400 14px var(--font-heading);
   color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -59,7 +59,7 @@
 }
 
 .apc-nav__link--active {
-  font: 500 14px 'Poppins', sans-serif;
+  font: 500 14px var(--font-heading);
   color: #fff;
   border-bottom: 2px solid var(--color-apc-yellow);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);

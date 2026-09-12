@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { CpannelAuthService } from '../../services/cpannel-auth.service';
 
@@ -42,5 +43,13 @@ export class CpannelLoginPageComponent {
 
   constructor() {
     inject(Title).setTitle('Connexion - cpannel A.P.C');
+
+    // Si l'habilitation se confirme pendant que cette page est affichée -
+    // retour de Google arrivé un instant après la garde, par exemple - on
+    // entre sans attendre un clic ni un rechargement.
+    const router = inject(Router);
+    effect(() => {
+      if (this.auth.isAuthorized()) void router.navigateByUrl('/cpannel');
+    });
   }
 }

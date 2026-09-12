@@ -75,7 +75,7 @@
   color: var(--cp-ink-muted);
   background: var(--cp-surface-muted);
   padding: 3px 8px;
-  border-radius: 5px;
+  border-radius: var(--cp-radius-small);
   white-space: nowrap;
 }
 

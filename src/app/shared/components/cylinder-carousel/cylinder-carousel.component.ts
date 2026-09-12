@@ -19,6 +19,12 @@ import {
 
 export interface CarouselImage {
   readonly src: string;
+  /**
+   * Variantes par largeur, au format `srcset` (« a.webp 480w, b.webp 960w »).
+   * Le navigateur choisit selon la largeur réelle de la carte : un téléphone
+   * n'a pas à télécharger la version prévue pour un écran de bureau.
+   */
+  readonly srcset?: string;
   readonly alt?: string;
 }
 
@@ -81,6 +87,9 @@ export class CylinderCarouselComponent {
   );
 
   /** Les images fournies, répétées pour fermer le cylindre. */
+  /** Largeur affichée d'une carte, pour que `srcset` choisisse la bonne variante. */
+  protected readonly sizes = computed(() => `${Math.ceil(this.geometry().cardWidth)}px`);
+
   protected readonly cards = computed(() =>
     fillCylinder(this.images(), this.geometry().count),
   );

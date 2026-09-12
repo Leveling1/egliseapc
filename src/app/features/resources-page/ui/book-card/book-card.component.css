@@ -50,12 +50,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font: 700 12px 'Poppins', sans-serif;
+  font: 700 12px var(--font-heading);
   color: #fff;
 }
 
 .apc-book__cover-title {
-  font: 600 12px 'Poppins', sans-serif;
+  font: 600 12px var(--font-heading);
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.3;
   display: block;
@@ -69,7 +69,7 @@
 }
 
 .apc-book__cover-author {
-  font: 400 9px 'Open Sans', sans-serif;
+  font: 400 9px var(--font-body);
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -83,7 +83,7 @@
   padding: 4px 12px;
   background: var(--color-apc-yellow);
   border-radius: 6px;
-  font: 600 11px 'Poppins', sans-serif;
+  font: 600 11px var(--font-heading);
   color: var(--color-apc-black);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -96,13 +96,13 @@
 }
 
 .apc-book__title {
-  font: 700 20px/1.3 'Poppins', sans-serif;
+  font: 700 20px/1.3 var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 8px;
 }
 
 .apc-book__text {
-  font: 400 14px/1.6 'Open Sans', sans-serif;
+  font: 400 14px/1.6 var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 0;
 }
@@ -110,10 +110,17 @@
 .apc-book__link {
   display: inline-block;
   margin-top: 12px;
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
 }
 
 .apc-book__link:hover {
   text-decoration: underline;
+}
+
+@media (pointer: coarse) {
+  .apc-book__link {
+    padding: 12px 0;
+    margin-top: 4px;
+  }
 }

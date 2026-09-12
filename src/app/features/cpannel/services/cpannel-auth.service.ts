@@ -67,10 +67,24 @@ export class CpannelAuthService {
     return profile.full_name?.split(' ')[0] ?? profile.email;
   });
 
+  /**
+   * Chargement de profil en cours, partagé.
+   *
+   * Au retour de Google, la garde de route et l'événement d'authentification
+   * demandent le profil en même temps ; sans ce partage, deux requêtes
+   * partaient et la première - émise pendant que le client d'authentification
+   * finissait d'échanger le code - pouvait revenir vide et faire conclure à
+   * un compte non habilité, jusqu'au rechargement suivant.
+   */
+  private profileLoad: Promise<void> | null = null;
+
   constructor() {
     this.supabase.auth.onAuthStateChange((_event, session) => {
       this.sessionSignal.set(session);
-      void this.loadProfile();
+      // Hors de la fonction de rappel : Supabase tient un verrou pendant
+      // qu'il la joue, et une requête émise à l'intérieur peut partir sans le
+      // jeton tout juste reçu. Un tour de boucle plus tard, il est en place.
+      setTimeout(() => void this.loadProfile(), 0);
     });
   }
 
@@ -78,6 +92,18 @@ export class CpannelAuthService {
   async restore(): Promise<void> {
     const { data } = await this.supabase.auth.getSession();
     this.sessionSignal.set(data.session);
+    await this.loadProfile();
+  }
+
+  /**
+   * Relit le profil, en ignorant tout chargement en cours.
+   *
+   * Sert à la garde de route quand une session existe mais qu'aucun profil
+   * n'a été trouvé : avant de renvoyer l'utilisateur au site public, on
+   * s'assure que ce n'est pas le fruit d'une lecture partie trop tôt.
+   */
+  async refreshProfile(): Promise<void> {
+    this.profileLoad = null;
     await this.loadProfile();
   }
 
@@ -114,7 +140,16 @@ export class CpannelAuthService {
     );
   }
 
-  private async loadProfile(): Promise<void> {
+  private loadProfile(): Promise<void> {
+    if (!this.profileLoad) {
+      this.profileLoad = this.readProfile().finally(() => {
+        this.profileLoad = null;
+      });
+    }
+    return this.profileLoad;
+  }
+
+  private async readProfile(): Promise<void> {
     const userId = this.sessionSignal()?.user.id;
 
     if (!userId) {

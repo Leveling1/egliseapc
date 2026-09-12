@@ -37,20 +37,20 @@
 }
 
 .apc-visionary__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-visionary__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
+  font: 700 40px/1.2 var(--font-heading);
   color: var(--color-apc-black);
   margin: 12px 0 0;
 }
 
 .apc-visionary__quote {
-  font: italic 18px/1.7 'Open Sans', sans-serif;
+  font: italic 18px/1.7 var(--font-body);
   color: var(--color-apc-ink-soft);
   margin: 0 0 16px;
   border-left: 3px solid var(--color-apc-blue-dark);
@@ -58,7 +58,7 @@
 }
 
 .apc-visionary__paragraph {
-  font: 400 16px/1.8 'Open Sans', sans-serif;
+  font: 400 16px/1.8 var(--font-body);
   color: var(--color-apc-ink-soft);
   margin: 0 0 28px;
 }
@@ -68,7 +68,7 @@
   padding: 14px 32px;
   border: 2px solid var(--color-apc-blue-dark);
   color: var(--color-apc-blue-dark);
-  font: 500 15px 'Poppins', sans-serif;
+  font: 500 15px var(--font-heading);
   border-radius: 4px;
   text-decoration: none;
   transition: all 0.2s;

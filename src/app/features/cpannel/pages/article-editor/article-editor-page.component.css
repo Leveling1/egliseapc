@@ -157,7 +157,7 @@
   width: 96px;
   height: 54px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: var(--cp-radius-small);
   flex: none;
 }
 
@@ -208,7 +208,7 @@
 .ae-meta__author {
   padding: 4px 6px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--cp-radius-small);
   background: transparent;
   font: 500 14.5px var(--font-heading);
   color: var(--cp-accent);

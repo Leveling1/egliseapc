@@ -90,7 +90,9 @@ app-article-editor {
 }
 
 .ae-root .ql-bubble .ql-active .ql-stroke {
-  stroke: var(--color-apc-yellow, #ffe600);
+  /* Pas de jaune dans le cpannel : l'outil actif de la barre flottante
+     (fond noir) se signale par le bleu clair de la charte. */
+  stroke: var(--color-apc-blue-light);
 }
 
 /* ---------- Bouton « + » d'insertion ---------- */

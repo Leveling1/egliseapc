@@ -13,7 +13,14 @@
   background-image: url('/images/rda/RDA_hero.webp');
   background-size: cover;
   background-position: center;
+  /* Même effet de profondeur que la section Programmes de l'accueil. */
   background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  .apc-rda-hero__background {
+    background-attachment: scroll;
+  }
 }
 
 .apc-rda-hero__overlay {
@@ -34,7 +41,7 @@
 }
 
 .apc-rda-hero__title {
-  font: 700 56px/1.1 'Poppins', sans-serif;
+  font: 700 56px/1.1 var(--font-heading);
   color: #fff;
   margin: 0 0 16px;
   max-width: 700px;
@@ -42,19 +49,12 @@
 }
 
 .apc-rda-hero__lead {
-  font: 400 18px/1.6 'Open Sans', sans-serif;
+  font: 400 18px/1.6 var(--font-body);
   color: rgba(255, 255, 255, 0.7);
   margin: 0 auto;
   max-width: 560px;
 }
 
-@media (max-width: 768px) {
-  /* background-attachment: fixed is unreliable on mobile browsers - see
-     hero.component.css for the same fix applied to the home page hero. */
-  .apc-rda-hero__background {
-    background-attachment: scroll;
-  }
-}
 
 @media (max-width: 640px) {
   .apc-rda-hero__inner {

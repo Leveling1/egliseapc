@@ -345,7 +345,7 @@
 }
 
 .apc-hero-history__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-yellow);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -353,7 +353,7 @@
 }
 
 .apc-hero-history__title {
-  font: 700 32px/1.2 'Poppins', sans-serif;
+  font: 700 32px/1.2 var(--font-heading);
   color: #fff;
   margin: 10px 0 16px;
   text-shadow:
@@ -362,14 +362,14 @@
 }
 
 .apc-hero-history__paragraph {
-  font: 400 15px/1.8 'Open Sans', sans-serif;
+  font: 400 15px/1.8 var(--font-body);
   color: rgba(255, 255, 255, 0.95);
   margin: 0 0 24px;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .apc-hero-history__quote {
-  font: italic 15px/1.7 'Open Sans', sans-serif;
+  font: italic 15px/1.7 var(--font-body);
   color: #fff;
   margin: 0 0 16px;
   border-left: 3px solid var(--color-apc-yellow);
@@ -382,7 +382,7 @@
   padding: 12px 28px;
   border: 2px solid rgba(255, 255, 255, 0.8);
   color: #fff;
-  font: 500 14px 'Poppins', sans-serif;
+  font: 500 14px var(--font-heading);
   border-radius: 4px;
   text-decoration: none;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
@@ -483,7 +483,7 @@
 .apc-hero__story {
   max-width: 560px;
   margin: 0 auto 20px;
-  font: 400 15px/1.75 'Open Sans', sans-serif;
+  font: 400 15px/1.75 var(--font-body);
   color: rgb(255 255 255 / 88%);
 }
 
@@ -556,5 +556,15 @@
 @media (max-height: 700px) {
   .apc-hero__story {
     display: none;
+  }
+}
+
+/* Au doigt, le lien d'affiche garde son trait jaune mais gagne une zone de
+   44 px : la marge haute compense pour que la ligne de base ne bouge pas. */
+@media (pointer: coarse) {
+  .apc-hero__link {
+    display: inline-block;
+    padding-top: 20px;
+    margin-top: -20px;
   }
 }

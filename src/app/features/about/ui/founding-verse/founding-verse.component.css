@@ -1,6 +1,8 @@
 .apc-verse {
   padding: 80px 24px;
-  background: linear-gradient(135deg, #0b0b0b, #1c1c8c);
+  /* Le noir du pied de page, que cette section précède : les deux se
+     fondent en un seul bloc sombre pour clore la page. */
+  background: var(--color-apc-black);
   position: relative;
   overflow: hidden;
 }
@@ -14,14 +16,14 @@
 }
 
 .apc-verse__mark {
-  font: 700 64px 'Poppins', sans-serif;
+  font: 700 64px var(--font-heading);
   color: rgba(255, 255, 255, 0.15);
   line-height: 1;
   display: block;
 }
 
 .apc-verse__quote {
-  font: italic 22px/1.6 'Open Sans', sans-serif;
+  font: italic 22px/1.6 var(--font-body);
   color: #fff;
   margin: -20px 0 20px;
 }
@@ -34,12 +36,12 @@
 }
 
 .apc-verse__reference {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-yellow);
 }
 
 .apc-verse__caption {
-  font: 400 13px 'Open Sans', sans-serif;
+  font: 400 13px var(--font-body);
   color: rgba(255, 255, 255, 0.5);
   margin-top: 4px;
   display: inline-block;

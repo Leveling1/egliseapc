@@ -19,7 +19,7 @@
 }
 
 .apc-perfume__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-yellow);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -27,26 +27,26 @@
 
 .apc-perfume__title {
   margin: 10px 0 20px;
-  font: 700 clamp(28px, 4vw, 44px) / 1.15 'Poppins', sans-serif;
+  font: 700 clamp(28px, 4vw, 44px) / 1.15 var(--font-heading);
   color: #fff;
 }
 
 .apc-perfume__when {
   margin: 0 0 4px;
-  font: 600 16px 'Poppins', sans-serif;
+  font: 600 16px var(--font-heading);
   color: var(--color-apc-yellow);
 }
 
 .apc-perfume__where {
   margin: 0 0 18px;
-  font: 400 15px 'Open Sans', sans-serif;
+  font: 400 15px var(--font-body);
   color: rgb(255 255 255 / 70%);
 }
 
 .apc-perfume__description {
   margin: 0;
   max-width: 560px;
-  font: 400 16px/1.8 'Open Sans', sans-serif;
+  font: 400 16px/1.8 var(--font-body);
   color: rgb(255 255 255 / 85%);
   white-space: pre-line;
 }

@@ -75,14 +75,14 @@
 }
 
 .apc-footer__wordmark {
-  font: 700 20px 'Poppins', sans-serif;
+  font: 700 20px var(--font-heading);
   color: #fff;
   letter-spacing: 1px;
 }
 
 .apc-footer__tagline {
   margin: 16px 0 0;
-  font: 600 12px 'Poppins', sans-serif;
+  font: 600 12px var(--font-heading);
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -104,7 +104,7 @@
 }
 
 .apc-footer__link {
-  font: 500 14px 'Poppins', sans-serif;
+  font: 500 14px var(--font-heading);
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   transition: color 0.2s;
@@ -154,7 +154,7 @@
   flex-wrap: wrap;
   gap: 6px 10px;
   margin-top: 32px;
-  font: 400 13px 'Open Sans', sans-serif;
+  font: 400 13px var(--font-body);
   color: rgba(255, 255, 255, 0.35);
 }
 
@@ -162,7 +162,7 @@
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font: 400 13px 'Open Sans', sans-serif;
+  font: 400 13px var(--font-body);
   color: rgba(255, 255, 255, 0.3);
 }
 
@@ -184,5 +184,26 @@
 
   .apc-footer__contact span[aria-hidden] {
     display: none;
+  }
+}
+
+/* ---------- Doigt ----------
+   Les liens du pied de page mesurent 21 px de haut : trop peu pour un pouce.
+   Sur écran tactile, chacun prend 12 px de marge interne de part et d'autre
+   - 45 px au total - et les pastilles sociales passent à 44 px. Le rendu à
+   la souris ne bouge pas. */
+@media (pointer: coarse) {
+  .apc-footer__nav {
+    gap: 0 20px;
+  }
+
+  .apc-footer__link {
+    display: inline-block;
+    padding: 12px 6px;
+  }
+
+  .apc-footer__social {
+    width: 44px;
+    height: 44px;
   }
 }

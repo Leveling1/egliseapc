@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-11T20:22:55.197Z",
+  "generatedAt": "2026-09-12T09:12:58.112Z",
   "title": "Design System: Ambassadeurs pour Christ",
   "extensions": {
     "colorMeta": {
@@ -139,6 +139,66 @@
           "oklch(95.0% 0.181 45.5)"
         ]
       },
+      "charte-orange": {
+        "role": "secondary",
+        "displayName": "Orange de la charte",
+        "canonical": "oklch(70.1% 0.201 44.8)",
+        "tonalRamp": [
+          "oklch(15.0% 0.201 44.8)",
+          "oklch(26.0% 0.201 44.8)",
+          "oklch(37.0% 0.201 44.8)",
+          "oklch(48.0% 0.201 44.8)",
+          "oklch(60.0% 0.201 44.8)",
+          "oklch(72.0% 0.201 44.8)",
+          "oklch(84.0% 0.201 44.8)",
+          "oklch(95.0% 0.201 44.8)"
+        ]
+      },
+      "charte-blue-light": {
+        "role": "secondary",
+        "displayName": "Bleu clair de la charte",
+        "canonical": "oklch(80.1% 0.103 282.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.103 282.0)",
+          "oklch(26.0% 0.103 282.0)",
+          "oklch(37.0% 0.103 282.0)",
+          "oklch(48.0% 0.103 282.0)",
+          "oklch(60.0% 0.103 282.0)",
+          "oklch(72.0% 0.103 282.0)",
+          "oklch(84.0% 0.103 282.0)",
+          "oklch(95.0% 0.103 282.0)"
+        ]
+      },
+      "rule-gray": {
+        "role": "neutral",
+        "displayName": "Filet",
+        "canonical": "oklch(92.2% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.0% 0.000 89.9)",
+          "oklch(37.0% 0.000 89.9)",
+          "oklch(48.0% 0.000 89.9)",
+          "oklch(60.0% 0.000 89.9)",
+          "oklch(72.0% 0.000 89.9)",
+          "oklch(84.0% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
+      "rule-gray-strong": {
+        "role": "neutral",
+        "displayName": "Filet appuyé",
+        "canonical": "oklch(87.0% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.0% 0.000 89.9)",
+          "oklch(37.0% 0.000 89.9)",
+          "oklch(48.0% 0.000 89.9)",
+          "oklch(60.0% 0.000 89.9)",
+          "oklch(72.0% 0.000 89.9)",
+          "oklch(84.0% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
       "cp-accent": {
         "role": "primary",
         "displayName": "Cpannel – Accent",
@@ -157,76 +217,76 @@
       "cp-accent-hover": {
         "role": "primary",
         "displayName": "Cpannel – Accent survol",
-        "canonical": "oklch(39.5% 0.203 272.1)",
+        "canonical": "oklch(39.1% 0.179 269.3)",
         "tonalRamp": [
-          "oklch(15.0% 0.203 272.1)",
-          "oklch(26.0% 0.203 272.1)",
-          "oklch(37.0% 0.203 272.1)",
-          "oklch(48.0% 0.203 272.1)",
-          "oklch(60.0% 0.203 272.1)",
-          "oklch(72.0% 0.203 272.1)",
-          "oklch(84.0% 0.203 272.1)",
-          "oklch(95.0% 0.203 272.1)"
+          "oklch(15.0% 0.179 269.3)",
+          "oklch(26.0% 0.179 269.3)",
+          "oklch(37.0% 0.179 269.3)",
+          "oklch(48.0% 0.179 269.3)",
+          "oklch(60.0% 0.179 269.3)",
+          "oklch(72.0% 0.179 269.3)",
+          "oklch(84.0% 0.179 269.3)",
+          "oklch(95.0% 0.179 269.3)"
         ]
       },
       "cp-accent-soft": {
         "role": "primary",
         "displayName": "Cpannel – Accent doux",
-        "canonical": "oklch(94.6% 0.015 286.1)",
+        "canonical": "oklch(93.4% 0.020 270.2)",
         "tonalRamp": [
-          "oklch(15.0% 0.015 286.1)",
-          "oklch(26.0% 0.015 286.1)",
-          "oklch(37.0% 0.015 286.1)",
-          "oklch(48.0% 0.015 286.1)",
-          "oklch(60.0% 0.015 286.1)",
-          "oklch(72.0% 0.015 286.1)",
-          "oklch(84.0% 0.015 286.1)",
-          "oklch(95.0% 0.015 286.1)"
+          "oklch(15.0% 0.020 270.2)",
+          "oklch(26.0% 0.020 270.2)",
+          "oklch(37.0% 0.020 270.2)",
+          "oklch(48.0% 0.020 270.2)",
+          "oklch(60.0% 0.020 270.2)",
+          "oklch(72.0% 0.020 270.2)",
+          "oklch(84.0% 0.020 270.2)",
+          "oklch(95.0% 0.020 270.2)"
         ]
       },
       "cp-accent-softer": {
         "role": "primary",
         "displayName": "Cpannel – Accent très doux",
-        "canonical": "oklch(97.2% 0.008 286.3)",
+        "canonical": "oklch(96.3% 0.012 264.5)",
         "tonalRamp": [
-          "oklch(15.0% 0.008 286.3)",
-          "oklch(26.0% 0.008 286.3)",
-          "oklch(37.0% 0.008 286.3)",
-          "oklch(48.0% 0.008 286.3)",
-          "oklch(60.0% 0.008 286.3)",
-          "oklch(72.0% 0.008 286.3)",
-          "oklch(84.0% 0.008 286.3)",
-          "oklch(95.0% 0.008 286.3)"
+          "oklch(15.0% 0.012 264.5)",
+          "oklch(26.0% 0.012 264.5)",
+          "oklch(37.0% 0.012 264.5)",
+          "oklch(48.0% 0.012 264.5)",
+          "oklch(60.0% 0.012 264.5)",
+          "oklch(72.0% 0.012 264.5)",
+          "oklch(84.0% 0.012 264.5)",
+          "oklch(95.0% 0.012 264.5)"
         ]
       },
       "cp-accent-border": {
         "role": "primary",
         "displayName": "Cpannel – Bordure focus",
-        "canonical": "oklch(84.5% 0.040 285.5)",
+        "canonical": "oklch(82.0% 0.054 271.0)",
         "tonalRamp": [
-          "oklch(15.0% 0.040 285.5)",
-          "oklch(26.0% 0.040 285.5)",
-          "oklch(37.0% 0.040 285.5)",
-          "oklch(48.0% 0.040 285.5)",
-          "oklch(60.0% 0.040 285.5)",
-          "oklch(72.0% 0.040 285.5)",
-          "oklch(84.0% 0.040 285.5)",
-          "oklch(95.0% 0.040 285.5)"
+          "oklch(15.0% 0.054 271.0)",
+          "oklch(26.0% 0.054 271.0)",
+          "oklch(37.0% 0.054 271.0)",
+          "oklch(48.0% 0.054 271.0)",
+          "oklch(60.0% 0.054 271.0)",
+          "oklch(72.0% 0.054 271.0)",
+          "oklch(84.0% 0.054 271.0)",
+          "oklch(95.0% 0.054 271.0)"
         ]
       },
       "cp-canvas": {
         "role": "neutral",
         "displayName": "Cpannel – Canevas",
-        "canonical": "oklch(95.0% 0.005 286.3)",
+        "canonical": "oklch(95.4% 0.007 260.7)",
         "tonalRamp": [
-          "oklch(15.0% 0.005 286.3)",
-          "oklch(26.0% 0.005 286.3)",
-          "oklch(37.0% 0.005 286.3)",
-          "oklch(48.0% 0.005 286.3)",
-          "oklch(60.0% 0.005 286.3)",
-          "oklch(72.0% 0.005 286.3)",
-          "oklch(84.0% 0.005 286.3)",
-          "oklch(95.0% 0.005 286.3)"
+          "oklch(15.0% 0.007 260.7)",
+          "oklch(26.0% 0.007 260.7)",
+          "oklch(37.0% 0.007 260.7)",
+          "oklch(48.0% 0.007 260.7)",
+          "oklch(60.0% 0.007 260.7)",
+          "oklch(72.0% 0.007 260.7)",
+          "oklch(84.0% 0.007 260.7)",
+          "oklch(95.0% 0.007 260.7)"
         ]
       },
       "cp-surface": {
@@ -247,16 +307,16 @@
       "cp-surface-muted": {
         "role": "neutral",
         "displayName": "Cpannel – Surface atténuée",
-        "canonical": "oklch(97.7% 0.004 286.3)",
+        "canonical": "oklch(97.5% 0.005 258.3)",
         "tonalRamp": [
-          "oklch(15.0% 0.004 286.3)",
-          "oklch(26.0% 0.004 286.3)",
-          "oklch(37.0% 0.004 286.3)",
-          "oklch(48.0% 0.004 286.3)",
-          "oklch(60.0% 0.004 286.3)",
-          "oklch(72.0% 0.004 286.3)",
-          "oklch(84.0% 0.004 286.3)",
-          "oklch(95.0% 0.004 286.3)"
+          "oklch(15.0% 0.005 258.3)",
+          "oklch(26.0% 0.005 258.3)",
+          "oklch(37.0% 0.005 258.3)",
+          "oklch(48.0% 0.005 258.3)",
+          "oklch(60.0% 0.005 258.3)",
+          "oklch(72.0% 0.005 258.3)",
+          "oklch(84.0% 0.005 258.3)",
+          "oklch(95.0% 0.005 258.3)"
         ]
       },
       "cp-ink": {
@@ -277,46 +337,46 @@
       "cp-ink-soft": {
         "role": "neutral",
         "displayName": "Cpannel – Encre douce",
-        "canonical": "oklch(44.7% 0.019 285.6)",
+        "canonical": "oklch(45.9% 0.023 262.9)",
         "tonalRamp": [
-          "oklch(15.0% 0.019 285.6)",
-          "oklch(26.0% 0.019 285.6)",
-          "oklch(37.0% 0.019 285.6)",
-          "oklch(48.0% 0.019 285.6)",
-          "oklch(60.0% 0.019 285.6)",
-          "oklch(72.0% 0.019 285.6)",
-          "oklch(84.0% 0.019 285.6)",
-          "oklch(95.0% 0.019 285.6)"
+          "oklch(15.0% 0.023 262.9)",
+          "oklch(26.0% 0.023 262.9)",
+          "oklch(37.0% 0.023 262.9)",
+          "oklch(48.0% 0.023 262.9)",
+          "oklch(60.0% 0.023 262.9)",
+          "oklch(72.0% 0.023 262.9)",
+          "oklch(84.0% 0.023 262.9)",
+          "oklch(95.0% 0.023 262.9)"
         ]
       },
       "cp-ink-muted": {
         "role": "neutral",
         "displayName": "Cpannel – Encre atténuée",
-        "canonical": "oklch(52.6% 0.023 285.6)",
+        "canonical": "oklch(53.1% 0.025 265.6)",
         "tonalRamp": [
-          "oklch(15.0% 0.023 285.6)",
-          "oklch(26.0% 0.023 285.6)",
-          "oklch(37.0% 0.023 285.6)",
-          "oklch(48.0% 0.023 285.6)",
-          "oklch(60.0% 0.023 285.6)",
-          "oklch(72.0% 0.023 285.6)",
-          "oklch(84.0% 0.023 285.6)",
-          "oklch(95.0% 0.023 285.6)"
+          "oklch(15.0% 0.025 265.6)",
+          "oklch(26.0% 0.025 265.6)",
+          "oklch(37.0% 0.025 265.6)",
+          "oklch(48.0% 0.025 265.6)",
+          "oklch(60.0% 0.025 265.6)",
+          "oklch(72.0% 0.025 265.6)",
+          "oklch(84.0% 0.025 265.6)",
+          "oklch(95.0% 0.025 265.6)"
         ]
       },
       "cp-line": {
         "role": "neutral",
         "displayName": "Cpannel – Filet",
-        "canonical": "oklch(92.7% 0.008 286.2)",
+        "canonical": "oklch(92.4% 0.012 264.5)",
         "tonalRamp": [
-          "oklch(15.0% 0.008 286.2)",
-          "oklch(26.0% 0.008 286.2)",
-          "oklch(37.0% 0.008 286.2)",
-          "oklch(48.0% 0.008 286.2)",
-          "oklch(60.0% 0.008 286.2)",
-          "oklch(72.0% 0.008 286.2)",
-          "oklch(84.0% 0.008 286.2)",
-          "oklch(95.0% 0.008 286.2)"
+          "oklch(15.0% 0.012 264.5)",
+          "oklch(26.0% 0.012 264.5)",
+          "oklch(37.0% 0.012 264.5)",
+          "oklch(48.0% 0.012 264.5)",
+          "oklch(60.0% 0.012 264.5)",
+          "oklch(72.0% 0.012 264.5)",
+          "oklch(84.0% 0.012 264.5)",
+          "oklch(95.0% 0.012 264.5)"
         ]
       },
       "cp-positive": {
@@ -352,31 +412,31 @@
       "cp-neutral-stat": {
         "role": "neutral",
         "displayName": "Cpannel – Neutre",
-        "canonical": "oklch(53.2% 0.020 285.7)",
+        "canonical": "oklch(51.0% 0.025 265.6)",
         "tonalRamp": [
-          "oklch(15.0% 0.020 285.7)",
-          "oklch(26.0% 0.020 285.7)",
-          "oklch(37.0% 0.020 285.7)",
-          "oklch(48.0% 0.020 285.7)",
-          "oklch(60.0% 0.020 285.7)",
-          "oklch(72.0% 0.020 285.7)",
-          "oklch(84.0% 0.020 285.7)",
-          "oklch(95.0% 0.020 285.7)"
+          "oklch(15.0% 0.025 265.6)",
+          "oklch(26.0% 0.025 265.6)",
+          "oklch(37.0% 0.025 265.6)",
+          "oklch(48.0% 0.025 265.6)",
+          "oklch(60.0% 0.025 265.6)",
+          "oklch(72.0% 0.025 265.6)",
+          "oklch(84.0% 0.025 265.6)",
+          "oklch(95.0% 0.025 265.6)"
         ]
       },
       "cp-neutral-stat-soft": {
         "role": "neutral",
         "displayName": "Cpannel – Neutre doux",
-        "canonical": "oklch(95.0% 0.004 286.3)",
+        "canonical": "oklch(94.5% 0.007 260.7)",
         "tonalRamp": [
-          "oklch(15.0% 0.004 286.3)",
-          "oklch(26.0% 0.004 286.3)",
-          "oklch(37.0% 0.004 286.3)",
-          "oklch(48.0% 0.004 286.3)",
-          "oklch(60.0% 0.004 286.3)",
-          "oklch(72.0% 0.004 286.3)",
-          "oklch(84.0% 0.004 286.3)",
-          "oklch(95.0% 0.004 286.3)"
+          "oklch(15.0% 0.007 260.7)",
+          "oklch(26.0% 0.007 260.7)",
+          "oklch(37.0% 0.007 260.7)",
+          "oklch(48.0% 0.007 260.7)",
+          "oklch(60.0% 0.007 260.7)",
+          "oklch(72.0% 0.007 260.7)",
+          "oklch(84.0% 0.007 260.7)",
+          "oklch(95.0% 0.007 260.7)"
         ]
       },
       "cp-danger": {
@@ -650,7 +710,7 @@
       "refersTo": "cp-button-primary",
       "description": "Primaire bleu, fantôme gris, danger rouge doux : les trois seuls boutons du back-office.",
       "html": "<div class=\"ds-cp\"><button class=\"ds-cp-btn ds-cp-btn--primary\" type=\"button\">Enregistrer</button> <button class=\"ds-cp-btn ds-cp-btn--ghost\" type=\"button\">Annuler</button> <button class=\"ds-cp-btn ds-cp-btn--danger\" type=\"button\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3\"/></svg> Supprimer</button></div>",
-      "css": ".ds-cp{padding:24px;background:#eeeef2;display:inline-flex;gap:10px}.ds-cp-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:10px;font:500 13px Poppins,sans-serif;cursor:pointer;transition:background .18s,color .18s;white-space:nowrap}.ds-cp-btn:focus-visible{outline:2px solid #1c1c8c;outline-offset:2px}.ds-cp-btn--primary{background:#1c1c8c;color:#fff}.ds-cp-btn--primary:hover{background:#2a2ab0}.ds-cp-btn--ghost{background:#f7f7fa;color:#0b0b0b}.ds-cp-btn--ghost:hover{background:#ececf7;color:#1c1c8c}.ds-cp-btn--danger{background:#fbeceb;color:#b4231f}.ds-cp-btn--danger:hover{background:#b4231f;color:#fff}"
+      "css": ".ds-cp{padding:24px;background:#edf0f5;display:inline-flex;gap:10px}.ds-cp-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:10px;font:500 13px Poppins,sans-serif;cursor:pointer;transition:background .18s,color .18s;white-space:nowrap}.ds-cp-btn:focus-visible{outline:2px solid #1c1c8c;outline-offset:2px}.ds-cp-btn--primary{background:#1c1c8c;color:#fff}.ds-cp-btn--primary:hover{background:#2333a3}.ds-cp-btn--ghost{background:#f5f7fa;color:#0b0b0b}.ds-cp-btn--ghost:hover{background:#e4e9f7;color:#1c1c8c}.ds-cp-btn--danger{background:#fbeceb;color:#b4231f}.ds-cp-btn--danger:hover{background:#b4231f;color:#fff}"
     },
     {
       "name": "Cpannel – Champ",
@@ -658,7 +718,7 @@
       "refersTo": "cp-input",
       "description": "Champ blanc à filet gris, rayon 10 px, anneau bleu très clair au focus, libellé et aide.",
       "html": "<div class=\"ds-cp-field\"><label class=\"ds-cp-field__label\" for=\"ds-cp-in\">Légende <span class=\"ds-cp-field__req\">*</span></label><input class=\"ds-cp-input\" id=\"ds-cp-in\" type=\"text\" placeholder=\"Culte du dimanche 23 août\"><p class=\"ds-cp-field__help\">Affichée sous la photo sur le site public.</p></div>",
-      "css": ".ds-cp-field{width:320px;padding:24px;background:#eeeef2}.ds-cp-field__label{display:block;margin-bottom:6px;font:500 13px Poppins,sans-serif;color:#0b0b0b}.ds-cp-field__req{color:#1c1c8c}.ds-cp-input{width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid #e6e6ec;border-radius:10px;background:#fff;font:400 14px \"Open Sans\",sans-serif;color:#0b0b0b}.ds-cp-input:focus{outline:none;border-color:#c9c9e6;box-shadow:0 0 0 3px #f5f5fb}.ds-cp-field__help{display:flex;gap:6px;margin:7px 0 0;font:400 11.5px/1.55 \"Open Sans\",sans-serif;color:#696978}.ds-cp-field__help::before{content:\"i\";flex:none;width:13px;height:13px;margin-top:1px;border-radius:50%;background:#ececf7;color:#1c1c8c;font:600 9px/13px Poppins,sans-serif;text-align:center}"
+      "css": ".ds-cp-field{width:320px;padding:24px;background:#edf0f5}.ds-cp-field__label{display:block;margin-bottom:6px;font:500 13px Poppins,sans-serif;color:#0b0b0b}.ds-cp-field__req{color:#1c1c8c}.ds-cp-input{width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid #e2e6ee;border-radius:10px;background:#fff;font:400 14px \"Open Sans\",sans-serif;color:#0b0b0b}.ds-cp-input:focus{outline:none;border-color:#b7c3e8;box-shadow:0 0 0 3px #eff3fb}.ds-cp-field__help{display:flex;gap:6px;margin:7px 0 0;font:400 11.5px/1.55 \"Open Sans\",sans-serif;color:#656c7b}.ds-cp-field__help::before{content:\"i\";flex:none;width:13px;height:13px;margin-top:1px;border-radius:50%;background:#e4e9f7;color:#1c1c8c;font:600 9px/13px Poppins,sans-serif;text-align:center}"
     },
     {
       "name": "Cpannel – Carte et pastilles",
@@ -666,12 +726,12 @@
       "refersTo": "cp-card",
       "description": "Carte blanche à 18 px de rayon sur canevas, relief à 4 % ; pastilles en ligne / masqué / accent.",
       "html": "<div class=\"ds-cp-wrap\"><div class=\"ds-cp-card\"><h4 class=\"ds-cp-card__title\">Galerie</h4><p class=\"ds-cp-card__text\">17 photos publiées</p><span class=\"ds-cp-badge ds-cp-badge--online\">En ligne</span> <span class=\"ds-cp-badge ds-cp-badge--neutral\">Masqué</span> <span class=\"ds-cp-badge ds-cp-badge--accent\">Spécial</span></div></div>",
-      "css": ".ds-cp-wrap{padding:24px;background:#eeeef2;display:inline-block}.ds-cp-card{width:280px;padding:22px 24px;background:#fff;border-radius:18px;box-shadow:0 1px 2px rgb(11 11 11 / 4%),0 8px 24px rgb(11 11 11 / 4%)}.ds-cp-card__title{margin:0;font:600 17px Poppins,sans-serif;color:#0b0b0b}.ds-cp-card__text{margin:4px 0 14px;font:400 13px \"Open Sans\",sans-serif;color:#696978}.ds-cp-badge{display:inline-block;padding:4px 12px;border-radius:999px;font:500 12px Poppins,sans-serif}.ds-cp-badge--online{background:#e6f4ec;color:#177344}.ds-cp-badge--neutral{background:#eeeef1;color:#6b6b78}.ds-cp-badge--accent{background:#ececf7;color:#1c1c8c}"
+      "css": ".ds-cp-wrap{padding:24px;background:#edf0f5;display:inline-block}.ds-cp-card{width:280px;padding:22px 24px;background:#fff;border-radius:18px;box-shadow:0 1px 2px rgb(11 11 11 / 4%),0 8px 24px rgb(11 11 11 / 4%)}.ds-cp-card__title{margin:0;font:600 17px Poppins,sans-serif;color:#0b0b0b}.ds-cp-card__text{margin:4px 0 14px;font:400 13px \"Open Sans\",sans-serif;color:#656c7b}.ds-cp-badge{display:inline-block;padding:4px 12px;border-radius:999px;font:500 12px Poppins,sans-serif}.ds-cp-badge--online{background:#e6f4ec;color:#177344}.ds-cp-badge--neutral{background:#eaedf2;color:#5f6675}.ds-cp-badge--accent{background:#e4e9f7;color:#1c1c8c}"
     }
   ],
   "narrative": {
     "northStar": "L'Affiche de nuit",
-    "overview": "Le site public est une affiche d'événement collée dans la nuit de Kinshasa, qui s'anime quand on la regarde. Tout part de là : un noir profond qui n'est jamais gris, une photo réelle toujours voilée derrière ce noir pour rester texture et non second sujet, des capitales blanches serrées sur une seule ligne comme un titre d'affiche, et par-dessus, un mot écrit à la main au marqueur jaune. Le mouvement est cinématographique – rideau qui se lève, carrousel traversé, mur de photos qui se pose – mais il ne sert qu'une fois, à l'arrivée ; ensuite l'affiche est là, immobile, lisible. Solennel et chaleureux à la fois : la solennité vient du noir et des capitales, la chaleur du trait jaune, de l'écriture manuscrite et des visages sur les photos.\n\nSur les pages claires (Ressources, Blog, Contact) l'affiche se retourne : fond blanc ou gris très clair, encre noire, le bleu profond de la charte prend le rôle du jaune pour les surlignements. La densité est faible partout – sections de 100 px, colonnes de lecture à 560–760 px – et les composants sont discrets et nets : des liens soulignés d'un trait plutôt que des boutons pleins, des cartes blanches à coins de 4 px, aucune ombre qu'on remarque.\n\nLe back-office « cpannel » est un second monde, volontairement distinct : un canevas gris-bleu clair, des cartes blanches à grand rayon séparées par le blanc et une ombre à peine perceptible, et un seul accent – le bleu profond – décliné en teintes très claires. Aucun jaune n'y entre ; le rouge n'y a qu'un sens, la suppression.",
+    "overview": "Le site public est une affiche d'événement collée dans la nuit de Kinshasa, qui s'anime quand on la regarde. Tout part de là : un noir profond qui n'est jamais gris, une photo réelle toujours voilée derrière ce noir pour rester texture et non second sujet, des capitales blanches serrées sur une seule ligne comme un titre d'affiche, et par-dessus, un mot écrit à la main au marqueur jaune. Le mouvement est cinématographique – rideau qui se lève, carrousel traversé, mur de photos qui se pose – mais il ne sert qu'une fois, à l'arrivée ; ensuite l'affiche est là, immobile, lisible. Solennel et chaleureux à la fois : la solennité vient du noir et des capitales, la chaleur du trait jaune, de l'écriture manuscrite et des visages sur les photos.\n\nSur les pages claires (Ressources, Blog, Contact) l'affiche se retourne : fond blanc ou gris très clair, encre noire, le bleu profond de la charte prend le rôle du jaune pour les surlignements. La densité est faible partout – sections de 100 px, colonnes de lecture à 560–760 px – et les composants sont discrets et nets : des liens soulignés d'un trait plutôt que des boutons pleins, des cartes blanches à coins de 4 px, aucune ombre qu'on remarque.\n\nLe back-office « cpannel » est un second monde, volontairement distinct : un canevas gris-bleu clair (teintes glissées vers 216–232° pour que l'accent de la charte, à 240° pur, se lise bleu et non violet), des cartes blanches à grand rayon séparées par le blanc et une ombre à peine perceptible, et un seul accent – le bleu profond – décliné en teintes très claires. Aucun jaune n'y entre ; le rouge n'y a qu'un sens, la suppression.",
     "keyCharacteristics": [
       "Noir de nuit (#0b0b0b) comme fond principal du site public ; photos toujours sous un voile noir de 55 à 82 %.",
       "Le jaune est un trait : soulignement, bordure gauche, badge, mot manuscrit – jamais une surface plus grande qu'un bouton.",
@@ -719,6 +779,11 @@
       {
         "name": "The Reference Rule",
         "body": "Une citation biblique porte toujours sa référence, en Poppins 600 sous le texte – jaune sur noir, bleu sur clair. Jamais de verset orphelin.",
+        "section": "typography"
+      },
+      {
+        "name": "The Silent Swap Rule",
+        "body": "Les polices web arrivent après le texte ; les faces de repli occupent exactement leur place (largeur à ±1,5 %, hauteurs alignées) pour que le rhabillage ne recompose aucune ligne. Toute police est appelée par son jeton – `--font-heading`, `--font-body`, `--font-script` – jamais par son nom.",
         "section": "typography"
       },
       {

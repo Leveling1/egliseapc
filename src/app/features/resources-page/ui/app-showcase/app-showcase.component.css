@@ -48,12 +48,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font: 700 20px 'Poppins', sans-serif;
+  font: 700 20px var(--font-heading);
   color: #fff;
 }
 
 .apc-app__phone-name {
-  font: 600 16px 'Poppins', sans-serif;
+  font: 600 16px var(--font-heading);
   color: var(--color-apc-black);
 }
 
@@ -103,7 +103,7 @@
 }
 
 .apc-app__phone-caption {
-  font: 400 10px 'Open Sans', sans-serif;
+  font: 400 10px var(--font-body);
   color: rgb(0 0 0 / 25%);
   margin-top: auto;
 }
@@ -117,20 +117,20 @@
 
 .apc-app__badge {
   display: inline-block;
-  font: 600 11px 'Poppins', sans-serif;
+  font: 600 11px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
 
 .apc-app__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
+  font: 700 40px/1.2 var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 20px;
 }
 
 .apc-app__text {
-  font: 400 17px/1.8 'Open Sans', sans-serif;
+  font: 400 17px/1.8 var(--font-body);
   color: rgb(0 0 0 / 68%);
   margin: 0 0 16px;
 }
@@ -163,7 +163,7 @@
 }
 
 .apc-app__feature-label {
-  font: 400 15px 'Open Sans', sans-serif;
+  font: 400 15px var(--font-body);
   color: rgb(0 0 0 / 62%);
 }
 
@@ -189,12 +189,12 @@
 }
 
 .apc-app__store-eyebrow {
-  font: 400 10px 'Open Sans', sans-serif;
+  font: 400 10px var(--font-body);
   color: rgb(0 0 0 / 45%);
 }
 
 .apc-app__store-name {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-black);
 }
 
@@ -270,7 +270,7 @@
 
 .apc-app__tagline {
   margin: 0 0 10px;
-  font: 600 16px 'Poppins', sans-serif;
+  font: 600 16px var(--font-heading);
   color: var(--color-apc-blue-dark);
 }
 
@@ -289,7 +289,7 @@
 .apc-app__website {
   display: inline-block;
   margin-top: 18px;
-  font: 600 14px 'Poppins', sans-serif;
+  font: 600 14px var(--font-heading);
   color: var(--color-apc-blue-dark);
 }
 

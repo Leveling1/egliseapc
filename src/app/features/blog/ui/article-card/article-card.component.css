@@ -27,7 +27,7 @@
 }
 
 .apc-article-card__media-label {
-  font: 500 13px 'Open Sans', sans-serif;
+  font: 500 13px var(--font-body);
   color: rgba(255, 255, 255, 0.3);
 }
 
@@ -39,7 +39,7 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
   border-radius: 5px;
-  font: 500 11px 'Poppins', sans-serif;
+  font: 500 11px var(--font-heading);
   color: #fff;
 }
 
@@ -48,13 +48,13 @@
 }
 
 .apc-article-card__title {
-  font: 600 17px/1.4 'Poppins', sans-serif;
+  font: 600 17px/1.4 var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 8px;
 }
 
 .apc-article-card__excerpt {
-  font: 400 14px/1.6 'Open Sans', sans-serif;
+  font: 400 14px/1.6 var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 0 0 16px;
   display: -webkit-box;
@@ -70,11 +70,11 @@
 }
 
 .apc-article-card__date {
-  font: 400 12px 'Open Sans', sans-serif;
+  font: 400 12px var(--font-body);
   color: var(--color-apc-ink-faint);
 }
 
 .apc-article-card__link {
-  font: 500 13px 'Poppins', sans-serif;
+  font: 500 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
 }

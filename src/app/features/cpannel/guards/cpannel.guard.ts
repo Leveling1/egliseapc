@@ -22,9 +22,22 @@ export const cpannelGuard: CanActivateFn = async () => {
   if (!isPlatformBrowser(inject(PLATFORM_ID))) return true;
 
   const auth = inject(CpannelAuthService);
-  if (!auth.resolved()) await auth.restore();
+  // Tant qu'aucune session n'est connue, on relit : au retour de Google, le
+  // premier événement d'authentification peut arriver avant l'échange du
+  // code, avec une session vide - `getSession()` attend, lui, la fin de cet
+  // échange. Une fois connecté, l'état en mémoire suffit.
+  if (!auth.resolved() || !auth.isAuthenticated()) await auth.restore();
 
   if (auth.isAuthorized()) return true;
+
+  // Session présente mais profil absent : au retour de Google, la première
+  // lecture peut être partie avant que le jeton soit posé et revenir vide.
+  // Une seconde lecture tranche - un compte réellement non habilité reste
+  // vide, un compte habilité apparaît sans qu'il faille recharger la page.
+  if (auth.isAuthenticatedButRejected()) {
+    await auth.refreshProfile();
+    if (auth.isAuthorized()) return true;
+  }
 
   // Connecté mais sans habilitation : renvoi au site public, et non à la page
   // de connexion. Se reconnecter n'y changerait rien - le compte existe, il
@@ -45,7 +58,7 @@ export function cpannelModuleGuard(module: PannelModule): CanActivateFn {
     if (!isPlatformBrowser(inject(PLATFORM_ID))) return true;
 
     const auth = inject(CpannelAuthService);
-    if (!auth.resolved()) await auth.restore();
+    if (!auth.resolved() || !auth.isAuthenticated()) await auth.restore();
 
     if (auth.can(module, 'view')) return true;
 
@@ -64,7 +77,7 @@ export const cpannelLoginGuard: CanActivateFn = async () => {
   if (!isPlatformBrowser(inject(PLATFORM_ID))) return true;
 
   const auth = inject(CpannelAuthService);
-  if (!auth.resolved()) await auth.restore();
+  if (!auth.resolved() || !auth.isAuthenticated()) await auth.restore();
 
   return auth.isAuthorized() ? router.createUrlTree(['/cpannel']) : true;
 };

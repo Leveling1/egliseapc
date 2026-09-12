@@ -14,20 +14,20 @@
 }
 
 .apc-books__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-books__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
+  font: 700 40px/1.2 var(--font-heading);
   color: var(--color-apc-black);
   margin: 12px 0 0;
 }
 
 .apc-books__intro {
-  font: 400 16px/1.6 'Open Sans', sans-serif;
+  font: 400 16px/1.6 var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 16px auto 0;
   max-width: 560px;

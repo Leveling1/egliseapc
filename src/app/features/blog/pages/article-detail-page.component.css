@@ -27,20 +27,20 @@
 }
 
 .apc-article-detail__not-found-title {
-  font: 700 28px 'Poppins', sans-serif;
+  font: 700 28px var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 8px;
 }
 
 .apc-article-detail__not-found-text {
-  font: 400 16px 'Open Sans', sans-serif;
+  font: 400 16px var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 0 0 24px;
 }
 
 .apc-article-detail__back {
   display: inline-block;
-  font: 500 14px 'Poppins', sans-serif;
+  font: 500 14px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-decoration: none;
 }
@@ -60,20 +60,20 @@
   padding: 5px 14px;
   background: var(--color-apc-gray-light);
   border-radius: 6px;
-  font: 600 12px 'Poppins', sans-serif;
+  font: 600 12px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .apc-article-detail__title {
-  font: 700 44px/1.2 'Poppins', sans-serif;
+  font: 700 44px/1.2 var(--font-heading);
   color: var(--color-apc-black);
   margin: 20px 0 16px;
 }
 
 .apc-article-detail__excerpt {
-  font: 400 20px/1.6 'Open Sans', sans-serif;
+  font: 400 20px/1.6 var(--font-body);
   color: var(--color-apc-ink-soft);
   margin: 0 0 28px;
 }
@@ -94,7 +94,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font: 600 14px 'Poppins', sans-serif;
+  font: 600 14px var(--font-heading);
 }
 
 .apc-article-detail__avatar--lg {
@@ -110,12 +110,12 @@
 }
 
 .apc-article-detail__author {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-black);
 }
 
 .apc-article-detail__meta {
-  font: 400 13px 'Open Sans', sans-serif;
+  font: 400 13px var(--font-body);
   color: var(--color-apc-ink-faint);
 }
 
@@ -178,7 +178,7 @@ img.apc-article-detail__share-icon {
 }
 
 .apc-article-detail__copied {
-  font: 500 11px 'Poppins', sans-serif;
+  font: 500 11px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-align: center;
   white-space: nowrap;
@@ -189,7 +189,7 @@ img.apc-article-detail__share-icon {
 }
 
 .apc-article-detail__body p {
-  font: 400 19px/1.85 'Open Sans', sans-serif;
+  font: 400 19px/1.85 var(--font-body);
   color: #222;
   margin: 0 0 28px;
 }
@@ -205,12 +205,12 @@ img.apc-article-detail__share-icon {
 }
 
 .apc-article-detail__author-card-name {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-black);
 }
 
 .apc-article-detail__author-card-bio {
-  font: 400 14px/1.6 'Open Sans', sans-serif;
+  font: 400 14px/1.6 var(--font-body);
   color: var(--color-apc-ink-faint);
   margin: 4px 0 0;
 }
@@ -222,7 +222,7 @@ img.apc-article-detail__share-icon {
 }
 
 .apc-article-detail__related-title {
-  font: 700 26px 'Poppins', sans-serif;
+  font: 700 26px var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 28px;
 }

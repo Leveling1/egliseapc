@@ -29,18 +29,66 @@ import { WELCOME_STROKES, WELCOME_TRANSFORM, WELCOME_VIEWBOX } from './welcome-s
 })
 export class HeroComponent {
   protected readonly carouselImages: readonly CarouselImage[] = [
-    { src: '/images/home/hero_1.webp', alt: '' },
-    { src: '/images/home/hero_2.webp', alt: '' },
-    { src: '/images/home/hero_3.webp', alt: '' },
-    { src: '/images/home/hero_4.webp', alt: '' },
-    { src: '/images/home/hero_5.webp', alt: '' },
-    { src: '/images/home/hero_6.webp', alt: '' },
-    { src: '/images/home/hero_7.webp', alt: '' },
-    { src: '/images/home/hero_8.webp', alt: '' },
-    { src: '/images/home/hero_9.webp', alt: '' },
-    { src: '/images/home/hero_10.webp', alt: '' },
-    { src: '/images/home/hero_11.webp', alt: '' },
-    { src: '/images/home/hero_12.webp', alt: '' },
+    {
+      src: '/images/home/hero_1.webp',
+      srcset: '/images/home/hero_1-480.webp 480w, /images/home/hero_1.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_2.webp',
+      srcset: '/images/home/hero_2-480.webp 480w, /images/home/hero_2.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_3.webp',
+      srcset: '/images/home/hero_3-480.webp 480w, /images/home/hero_3.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_4.webp',
+      srcset: '/images/home/hero_4-480.webp 480w, /images/home/hero_4.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_5.webp',
+      srcset: '/images/home/hero_5-480.webp 480w, /images/home/hero_5.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_6.webp',
+      srcset: '/images/home/hero_6-480.webp 480w, /images/home/hero_6.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_7.webp',
+      srcset: '/images/home/hero_7-480.webp 480w, /images/home/hero_7.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_8.webp',
+      srcset: '/images/home/hero_8-480.webp 480w, /images/home/hero_8.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_9.webp',
+      srcset: '/images/home/hero_9-480.webp 480w, /images/home/hero_9.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_10.webp',
+      srcset: '/images/home/hero_10-480.webp 480w, /images/home/hero_10.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_11.webp',
+      srcset: '/images/home/hero_11-480.webp 480w, /images/home/hero_11.webp 960w',
+      alt: '',
+    },
+    {
+      src: '/images/home/hero_12.webp',
+      srcset: '/images/home/hero_12-480.webp 480w, /images/home/hero_12.webp 960w',
+      alt: '',
+    },
   ];
 
   /**

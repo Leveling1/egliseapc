@@ -28,27 +28,27 @@
 }
 
 .apc-theme__overline {
-  font: 600 34px 'Dancing Script', cursive;
+  font: 600 34px var(--font-script);
   color: var(--color-apc-yellow);
   display: block;
   margin-bottom: 8px;
 }
 
 .apc-theme__title {
-  font: 700 64px/1.1 'Poppins', sans-serif;
+  font: 700 64px/1.1 var(--font-heading);
   color: #fff;
   margin: 0 0 20px;
 }
 
 .apc-theme__quote {
-  font: italic 19px/1.7 'Open Sans', sans-serif;
+  font: italic 19px/1.7 var(--font-body);
   color: rgba(255, 255, 255, 0.8);
   margin: 0 auto;
   max-width: 640px;
 }
 
 .apc-theme__reference {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-yellow);
   margin-top: 20px;
   display: inline-block;

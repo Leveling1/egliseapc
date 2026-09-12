@@ -10,18 +10,19 @@
   background-image: url('/images/home/programmes-bg.webp');
   background-size: cover;
   background-position: center;
+  /* La photo reste immobile pendant que la section défile par-dessus : c'est
+     l'effet de profondeur voulu pour cette section. */
   background-attachment: fixed;
 }
 
+/* Sur téléphone, `fixed` est peu fiable (fond non peint, ou cadré sur le
+   mauvais viewport avec `cover`) : la photo défile normalement. */
 @media (max-width: 768px) {
-  /* background-attachment: fixed is unreliable on mobile browsers - it can
-     fail to paint or make background-size: cover zoom against the wrong
-     viewport. Fall back to a normal scrolling background below desktop
-     widths. */
   .apc-programs__background {
     background-attachment: scroll;
   }
 }
+
 
 .apc-programs__overlay {
   position: absolute;
@@ -42,27 +43,27 @@
 }
 
 .apc-programs__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-programs__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
+  font: 700 40px/1.2 var(--font-heading);
   color: #fff;
   margin: 12px 0 0;
 }
 
 .apc-programs__intro {
-  font: 400 16px/1.6 'Open Sans', sans-serif;
+  font: 400 16px/1.6 var(--font-body);
   color: rgba(255, 255, 255, 0.7);
   margin: 16px auto 0;
   max-width: 560px;
 }
 
 .apc-programs__oracle {
-  font: italic 15px/1.7 'Open Sans', sans-serif;
+  font: italic 15px/1.7 var(--font-body);
   color: rgba(255, 255, 255, 0.75);
   margin: 24px auto 0;
   max-width: 620px;
@@ -72,7 +73,7 @@
 }
 
 .apc-programs__oracle strong {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   font-style: normal;
   color: var(--color-apc-yellow);
 }
@@ -107,7 +108,7 @@
 
 .apc-programs__day {
   flex: 0 0 120px;
-  font: 700 15px 'Poppins', sans-serif;
+  font: 700 15px var(--font-heading);
   color: #fff;
 }
 
@@ -122,7 +123,7 @@
 .apc-programs__name {
   flex: 1;
   min-width: 200px;
-  font: 600 16px 'Poppins', sans-serif;
+  font: 600 16px var(--font-heading);
   color: #fff;
 }
 
@@ -132,7 +133,7 @@
 
 .apc-programs__time {
   flex: 0 0 auto;
-  font: 500 14px 'Open Sans', sans-serif;
+  font: 500 14px var(--font-body);
   color: rgba(255, 255, 255, 0.7);
 }
 

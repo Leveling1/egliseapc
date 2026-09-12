@@ -1,28 +1,60 @@
-<section class="apc-foundations" aria-labelledby="apc-foundations-title">
-  <div class="apc-foundations__inner">
-    <div class="apc-foundations__header">
-      <span class="apc-foundations__overline">Nos fondements</span>
-      <h2 id="apc-foundations-title" class="apc-foundations__title">
-        Nous Sommes les Ambassadeurs Pour Christ
-      </h2>
-      <p class="apc-foundations__intro">Le nom de notre église s'appuie sur 2 Corinthiens 5:20.</p>
-    </div>
+<section
+  class="apc-found"
+  [class.apc-found--pinned]="pinned()"
+  [style.height]="pinned() ? pinHeight : null"
+  aria-labelledby="apc-found-title"
+>
+  <h2 id="apc-found-title" class="apc-found__sr">Nos fondements</h2>
 
-    <div class="apc-foundations__grid">
-      @for (card of cards; track card.title) {
-        <article class="apc-foundations__card">
-          <div class="apc-foundations__icon" aria-hidden="true">{{ card.icon }}</div>
-          <h3 class="apc-foundations__card-title">{{ card.title }}</h3>
-          <p class="apc-foundations__card-text">{{ card.description }}</p>
-          @if (card.items) {
-            <ol class="apc-foundations__list">
-              @for (item of card.items; track item) {
-                <li class="apc-foundations__list-item">{{ item }}</li>
+  <div class="apc-found__stage">
+    @for (panel of panels; track panel.id; let index = $index) {
+      <!-- Chaque partie porte sa photo, son voile et son texte. Empilées
+           l'une sous l'autre par défaut ; superposées et fondues une fois la
+           section épinglée. -->
+      <article
+        class="apc-found__panel"
+        [id]="'fondement-' + panel.id"
+        [attr.aria-hidden]="pinned() && active() !== index ? true : null"
+      >
+        <div class="apc-found__photo" aria-hidden="true">
+          <img
+            [src]="panel.image"
+            alt=""
+            width="1280"
+            height="854"
+            [attr.loading]="index === 0 ? 'eager' : 'lazy'"
+            decoding="async"
+            class="apc-found__img"
+          />
+        </div>
+
+        <div class="apc-found__content">
+          <span class="apc-found__overline">Nos fondements</span>
+          <h3 class="apc-found__title">{{ panel.title }}</h3>
+          <p class="apc-found__text">{{ panel.description }}</p>
+          @if (panel.items) {
+            <ol class="apc-found__list">
+              @for (item of panel.items; track item) {
+                <li class="apc-found__item">{{ item }}</li>
               }
             </ol>
           }
-        </article>
+        </div>
+      </article>
+    }
+
+    <!-- Trois points : où l'on en est, et où aller. -->
+    <nav class="apc-found__dots" aria-label="Parties de la section">
+      @for (panel of panels; track panel.id; let index = $index) {
+        <button
+          type="button"
+          class="apc-found__dot"
+          [class.apc-found__dot--active]="active() === index"
+          [attr.aria-current]="active() === index ? 'true' : null"
+          [attr.aria-label]="panel.title"
+          (click)="goTo(index)"
+        ></button>
       }
-    </div>
+    </nav>
   </div>
 </section>

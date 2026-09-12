@@ -14,14 +14,14 @@
 }
 
 .apc-rda-latest__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-blue-dark);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-rda-latest__title {
-  font: 700 40px/1.2 'Poppins', sans-serif;
+  font: 700 40px/1.2 var(--font-heading);
   color: var(--color-apc-black);
   margin: 12px 0 0;
 }
@@ -78,9 +78,9 @@
   top: 20px;
   left: 20px;
   padding: 6px 14px;
-  background: rgba(255, 106, 0, 0.9);
+  background: rgb(255 106 0 / 90%);
   border-radius: 6px;
-  font: 600 12px 'Poppins', sans-serif;
+  font: 600 12px var(--font-heading);
   color: #fff;
 }
 
@@ -94,13 +94,13 @@
 }
 
 .apc-rda-latest__card-title {
-  font: 700 24px 'Poppins', sans-serif;
+  font: 700 24px var(--font-heading);
   color: var(--color-apc-black);
   margin: 0 0 8px;
 }
 
 .apc-rda-latest__card-text {
-  font: 400 15px/1.6 'Open Sans', sans-serif;
+  font: 400 15px/1.6 var(--font-body);
   color: var(--color-apc-ink-secondary);
   margin: 0;
   max-width: 500px;
@@ -115,7 +115,7 @@
   display: inline-block;
   padding: 14px 28px;
   border-radius: 4px;
-  font: 600 14px 'Poppins', sans-serif;
+  font: 600 14px var(--font-heading);
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s;

@@ -18,7 +18,7 @@
   padding: 8px 20px;
   background: var(--color-apc-gray-light);
   color: var(--color-apc-ink-soft);
-  font: 500 13px 'Poppins', sans-serif;
+  font: 500 13px var(--font-heading);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
@@ -78,7 +78,7 @@
   background: none;
   outline: none;
   flex: 1;
-  font: 400 14px 'Open Sans', sans-serif;
+  font: 400 14px var(--font-body);
   color: var(--color-apc-black);
 }
 
@@ -90,5 +90,11 @@
   .apc-filters__search {
     min-width: 0;
     width: 100%;
+  }
+}
+
+@media (pointer: coarse) {
+  .apc-filters__pill {
+    padding: 12px 20px;
   }
 }

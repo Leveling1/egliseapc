@@ -14,14 +14,14 @@
 }
 
 .apc-newsletter__overline {
-  font: 600 13px 'Poppins', sans-serif;
+  font: 600 13px var(--font-heading);
   color: var(--color-apc-yellow);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .apc-newsletter__title {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
   color: #fff;
@@ -29,7 +29,7 @@
 }
 
 .apc-newsletter__description {
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.7);
@@ -62,7 +62,7 @@
   border-radius: 4px 0 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-right: none;
-  font: 400 14px 'Open Sans', sans-serif;
+  font: 400 14px var(--font-body);
   color: #fff;
 }
 
@@ -91,7 +91,7 @@
   padding: 14px 28px;
   background: var(--color-apc-yellow);
   color: var(--color-apc-black);
-  font: 600 14px 'Poppins', sans-serif;
+  font: 600 14px var(--font-heading);
   border-radius: 0 10px 10px 0;
   cursor: pointer;
   white-space: nowrap;
@@ -103,13 +103,13 @@
 }
 
 .apc-newsletter__error {
-  font: 400 13px 'Open Sans', sans-serif;
+  font: 400 13px var(--font-body);
   color: var(--color-apc-yellow);
   margin: 12px 0 0;
 }
 
 .apc-newsletter__success {
-  font: 600 15px 'Poppins', sans-serif;
+  font: 600 15px var(--font-heading);
   color: var(--color-apc-yellow);
   margin: 0;
 }
