@@ -98,7 +98,18 @@
          se charge, simplement estompé : le remplacer par « Chargement… » à
          chaque clic faisait sauter toute la page. -->
     @if (loading() && filteredRows().length === 0) {
-      <p class="cp-muted" role="status">Chargement…</p>
+    <div class="cp-card cp-tablewrap" role="status" aria-label="Chargement">
+        <div class="cp-table-skeleton">
+          @for (i of [0, 1, 2, 3, 4]; track i) {
+            <div class="cp-table-skeleton__row">
+              <span class="cp-shimmer"></span>
+              <span class="cp-shimmer"></span>
+              <span class="cp-shimmer"></span>
+              <span class="cp-shimmer"></span>
+            </div>
+          }
+        </div>
+      </div>
     } @else if (filteredRows().length === 0) {
       <div class="cp-card cp-res__empty">
         @if (search()) {

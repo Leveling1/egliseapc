@@ -538,6 +538,37 @@ main:focus {
   border-top: 1px solid var(--cp-line);
 }
 
+/* ---------- Silhouette de tableau ----------
+   Cinq lignes de quatre colonnes, dans la carte du tableau : la liste arrive
+   là où on l'attend, sans « Chargement… ». */
+.cpannel .cp-table-skeleton {
+  padding: 8px 14px;
+}
+
+.cpannel .cp-table-skeleton__row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--cp-line);
+}
+
+.cpannel .cp-table-skeleton__row:first-child {
+  border-top: none;
+}
+
+.cpannel .cp-table-skeleton__row .cp-shimmer {
+  height: 14px;
+}
+
+.cpannel .cp-table-skeleton__row .cp-shimmer:last-child {
+  height: 30px;
+  width: 60%;
+  justify-self: end;
+  border-radius: var(--cp-radius-control);
+}
+
 /* ---------- Tableaux ---------- */
 .cpannel .cp-tablewrap {
   padding: 8px;
@@ -749,6 +780,81 @@ main:focus {
 
   .cpannel .cp-table__actions {
     justify-content: flex-start;
+  }
+}
+
+/* ------------------------------------------------------------
+   Silhouettes de chargement
+   ------------------------------------------------------------
+   Un bloc `.apc-shimmer` prend la place exacte de ce qui va venir - une
+   ligne de texte, une vignette, une carte - et un reflet le traverse pour
+   dire que quelque chose arrive. Le texte « Chargement… » n'existe plus sur
+   le site : une silhouette dit la même chose sans faire sauter la page.
+   Variante sombre pour les sections noires, variante `cp-shimmer` sur la
+   palette du cpannel. Sous mouvement réduit, le reflet s'arrête. */
+.apc-shimmer,
+.cpannel .cp-shimmer {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  border-radius: 4px;
+  background: var(--color-apc-rule);
+}
+
+.apc-shimmer--dark {
+  background: rgb(255 255 255 / 8%);
+}
+
+.cpannel .cp-shimmer {
+  border-radius: var(--cp-radius-small);
+  background: var(--cp-line);
+}
+
+.apc-shimmer::after,
+.cpannel .cp-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 70%) 50%, transparent 100%);
+  animation: apc-shimmer-sheen 1.6s ease-in-out infinite;
+}
+
+.apc-shimmer--dark::after {
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 10%) 50%, transparent 100%);
+}
+
+@keyframes apc-shimmer-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Ce qui remplace une silhouette se révèle en fondu, sans être plaqué. */
+.apc-enter {
+  animation: apc-enter 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--apc-enter, 0) * 45ms);
+}
+
+@keyframes apc-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apc-shimmer::after,
+  .cpannel .cp-shimmer::after {
+    animation: none;
+  }
+
+  .apc-enter {
+    animation: none;
   }
 }
 

@@ -50,7 +50,12 @@
   }
 
   @if (loading()) {
-    <p class="cp-muted ae-loading" role="status">Chargement…</p>
+    <div class="ae-canvas ae-skeleton" role="status" aria-label="Chargement de l'article">
+      <span class="cp-shimmer ae-skeleton__title"></span>
+      @for (w of [100, 96, 88, 100, 72]; track $index) {
+        <span class="cp-shimmer ae-skeleton__line" [style.width.%]="w"></span>
+      }
+    </div>
   } @else {
     <div class="ae-canvas">
       <textarea

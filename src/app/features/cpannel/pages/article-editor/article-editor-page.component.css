@@ -269,3 +269,15 @@
 .cp-switch input {
   accent-color: var(--cp-accent);
 }
+
+/* ---------- Silhouette de l'article ---------- */
+.ae-skeleton__title {
+  height: 36px;
+  width: 70%;
+  margin-bottom: 28px;
+}
+
+.ae-skeleton__line {
+  height: 16px;
+  margin-top: 14px;
+}

@@ -8,7 +8,21 @@
     </div>
   </header>
 
-  @if (rows().length === 0 && !loading() && !error()) {
+  @if (rows().length === 0 && loading()) {
+    <!-- Première page : la silhouette du tableau, à sa place. -->
+    <div class="cp-card cp-tablewrap" role="status" aria-label="Chargement du journal">
+      <div class="cp-table-skeleton">
+        @for (i of [0, 1, 2, 3, 4, 5, 6, 7]; track i) {
+          <div class="cp-table-skeleton__row">
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (rows().length === 0 && !loading() && !error()) {
     <div class="cp-card cp-journal__empty">
       <p class="cp-journal__empty-title">Aucune action enregistrée</p>
       <p class="cp-journal__empty-text">
@@ -54,8 +68,18 @@
   <!-- Sentinelle : dès qu'elle approche de l'écran, la page suivante part.
        Le bouton reste le repli - et la commande - quand rien ne l'observe. -->
   <div #sentinel class="cp-journal__foot" aria-live="polite">
-    @if (loading()) {
-      <p class="cp-muted" role="status">Chargement…</p>
+    @if (loading() && rows().length > 0) {
+      <!-- La page suivante arrive : trois lignes fantômes à la suite. -->
+      <div class="cp-journal__skeleton" role="status" aria-label="Chargement">
+        @for (i of [0, 1, 2]; track i) {
+          <div class="cp-table-skeleton__row">
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+          </div>
+        }
+      </div>
     } @else if (exhausted()) {
       @if (rows().length > 0) {
         <p class="cp-muted">Fin du journal - {{ rows().length }} ligne(s).</p>

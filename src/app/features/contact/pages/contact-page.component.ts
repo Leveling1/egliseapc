@@ -28,6 +28,7 @@ export class ContactPageComponent implements OnInit {
 
   protected readonly extensions = signal<readonly ExtensionPublic[]>([]);
   protected readonly loading = signal(true);
+  protected readonly skeletons = [0, 1, 2];
 
   protected readonly hasAny = computed(() => this.extensions().length > 0);
 

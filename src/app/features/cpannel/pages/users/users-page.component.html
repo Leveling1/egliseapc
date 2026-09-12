@@ -46,7 +46,18 @@
   }
 
   @if (loading()) {
-    <p class="cp-muted" role="status">Chargement…</p>
+    <div class="cp-card cp-tablewrap" role="status" aria-label="Chargement">
+      <div class="cp-table-skeleton">
+        @for (i of [0, 1, 2, 3, 4]; track i) {
+          <div class="cp-table-skeleton__row">
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+            <span class="cp-shimmer"></span>
+          </div>
+        }
+      </div>
+    </div>
   } @else {
     <div class="cp-card cp-tablewrap">
       <table class="cp-table">

@@ -84,3 +84,28 @@
   font-size: 13px;
   color: var(--cp-ink-muted);
 }
+
+/* ---------- Silhouette d'un bloc ---------- */
+.cp-set__sk-title {
+  height: 18px;
+  width: 55%;
+}
+
+.cp-set__sk-hint {
+  height: 12px;
+  width: 75%;
+  margin-top: 8px;
+}
+
+.cp-set__sk-input {
+  height: 40px;
+  width: 100%;
+  margin-top: 18px;
+  border-radius: var(--cp-radius-control);
+}
+
+.cp-set__sk-line {
+  height: 14px;
+  width: 100%;
+  margin-top: 16px;
+}

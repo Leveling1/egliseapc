@@ -43,6 +43,8 @@ export class GalleryPageComponent implements OnInit {
   protected readonly page = signal(1);
   protected readonly total = signal(0);
   protected readonly loading = signal(true);
+  /** Hauteurs des silhouettes du mur : des proportions de photos, pas des carrés. */
+  protected readonly skeletons = [260, 340, 220, 300, 240, 360, 280, 230, 320];
 
   protected readonly totalPages = computed(() =>
     Math.max(1, Math.ceil(this.total() / GALLERY_PAGE_SIZE)),

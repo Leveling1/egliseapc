@@ -9,6 +9,16 @@
     </p>
   </app-parallax-gallery>
 
+  @if (loading()) {
+    <!-- Le mur arrive : neuf silhouettes de hauteurs variées, trois colonnes,
+         sur le même noir - de quoi tenir la place sans faire sauter la page. -->
+    <div class="apc-gallery__skeleton" role="status" aria-label="Chargement des photos">
+      @for (h of skeletons; track $index) {
+        <span class="apc-shimmer apc-shimmer--dark" [style.height.px]="h"></span>
+      }
+    </div>
+  }
+
   @if (!loading() && photos().length === 0) {
     <!-- Mur vide : sans ce mot, le titre est suivi du pied de page et la
          page se lit comme une panne. -->

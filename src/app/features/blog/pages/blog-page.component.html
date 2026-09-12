@@ -22,8 +22,10 @@
   <div class="apc-blog-grid-wrap">
     @if (articles().length > 0) {
       <div class="apc-blog-grid">
-        @for (article of articles(); track article.slug) {
+        @for (article of articles(); track article.slug; let index = $index) {
           <app-article-card
+            class="apc-enter"
+            [style.--apc-enter]="index % 9"
             [slug]="article.slug"
             [category]="article.category"
             [background]="article.background"
@@ -34,7 +36,19 @@
         }
       </div>
     } @else if (loading()) {
-      <p class="apc-blog-empty" role="status">Chargement des articles…</p>
+      <!-- Six silhouettes de cartes : deux rangées de la grille. -->
+      <div class="apc-blog-grid" role="status" aria-label="Chargement des articles">
+        @for (i of skeletons; track i) {
+          <div class="apc-blog-skeleton">
+            <span class="apc-shimmer apc-blog-skeleton__media"></span>
+            <span class="apc-blog-skeleton__body">
+              <span class="apc-shimmer apc-blog-skeleton__title"></span>
+              <span class="apc-shimmer apc-blog-skeleton__line"></span>
+              <span class="apc-shimmer apc-blog-skeleton__line apc-blog-skeleton__line--short"></span>
+            </span>
+          </div>
+        }
+      </div>
     } @else if (isFiltering()) {
       <!-- Une recherche sans résultat n'est pas un blog vide : on le dit, et
            on offre le chemin du retour. -->

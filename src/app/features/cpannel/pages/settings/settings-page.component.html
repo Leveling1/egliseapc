@@ -13,7 +13,17 @@
   }
 
   @if (loading()) {
-    <p class="cp-muted" role="status">Chargement…</p>
+    <div class="cp-set__grid" role="status" aria-label="Chargement">
+      @for (i of [0, 1, 2]; track i) {
+        <section class="cp-card cp-set__block">
+          <span class="cp-shimmer cp-set__sk-title"></span>
+          <span class="cp-shimmer cp-set__sk-hint"></span>
+          <span class="cp-shimmer cp-set__sk-input"></span>
+          <span class="cp-shimmer cp-set__sk-line"></span>
+          <span class="cp-shimmer cp-set__sk-line"></span>
+        </section>
+      }
+    </div>
   } @else {
     <div class="cp-set__grid">
       <section class="cp-card cp-set__block" aria-labelledby="cp-cat-title">

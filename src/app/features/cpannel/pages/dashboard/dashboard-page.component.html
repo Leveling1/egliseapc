@@ -1,5 +1,27 @@
 @if (loading()) {
-  <p class="cp-dash__loading" role="status">Chargement…</p>
+  <div class="cp-dash" role="status" aria-label="Chargement du tableau de bord">
+    <header class="cp-dash__greeting">
+      <span class="cp-shimmer cp-dash__sk-hello"></span>
+      <span class="cp-shimmer cp-dash__sk-sub"></span>
+    </header>
+    <section class="cp-dash__stats">
+      @for (i of [0, 1, 2, 3, 4]; track i) {
+        <div class="cp-stat">
+          <span class="cp-shimmer cp-dash__sk-label"></span>
+          <span class="cp-shimmer cp-dash__sk-value"></span>
+          <span class="cp-shimmer cp-dash__sk-label"></span>
+        </div>
+      }
+    </section>
+    <div class="cp-dash__grid">
+      @for (i of [0, 1, 2]; track i) {
+        <section class="cp-card">
+          <span class="cp-shimmer cp-dash__sk-title"></span>
+          <span class="cp-shimmer cp-dash__sk-block"></span>
+        </section>
+      }
+    </div>
+  </div>
 } @else {
   <div class="cp-dash">
     <header class="cp-dash__greeting">

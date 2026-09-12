@@ -1,6 +1,7 @@
 <app-header variant="light" />
 
-<main id="contenu" class="apc-contact">
+<main id="contenu">
+<div class="apc-contact">
   <header class="apc-contact__head">
     <span class="apc-contact__overline">Nous joindre</span>
     <h1 class="apc-contact__title">Contact</h1>
@@ -10,13 +11,24 @@
   </header>
 
   @if (loading()) {
-    <p class="apc-contact__empty">Chargement des coordonnées…</p>
+    <!-- Trois silhouettes de fiches, le temps que les coordonnées arrivent. -->
+    <ul class="apc-contact__grid" role="status" aria-label="Chargement des coordonnées">
+      @for (i of skeletons; track i) {
+        <li class="apc-contact__card apc-contact__card--skeleton">
+          <span class="apc-shimmer apc-contact__sk-name"></span>
+          <span class="apc-shimmer apc-contact__sk-place"></span>
+          <span class="apc-shimmer apc-contact__sk-row"></span>
+          <span class="apc-shimmer apc-contact__sk-row"></span>
+          <span class="apc-shimmer apc-contact__sk-row apc-contact__sk-row--short"></span>
+        </li>
+      }
+    </ul>
   } @else if (!hasAny()) {
     <p class="apc-contact__empty">Les coordonnées seront bientôt disponibles.</p>
   } @else {
     <ul class="apc-contact__grid">
-      @for (ext of extensions(); track ext.id) {
-        <li class="apc-contact__card">
+      @for (ext of extensions(); track ext.id; let index = $index) {
+        <li class="apc-contact__card apc-enter" [style.--apc-enter]="index">
           <h2 class="apc-contact__name">{{ ext.name }}</h2>
           @if (ext.city || ext.country) {
             <p class="apc-contact__place">
@@ -74,6 +86,8 @@
       }
     </ul>
   }
+
+</div>
 
   <app-special-events />
 </main>

@@ -60,3 +60,26 @@
 .apc-gallery__empty-link:hover {
   color: var(--color-apc-yellow);
 }
+
+/* ---------- Silhouettes du mur ---------- */
+.apc-gallery__skeleton {
+  background: var(--color-apc-black);
+  padding: 0 24px 96px;
+  max-width: 1280px;
+  margin: 0 auto;
+  columns: 3;
+  column-gap: 16px;
+}
+
+.apc-gallery__skeleton .apc-shimmer {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: 6px;
+}
+
+@media (max-width: 700px) {
+  .apc-gallery__skeleton {
+    columns: 2;
+    padding: 0 16px 64px;
+  }
+}

@@ -138,3 +138,29 @@
     margin-top: 12px;
   }
 }
+
+/* ---------- Silhouette d'une fiche ---------- */
+.apc-contact__card--skeleton {
+  gap: 0;
+}
+
+.apc-contact__sk-name {
+  height: 22px;
+  width: 60%;
+}
+
+.apc-contact__sk-place {
+  height: 12px;
+  width: 45%;
+  margin-top: 12px;
+}
+
+.apc-contact__sk-row {
+  height: 14px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.apc-contact__sk-row--short {
+  width: 70%;
+}

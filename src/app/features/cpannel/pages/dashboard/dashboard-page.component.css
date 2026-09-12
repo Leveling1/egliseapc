@@ -1,6 +1,35 @@
-.cp-dash__loading {
-  font-size: 14px;
-  color: var(--cp-ink-muted);
+/* ---------- Silhouettes du tableau de bord ---------- */
+.cp-dash__sk-hello {
+  height: 28px;
+  width: 260px;
+}
+
+.cp-dash__sk-sub {
+  height: 14px;
+  width: 320px;
+  margin-top: 10px;
+}
+
+.cp-dash__sk-label {
+  height: 12px;
+  width: 60%;
+}
+
+.cp-dash__sk-value {
+  height: 30px;
+  width: 40%;
+  margin: 10px 0 8px;
+}
+
+.cp-dash__sk-title {
+  height: 18px;
+  width: 50%;
+}
+
+.cp-dash__sk-block {
+  height: 160px;
+  width: 100%;
+  margin-top: 18px;
 }
 
 /* ---------- Cartes statistiques ----------

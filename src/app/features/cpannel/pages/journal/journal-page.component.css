@@ -59,3 +59,14 @@
   place-items: center;
   padding: 16px 0 8px;
 }
+
+.cp-journal__skeleton {
+  width: 100%;
+  padding: 0 14px;
+}
+
+.cp-journal__skeleton .cp-table-skeleton__row .cp-shimmer:last-child {
+  height: 14px;
+  width: 50%;
+  border-radius: var(--cp-radius-small);
+}

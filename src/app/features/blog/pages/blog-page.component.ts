@@ -32,6 +32,9 @@ const ALL_CATEGORIES = 'Tous';
  */
 const PAGE_SIZE = 9;
 
+/** Silhouettes pendant le chargement : deux rangées de trois. */
+const SKELETONS = [0, 1, 2, 3, 4, 5];
+
 /** Normalise pour la recherche : minuscules, sans accents. */
 function fold(text: string): string {
   return text
@@ -67,6 +70,7 @@ export class BlogPageComponent implements OnInit {
   protected readonly selectedCategory = signal(ALL_CATEGORIES);
   protected readonly searchTerm = signal('');
   protected readonly loading = signal(true);
+  protected readonly skeletons = SKELETONS;
 
   private readonly all = signal<readonly ArticleView[]>([]);
   private readonly featuredId = signal<string | null>(null);
