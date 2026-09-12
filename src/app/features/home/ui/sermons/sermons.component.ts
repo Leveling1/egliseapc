@@ -8,6 +8,7 @@ import {
   watchUrl,
   type YoutubeVideo,
 } from '../../../../core/content/youtube.service';
+import { VideoSkeletonComponent } from '../../../../shared/components/video-skeleton/video-skeleton.component';
 
 interface SermonSummary {
   readonly id: string;
@@ -22,18 +23,21 @@ interface SermonSummary {
 /** Vidéos sous celle à la une : une rangée. */
 const RECENT_COUNT = 3;
 
+const RECENT_SKELETONS = Array.from({ length: RECENT_COUNT }, (_, i) => i);
+
 /**
  * Les derniers cultes de la chaîne YouTube, sur l'accueil.
  *
  * La vidéo la plus récente à la une, les trois suivantes en rangée ; tout
- * vient de la fonction Edge `get-youtube`, comme la page des cultes. Tant que
- * rien n'est chargé - ou si la chaîne est injoignable - la section s'efface :
- * un accueil sans vidéo vaut mieux qu'un accueil avec des cadres vides.
+ * vient de la fonction Edge `get-youtube`, comme la page des cultes. Pendant
+ * le chargement, la section montre déjà ses quatre silhouettes ; si la
+ * chaîne est injoignable, elle s'efface - un accueil sans vidéo vaut mieux
+ * qu'un accueil avec des cadres vides.
  */
 @Component({
   selector: 'app-sermons',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, VideoSkeletonComponent],
   templateUrl: './sermons.component.html',
   styleUrl: './sermons.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +46,8 @@ export class SermonsComponent {
   private readonly youtube = inject(YoutubeService);
 
   private readonly videos = signal<readonly SermonSummary[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly recentSkeletons = RECENT_SKELETONS;
 
   protected readonly featuredSermon = computed(() => this.videos()[0] ?? null);
   protected readonly recentSermons = computed(() => this.videos().slice(1, 1 + RECENT_COUNT));
@@ -53,6 +59,7 @@ export class SermonsComponent {
   private async load(): Promise<void> {
     const page = await this.youtube.page();
     this.videos.set(page.videos.slice(0, 1 + RECENT_COUNT).map(toSummary));
+    this.loading.set(false);
   }
 }
 

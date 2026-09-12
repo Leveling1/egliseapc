@@ -6,14 +6,20 @@
 
   @if (featured(); as video) {
     <app-featured-culte
+      class="apc-cultes-enter"
       [title]="video.title"
       [meta]="video.date + ' · ' + video.duration"
       [thumbnail]="video.thumbnail"
       [href]="video.href"
     />
+  } @else if (loading()) {
+    <!-- Silhouette de la vidéo à la une, dans le même cadre que la vraie. -->
+    <div class="apc-cultes-featured-skeleton" role="status" aria-label="Chargement des cultes">
+      <app-video-skeleton variant="featured" />
+    </div>
   }
 
-  @if (all().length > 1) {
+  @if (loading() || all().length > 1) {
     <div class="apc-cultes-search">
       <form class="apc-cultes-search__form" role="search" (submit)="$event.preventDefault()">
         <svg class="apc-cultes-search__icon" viewBox="0 0 20 20" aria-hidden="true">
@@ -28,6 +34,7 @@
           placeholder="Rechercher un culte, un enseignement, une date…"
           autocomplete="off"
           [value]="search()"
+          [disabled]="loading()"
           (input)="onSearch($any($event.target).value)"
         />
         @if (search()) {
@@ -49,10 +56,20 @@
   }
 
   <div class="apc-cultes-grid-wrap">
-    @if (videos().length > 0) {
-      <div class="apc-cultes-grid" [class.apc-cultes-grid--busy]="searching()">
-        @for (video of videos(); track video.id) {
+    @if (loading() || searching()) {
+      <!-- Chargement initial ou recherche en cours : une grille de
+           silhouettes, de la taille de celle qui va venir. -->
+      <div class="apc-cultes-grid" role="status" aria-label="Chargement des cultes">
+        @for (i of skeletons; track i) {
+          <app-video-skeleton />
+        }
+      </div>
+    } @else if (videos().length > 0) {
+      <div class="apc-cultes-grid">
+        @for (video of videos(); track video.id; let index = $index) {
           <app-culte-video-card
+            class="apc-cultes-enter"
+            [style.--apc-enter]="index % 12"
             [title]="video.title"
             [date]="video.date"
             [duration]="video.duration"
@@ -60,9 +77,14 @@
             [href]="video.href"
           />
         }
+        @if (loadingMore()) {
+          <!-- La page suivante arrive : ses silhouettes prennent déjà place
+               sous les cartes, puis se changent en cartes. -->
+          @for (i of skeletons; track i) {
+            <app-video-skeleton />
+          }
+        }
       </div>
-    } @else if (loading() || searching()) {
-      <p class="apc-cultes-empty" role="status">Chargement des cultes…</p>
     } @else if (isSearching()) {
       <div class="apc-cultes-empty" role="status">
         <p class="apc-cultes-empty__title">Aucun culte ne correspond</p>
@@ -82,15 +104,10 @@
       </div>
     }
 
-    @if (nextPage() && !isSearching()) {
+    @if (nextPage() && !isSearching() && !loadingMore()) {
       <div class="apc-cultes-more">
-        <button
-          type="button"
-          class="apc-cultes-more__button"
-          [disabled]="loadingMore()"
-          (click)="loadMore()"
-        >
-          {{ loadingMore() ? 'Chargement…' : 'Voir plus de cultes' }}
+        <button type="button" class="apc-cultes-more__button" (click)="loadMore()">
+          Voir plus de cultes
         </button>
       </div>
     }

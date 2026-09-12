@@ -71,8 +71,49 @@
 
 .apc-events__where {
   margin: 4px 0 0;
-  font: 400 15px var(--font-body);
+  font: 400 15px / 1.5 var(--font-body);
   color: rgb(255 255 255 / 70%);
+}
+
+.apc-events__place,
+.apc-events__address {
+  display: block;
+}
+
+.apc-events__address {
+  color: rgb(255 255 255 / 55%);
+}
+
+/* Le seul bouton de la carte : le trait jaune de l'affiche, en lien. */
+.apc-events__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 0 5px;
+  font: 600 15px var(--font-heading);
+  color: #fff;
+  border-bottom: 2px solid var(--color-apc-yellow);
+  transition: color 0.2s;
+}
+
+.apc-events__directions:hover {
+  color: var(--color-apc-yellow);
+}
+
+.apc-events__directions svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--color-apc-yellow);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+@media (pointer: coarse) {
+  .apc-events__directions {
+    padding: 14px 0 5px;
+  }
 }
 
 .apc-events__description {

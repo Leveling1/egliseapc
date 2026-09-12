@@ -30,11 +30,31 @@
               @if (event.when) {
                 <p class="apc-events__when">{{ event.when }}</p>
               }
-              @if (event.location) {
-                <p class="apc-events__where">{{ event.location }}</p>
+              @if (event.location || event.address) {
+                <p class="apc-events__where">
+                  @if (event.location) {
+                    <span class="apc-events__place">{{ event.location }}</span>
+                  }
+                  @if (event.address) {
+                    <span class="apc-events__address">{{ event.address }}</span>
+                  }
+                </p>
               }
               @if (event.description) {
                 <p class="apc-events__description">{{ event.description }}</p>
+              }
+              @if (event.directions) {
+                <a
+                  [href]="event.directions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="apc-events__directions"
+                >
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M10 2.5 3 17l7-3 7 3z" />
+                  </svg>
+                  Itinéraire
+                </a>
               }
             </div>
           </li>

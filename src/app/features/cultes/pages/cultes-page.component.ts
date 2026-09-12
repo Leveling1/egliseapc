@@ -10,6 +10,7 @@ import {
 
 import { SeoService } from '../../../core/seo/seo.service';
 import {
+  YOUTUBE_PAGE_SIZE,
   YoutubeService,
   formatDuration,
   formatPublished,
@@ -20,6 +21,7 @@ import {
 import { HeaderComponent } from '../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
 import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
+import { VideoSkeletonComponent } from '../../../shared/components/video-skeleton/video-skeleton.component';
 import { LiveBannerComponent } from '../ui/live-banner/live-banner.component';
 import { CultesHeroComponent } from '../ui/cultes-hero/cultes-hero.component';
 import { FeaturedCulteComponent } from '../ui/featured-culte/featured-culte.component';
@@ -37,6 +39,12 @@ interface CulteVideo {
 
 /** Délai entre la dernière frappe et la recherche, en ms. */
 const SEARCH_DELAY_MS = 350;
+
+/**
+ * Silhouettes affichées pendant un chargement : autant que de cartes
+ * attendues, pour que la page ait déjà sa taille finale.
+ */
+const SKELETONS = Array.from({ length: YOUTUBE_PAGE_SIZE }, (_, i) => i);
 
 /**
  * Nos cultes : la chaîne YouTube de l'église, en direct et en replay.
@@ -60,6 +68,7 @@ const SEARCH_DELAY_MS = 350;
     CultesHeroComponent,
     FeaturedCulteComponent,
     CulteVideoCardComponent,
+    VideoSkeletonComponent,
   ],
   templateUrl: './cultes-page.component.html',
   styleUrl: './cultes-page.component.css',
@@ -74,6 +83,8 @@ export class CultesPageComponent implements OnInit {
   protected readonly nextPage = signal<string | null>(null);
   protected readonly loading = signal(true);
   protected readonly loadingMore = signal(false);
+
+  protected readonly skeletons = SKELETONS;
 
   protected readonly search = signal('');
   protected readonly searching = signal(false);

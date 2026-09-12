@@ -231,3 +231,39 @@
     transition: none;
   }
 }
+
+/* ---------- Chargement ----------
+   Les silhouettes ont le gabarit des cartes (420 px à la une, 200 px en
+   tuile) ; les cartes se révèlent ensuite en fondu, l'une après l'autre. */
+.apc-sermons__featured-skeleton {
+  margin-bottom: 24px;
+  --apc-skeleton-featured-height: 420px;
+  --apc-skeleton-featured-height-mobile: 420px;
+}
+
+.apc-sermons__skeleton {
+  flex: 1;
+  min-width: 280px;
+}
+
+.apc-sermons__enter {
+  animation: apc-card-enter 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--apc-enter, 0) * 60ms);
+}
+
+@keyframes apc-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apc-sermons__enter {
+    animation: none;
+  }
+}

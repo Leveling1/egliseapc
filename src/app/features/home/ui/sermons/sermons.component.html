@@ -1,4 +1,4 @@
-@if (featuredSermon(); as featured) {
+@if (loading() || featuredSermon()) {
   <section class="apc-sermons" aria-labelledby="apc-sermons-title">
     <div class="apc-sermons__inner">
       <div class="apc-sermons__header">
@@ -7,8 +7,18 @@
         <p class="apc-sermons__intro">Les derniers cultes de notre chaîne YouTube.</p>
       </div>
 
+      @if (loading()) {
+        <div class="apc-sermons__featured-skeleton" role="status" aria-label="Chargement des cultes">
+          <app-video-skeleton variant="featured" />
+        </div>
+        <div class="apc-sermons__grid">
+          @for (i of recentSkeletons; track i) {
+            <app-video-skeleton variant="tile" class="apc-sermons__skeleton" />
+          }
+        </div>
+      } @else if (featuredSermon(); as featured) {
       <a
-        class="apc-sermons__featured"
+        class="apc-sermons__featured apc-sermons__enter"
         [href]="featured.href"
         target="_blank"
         rel="noopener noreferrer"
@@ -28,9 +38,10 @@
 
       @if (recentSermons().length > 0) {
         <div class="apc-sermons__grid">
-          @for (sermon of recentSermons(); track sermon.id) {
+          @for (sermon of recentSermons(); track sermon.id; let index = $index) {
             <a
-              class="apc-sermons__card"
+              class="apc-sermons__card apc-sermons__enter"
+              [style.--apc-enter]="index + 1"
               [href]="sermon.href"
               target="_blank"
               rel="noopener noreferrer"
@@ -49,6 +60,7 @@
             </a>
           }
         </div>
+      }
       }
 
       <div class="apc-sermons__more">

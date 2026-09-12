@@ -1,0 +1,124 @@
+:host {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Le gris de section, à peine plus foncé que le blanc de la carte : la
+   silhouette se devine sans crier. Le reflet est un blanc qui passe. */
+.apc-skeleton__thumb,
+.apc-skeleton__line {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-apc-rule);
+}
+
+.apc-skeleton__thumb::after,
+.apc-skeleton__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 70%) 50%, transparent 100%);
+  animation: apc-skeleton-sheen 1.6s ease-in-out infinite;
+}
+
+@keyframes apc-skeleton-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.apc-skeleton__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.apc-skeleton__body {
+  display: block;
+  padding: 16px;
+}
+
+.apc-skeleton__line {
+  height: 14px;
+  border-radius: 4px;
+}
+
+.apc-skeleton__line--title {
+  width: 78%;
+  height: 16px;
+}
+
+.apc-skeleton__line--meta {
+  width: 46%;
+  margin-top: 12px;
+  height: 12px;
+}
+
+/* ---------- À la une ----------
+   Une seule grande vignette, la légende posée dessus dans le bas, comme sur
+   la vraie carte. */
+:host(.apc-skeleton--featured) {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+:host(.apc-skeleton--featured) .apc-skeleton__thumb {
+  aspect-ratio: auto;
+  /* Hauteur de la vraie vignette à la une ; la page l'ajuste par variable. */
+  height: var(--apc-skeleton-featured-height, 480px);
+  background: var(--color-apc-rule-strong);
+}
+
+:host(.apc-skeleton--featured) .apc-skeleton__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 32px;
+}
+
+:host(.apc-skeleton--featured) .apc-skeleton__line {
+  background: rgb(255 255 255 / 55%);
+}
+
+:host(.apc-skeleton--featured) .apc-skeleton__line--title {
+  width: 42%;
+  height: 22px;
+}
+
+:host(.apc-skeleton--featured) .apc-skeleton__line--meta {
+  width: 24%;
+}
+
+/* ---------- Tuile de l'accueil : vignette de 200 px ---------- */
+:host(.apc-skeleton--tile) .apc-skeleton__thumb {
+  aspect-ratio: auto;
+  height: 200px;
+}
+
+:host(.apc-skeleton--tile) .apc-skeleton__body {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  :host(.apc-skeleton--featured) .apc-skeleton__thumb {
+    height: var(--apc-skeleton-featured-height-mobile, 300px);
+  }
+
+  :host(.apc-skeleton--featured) .apc-skeleton__body {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apc-skeleton__thumb::after,
+  .apc-skeleton__line::after {
+    animation: none;
+  }
+}

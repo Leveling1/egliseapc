@@ -295,7 +295,25 @@ const PROGRAMMES: ModuleConfig = {
     { key: 'end_date', label: 'Date de fin', type: 'date', help: 'À laisser vide pour une date unique.' },
     { key: 'start_time', label: 'Heure de début', type: 'time' },
     { key: 'end_time', label: 'Heure de fin', type: 'time' },
-    { key: 'location', label: 'Lieu', type: 'text' },
+    { key: 'location', label: 'Lieu', type: 'text', placeholder: 'Temple central' },
+    {
+      key: 'address',
+      label: 'Adresse du lieu',
+      type: 'text',
+      placeholder: 'Avenue …, commune, Kinshasa',
+      help:
+        "Pour un événement spécial : le bouton « Itinéraire » du site y mène. " +
+        'Les coordonnées sont recherchées automatiquement à partir de cette adresse.',
+      geocodeTo: { lat: 'latitude', lng: 'longitude' },
+    },
+    {
+      key: 'latitude',
+      label: 'Latitude',
+      type: 'number',
+      help: "Remplie automatiquement ; à corriger seulement si l'adresse a été mal située.",
+      placeholder: '-4.325',
+    },
+    { key: 'longitude', label: 'Longitude', type: 'number', placeholder: '15.322' },
     { key: 'description', label: 'Description', type: 'textarea' },
     {
       key: 'image_path',

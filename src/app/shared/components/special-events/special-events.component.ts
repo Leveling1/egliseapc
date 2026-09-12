@@ -10,8 +10,11 @@ interface SpecialEvent {
   readonly name: string;
   readonly when: string | null;
   readonly location: string | null;
+  readonly address: string | null;
   readonly description: string | null;
   readonly poster: string | null;
+  /** Itinéraire Google Maps vers le lieu ; null sans adresse ni coordonnées. */
+  readonly directions: string | null;
 }
 
 /**
@@ -62,8 +65,10 @@ export class SpecialEventsComponent {
       name: programme.name,
       when: this.formatWhen(programme),
       location: programme.location,
+      address: programme.address,
       description: programme.description,
       poster: path ? this.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl : null,
+      directions: directionsUrl(programme),
     };
   }
 
@@ -81,4 +86,22 @@ export class SpecialEventsComponent {
     const hours = formatTimeRange(programme.start_time, programme.end_time);
     return hours ? `${dates} · ${hours}` : dates;
   }
+}
+
+/**
+ * Itinéraire Google Maps vers le lieu de l'événement.
+ *
+ * Les coordonnées, quand le géocodage les a trouvées, sont plus sûres qu'une
+ * adresse en texte que Maps devrait interpréter ; l'adresse reste le repli.
+ * `api=1` ouvre l'application ou le site selon l'appareil, avec la position
+ * du visiteur comme point de départ.
+ */
+function directionsUrl(programme: ProgrammePublic): string | null {
+  const destination =
+    programme.latitude !== null && programme.longitude !== null
+      ? `${programme.latitude},${programme.longitude}`
+      : programme.address?.trim() || null;
+
+  if (!destination) return null;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
 }

@@ -127,6 +127,10 @@ export interface ProgrammePublic {
   image_path: string | null;
   /** Mis en avant dans la grille des programmes. */
   is_featured: boolean;
+  /** Adresse complète du lieu, pour l'itinéraire d'un événement spécial. */
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
 }
 export type Programme = ProgrammePublic &
   ContentMeta & {
