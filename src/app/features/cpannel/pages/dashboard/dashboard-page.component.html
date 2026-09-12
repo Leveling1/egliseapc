@@ -51,7 +51,10 @@
       </section>
 
       <section class="cp-card cp-activity" aria-labelledby="cp-activity-title">
-        <h2 id="cp-activity-title" class="cp-card__title">Activité récente</h2>
+        <div class="cp-activity__head">
+          <h2 id="cp-activity-title" class="cp-card__title">Activité récente</h2>
+          <a routerLink="/cpannel/journal" class="cp-activity__all">Tout le journal</a>
+        </div>
 
         @if (activity().length === 0) {
           <p class="cp-activity__empty">

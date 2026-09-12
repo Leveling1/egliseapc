@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { CpannelAuthService } from '../../services/cpannel-auth.service';
 import { CpannelDataService } from '../../services/cpannel-data.service';
 import { CPANNEL_MODULES, type ModuleConfig } from '../../data/cpannel-modules';
+import { MODULE_LABELS, relativeTime } from '../../data/activity-labels';
 import type { PannelModule } from '../../../../core/supabase/database.types';
 
 interface ModuleStat {
@@ -58,18 +59,7 @@ export class CpannelDashboardPageComponent {
     this.stats().reduce((sum, stat) => sum + (stat.total - stat.visible), 0),
   );
 
-  protected readonly moduleLabels: Record<PannelModule, string> = {
-    rda: 'Éditions RDA',
-    articles: 'Articles',
-    oracles: 'Oracles',
-    programmes: 'Programmes',
-    extensions: 'Extensions',
-    users: 'Utilisateurs',
-    resources: 'Ressources',
-    newsletter: 'Abonnés',
-    gallery: 'Galerie',
-    settings: 'Paramètres',
-  };
+  protected readonly moduleLabels = MODULE_LABELS;
 
   constructor() {
     inject(Title).setTitle('Tableau de bord - cpannel A.P.C');
@@ -88,7 +78,9 @@ export class CpannelDashboardPageComponent {
           ...(await this.data.counts(config)),
         })),
       ),
-      this.data.recentActivity(),
+      // Trois lignes seulement : le tableau de bord montre le dernier
+      // mouvement, le journal (page dédiée) montre tout.
+      this.data.recentActivity(3),
     ]);
 
     this.stats.set(counts);
@@ -98,22 +90,9 @@ export class CpannelDashboardPageComponent {
         action: entry.action,
         module: entry.module,
         author: entry.author,
-        when: this.relativeTime(entry.occurred_at),
+        when: relativeTime(entry.occurred_at),
       })),
     );
     this.loading.set(false);
-  }
-
-  private relativeTime(iso: string): string {
-    const elapsedMinutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-
-    if (elapsedMinutes < 1) return "à l'instant";
-    if (elapsedMinutes < 60) return `il y a ${elapsedMinutes} min`;
-
-    const hours = Math.round(elapsedMinutes / 60);
-    if (hours < 24) return `il y a ${hours} h`;
-
-    const days = Math.round(hours / 24);
-    return days === 1 ? 'hier' : `il y a ${days} jours`;
   }
 }

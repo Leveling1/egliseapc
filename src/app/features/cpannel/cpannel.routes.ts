@@ -48,6 +48,15 @@ export const cpannelRoutes: Routes = [
           ),
       },
       {
+        // Ouvert à tout administrateur actif, comme le tableau de bord : la
+        // fonction Edge qui le sert réapplique elle-même cette condition.
+        path: 'journal',
+        loadComponent: () =>
+          import('./pages/journal/journal-page.component').then(
+            (m) => m.CpannelJournalPageComponent,
+          ),
+      },
+      {
         path: 'utilisateurs',
         canActivate: [cpannelModuleGuard('users')],
         loadComponent: () =>

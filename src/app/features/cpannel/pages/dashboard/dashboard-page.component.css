@@ -131,6 +131,25 @@
 }
 
 /* ---------- Activité ---------- */
+/* Titre et lien vers le journal complet sur une même ligne. */
+.cp-activity__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cp-activity__all {
+  flex: none;
+  font: 500 13px var(--font-heading);
+  color: var(--cp-accent);
+}
+
+.cp-activity__all:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .cp-activity__empty {
   margin: 14px 0 0;
   font-size: 13px;

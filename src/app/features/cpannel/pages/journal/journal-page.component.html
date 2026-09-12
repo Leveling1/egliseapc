@@ -1,0 +1,69 @@
+<div class="cp-journal">
+  <header class="cp-journal__head">
+    <div>
+      <h2 class="cp-journal__title">Journal d'activité</h2>
+      <p class="cp-journal__sub">
+        Chaque création, modification et changement de visibilité, du plus récent au plus ancien.
+      </p>
+    </div>
+  </header>
+
+  @if (rows().length === 0 && !loading() && !error()) {
+    <div class="cp-card cp-journal__empty">
+      <p class="cp-journal__empty-title">Aucune action enregistrée</p>
+      <p class="cp-journal__empty-text">
+        Le journal se remplit à mesure que le contenu du site est modifié.
+      </p>
+    </div>
+  } @else {
+    <div class="cp-card cp-tablewrap" [attr.aria-busy]="loading()">
+      <table class="cp-table">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">Module</th>
+            <th scope="col">Par</th>
+            <th scope="col">Quand</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.id) {
+            <tr>
+              <td class="cp-journal__action">{{ row.action }}</td>
+              <td>
+                <span class="cp-badge cp-badge--accent">{{ row.moduleLabel }}</span>
+              </td>
+              <td>{{ row.author ?? 'Auteur inconnu' }}</td>
+              <td class="cp-journal__when">
+                <time [attr.datetime]="row.occurred_at">{{ row.when }}</time>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (error()) {
+    <p class="cp-alert--error cp-journal__error" role="alert">
+      {{ error() }}
+      <button type="button" class="cp-btn cp-btn--ghost" (click)="retry()">Réessayer</button>
+    </p>
+  }
+
+  <!-- Sentinelle : dès qu'elle approche de l'écran, la page suivante part.
+       Le bouton reste le repli - et la commande - quand rien ne l'observe. -->
+  <div #sentinel class="cp-journal__foot" aria-live="polite">
+    @if (loading()) {
+      <p class="cp-muted" role="status">Chargement…</p>
+    } @else if (exhausted()) {
+      @if (rows().length > 0) {
+        <p class="cp-muted">Fin du journal - {{ rows().length }} ligne(s).</p>
+      }
+    } @else if (!error()) {
+      <button type="button" class="cp-btn cp-btn--ghost" (click)="loadMore()">
+        Charger la suite
+      </button>
+    }
+  </div>
+</div>

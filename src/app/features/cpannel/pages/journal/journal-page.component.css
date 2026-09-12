@@ -1,0 +1,61 @@
+/* Tableau, pastilles, boutons et alertes viennent des primitives `.cpannel`
+   de styles.css ; ne restent ici que l'en-tête, l'état vide et le pied de
+   liste où s'accroche le défilement infini. */
+
+.cp-journal__head {
+  margin-bottom: 18px;
+}
+
+.cp-journal__title {
+  margin: 0;
+  font: 600 20px var(--font-heading);
+}
+
+.cp-journal__sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-journal__action {
+  font: 500 14px var(--font-heading);
+}
+
+.cp-journal__when {
+  white-space: nowrap;
+  color: var(--cp-ink-soft);
+}
+
+.cp-journal__empty {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.cp-journal__empty-title {
+  margin: 0;
+  font: 600 16px var(--font-heading);
+}
+
+.cp-journal__empty-text {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--cp-ink-muted);
+}
+
+.cp-journal__error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* Une hauteur fixe : la sentinelle garde sa place que le bouton, le message
+   de chargement ou la fin y soient posés, et la page ne saute pas. */
+.cp-journal__foot {
+  min-height: 64px;
+  display: grid;
+  place-items: center;
+  padding: 16px 0 8px;
+}
