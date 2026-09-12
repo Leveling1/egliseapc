@@ -87,15 +87,24 @@ export class BlogPageComponent implements OnInit {
   });
 
   /**
-   * Catégories réellement utilisées par au moins un article visible.
+   * Catégories réellement utilisées par au moins un article de la grille.
    *
    * Déduites des articles chargés plutôt que de la table des catégories :
    * une catégorie créée mais encore vide n'a rien à proposer au visiteur.
+   * L'article à la une est écarté du compte : il n'est pas dans la grille,
+   * et une catégorie qu'il serait seul à porter ouvrirait sur une grille
+   * vide.
    */
   protected readonly categories = computed(() => {
-    const used = [...new Set(this.all().map((article) => article.category).filter(Boolean))].sort(
-      (a, b) => a.localeCompare(b, 'fr'),
-    );
+    const featured = this.featured();
+    const used = [
+      ...new Set(
+        this.all()
+          .filter((article) => article.id !== featured?.id)
+          .map((article) => article.category)
+          .filter(Boolean),
+      ),
+    ].sort((a, b) => a.localeCompare(b, 'fr'));
 
     return used.length > 1 ? [ALL_CATEGORIES, ...used] : used;
   });
