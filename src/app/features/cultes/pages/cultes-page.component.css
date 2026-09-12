@@ -57,8 +57,13 @@
   color: var(--color-apc-black);
 }
 
-.apc-cultes-search__input:focus {
+.apc-cultes-search__input:focus,
+.apc-cultes-search__input:focus-visible {
+  /* Le repère de focus est porté par le cadre du champ (`:focus-within`),
+     pas par le champ lui-même : l'anneau jaune et noir du site, posé ici en
+     plus, faisait un double cadre. */
   outline: none;
+  box-shadow: none;
 }
 
 .apc-cultes-search__input::placeholder {
