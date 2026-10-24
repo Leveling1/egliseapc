@@ -158,10 +158,16 @@ export class ArticleDetailPageComponent {
   private describe(article: ArticleView): void {
     const path = `/blog/${article.slug}`;
     const image = extractImageUrl(article.background);
+    const description = (
+      article.excerpt.trim() || article.content.find((paragraph) => paragraph.trim()) || article.title
+    )
+      .replace(/\s+/g, ' ')
+      .slice(0, 180)
+      .trim();
 
     this.seo.apply({
-      title: `${article.title} | Ambassadeurs Pour Christ (A.P.C)`,
-      description: article.excerpt || article.title,
+      title: `${article.title} | Blog A.P.C`,
+      description,
       path,
       image,
       type: 'article',
@@ -173,7 +179,7 @@ export class ArticleDetailPageComponent {
       'article',
       articleSchema({
         title: article.title,
-        description: article.excerpt || article.title,
+        description,
         path,
         image,
         datePublished: article.isoDate,

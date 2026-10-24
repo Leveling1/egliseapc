@@ -77,9 +77,9 @@ export class ResourcesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Ressources et publications | Ambassadeurs Pour Christ (A.P.C)",
+      title: 'Livres et application | A.P.C',
       description:
-        "Livres, application mobile et outils des Ambassadeurs Pour Christ (A.P.C) pour grandir dans la foi au quotidien.",
+        'Découvrez les livres et l’application des Ambassadeurs pour Christ pour retrouver leurs ressources et enseignements.',
       path: '/ressources',
     });
   }

@@ -34,9 +34,9 @@ export class ContactPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: 'Contact | Ambassadeurs Pour Christ (A.P.C)',
+      title: 'Contact et extensions | Ambassadeurs pour Christ',
       description:
-        "Adresses, téléphones et horaires de l'Église Les Ambassadeurs Pour Christ (A.P.C) : le siège de Kinshasa et chacune de ses extensions.",
+        'Retrouvez les adresses, horaires et moyens de contacter le siège de Kinshasa et les extensions des Ambassadeurs pour Christ.',
       path: '/contact',
     });
 

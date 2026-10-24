@@ -112,9 +112,9 @@ export class CultesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: 'Nos cultes et enseignements | Ambassadeurs Pour Christ (A.P.C)',
+      title: 'Cultes et enseignements | A.P.C',
       description:
-        "Cultes en direct, replays et enseignements de l'Église Les Ambassadeurs Pour Christ (A.P.C), suivis depuis Kinshasa et toutes ses extensions.",
+        'Retrouvez les replays des cultes et les enseignements des Ambassadeurs pour Christ, à Kinshasa comme dans les extensions.',
       path: '/nos-cultes',
     });
   }

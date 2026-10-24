@@ -20,12 +20,41 @@
   color: rgb(255 255 255 / 82%);
 }
 
-/* Pagination sous le mur. Le fond noir est celui de la section qui précède :
-   sans lui, la bande de navigation apparaîtrait sur le blanc du document. */
-.apc-gallery__pages {
-  display: flow-root;
+/* Le point suivi par l'observateur reste dans le flux, sur le fond du mur. */
+.apc-gallery__sentinel {
+  min-height: 1px;
   background: var(--color-apc-black);
-  padding: 0 24px 72px;
+}
+
+.apc-gallery__sentinel[hidden] {
+  display: none;
+}
+
+.apc-gallery__load-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 24px 32px;
+  background: var(--color-apc-black);
+  color: #fff;
+  font: 400 14px / 1.5 var(--font-body);
+  text-align: center;
+}
+
+.apc-gallery__load-error p {
+  margin: 0;
+}
+
+.apc-gallery__load-error button {
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font: 600 13px var(--font-heading);
+  cursor: pointer;
 }
 
 /* État vide, sur le même noir que le mur qu'il remplace. */
@@ -65,7 +94,7 @@
 /* ---------- Silhouettes du mur ---------- */
 .apc-gallery__skeleton {
   background: var(--color-apc-black);
-  padding: 0 24px 96px;
+  padding: 0 24px 24px;
   max-width: 1280px;
   margin: 0 auto;
   columns: 3;
@@ -81,6 +110,6 @@
 @media (max-width: 700px) {
   .apc-gallery__skeleton {
     columns: 2;
-    padding: 0 16px 64px;
+    padding: 0 16px 24px;
   }
 }

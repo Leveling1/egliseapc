@@ -148,9 +148,9 @@ export class BlogPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Blog | Ambassadeurs Pour Christ (A.P.C)",
+      title: 'Blog A.P.C | Enseignements et actualités',
       description:
-        "Résumés de cultes, articles de foi, témoignages et actualités de la communauté Ambassadeurs Pour Christ (A.P.C).",
+        'Retrouvez les résumés de culte, les enseignements, les témoignages et les actualités des Ambassadeurs pour Christ.',
       path: '/blog',
     });
   }

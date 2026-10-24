@@ -80,9 +80,9 @@ export class AboutPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: "Notre histoire | Église Ambassadeurs Pour Christ (A.P.C)",
+      title: 'Notre histoire et notre vision | A.P.C',
       description:
-        "L'histoire, la vision et les fondements de l'Église Les Ambassadeurs Pour Christ (A.P.C), sous la conduite du Prophète Garry KENGE.",
+        'Découvrez l’histoire des Ambassadeurs pour Christ, notre fondement biblique et notre mission : réconcilier le monde avec Dieu.',
       path: '/a-propos',
     });
   }

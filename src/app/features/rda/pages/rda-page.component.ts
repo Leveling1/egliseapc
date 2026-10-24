@@ -82,9 +82,9 @@ export class RdaPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.seo.apply({
-      title: 'Nos activités | Ambassadeurs Pour Christ (A.P.C)',
+      title: 'Rassemblement des Aigles et activités | A.P.C',
       description:
-        "Les grands rendez-vous de l'Église Les Ambassadeurs Pour Christ (A.P.C) : le Rassemblement des Aigles (RDA), ses éditions passées, et la Journée du Parfum.",
+        'Découvrez le Rassemblement des Aigles, ses éditions et les autres rendez-vous qui marquent la vie des Ambassadeurs pour Christ.',
       path: '/nos-activites',
     });
   }

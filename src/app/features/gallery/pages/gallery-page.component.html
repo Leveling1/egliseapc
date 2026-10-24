@@ -9,17 +9,21 @@
     </p>
   </app-parallax-gallery>
 
-  @if (loading()) {
+  @if (loadingInitial() || loadingMore()) {
     <!-- Le mur arrive : neuf silhouettes de hauteurs variées, trois colonnes,
-         sur le même noir - de quoi tenir la place sans faire sauter la page. -->
-    <div class="apc-gallery__skeleton" role="status" aria-label="Chargement des photos">
+         puis réapparaissent en bas du mur au chargement des pages suivantes. -->
+    <div
+      class="apc-gallery__skeleton"
+      role="status"
+      [attr.aria-label]="loadingInitial() ? 'Chargement des photos' : 'Chargement de photos supplémentaires'"
+    >
       @for (h of skeletons; track $index) {
         <span class="apc-shimmer apc-shimmer--dark" [style.height.px]="h"></span>
       }
     </div>
   }
 
-  @if (!loading() && photos().length === 0) {
+  @if (!loadingInitial() && photos().length === 0) {
     <!-- Mur vide : sans ce mot, le titre est suivi du pied de page et la
          page se lit comme une panne. -->
     <div class="apc-gallery__empty">
@@ -32,15 +36,14 @@
     </div>
   }
 
-  @if (totalPages() > 1) {
-    <div class="apc-gallery__pages">
-      <app-pagination
-        [currentPage]="page()"
-        [totalPages]="totalPages()"
-        (pageChange)="goToPage($event)"
-      />
+  @if (loadError()) {
+    <div class="apc-gallery__load-error" role="alert">
+      <p>Les photos supplémentaires n'ont pas pu être chargées.</p>
+      <button type="button" (click)="retryLoading()">Réessayer</button>
     </div>
   }
+
+  <div class="apc-gallery__sentinel" [hidden]="!hasMore()" aria-hidden="true"></div>
 
   <app-special-events />
 </main>

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnInit,
+  afterNextRender,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { FooterComponent } from '../../../core/layout/footer/footer.component';
@@ -9,7 +19,6 @@ import {
   type GalleryPhoto,
 } from '../../../shared/components/parallax-gallery/parallax-gallery.component';
 import { GALLERY_PAGE_SIZE, PublicContentService } from '../../../core/content/public-content.service';
-import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SpecialEventsComponent } from '../../../shared/components/special-events/special-events.component';
 
 @Component({
@@ -20,7 +29,6 @@ import { SpecialEventsComponent } from '../../../shared/components/special-event
     HeaderComponent,
     FooterComponent,
     ParallaxGalleryComponent,
-    PaginationComponent,
     SpecialEventsComponent,
   ],
   templateUrl: './gallery-page.component.html',
@@ -30,6 +38,8 @@ import { SpecialEventsComponent } from '../../../shared/components/special-event
 export class GalleryPageComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly content = inject(PublicContentService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
 
   /**
    * Les photos viennent désormais de la base, non plus d'une liste écrite dans
@@ -40,47 +50,80 @@ export class GalleryPageComponent implements OnInit {
    * parcourir au lecteur d'écran, pas moins.
    */
   protected readonly photos = signal<readonly GalleryPhoto[]>([]);
-  protected readonly page = signal(1);
   protected readonly total = signal(0);
-  protected readonly loading = signal(true);
+  protected readonly loadingInitial = signal(true);
+  protected readonly loadingMore = signal(false);
+  protected readonly loadError = signal(false);
+  protected readonly hasMore = computed(() => this.photos().length < this.total());
   /** Hauteurs des silhouettes du mur : des proportions de photos, pas des carrés. */
   protected readonly skeletons = [260, 340, 220, 300, 240, 360, 280, 230, 320];
 
-  protected readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.total() / GALLERY_PAGE_SIZE)),
-  );
+  private currentPage = 0;
+  private loadingRequest = false;
 
-  protected async goToPage(page: number): Promise<void> {
-    this.page.set(page);
-    await this.load();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  constructor() {
+    afterNextRender(() => {
+      const sentinel = (this.elementRef.nativeElement as HTMLElement).querySelector(
+        '.apc-gallery__sentinel',
+      );
+      if (!sentinel || typeof IntersectionObserver === 'undefined') return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) void this.loadNextPage();
+        },
+        { rootMargin: '700px 0px' },
+      );
+      observer.observe(sentinel);
+      this.destroyRef.onDestroy(() => observer.disconnect());
+    });
   }
 
-  private async load(): Promise<void> {
-    this.loading.set(true);
-    const { photos, total } = await this.content.galleryPhotos({ page: this.page() });
+  ngOnInit(): void {
+    void this.loadNextPage();
 
-    this.photos.set(
-      photos.map((photo) => ({
+    this.seo.apply({
+      title: 'Galerie photos | Ambassadeurs pour Christ',
+      description:
+        'Revivez en images les cultes, le Rassemblement des Aigles et les rencontres de la communauté A.P.C à Kinshasa et dans ses extensions.',
+      path: '/galerie',
+    });
+  }
+
+  private async loadNextPage(): Promise<void> {
+    if (this.loadingRequest || this.loadError() || (!this.hasMore() && this.currentPage > 0)) return;
+
+    this.loadingRequest = true;
+    this.loadError.set(false);
+    const initialLoad = this.currentPage === 0;
+    if (initialLoad) this.loadingInitial.set(true);
+    else this.loadingMore.set(true);
+
+    try {
+      const nextPage = this.currentPage + 1;
+      const { photos, total } = await this.content.galleryPhotos({ page: nextPage });
+      const mappedPhotos = photos.map((photo) => ({
         src: photo.url,
         width: photo.width,
         height: photo.height,
         alt: photo.alt ?? '',
         caption: photo.caption ?? undefined,
-      })),
-    );
-    this.total.set(total);
-    this.loading.set(false);
+      }));
+
+      this.photos.update((current) => [...current, ...mappedPhotos]);
+      this.total.set(total);
+      this.currentPage = nextPage;
+    } catch {
+      this.loadError.set(true);
+    } finally {
+      this.loadingRequest = false;
+      this.loadingInitial.set(false);
+      this.loadingMore.set(false);
+    }
   }
 
-  ngOnInit(): void {
-    void this.load();
-
-    this.seo.apply({
-      title: 'Galerie photos | Ambassadeurs Pour Christ (A.P.C)',
-      description:
-        "Les moments de la vie de l'Église Les Ambassadeurs Pour Christ (A.P.C) en images : cultes, Rassemblement des Aigles et rencontres, à Kinshasa comme dans toutes les extensions.",
-      path: '/galerie',
-    });
+  protected retryLoading(): void {
+    this.loadError.set(false);
+    void this.loadNextPage();
   }
 }
