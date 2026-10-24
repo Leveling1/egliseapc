@@ -16,6 +16,8 @@ export type FieldType =
   | 'number'
   | 'date'
   | 'time'
+  | 'map-link'
+  | 'schedule'
   | 'select'
   | 'weekdays'
   | 'image'
@@ -348,19 +350,15 @@ const EXTENSIONS: ModuleConfig = {
       label: 'Adresse',
       type: 'text',
       placeholder: 'Av. Luzandi 5, Ngaliema, Kinshasa',
-      help:
-        'Les coordonnées de la carte sont recherchées automatiquement à partir ' +
-        'de cette adresse.',
-      geocodeTo: { lat: 'latitude', lng: 'longitude' },
+      help: 'Adresse postale de l’extension.',
     },
     {
-      key: 'latitude',
-      label: 'Latitude',
-      type: 'number',
-      help: 'Sert à placer le point sur la carte « Notre présence ».',
-      placeholder: '-4.325',
+      key: 'maps_url',
+      label: 'Lien Google Maps',
+      type: 'map-link',
+      placeholder: 'https://maps.google.com/…',
+      help: 'Collez le lien du lieu Google Maps. Les coordonnées seront récupérées à l’enregistrement.',
     },
-    { key: 'longitude', label: 'Longitude', type: 'number', placeholder: '15.322' },
     { key: 'leader_name', label: 'Responsable', type: 'text' },
     { key: 'phone', label: 'Téléphone', type: 'text', placeholder: '+243 892 211 899' },
     {
@@ -373,10 +371,9 @@ const EXTENSIONS: ModuleConfig = {
     { key: 'email', label: 'Adresse e-mail', type: 'text', placeholder: 'contact@egliseapc.org' },
     {
       key: 'opening_hours',
-      label: "Horaires d'accueil",
-      type: 'text',
-      placeholder: 'Lun.–Ven. 9h–17h',
-      help: 'Affiché tel quel sur la page Contact.',
+      label: 'Programmes',
+      type: 'schedule',
+      help: 'Ajoutez autant de jours et de plages horaires que nécessaire.',
     },
     {
       key: 'image_path',

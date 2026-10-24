@@ -42,6 +42,7 @@ import {
 } from '../../data/cpannel-modules';
 
 type Draft = Record<string, unknown>;
+type ScheduleEntry = { day: string; start: string; end: string; legacy?: string };
 
 @Component({
   selector: 'app-cpannel-resource-page',
@@ -450,6 +451,12 @@ export class CpannelResourcePageComponent {
         case 'images':
           draft[field.key] = [];
           break;
+        case 'schedule':
+          draft['opening_hours_entries'] = [];
+          break;
+        case 'map-link':
+          draft[field.key] = '';
+          break;
         case 'boolean':
           draft[field.key] = false;
           break;
@@ -483,6 +490,14 @@ export class CpannelResourcePageComponent {
         draft[field.key] = Array.isArray(value) ? (value as string[]).join('\n\n') : '';
       } else if (field.type === 'weekdays') {
         draft[field.key] = Array.isArray(value) ? [...(value as number[])] : [];
+      } else if (field.type === 'schedule') {
+        draft['opening_hours_entries'] = this.parseSchedule(value);
+      } else if (field.type === 'map-link') {
+        const latitude = Number(row['latitude']);
+        const longitude = Number(row['longitude']);
+        draft[field.key] = Number.isFinite(latitude) && Number.isFinite(longitude)
+          ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+          : '';
       } else {
         draft[field.key] = value ?? '';
       }
@@ -508,6 +523,38 @@ export class CpannelResourcePageComponent {
 
   protected setFieldValue(key: string, value: string): void {
     this.draft.update((draft) => (draft ? { ...draft, [key]: value } : draft));
+  }
+
+  protected scheduleRows(): readonly ScheduleEntry[] {
+    const rows = this.draft()?.['opening_hours_entries'];
+    return Array.isArray(rows) ? (rows as ScheduleEntry[]) : [];
+  }
+
+  protected addScheduleRow(): void {
+    this.draft.update((draft) => draft
+      ? { ...draft, opening_hours_entries: [...this.scheduleRows(), { day: '', start: '', end: '' }] }
+      : draft);
+  }
+
+  protected updateScheduleRow(index: number, key: 'day' | 'start' | 'end', value: string): void {
+    this.draft.update((draft) => {
+      if (!draft) return draft;
+      const rows = [...this.scheduleRows()];
+      if (!rows[index]) return draft;
+      rows[index] = { ...rows[index], [key]: value, legacy: undefined };
+      return { ...draft, opening_hours_entries: rows };
+    });
+  }
+
+  protected removeScheduleRow(index: number): void {
+    this.draft.update((draft) => draft
+      ? { ...draft, opening_hours_entries: this.scheduleRows().filter((_, i) => i !== index) }
+      : draft);
+  }
+
+  protected hasGoogleMapsLink(): boolean {
+    const value = this.fieldValue('maps_url').trim();
+    return Boolean(value) && this.isGoogleMapsUrl(value);
   }
 
   protected isDayChecked(key: string, day: number): boolean {
@@ -548,11 +595,52 @@ export class CpannelResourcePageComponent {
       return;
     }
 
+    if (config.module === 'extensions') {
+      const incomplete = this.scheduleRows().some((entry) => {
+        if (entry.legacy && !entry.day && !entry.start && !entry.end) return false;
+        const hasAnyValue = Boolean(entry.day.trim() || entry.start || entry.end);
+        return hasAnyValue && !(entry.day.trim() && entry.start && entry.end);
+      });
+      if (incomplete) {
+        this.error.set('Complétez le jour, l’heure de début et l’heure de fin de chaque programme.');
+        return;
+      }
+    }
+
     this.saving.set(true);
     this.error.set(null);
 
     try {
       const payload = this.toPayload(config, draft);
+      if (config.module === 'extensions') {
+        const mapUrl = String(draft['maps_url'] ?? '').trim();
+        if (mapUrl) {
+          if (!this.isGoogleMapsUrl(mapUrl)) {
+            throw new Error('Collez un lien Google Maps valide commençant par https://.');
+          }
+
+          let coordinates = this.googleMapsCoordinates(mapUrl);
+          if (!coordinates) {
+            const search = this.googleMapsSearch(mapUrl) || String(draft['address'] ?? '').trim();
+            if (search) {
+              const found = await this.geocoding.lookup(search);
+              if (found) coordinates = { latitude: found.latitude, longitude: found.longitude };
+            }
+          }
+          if (!coordinates) {
+            throw new Error(
+              'Je ne trouve pas les coordonnées dans ce lien. Ajoutez l’adresse complète de l’extension ou utilisez le lien Google Maps du lieu avec sa position.',
+            );
+          }
+          payload['latitude'] = coordinates.latitude;
+          payload['longitude'] = coordinates.longitude;
+        } else {
+          const latitude = String(draft['latitude'] ?? '').trim();
+          const longitude = String(draft['longitude'] ?? '').trim();
+          payload['latitude'] = latitude ? Number(latitude) : null;
+          payload['longitude'] = longitude ? Number(longitude) : null;
+        }
+      }
       const id = this.editingId();
 
       const saved = id
@@ -779,6 +867,74 @@ export class CpannelResourcePageComponent {
     this.existingLinkIds.set(rows.map((row) => row.id));
   }
 
+  private parseSchedule(value: unknown): ScheduleEntry[] {
+    const text = typeof value === 'string' ? value.trim() : '';
+    if (!text) return [];
+
+    const entries = text.split(/\s*[·\n]\s*/).filter(Boolean);
+    return entries.map((entry) => {
+      const match = entry.match(
+        /^(?:(.*?)\s*:\s*)?(.*?)\s+(\d{1,2}(?::\d{2}|h\d{0,2})?)\s*[–-]\s*(\d{1,2}(?::\d{2}|h\d{0,2})?)$/i,
+      );
+      if (!match) return { day: '', start: '', end: '', legacy: entry };
+      return {
+        day: (match[1] || match[2]).trim(),
+        start: this.normalizeScheduleTime(match[3]),
+        end: this.normalizeScheduleTime(match[4]),
+      };
+    });
+  }
+
+  private normalizeScheduleTime(value: string): string {
+    const match = value.match(/^(\d{1,2})(?::(\d{2})|h(\d{0,2}))?$/i);
+    if (!match) return '';
+    return `${match[1].padStart(2, '0')}:${(match[2] ?? match[3] ?? '00').padEnd(2, '0')}`;
+  }
+
+  private isGoogleMapsUrl(value: string): boolean {
+    if (!value.trim()) return true;
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' &&
+        (url.hostname === 'maps.app.goo.gl' || url.hostname === 'goo.gl' ||
+          /^(?:[a-z0-9-]+\.)*google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2})?)$/i.test(url.hostname));
+    } catch {
+      return false;
+    }
+  }
+
+  private googleMapsCoordinates(value: string): { latitude: number; longitude: number } | null {
+    let decoded = value;
+    try { decoded = decodeURIComponent(value); } catch { /* URL could already be decoded. */ }
+    const patterns = [
+      /@(-?\d{1,2}(?:\.\d+)?),\s*(-?\d{1,3}(?:\.\d+)?)/,
+      /!3d(-?\d{1,2}(?:\.\d+)?)!4d(-?\d{1,3}(?:\.\d+)?)/,
+      /(?:q|query|destination)=(-?\d{1,2}(?:\.\d+)?)[,%20]+(-?\d{1,3}(?:\.\d+)?)/i,
+    ];
+    for (const pattern of patterns) {
+      const match = decoded.match(pattern);
+      if (!match) continue;
+      const latitude = Number(match[1]);
+      const longitude = Number(match[2]);
+      if (Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180) return { latitude, longitude };
+    }
+    return null;
+  }
+
+  private googleMapsSearch(value: string): string {
+    try {
+      const url = new URL(value);
+      for (const key of ['query', 'q', 'destination']) {
+        const query = url.searchParams.get(key)?.trim();
+        if (query && !this.googleMapsCoordinates(`${key}=${query}`)) return query;
+      }
+      const place = url.pathname.match(/\/maps\/place\/([^/]+)/i)?.[1];
+      return place ? decodeURIComponent(place.replace(/\+/g, ' ')) : '';
+    } catch {
+      return '';
+    }
+  }
+
   /**
    * Convertit le brouillon en charge utile pour Postgres.
    *
@@ -792,7 +948,7 @@ export class CpannelResourcePageComponent {
     for (const field of config.fields) {
       // Les liens vivent dans leur propre table, pas dans une colonne de ce
       // contenu : ils sont enregistrés séparément par syncLinks().
-      if (field.type === 'links') continue;
+      if (field.type === 'links' || field.type === 'map-link') continue;
 
       const raw = draft[field.key];
 
@@ -809,6 +965,19 @@ export class CpannelResourcePageComponent {
           payload[field.key] = text
             ? text.split(/\n+/).map((line) => line.trim()).filter(Boolean)
             : [];
+          break;
+        }
+        case 'schedule': {
+          const entries = Array.isArray(draft['opening_hours_entries'])
+            ? draft['opening_hours_entries'] as ScheduleEntry[]
+            : [];
+          const complete = entries
+            .filter((entry) => entry.day.trim() && entry.start && entry.end)
+            .map((entry) => `${entry.day.trim()} : ${entry.start}–${entry.end}`);
+          const legacy = entries
+            .filter((entry) => entry.legacy && !entry.day && !entry.start && !entry.end)
+            .map((entry) => entry.legacy!.trim());
+          payload[field.key] = [...legacy, ...complete].join(' · ') || null;
           break;
         }
         case 'images': {

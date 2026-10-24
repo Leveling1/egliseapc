@@ -272,6 +272,48 @@
   color: var(--cp-accent);
 }
 
+.cp-map-link-preview {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--cp-accent);
+  font-size: 13px;
+  text-underline-offset: 3px;
+}
+
+.cp-schedule {
+  display: grid;
+  gap: 10px;
+}
+
+.cp-schedule__row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(250px, 1.4fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-schedule__day,
+.cp-schedule__time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-schedule__time .cp-input {
+  min-width: 0;
+}
+
+.cp-schedule__legacy {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--cp-ink-muted);
+  font-size: 12px;
+}
+
+.cp-schedule__remove {
+  justify-self: end;
+}
+
 @media (max-width: 640px) {
   .cp-res__search {
     min-width: 0;
@@ -280,6 +322,21 @@
 
   .cp-res__group-head {
     align-items: flex-start;
+  }
+
+  .cp-schedule__row {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+  }
+
+  .cp-schedule__day,
+  .cp-schedule__time,
+  .cp-schedule__legacy {
+    grid-column: 1 / -1;
+  }
+
+  .cp-schedule__remove {
+    grid-column: 2;
   }
 
   .cp-gallery__lots,

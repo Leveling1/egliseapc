@@ -548,6 +548,79 @@
                   />
                 }
 
+                @case ('map-link') {
+                  <input
+                    type="url"
+                    [id]="'cp-' + field.key"
+                    class="cp-input"
+                    [placeholder]="field.placeholder ?? 'https://maps.google.com/…'"
+                    [ngModel]="fieldValue(field.key)"
+                    (ngModelChange)="setFieldValue(field.key, $event)"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  @if (hasGoogleMapsLink()) {
+                    <a class="cp-map-link-preview" [href]="fieldValue(field.key)" target="_blank" rel="noopener noreferrer">
+                      Ouvrir le lieu dans Google Maps
+                    </a>
+                  }
+                }
+
+                @case ('schedule') {
+                  <div class="cp-schedule" [attr.aria-label]="field.label">
+                    @for (program of scheduleRows(); track $index) {
+                      <div class="cp-schedule__row">
+                        <div class="cp-schedule__day">
+                          <label class="cp-sr" [attr.for]="'cp-program-day-' + $index">Jour</label>
+                          <input
+                            [id]="'cp-program-day-' + $index"
+                            type="text"
+                            class="cp-input"
+                            placeholder="Jour (ex. dimanche)"
+                            [ngModel]="program.day"
+                            (ngModelChange)="updateScheduleRow($index, 'day', $event)"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+                        @if (program.legacy) {
+                          <p class="cp-schedule__legacy">Horaire existant conservé : {{ program.legacy }}</p>
+                        }
+                        <div class="cp-schedule__time">
+                          <label class="cp-sr" [attr.for]="'cp-program-start-' + $index">Heure de début</label>
+                          <input
+                            [id]="'cp-program-start-' + $index"
+                            type="time"
+                            class="cp-input"
+                            [ngModel]="program.start"
+                            (ngModelChange)="updateScheduleRow($index, 'start', $event)"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                          <span aria-hidden="true">à</span>
+                          <label class="cp-sr" [attr.for]="'cp-program-end-' + $index">Heure de fin</label>
+                          <input
+                            [id]="'cp-program-end-' + $index"
+                            type="time"
+                            class="cp-input"
+                            [ngModel]="program.end"
+                            (ngModelChange)="updateScheduleRow($index, 'end', $event)"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          class="cp-btn cp-btn--danger cp-schedule__remove"
+                          (click)="removeScheduleRow($index)"
+                          [attr.aria-label]="'Retirer le programme ' + ($index + 1)"
+                        >
+                          Retirer
+                        </button>
+                      </div>
+                    }
+                    <button type="button" class="cp-btn cp-btn--ghost" (click)="addScheduleRow()">
+                      Ajouter un programme
+                    </button>
+                  </div>
+                }
+
                 @case ('number') {
                   <input
                     type="number"
