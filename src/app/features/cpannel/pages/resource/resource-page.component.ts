@@ -1,4 +1,5 @@
 import { LowerCasePipe } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -67,6 +68,7 @@ export class CpannelResourcePageComponent {
   private readonly titleService = inject(Title);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly document = inject(DOCUMENT);
   private readonly supabase = inject(SupabaseService).client;
   private readonly geocoding = inject(GeocodingService);
 
@@ -186,6 +188,7 @@ export class CpannelResourcePageComponent {
 
   /** Lot actuellement ouvert dans la vue détaillée de la galerie. */
   protected readonly activeGalleryGroup = signal<string | null>(null);
+  protected readonly galleryShareFeedback = signal<'copied' | 'shared' | 'error' | null>(null);
   protected readonly selectedGalleryGroup = computed(() => {
     const key = this.activeGalleryGroup();
     return key === null ? null : this.groupedRows().find((group) => group.key === key) ?? null;
@@ -211,6 +214,60 @@ export class CpannelResourcePageComponent {
 
   protected galleryVisibleCount(rows: readonly ContentRow[]): number {
     return rows.filter((row) => row.is_visible === true).length;
+  }
+
+  protected async shareActiveGalleryGroup(): Promise<void> {
+    const group = this.selectedGalleryGroup();
+    const window = this.document.defaultView;
+    if (!group || !window) return;
+
+    const queryParams = group.key === '__sans_groupe__'
+      ? { 'sans-legende': '1' }
+      : { legende: group.label };
+    const relativeUrl = this.router.serializeUrl(
+      this.router.createUrlTree(['/galerie/lot'], { queryParams }),
+    );
+    const url = new URL(relativeUrl, window.location.origin).toString();
+
+    try {
+      const navigator = window.navigator;
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: group.label || 'Photos A.P.C',
+            text: `Photos du lot « ${group.label} » — Ambassadeurs pour Christ`,
+            url,
+          });
+          this.galleryShareFeedback.set('shared');
+          setTimeout(() => this.galleryShareFeedback.set(null), 2500);
+          return;
+        } catch (cause) {
+          if (cause instanceof DOMException && cause.name === 'AbortError') return;
+          // Si le partage natif est indisponible dans ce navigateur, on copie
+          // le lien afin que le bouton reste utile sur ordinateur.
+        }
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const input = this.document.createElement('textarea');
+        input.value = url;
+        input.setAttribute('readonly', '');
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
+        this.document.body.appendChild(input);
+        input.select();
+        const copied = this.document.execCommand('copy');
+        input.remove();
+        if (!copied) throw new Error('Copie impossible');
+      }
+
+      this.galleryShareFeedback.set('copied');
+      setTimeout(() => this.galleryShareFeedback.set(null), 2500);
+    } catch {
+      this.galleryShareFeedback.set('error');
+    }
   }
 
   protected addToActiveGalleryGroup(): void {

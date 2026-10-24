@@ -32,6 +32,13 @@ export const routes: Routes = [
       import('./features/contact/pages/contact-page.component').then((m) => m.ContactPageComponent),
   },
   {
+    path: 'galerie/lot',
+    loadComponent: () =>
+      import('./features/gallery/pages/gallery-lot-page.component').then(
+        (m) => m.GalleryLotPageComponent,
+      ),
+  },
+  {
     path: 'galerie',
     loadComponent: () =>
       import('./features/gallery/pages/gallery-page.component').then((m) => m.GalleryPageComponent),

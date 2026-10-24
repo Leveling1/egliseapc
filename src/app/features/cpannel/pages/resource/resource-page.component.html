@@ -83,9 +83,27 @@
           @if (cfg.bulkMedia) {
             @if (activeGalleryGroup() !== null) {
               @if (selectedGalleryGroup()) {
-                <button type="button" class="cp-btn cp-btn--primary" (click)="addToActiveGalleryGroup()">
-                  Ajouter au lot
-                </button>
+                @if (selectedGalleryGroup(); as lot) {
+                  <button
+                    type="button"
+                    class="cp-btn cp-btn--ghost"
+                    [disabled]="galleryVisibleCount(lot.rows) === 0"
+                    [attr.aria-label]="'Partager le lot ' + lot.label"
+                    (click)="shareActiveGalleryGroup()"
+                  >
+                    {{ galleryShareFeedback() === 'copied' ? 'Lien copié' : galleryShareFeedback() === 'shared' ? 'Partage effectué' : 'Partager le lot' }}
+                  </button>
+                  <button type="button" class="cp-btn cp-btn--primary" (click)="addToActiveGalleryGroup()">
+                    Ajouter au lot
+                  </button>
+                  @if (galleryShareFeedback() === 'error') {
+                    <span class="cp-gallery__share-status" role="status">Impossible de partager le lien.</span>
+                  } @else if (galleryShareFeedback() === 'copied') {
+                    <span class="cp-gallery__share-status" role="status">Lien prêt à partager.</span>
+                  } @else if (galleryShareFeedback() === 'shared') {
+                    <span class="cp-gallery__share-status" role="status">Partage effectué.</span>
+                  }
+                }
               }
             } @else {
               <button type="button" class="cp-btn cp-btn--primary" (click)="toggleBulk()">

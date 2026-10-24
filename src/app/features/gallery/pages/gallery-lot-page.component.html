@@ -1,0 +1,44 @@
+<app-header variant="overlay" />
+
+<main id="contenu">
+  @if (lotIsValid()) {
+    <app-parallax-gallery [photos]="photos()">
+      <h1 class="apc-gallery-lot__title">{{ title() }}</h1>
+      <p class="apc-gallery-lot__intro">Les photos de ce lot partagé par Ambassadeurs pour Christ.</p>
+    </app-parallax-gallery>
+
+    @if (loading()) {
+      <div class="apc-gallery-lot__skeleton" role="status" aria-label="Chargement des photos">
+        @for (h of skeletons; track $index) {
+          <span class="apc-shimmer apc-shimmer--dark" [style.height.px]="h"></span>
+        }
+      </div>
+    }
+
+    @if (!loading() && photos().length === 0) {
+      <div class="apc-gallery-lot__empty">
+        <p class="apc-gallery-lot__empty-title">Aucune photo en ligne dans ce lot</p>
+        <p class="apc-gallery-lot__empty-text">Les photos de ce lot ne sont pas disponibles pour le moment.</p>
+        <a routerLink="/galerie" class="apc-gallery-lot__link">Voir toute la galerie</a>
+      </div>
+    }
+
+    @if (totalPages() > 1) {
+      <div class="apc-gallery-lot__pages">
+        <app-pagination
+          [currentPage]="page()"
+          [totalPages]="totalPages()"
+          (pageChange)="goToPage($event)"
+        />
+      </div>
+    }
+  } @else {
+    <section class="apc-gallery-lot__empty apc-gallery-lot__missing">
+      <h1 class="apc-gallery-lot__empty-title">Ce lien ne désigne aucun lot</h1>
+      <p class="apc-gallery-lot__empty-text">Ouvrez un lien de partage valide ou parcourez toute la galerie.</p>
+      <a routerLink="/galerie" class="apc-gallery-lot__link">Voir toute la galerie</a>
+    </section>
+  }
+</main>
+
+<app-footer />

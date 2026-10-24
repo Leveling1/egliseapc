@@ -106,7 +106,7 @@
   text-underline-offset: 2px;
 }
 
-.apc-map-popup__route {
+.apc-world .leaflet-container a.apc-map-popup__route {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -122,13 +122,13 @@
   transition: background 0.16s ease-out, color 0.16s ease-out, border-color 0.16s ease-out;
 }
 
-.apc-map-popup__route:hover {
+.apc-world .leaflet-container a.apc-map-popup__route:hover {
   border-color: transparent;
   background: var(--color-apc-blue-dark);
   color: #fff;
 }
 
-.apc-map-popup__route:focus-visible {
+.apc-world .leaflet-container a.apc-map-popup__route:focus-visible {
   outline: 2px solid var(--color-apc-yellow);
   outline-offset: 3px;
 }

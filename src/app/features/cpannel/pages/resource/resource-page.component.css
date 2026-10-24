@@ -50,6 +50,13 @@
   margin-bottom: 8px;
 }
 
+.cp-gallery__share-status {
+  flex-basis: 100%;
+  color: var(--cp-ink-soft);
+  font-size: 12px;
+  text-align: right;
+}
+
 .cp-gallery__lots,
 .cp-gallery__photos {
   display: grid;

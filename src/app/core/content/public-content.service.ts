@@ -213,18 +213,25 @@ export class PublicContentService {
    * visiteur tout ce qu'il ne regarde pas.
    */
   async galleryPhotos(
-    options: { page?: number; pageSize?: number } = {},
+    options: { page?: number; pageSize?: number; caption?: string | null } = {},
   ): Promise<{ photos: GalleryPhotoPublic[]; total: number }> {
     return this.awaited(async () => {
       const page = Math.max(1, options.page ?? 1);
       const pageSize = Math.max(1, options.pageSize ?? GALLERY_PAGE_SIZE);
       const from = (page - 1) * pageSize;
 
-      const { data, count } = await this.supabase
+      let query = this.supabase
         .from('gallery_photos_public')
         .select('*', { count: 'exact' })
-        .range(from, from + pageSize - 1)
-        .returns<GalleryPhotoPublic[]>();
+        .range(from, from + pageSize - 1);
+
+      if (options.caption !== undefined) {
+        query = options.caption === null
+          ? query.is('caption', null)
+          : query.eq('caption', options.caption);
+      }
+
+      const { data, count } = await query.returns<GalleryPhotoPublic[]>();
 
       return { photos: data ?? [], total: count ?? 0 };
     });
