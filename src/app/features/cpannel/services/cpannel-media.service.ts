@@ -49,7 +49,7 @@ export class CpannelMediaService {
       body: form,
     });
 
-    if (error) throw new Error(await readFunctionError(error));
+    if (error) throw new Error(formatMediaUploadError(await readFunctionError(error)));
     if (!data?.url) throw new Error("Le service média n'a pas renvoyé d'adresse.");
 
     return {
@@ -59,6 +59,19 @@ export class CpannelMediaService {
       mediaId: data.id ?? '',
     };
   }
+}
+
+/** Le proxy amont renvoie parfois une page HTML complète à la place du JSON. */
+function formatMediaUploadError(message: string): string {
+  if (!/<(!doctype\s+html|html\b)/i.test(message)) return message;
+  const status = message.match(/HTTP\s+(\d{3})/i)?.[1] ?? message.match(/\b(502|503|504)\b/)?.[1];
+  if (status === '503') {
+    return "Service média indisponible (HTTP 503) : le serveur intermédiaire a renvoyé une page HTML au lieu de traiter l'image. Réessayez plus tard ; si l'erreur persiste, l'hébergeur doit vérifier ses journaux au moment de l'envoi.";
+  }
+  if (status) {
+    return `Le serveur média a renvoyé une page d'erreur HTML (HTTP ${status}). Vérifiez l'état du service ou réessayez plus tard.`;
+  }
+  return "Le serveur média a renvoyé une page HTML inattendue. Vérifiez ses journaux au moment de l'envoi.";
 }
 
 /**

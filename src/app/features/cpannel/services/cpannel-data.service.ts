@@ -25,6 +25,7 @@ export interface ContentRow {
  */
 /** Nombre d'enregistrements par page dans le cpannel. */
 export const DEFAULT_PAGE_SIZE = 20;
+const GALLERY_BATCH_SIZE = 250;
 
 @Injectable({ providedIn: 'root' })
 export class CpannelDataService {
@@ -84,6 +85,33 @@ export class CpannelDataService {
 
     if (error) throw new Error(error.message);
     return { rows: (data ?? []) as unknown as ContentRow[], total: count ?? 0 };
+  }
+
+  /**
+   * Le cpannel affiche les photos par album (légende commune). Il doit donc
+   * connaître toutes les lignes pour ne pas couper un album entre deux pages.
+   * On ne charge que les colonnes déjà nécessaires à cette liste et on suit
+   * les pages PostgREST jusqu'à la dernière.
+   */
+  async listAll(config: ModuleConfig): Promise<ContentRow[]> {
+    const result: ContentRow[] = [];
+
+    for (let from = 0; ; from += GALLERY_BATCH_SIZE) {
+      const query = this.supabase
+        .from(config.table)
+        .select(config.listSelect ?? '*')
+        .order(config.orderBy.column, {
+          ascending: config.orderBy.ascending,
+          nullsFirst: false,
+        })
+        .range(from, from + GALLERY_BATCH_SIZE - 1);
+
+      const { data, error } = await query;
+      if (error) throw new Error(error.message);
+      const batch = (data ?? []) as unknown as ContentRow[];
+      result.push(...batch);
+      if (batch.length < GALLERY_BATCH_SIZE) return result;
+    }
   }
 
   async create(config: ModuleConfig, values: Record<string, unknown>): Promise<ContentRow> {

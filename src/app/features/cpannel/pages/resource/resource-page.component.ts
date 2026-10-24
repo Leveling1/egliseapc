@@ -11,7 +11,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { SupabaseService } from '../../../../core/supabase/supabase.service';
 import { GeocodingService } from '../../../../core/geo/geocoding.service';
@@ -64,6 +65,7 @@ export class CpannelResourcePageComponent {
   private readonly data = inject(CpannelDataService);
   private readonly titleService = inject(Title);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly supabase = inject(SupabaseService).client;
   private readonly geocoding = inject(GeocodingService);
 
@@ -102,6 +104,7 @@ export class CpannelResourcePageComponent {
   protected readonly weekdays = WEEKDAYS;
 
   protected readonly rows = signal<readonly ContentRow[]>([]);
+  protected readonly galleryMaxPosition = signal(0);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
   protected readonly search = signal('');
@@ -157,16 +160,62 @@ export class CpannelResourcePageComponent {
   protected readonly groupedRows = computed(() => {
     const config = this.config();
     const rows = this.filteredRows();
-    if (!config?.groups) return [{ label: null as string | null, rows }];
+    if (config?.bulkMedia) {
+      const groups = new Map<string, { label: string; rows: ContentRow[] }>();
+      for (const row of rows) {
+        const label = typeof row['caption'] === 'string' ? row['caption'].trim() : '';
+        const key = label || '__sans_groupe__';
+        const group = groups.get(key) ?? { label: label || 'Sans groupe', rows: [] };
+        group.rows.push(row);
+        groups.set(key, group);
+      }
+      return [...groups.entries()].map(([key, group]) => ({ key, ...group }));
+    }
+    if (!config?.groups) return [{ key: '', label: null as string | null, rows }];
 
     const { column, values } = config.groups;
     return values
       .map((group) => ({
+        key: String(group.value),
         label: group.label as string | null,
         rows: rows.filter((row) => row[column] === group.value),
       }))
       .filter((group) => group.rows.length > 0);
   });
+
+  /** Lot actuellement ouvert dans la vue détaillée de la galerie. */
+  protected readonly activeGalleryGroup = signal<string | null>(null);
+  protected readonly selectedGalleryGroup = computed(() => {
+    const key = this.activeGalleryGroup();
+    return key === null ? null : this.groupedRows().find((group) => group.key === key) ?? null;
+  });
+
+  protected openGalleryGroup(key: string): void {
+    this.activeGalleryGroup.set(key);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { lot: key },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  protected closeGalleryGroup(): void {
+    this.activeGalleryGroup.set(null);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { lot: null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  protected galleryVisibleCount(rows: readonly ContentRow[]): number {
+    return rows.filter((row) => row.is_visible === true).length;
+  }
+
+  protected addToActiveGalleryGroup(): void {
+    const group = this.selectedGalleryGroup();
+    if (group) this.toggleBulk(group.label === 'Sans groupe' ? null : group.label);
+  }
 
   protected toggleArchive(): void {
     this.archived.update((value) => !value);
@@ -216,8 +265,10 @@ export class CpannelResourcePageComponent {
   }
 
   protected readonly bulkOpen = signal(false);
+  protected readonly bulkCaption = signal<string | null>(null);
 
-  protected toggleBulk(): void {
+  protected toggleBulk(caption: string | null = null): void {
+    this.bulkCaption.set(caption);
     this.bulkOpen.update((open) => !open);
   }
 
@@ -244,8 +295,9 @@ export class CpannelResourcePageComponent {
         media_id: photo.mediaId || null,
         caption: photo.caption,
         alt: photo.alt,
-        position: this.totalRows() + 1,
+        position: this.galleryMaxPosition() + 1,
       });
+      this.galleryMaxPosition.update((position) => position + 1);
       this.totalRows.update((total) => total + 1);
     } catch (cause) {
       this.error.set(cause instanceof Error ? cause.message : String(cause));
@@ -262,6 +314,10 @@ export class CpannelResourcePageComponent {
   }
 
   constructor() {
+    this.route.queryParamMap
+      .pipe(takeUntilDestroyed())
+      .subscribe((params) => this.activeGalleryGroup.set(params.get('lot')));
+
     // Recharge la liste à chaque changement de module, y compris lors d'une
     // navigation d'un module à l'autre : Angular réutilise le composant, donc
     // un chargement fait une seule fois au démarrage laisserait l'ancienne
@@ -280,6 +336,7 @@ export class CpannelResourcePageComponent {
         if (config.fields.some((field) => field.type === 'links')) void this.loadLinkTypes();
         void this.loadDynamicOptions(config);
         this.closeEditor();
+        this.activeGalleryGroup.set(null);
         this.search.set('');
         this.page.set(1);
         this.archived.set(false);
@@ -331,15 +388,34 @@ export class CpannelResourcePageComponent {
     this.error.set(null);
 
     try {
-      const { rows, total } = await this.data.list(config, {
-        page: this.page(),
-        pageSize: this.pageSize,
-        search: this.search(),
-        archived: this.archived(),
-      });
+      let rows: ContentRow[];
+      let total: number;
+      if (config.bulkMedia) {
+        const allRows = await this.data.listAll(config);
+        this.galleryMaxPosition.set(
+          allRows.reduce((max, row) => Math.max(max, Number(row['position']) || 0), 0),
+        );
+        const term = this.search().trim().toLocaleLowerCase();
+        rows = term
+          ? allRows.filter((row) =>
+              config.columns.some((column) =>
+                String(row[column.key] ?? '').toLocaleLowerCase().includes(term),
+              ),
+            )
+          : allRows;
+        total = rows.length;
+      } else {
+        const result = await this.data.list(config, {
+            page: this.page(),
+            pageSize: this.pageSize,
+            search: this.search(),
+            archived: this.archived(),
+          });
+        rows = result.rows;
+        total = result.total;
+      }
       this.rows.set(rows);
       this.totalRows.set(total);
-
       // Une recherche qui réduit la liste peut laisser la page courante
       // au-delà du dernier résultat : on revient alors en tête plutôt que
       // d'afficher un tableau vide sans explication.

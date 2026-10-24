@@ -1,7 +1,9 @@
 <section class="cp-card cp-bulk" aria-labelledby="cp-bulk-title">
   <header class="cp-bulk__head">
     <div>
-      <h3 id="cp-bulk-title" class="cp-bulk__title">Ajouter des photos</h3>
+      <h3 id="cp-bulk-title" class="cp-bulk__title">
+        Ajouter des photos@if (initialCaption()) { au groupe « {{ initialCaption() }} » }
+      </h3>
       <p class="cp-bulk__sub">Sélectionnez, vérifiez, puis enregistrez le lot en une fois.</p>
     </div>
     <button

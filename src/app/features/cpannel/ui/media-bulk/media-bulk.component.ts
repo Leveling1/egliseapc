@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  OnInit,
   computed,
   inject,
   input,
@@ -69,9 +70,11 @@ const PACE_MS = 250;
   styleUrl: './media-bulk.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CpannelMediaBulkComponent {
+export class CpannelMediaBulkComponent implements OnInit {
   /** Module concerné : la fonction Edge vérifie le droit d'écriture dessus. */
   readonly module = input.required<string>();
+  /** Légende du groupe ouvert depuis la liste ; null crée un nouveau groupe. */
+  readonly initialCaption = input<string | null>(null);
 
   /** Émis pour chaque photo réussie, avec les informations du lot. */
   readonly photoReady = output<BulkResult>();
@@ -102,6 +105,10 @@ export class CpannelMediaBulkComponent {
     // Les aperçus sont des URL d'objet : le navigateur garde le fichier en
     // mémoire tant qu'elles existent. On les libère en quittant.
     inject(DestroyRef).onDestroy(() => this.revokeAll());
+  }
+
+  ngOnInit(): void {
+    this.caption.set(this.initialCaption() ?? '');
   }
 
   protected pick(): void {

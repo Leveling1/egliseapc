@@ -18,11 +18,23 @@
 
     <header class="cp-res__head">
       <div>
+        @if (cfg.bulkMedia && activeGalleryGroup() !== null) {
+          <button type="button" class="cp-btn cp-btn--ghost cp-gallery__back" (click)="closeGalleryGroup()">
+            Tous les lots
+          </button>
+        }
         <h2 class="cp-res__title">
-          {{ cfg.label }}@if (archived()) { <span class="cp-res__title-note">- historique</span> }
+          @if (cfg.bulkMedia && selectedGalleryGroup(); as lot) {
+            {{ lot.label }}
+          } @else {
+            {{ cfg.label }}
+          }
+          @if (archived()) { <span class="cp-res__title-note">- historique</span> }
         </h2>
         <p class="cp-res__count">
-          @if (totalRows() > 1) {
+          @if (cfg.bulkMedia && selectedGalleryGroup(); as lot) {
+            {{ lot.rows.length }} photo{{ lot.rows.length > 1 ? 's' : '' }} dans ce lot
+          } @else if (totalRows() > 1) {
             {{ totalRows() }} enregistrements
           } @else {
             {{ totalRows() }} enregistrement
@@ -69,9 +81,17 @@
                enregistrements existants restent modifiables un par un, pour la
                légende et l'ordre. -->
           @if (cfg.bulkMedia) {
-            <button type="button" class="cp-btn cp-btn--primary" (click)="toggleBulk()">
-              Ajouter des photos
-            </button>
+            @if (activeGalleryGroup() !== null) {
+              @if (selectedGalleryGroup()) {
+                <button type="button" class="cp-btn cp-btn--primary" (click)="addToActiveGalleryGroup()">
+                  Ajouter au lot
+                </button>
+              }
+            } @else {
+              <button type="button" class="cp-btn cp-btn--primary" (click)="toggleBulk()">
+                Ajouter des photos
+              </button>
+            }
           } @else {
             <button type="button" class="cp-btn cp-btn--primary" (click)="openCreate()">
               {{ cfg.gender === 'f' ? 'Nouvelle' : 'Nouveau' }} {{ cfg.singular }}
@@ -84,6 +104,7 @@
     @if (cfg.bulkMedia && bulkOpen()) {
       <app-cpannel-media-bulk
         [module]="cfg.module"
+        [initialCaption]="bulkCaption()"
         (photoReady)="onBulkPhoto($event)"
         (finished)="onBulkFinished()"
         (closed)="toggleBulk()"
@@ -148,10 +169,101 @@
           }
         }
       </div>
+    } @else if (cfg.bulkMedia && activeGalleryGroup() === null) {
+      <section class="cp-gallery__lots" aria-label="Lots de photos">
+        @for (group of groupedRows(); track group.key) {
+          <button type="button" class="cp-card cp-gallery__lot" (click)="openGalleryGroup(group.key)">
+            @if (group.rows[0]; as cover) {
+              <img
+                class="cp-gallery__cover"
+                [src]="displayCell(cover, 'url')"
+                alt=""
+                loading="lazy"
+              />
+            }
+            <span class="cp-gallery__lot-content">
+              <span class="cp-gallery__lot-title">{{ group.label }}</span>
+              <span class="cp-gallery__lot-meta">
+                {{ group.rows.length }} photo{{ group.rows.length > 1 ? 's' : '' }}
+                · {{ galleryVisibleCount(group.rows) }} en ligne
+              </span>
+              <span class="cp-gallery__lot-link">Voir les photos</span>
+            </span>
+          </button>
+        }
+      </section>
+    } @else if (cfg.bulkMedia) {
+      @if (selectedGalleryGroup(); as group) {
+        <section class="cp-gallery__photos" aria-label="Photos du lot">
+          @for (row of group.rows; track row.id) {
+            <article class="cp-card cp-gallery__photo" [class.cp-gallery__photo--hidden]="!row.is_visible">
+              <a
+                class="cp-gallery__image-link"
+                [href]="displayCell(row, 'url')"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'Ouvrir ' + (displayCell(row, 'alt') || 'la photo dans un nouvel onglet')"
+              >
+                <img
+                  class="cp-gallery__image"
+                  [src]="displayCell(row, 'url')"
+                  [alt]="displayCell(row, 'alt')"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cp-gallery__photo-info">
+                <span class="cp-gallery__position">Photo {{ row['position'] }}</span>
+                @if (row['alt']) {
+                  <p class="cp-gallery__alt">{{ row['alt'] }}</p>
+                }
+                @if (row.is_visible) {
+                  <span class="cp-badge cp-badge--online">En ligne</span>
+                } @else {
+                  <span class="cp-badge cp-badge--offline">Masquée</span>
+                }
+
+                <div class="cp-gallery__actions">
+                  @if (canEdit() && !cfg.readOnly) {
+                    <button type="button" class="cp-btn cp-btn--ghost" (click)="openEdit(row)">
+                      Modifier
+                    </button>
+                  }
+                  @if (canPublish()) {
+                    @if (row.is_visible) {
+                      <button type="button" class="cp-btn cp-btn--danger" (click)="askHide(row)">
+                        Retirer
+                      </button>
+                    } @else {
+                      <button type="button" class="cp-btn cp-btn--ghost" (click)="confirmVisibility(row, true)">
+                        Remettre en ligne
+                      </button>
+                    }
+                  }
+                </div>
+              </div>
+            </article>
+          }
+        </section>
+      } @else {
+        <div class="cp-card cp-res__empty">
+          <p class="cp-res__empty-title">Aucune photo de ce lot ne correspond à la recherche.</p>
+          <button type="button" class="cp-btn cp-btn--ghost" (click)="closeGalleryGroup()">
+            Retour aux lots
+          </button>
+        </div>
+      }
     } @else {
-      @for (group of groupedRows(); track group.label) {
+      @for (group of groupedRows(); track group.key) {
       @if (group.label) {
-        <h3 class="cp-res__group">{{ group.label }}</h3>
+        <div class="cp-res__group-head">
+          <div>
+            <h3 class="cp-res__group">{{ group.label }}</h3>
+            <p class="cp-res__group-count">
+              {{ group.rows.length }} photo{{ group.rows.length > 1 ? 's' : '' }}
+            </p>
+          </div>
+        </div>
       }
       <div class="cp-card cp-tablewrap" [class.cp-tablewrap--busy]="loading()" [attr.aria-busy]="loading()">
         <table class="cp-table">
@@ -224,7 +336,7 @@
       }
     }
 
-    @if (totalPages() > 1) {
+    @if (!cfg.bulkMedia && totalPages() > 1) {
       <app-pagination
         [currentPage]="page()"
         [totalPages]="totalPages()"
