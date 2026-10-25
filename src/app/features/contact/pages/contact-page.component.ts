@@ -50,7 +50,7 @@ export class ContactPageComponent implements OnInit {
 
   /**
    * Lien WhatsApp : le service attend l'indicatif sans « + » ni espaces.
-   * Un numéro saisi « +243 892 211 899 » devient « 243892211899 ».
+   * Un numéro saisi « +243 898 919 725 » devient « 243892211899 ».
    */
   protected whatsapp(number: string): string {
     return `https://wa.me/${number.replace(/[^\d]/g, '')}`;

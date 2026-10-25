@@ -8,7 +8,7 @@
  */
 
 /** Domaine de production, sans barre oblique finale. */
-export const SITE_URL = 'https://egliseapc.levelingcoder.com';
+export const SITE_URL = 'https://egliseapc.org';
 
 export const SITE_NAME = 'Ambassadeurs Pour Christ (A.P.C)';
 
@@ -38,7 +38,7 @@ export const CONTACT = {
   addressLocality: 'Kinshasa',
   addressRegion: 'Ngaliema',
   addressCountry: 'CD',
-  phones: ['+243 892 211 899', '+243 812 277 291'],
+  phones: ['+243 898 919 725', '+243 998 340 060'],
 } as const;
 
 /**

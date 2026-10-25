@@ -10,4 +10,4 @@ Disallow: /cpannel
 
 # Déclaré ici pour que les moteurs le trouvent sans attendre une soumission
 # manuelle dans Search Console.
-Sitemap: https://egliseapc.levelingcoder.com/sitemap.xml
+Sitemap: https://www.egliseapc.org/sitemap.xml
